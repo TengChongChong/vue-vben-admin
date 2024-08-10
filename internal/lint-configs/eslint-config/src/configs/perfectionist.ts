@@ -49,6 +49,7 @@ export async function perfectionist(): Promise<Linter.Config[]> {
             type: 'natural',
           },
         ],
+        'perfectionist/sort-interfaces': ['off'],
         'perfectionist/sort-named-exports': [
           'error',
           {
@@ -56,27 +57,12 @@ export async function perfectionist(): Promise<Linter.Config[]> {
             type: 'natural',
           },
         ],
-        'perfectionist/sort-objects': [
-          'error',
-          {
-            customGroups: {
-              items: 'items',
-              list: 'list',
-              children: 'children',
-            },
-            groups: ['unknown', 'items', 'list', 'children'],
-            ignorePattern: ['children'],
-            order: 'asc',
-            partitionByComment: 'Part:**',
-            type: 'natural',
-          },
-        ],
+        'perfectionist/sort-objects': ['off'],
         'perfectionist/sort-vue-attributes': [
           'error',
           {
             // Based on: https://vuejs.org/style-guide/rules-recommended.html#element-attribute-order
             customGroups: {
-              /* eslint-disable perfectionist/sort-objects */
               DEFINITION: '*(is|:is|v-is)',
               LIST_RENDERING: 'v-for',
               CONDITIONALS: 'v-*(else-if|if|else|show|cloak)',
@@ -88,7 +74,6 @@ export async function perfectionist(): Promise<Linter.Config[]> {
               // OTHER_DIRECTIVES e.g. 'v-custom-directive'
               EVENTS: '*(v-on|@*)',
               CONTENT: 'v-*(html|text)',
-              /* eslint-enable perfectionist/sort-objects */
             },
             groups: [
               'DEFINITION',
