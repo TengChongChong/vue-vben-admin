@@ -7,8 +7,10 @@ import type {
 } from 'axios';
 
 import type {
+  HttpResponse,
   MakeAuthorizationFn,
   MakeErrorMessageFn,
+  MakeMessageFn,
   MakeRequestHeadersFn,
   RequestClientOptions,
 } from './types';
@@ -18,6 +20,7 @@ import { merge } from '@vben/utils';
 
 import axios from 'axios';
 
+import { ErrorCodeEnum } from './enum.ts';
 import { FileDownloader } from './modules/downloader';
 import { InterceptorManager } from './modules/interceptor';
 import { FileUploader } from './modules/uploader';
@@ -26,6 +29,7 @@ class RequestClient {
   private instance: AxiosInstance;
   private makeAuthorization: MakeAuthorizationFn | undefined;
   private makeErrorMessage: MakeErrorMessageFn | undefined;
+  private makeMessage: MakeMessageFn | undefined;
   private makeRequestHeaders: MakeRequestHeadersFn | undefined;
 
   public addRequestInterceptor: InterceptorManager['addRequestInterceptor'];
@@ -50,6 +54,7 @@ class RequestClient {
     const {
       makeAuthorization,
       makeErrorMessage,
+      makeMessage,
       makeRequestHeaders,
       ...axiosConfig
     } = options;
@@ -59,6 +64,7 @@ class RequestClient {
     this.makeAuthorization = makeAuthorization;
     this.makeRequestHeaders = makeRequestHeaders;
     this.makeErrorMessage = makeErrorMessage;
+    this.makeMessage = makeMessage;
 
     // 实例化拦截器管理器
     const interceptorManager = new InterceptorManager(this.instance);
@@ -122,20 +128,41 @@ class RequestClient {
         if (axios.isCancel(error)) {
           return Promise.reject(error);
         }
+        // 自定义Error处理
+        const { response } = error || {};
+        const responseData: HttpResponse = response?.data;
+        let errMsg = '';
+        let errorShowType: string = 'error';
+
+        if (responseData) {
+          // 后端业务有响应数据
+          const { showType, errorMessage, errorCode } = responseData;
+          if (showType) {
+            errorShowType = showType;
+          }
+          // 错误提示内容
+          if (errorMessage) {
+            errMsg = errorMessage;
+          }
+
+          if (ErrorCodeEnum.SESSION_INVALID_CODE === errorCode) {
+            // 会话失效
+            this.makeAuthorization?.().unAuthorizedHandler?.();
+          }
+        }
 
         const err: string = error?.toString?.() ?? '';
-        let errMsg = '';
         if (err?.includes('Network Error')) {
           errMsg = $t('fallback.http.networkError');
         } else if (error?.message?.includes?.('timeout')) {
           errMsg = $t('fallback.http.requestTimeout');
         }
         if (errMsg) {
-          this.makeErrorMessage?.(errMsg);
+          this.makeMessage?.(errorShowType, errMsg);
           return Promise.reject(error);
         }
 
-        let errorMessage = error?.response?.data?.error?.message ?? '';
+        let errorMessage: string;
         const status = error?.response?.status;
 
         switch (status) {

@@ -25,6 +25,7 @@ type MakeRequestHeadersFn = (
 ) => MakeRequestHeaders;
 
 type MakeErrorMessageFn = (message: string) => void;
+type MakeMessageFn = (type: string, message: string) => void;
 
 interface RequestClientOptions extends CreateAxiosDefaults {
   /**
@@ -35,7 +36,10 @@ interface RequestClientOptions extends CreateAxiosDefaults {
    * 用于生成错误消息
    */
   makeErrorMessage?: MakeErrorMessageFn;
-
+  /**
+   * 用于生成消息
+   */
+  makeMessage?: MakeMessageFn;
   /**
    * 用于生成请求头
    */
@@ -43,19 +47,27 @@ interface RequestClientOptions extends CreateAxiosDefaults {
 }
 
 interface HttpResponse<T = any> {
-  /**
-   * 0 表示成功 其他表示失败
-   * 0 means success, others means fail
-   */
-  code: number;
-  data: T;
-  message: string;
+  // 请求是否成功
+  success: boolean;
+  // 响应数据
+  data?: T;
+  // 错误码
+  errorCode?: string;
+  // 错误提示，用于显示给用户
+  errorMessage?: string;
+  // 错误显示方式
+  showType?: string;
+  // 唯一请求Id，方便后端排查故障
+  traceId?: string;
+  // 当前访问服务节点，方便后端排查故障
+  host?: string;
 }
 
 export type {
   HttpResponse,
   MakeAuthorizationFn,
   MakeErrorMessageFn,
+  MakeMessageFn,
   MakeRequestHeadersFn,
   RequestClientOptions,
   RequestContentType,
