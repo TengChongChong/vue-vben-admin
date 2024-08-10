@@ -1,0 +1,19 @@
+import { BasicModel } from '@/api/model/baseModel';
+
+/**
+ * 角色
+ */
+export interface SysRole extends BasicModel {
+  // 名称
+  name: string;
+  // 角色标识
+  code: string;
+  // 数据权限
+  dataPermission: string;
+  // 备注
+  remarks: string;
+  // 权限ids
+  permissionIds: string[];
+  // 部门ids - 数据权限
+  deptIds: string[];
+}
