@@ -11,13 +11,24 @@ async function generateMenus(
   routes: RouteRecordRaw[],
   router: Router,
 ): Promise<MenuRecordRaw[]> {
+  // 将路由外面自动包装的 ’BasicLayout‘ 去掉
+  const menuRoutes: RouteRecordRaw[] = [];
+  routes.forEach((routeItem) => {
+    const name = routeItem.name as string;
+    if (name.endsWith('Parent') && routeItem.children?.length) {
+      menuRoutes.push(routeItem.children[0] as RouteRecordRaw);
+    } else {
+      menuRoutes.push(routeItem);
+    }
+  });
+
   // 将路由列表转换为一个以 name 为键的对象映射
   // 获取所有router最终的path及name
   const finalRoutesMap: { [key: string]: string } = Object.fromEntries(
     router.getRoutes().map(({ name, path }) => [name, path]),
   );
 
-  let menus = mapTree<ExRouteRecordRaw, MenuRecordRaw>(routes, (route) => {
+  let menus = mapTree<ExRouteRecordRaw, MenuRecordRaw>(menuRoutes, (route) => {
     // 路由表的路径写法有多种，这里从router获取到最终的path并赋值
     const path = finalRoutesMap[route.name as string] ?? route.path;
 
@@ -74,6 +85,7 @@ async function generateMenus(
   const finalMenus = filterTree(menus, (menu) => {
     return !!menu.show;
   });
+
   return finalMenus;
 }
 

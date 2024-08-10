@@ -22,16 +22,16 @@ describe('useUserStore', () => {
       roles: [{ roleName: 'User', value: 'user' }],
     } as any);
     expect(store.userInfo).not.toBeNull();
-    expect(store.userRoles.length).toBeGreaterThan(0);
+    expect(store.roleCodeList.length).toBeGreaterThan(0);
 
     store.setUserInfo(null as any); // 重置用户信息
     expect(store.userInfo).toBeNull();
-    expect(store.userRoles).toEqual([]);
+    expect(store.roleCodeList).toEqual([]);
   });
 
   // 测试在没有用户角色时返回空数组
   it('returns an empty array for userRoles if not set', () => {
     const store = useUserStore();
-    expect(store.userRoles).toEqual([]);
+    expect(store.roleCodeList).toEqual([]);
   });
 });

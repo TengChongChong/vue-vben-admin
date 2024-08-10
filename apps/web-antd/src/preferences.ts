@@ -7,6 +7,9 @@ import { defineOverridesPreferences } from '@vben/preferences';
 export const overridesPreferences = defineOverridesPreferences({
   // overrides
   app: {
+    /** 权限模式 */
+    accessMode: 'backend',
+    /** 应用名 */
     name: import.meta.env.VITE_APP_TITLE,
   },
 });

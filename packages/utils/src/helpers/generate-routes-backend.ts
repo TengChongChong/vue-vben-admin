@@ -5,7 +5,9 @@ import type {
 } from '@vben-core/typings';
 import type { RouteRecordRaw } from 'vue-router';
 
-import { mapTree } from '@vben-core/shared';
+import { cloneDeep, mapTree } from '@vben-core/shared';
+
+import { listToTree } from './treeHelper.ts';
 
 /**
  * 动态生成路由 - 后端方式
@@ -27,9 +29,20 @@ async function generateRoutesByBackend(
       normalizePageMap[normalizeViewPath(key)] = value;
     }
 
-    const routes = convertRoutes(menuRoutes, layoutMap, normalizePageMap);
-
-    return routes;
+    // 后端响应的路由为list，且外层无 BasicLayout
+    const treeRoutes = listToTree(menuRoutes);
+    // 加一级父路由，使用 BasicLayout布局，且不在面包屑中显示，生成菜单时也将忽略此层
+    treeRoutes.forEach((route) => {
+      route.children = [cloneDeep(route)];
+      route.component = 'BasicLayout';
+      route.name = `${route.name}Parent`;
+      route.path = `${route.path}`;
+      route.meta = {
+        // 不在面包屑中显示
+        hideInBreadcrumb: true,
+      };
+    });
+    return convertRoutes(treeRoutes, layoutMap, normalizePageMap);
   } catch (error) {
     console.error(error);
     return [];
@@ -48,21 +61,28 @@ function convertRoutes(
     if (!name) {
       console.error('route name is required', route);
     }
-
+    if (!component) {
+      // 如果后端设置的路由类型为目录，则没有 component
+      return route;
+    }
     // layout转换
-    if (component && layoutMap[component]) {
+    if (layoutMap[component]) {
       route.component = layoutMap[component];
       // 页面组件转换
-    } else if (component) {
+    } else {
       const normalizePath = normalizeViewPath(component);
-      route.component =
+      let componentPage =
         pageMap[
           normalizePath.endsWith('.vue')
             ? normalizePath
             : `${normalizePath}.vue`
         ];
+      if (!componentPage) {
+        // 如果未找到对应的页面，视为尚未开发
+        componentPage = pageMap['/_core/fallback/coming-soon.vue'];
+      }
+      route.component = componentPage;
     }
-
     return route;
   });
 }
