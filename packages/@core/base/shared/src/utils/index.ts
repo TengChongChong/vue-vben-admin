@@ -1,3 +1,4 @@
+export * from './cipher';
 export * from './cn';
 export * from './diff';
 export * from './dom';
