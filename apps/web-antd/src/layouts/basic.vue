@@ -122,9 +122,9 @@ function handleMakeAll() {
     <template #user-dropdown>
       <UserDropdown
         :avatar
+        :description="userStore.userInfo?.email"
         :menus
-        :text="userStore.userInfo?.realName"
-        description="ann.vben@gmail.com"
+        :text="userStore.userInfo?.nickname"
         tag-text="Pro"
         @logout="handleLogout"
       />
@@ -142,9 +142,9 @@ function handleMakeAll() {
         v-model:open="accessStore.loginExpired"
         :avatar
         :loading="loginLoading"
-        password-placeholder="123456"
-        username-placeholder="vben"
-        @submit="authStore.authLogin"
+        password-placeholder="请输入密码"
+        username-placeholder="请输入用户名"
+        @submit="authStore.loginAccount"
       />
     </template>
     <template #lock-screen>
