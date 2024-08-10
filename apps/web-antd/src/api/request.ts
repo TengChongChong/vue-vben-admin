@@ -2,6 +2,7 @@
  * 该文件可自行根据业务逻辑进行调整
  */
 import type { HttpResponse } from '@vben/request';
+import type { NoticeType } from 'ant-design-vue/es/message';
 
 import { useAppConfig } from '@vben/hooks';
 import { preferences } from '@vben/preferences';
@@ -33,7 +34,6 @@ function createRequestClient(baseURL: string) {
           const accessStore = useAccessStore();
           const authStore = useAuthStore();
           accessStore.setAccessToken(null);
-
           if (preferences.app.loginExpiredMode === 'modal') {
             accessStore.setLoginExpired(true);
           } else {
@@ -44,7 +44,12 @@ function createRequestClient(baseURL: string) {
       };
     },
     makeErrorMessage: (msg) => message.error(msg),
-
+    makeMessage: (type, msg) => {
+      message.open({
+        type: type as NoticeType,
+        content: msg,
+      });
+    },
     makeRequestHeaders: () => {
       return {
         // 为每个请求携带 Accept-Language
@@ -53,13 +58,13 @@ function createRequestClient(baseURL: string) {
     },
   });
   client.addResponseInterceptor<HttpResponse>((response) => {
-    const { data: responseData, status } = response;
+    const { data: responseData } = response;
 
-    const { code, data, message: msg } = responseData;
-    if (status >= 200 && status < 400 && code === 0) {
+    const { success, data, errorMessage } = responseData;
+    if (success) {
       return data;
     }
-    throw new Error(msg);
+    throw new Error(errorMessage);
   });
   return client;
 }
