@@ -7,10 +7,6 @@ type AccessToken = null | string;
 
 interface AccessState {
   /**
-   * 权限码
-   */
-  accessCodes: string[];
-  /**
    * 可访问的菜单列表
    */
   accessMenus: MenuRecordRaw[];
@@ -37,9 +33,6 @@ interface AccessState {
  */
 export const useAccessStore = defineStore('core-access', {
   actions: {
-    setAccessCodes(codes: string[]) {
-      this.accessCodes = codes;
-    },
     setAccessMenus(menus: MenuRecordRaw[]) {
       this.accessMenus = menus;
     },
@@ -58,10 +51,9 @@ export const useAccessStore = defineStore('core-access', {
   },
   persist: {
     // 持久化
-    paths: ['accessToken', 'refreshToken', 'accessCodes'],
+    paths: ['accessToken', 'refreshToken'],
   },
   state: (): AccessState => ({
-    accessCodes: [],
     accessMenus: [],
     accessRoutes: [],
     accessToken: null,
