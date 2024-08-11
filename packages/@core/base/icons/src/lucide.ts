@@ -41,6 +41,7 @@ export {
   Sun,
   SunMoon,
   SwatchBook,
+  UserRound,
   UserRoundPen,
   X,
 } from 'lucide-vue-next';
