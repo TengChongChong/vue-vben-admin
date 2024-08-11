@@ -53,13 +53,13 @@ function createRequestClient(baseURL: string) {
     },
   });
   client.addResponseInterceptor<HttpResponse>((response) => {
-    const { data: responseData } = response;
+    const { data: responseData, status } = response;
 
-    const { success, data, errorMessage } = responseData;
-    if (success) {
+    const { code, data, message: msg } = responseData;
+    if (status >= 200 && status < 400 && code === 0) {
       return data;
     }
-    throw new Error(errorMessage);
+    throw new Error(`Error ${status}: ${msg}`);
   });
   return client;
 }

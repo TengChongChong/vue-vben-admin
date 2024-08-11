@@ -167,6 +167,7 @@
 
   "i18n-ally.localesPaths": [
     "packages/locales/src/langs",
+    "playground/src/langs",
     "apps/*/src/locales/langs"
   ],
   "i18n-ally.enabledParsers": ["json", "ts", "js", "yaml"],
@@ -191,5 +192,6 @@
   "i18n-ally.keystyle": "nested",
   "commentTranslate.multiLineMerge": true,
   "vue.server.hybridMode": true,
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "vitest.disableWorkspaceWarning": true
 }
