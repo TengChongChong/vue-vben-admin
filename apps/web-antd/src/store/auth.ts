@@ -1,6 +1,6 @@
 import type { UserInfo } from '@vben/types';
 
-import type { LoginAccountParams } from '#/api/auth/model/authModel.ts';
+import type { LoginAccountParams } from '#/api/auth/model/authModel';
 
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -12,7 +12,7 @@ import { HashingFactory } from '@vben/utils';
 import { notification } from 'ant-design-vue';
 import { defineStore } from 'pinia';
 
-import { getUserInfoApi, loginAccountApi, logoutApi } from '#/api/auth/auth.ts';
+import { getUserInfoApi, loginAccountApi, logoutApi } from '#/api/auth/auth';
 import { $t } from '#/locales';
 
 export const useAuthStore = defineStore('auth', () => {
@@ -69,7 +69,6 @@ export const useAuthStore = defineStore('auth', () => {
       userInfo = await fetchUserInfo();
 
       userStore.setUserInfo(userInfo);
-      accessStore.setAccessCodes(userInfo.permissionCodeList);
 
       if (accessStore.loginExpired) {
         accessStore.setLoginExpired(false);
