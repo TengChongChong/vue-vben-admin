@@ -11,7 +11,7 @@ export namespace AuthApi {
   export interface LoginResult {
     accessToken: string;
     desc: string;
-    realName: string;
+    nickname: string;
     refreshToken: string;
     userId: string;
     username: string;
