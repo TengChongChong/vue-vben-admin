@@ -4,11 +4,10 @@ import { DEFAULT_HOME_PATH } from '@vben/constants';
 
 import { AuthPageLayout } from '#/layouts';
 import { $t } from '#/locales';
-import Login from '#/views/_core/authentication/login.vue';
 
 /** 全局404页面 */
 const fallbackNotFoundRoute: RouteRecordRaw = {
-  component: () => import('#/views/_core/fallback/not-found.vue'),
+  component: () => import('#/views/fallback/not-found.vue'),
   meta: {
     hideInBreadcrumb: true,
     hideInMenu: true,
@@ -40,7 +39,7 @@ const coreRoutes: RouteRecordRaw[] = [
       {
         name: 'Login',
         path: 'login',
-        component: Login,
+        component: () => import('#/views/auth/login/login.vue'),
         meta: {
           title: $t('page.core.login'),
         },
@@ -48,7 +47,7 @@ const coreRoutes: RouteRecordRaw[] = [
       {
         name: 'CodeLogin',
         path: 'code-login',
-        component: () => import('#/views/_core/authentication/code-login.vue'),
+        component: () => import('#/views/auth/login/code-login.vue'),
         meta: {
           title: $t('page.core.codeLogin'),
         },
@@ -56,8 +55,7 @@ const coreRoutes: RouteRecordRaw[] = [
       {
         name: 'QrCodeLogin',
         path: 'qrcode-login',
-        component: () =>
-          import('#/views/_core/authentication/qrcode-login.vue'),
+        component: () => import('#/views/auth/login/qrcode-login.vue'),
         meta: {
           title: $t('page.core.qrcodeLogin'),
         },
@@ -65,8 +63,7 @@ const coreRoutes: RouteRecordRaw[] = [
       {
         name: 'ForgetPassword',
         path: 'forget-password',
-        component: () =>
-          import('#/views/_core/authentication/forget-password.vue'),
+        component: () => import('#/views/auth/forget/forget-password.vue'),
         meta: {
           title: $t('page.core.forgetPassword'),
         },
@@ -74,7 +71,7 @@ const coreRoutes: RouteRecordRaw[] = [
       {
         name: 'Register',
         path: 'register',
-        component: () => import('#/views/_core/authentication/register.vue'),
+        component: () => import('#/views/auth/register/register.vue'),
         meta: {
           title: $t('page.core.register'),
         },
