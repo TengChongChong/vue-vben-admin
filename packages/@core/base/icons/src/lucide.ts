@@ -39,6 +39,7 @@ export {
   RotateCw,
   Search,
   SearchX,
+  Settings2,
   ShieldCheck,
   Sun,
   SunMoon,
