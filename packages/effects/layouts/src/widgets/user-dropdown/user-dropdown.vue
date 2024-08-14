@@ -3,6 +3,7 @@ import type { AnyFunction } from '@vben/types';
 
 import type { Component } from 'vue';
 import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 import { LockKeyhole, LogOut, SwatchBook, UserRound } from '@vben/icons';
 import { $t } from '@vben/locales';
@@ -70,6 +71,9 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits<{ logout: [] }>();
+
+const router = useRouter();
+
 const openPopover = ref(false);
 const openDialog = ref(false);
 const openLock = ref(false);
@@ -116,6 +120,10 @@ function handleLogout() {
   // emit
   openDialog.value = true;
   openPopover.value = false;
+}
+
+function handleOpenPersonal() {
+  router.push('/auth/personal/index');
 }
 
 function handleSubmitLogout() {
@@ -213,15 +221,11 @@ if (enableShortcutKey.value) {
       <DropdownMenuSeparator />
       <!-- 个人中心 -->
       <DropdownMenuItem
-        v-if="preferences.app.enablePreferences"
         class="mx-1 flex cursor-pointer items-center rounded-sm py-1 leading-8"
-        @click="handleOpenPreference"
+        @click="handleOpenPersonal"
       >
         <UserRound class="mr-2 size-4" />
         个人中心
-        <DropdownMenuShortcut v-if="enablePreferencesShortcutKey">
-          {{ altView }} ,
-        </DropdownMenuShortcut>
       </DropdownMenuItem>
       <DropdownMenuSeparator />
       <!-- 偏好设置 -->

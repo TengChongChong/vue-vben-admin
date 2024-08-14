@@ -2,6 +2,8 @@ import type { RouteRecordRaw } from 'vue-router';
 
 import { mergeRouteModules, traverseTreeValues } from '@vben/utils';
 
+import userRoutes from '#/router/routes/modules/user';
+
 import { coreRoutes, fallbackNotFoundRoute } from './core';
 
 const dynamicRouteFiles = import.meta.glob('./modules/**/*.ts', {
@@ -16,7 +18,7 @@ const dynamicRoutes: RouteRecordRaw[] = mergeRouteModules(dynamicRouteFiles);
 
 /** 静态路由列表，访问这些页面可以不需要权限 */
 // const staticRoutes: RouteRecordRaw[] = mergeRouteModules(staticRouteFiles);
-const staticRoutes: RouteRecordRaw[] = [];
+const staticRoutes: RouteRecordRaw[] = [...userRoutes];
 
 /** 路由列表，由基本路由+静态路由组成 */
 const routes: RouteRecordRaw[] = [

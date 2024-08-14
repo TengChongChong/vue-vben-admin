@@ -1,0 +1,81 @@
+<script setup lang="ts">
+import { ref, unref, watch } from 'vue';
+
+import { Layers, LockKeyhole, ShieldCheck, UserRound } from '@vben/icons';
+
+import { Menu, MenuItem } from 'ant-design-vue';
+
+const prop = defineProps({
+  selectedKeys: {
+    type: String,
+    default: () => {
+      return 'profile-overview';
+    },
+  },
+});
+
+const emit = defineEmits(['update:selectedKeys']);
+const selectedKeys = ref([prop.selectedKeys]);
+
+watch(
+  () => prop.selectedKeys,
+  () => (selectedKeys.value = [prop.selectedKeys]),
+);
+
+function handleSelect() {
+  emit('update:selectedKeys', unref(selectedKeys)[0]);
+}
+</script>
+
+<template>
+  <!-- 导航 -->
+  <div class="personal-nav-wrapper">
+    <Menu
+      v-model:selectedKeys="selectedKeys"
+      class="personal-nav"
+      mode="inline"
+      @select="handleSelect"
+    >
+      <MenuItem key="profile-overview">
+        <template #icon>
+          <Layers />
+        </template>
+        概览
+      </MenuItem>
+      <MenuItem key="personal-information">
+        <template #icon>
+          <UserRound />
+        </template>
+        用户信息
+      </MenuItem>
+      <MenuItem key="account-information">
+        <template #icon>
+          <ShieldCheck />
+        </template>
+        安全设置
+      </MenuItem>
+      <MenuItem key="change-passwort">
+        <template #icon>
+          <LockKeyhole />
+        </template>
+        修改密码
+      </MenuItem>
+    </Menu>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.personal-nav-wrapper {
+  :deep(.ant-menu) {
+    border-inline-end: 0;
+
+    .ant-menu-item {
+      margin: 6px 0;
+
+      .ant-menu-item-icon {
+        width: 1rem;
+      }
+    }
+  }
+}
+</style>
