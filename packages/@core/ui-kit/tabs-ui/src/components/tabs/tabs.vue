@@ -12,7 +12,7 @@ interface Props extends TabsProps {}
 
 defineOptions({
   name: 'VbenTabs',
-  // eslint-disable-next-line perfectionist/sort-objects
+
   inheritAttrs: false,
 });
 const props = withDefaults(defineProps<Props>(), {
@@ -72,11 +72,12 @@ function scrollIntoView() {
 </script>
 
 <template>
-  <div class="h-full flex-1 overflow-hidden">
+  <div class="size-full flex-1 overflow-hidden">
     <VbenScrollbar
+      id="tabs-scrollbar"
       class="tabs-scrollbar h-full"
       horizontal
-      scroll-bar-class="z-10"
+      scroll-bar-class="z-10 hidden"
     >
       <div
         :class="contentClass"

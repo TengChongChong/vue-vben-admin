@@ -83,6 +83,9 @@ const customColors = {
     ...createColorsPalette('green'),
     foreground: 'hsl(var(--success-foreground))',
   },
+  header: {
+    DEFAULT: 'hsl(var(--header))',
+  },
   heavy: {
     DEFAULT: 'hsl(var(--heavy))',
     foreground: 'hsl(var(--heavy-foreground))',
