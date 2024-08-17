@@ -60,7 +60,7 @@
     "clsx": "^2.1.1",
     "crypto-js": "^4.2.0",
     "defu": "^6.1.4",
-    "lodash.clonedeep": "^4.5.0",
+    "lodash-es": "^4.17.21",
     "nprogress": "^0.2.0",
     "tailwind-merge": "^2.4.0",
     "theme-colors": "^0.1.0"
@@ -68,6 +68,7 @@
   "devDependencies": {
     "@types/crypto-js": "^4.2.0",
     "@types/lodash.clonedeep": "^4.5.9",
-    "@types/nprogress": "^0.2.3"
+    "@types/nprogress": "^0.2.3",
+    "@types/lodash-es": "^4.17.12"
   }
 }

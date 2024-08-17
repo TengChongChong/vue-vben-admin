@@ -105,7 +105,12 @@ function isNumber(value: any): value is number {
   return typeof value === 'number' && Number.isFinite(value);
 }
 
+function isArray(val: any): val is Array<any> {
+  return val && Array.isArray(val);
+}
+
 export {
+  isArray,
   isEmpty,
   isFunction,
   isHttpUrl,

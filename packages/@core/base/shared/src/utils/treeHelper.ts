@@ -1,5 +1,3 @@
-import type { AnyNormalFunction } from '@vben-core/typings';
-
 interface TreeHelperConfig {
   id: string;
   children: string;
@@ -70,7 +68,7 @@ export function clearTreeEmptyChildren<T = any>(
 
 export function findNode<T = any>(
   tree: any,
-  func: AnyNormalFunction,
+  func: any,
   config: Partial<TreeHelperConfig> = {},
 ): null | T {
   config = getConfig(config);
@@ -85,7 +83,7 @@ export function findNode<T = any>(
 
 export function findNodeAll<T = any>(
   tree: any,
-  func: AnyNormalFunction,
+  func: any,
   config: Partial<TreeHelperConfig> = {},
 ): T[] {
   config = getConfig(config);
@@ -101,7 +99,7 @@ export function findNodeAll<T = any>(
 
 export function findPath<T = any>(
   tree: any,
-  func: AnyNormalFunction,
+  func: any,
   config: Partial<TreeHelperConfig> = {},
 ): null | T | T[] {
   config = getConfig(config);
@@ -128,7 +126,7 @@ export function findPath<T = any>(
 
 export function findPathAll(
   tree: any,
-  func: AnyNormalFunction,
+  func: any,
   config: Partial<TreeHelperConfig> = {},
 ) {
   config = getConfig(config);
@@ -201,7 +199,7 @@ export function forEach<T = any>(
  */
 export function treeMap<T = any>(
   treeData: T[],
-  opt: { children?: string; conversion: AnyNormalFunction },
+  opt: { children?: string; conversion: any },
 ): T[] {
   return treeData.map((item) => treeMapEach(item, opt));
 }
@@ -212,10 +210,7 @@ export function treeMap<T = any>(
  */
 export function treeMapEach(
   data: any,
-  {
-    children = 'children',
-    conversion,
-  }: { children?: string; conversion: AnyNormalFunction },
+  { children = 'children', conversion }: { children?: string; conversion: any },
 ) {
   const haveChildren =
     Array.isArray(data[children]) && data[children].length > 0;
