@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { NotificationItem } from '@vben/layouts';
 
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { AuthenticationLoginExpiredModal } from '@vben/common-ui';
@@ -24,7 +24,7 @@ import { openWindow } from '@vben/utils';
 
 import { $t } from '#/locales';
 import { resetRoutes } from '#/router';
-import { useAuthStore } from '#/store';
+import { useAuthStore, useDictStore } from '#/store';
 
 const notifications = ref<NotificationItem[]>([
   {
@@ -60,9 +60,14 @@ const notifications = ref<NotificationItem[]>([
 const userStore = useUserStore();
 const authStore = useAuthStore();
 const accessStore = useAccessStore();
+const dictStore = useDictStore();
 const showDot = computed(() =>
   notifications.value.some((item) => !item.isRead),
 );
+
+onMounted(() => {
+  dictStore.initDict(true);
+});
 
 const menus = computed(() => [
   {
