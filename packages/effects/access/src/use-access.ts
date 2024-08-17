@@ -15,6 +15,9 @@ function useAccess() {
    * @param roles
    */
   function hasAccessByRoles(roles: string[]) {
+    if (roles === null || roles.length === 0) {
+      return true;
+    }
     const userRoleSet = new Set(userStore.roleCodeList);
     const intersection = roles.filter((item) => userRoleSet.has(item));
     return intersection.length > 0;
@@ -26,6 +29,9 @@ function useAccess() {
    * @param codes
    */
   function hasAccessByCodes(codes: string[]) {
+    if (codes === null || codes.length === 0) {
+      return true;
+    }
     const userCodesSet = new Set(userStore.permissionCodeList);
 
     const intersection = codes.filter((item) => userCodesSet.has(item));

@@ -20,7 +20,7 @@ import { merge } from '@vben/utils';
 
 import axios from 'axios';
 
-import { ErrorCodeEnum } from './enum.ts';
+import { ErrorCodeEnum } from './enum';
 import { FileDownloader } from './modules/downloader';
 import { InterceptorManager } from './modules/interceptor';
 import { FileUploader } from './modules/uploader';

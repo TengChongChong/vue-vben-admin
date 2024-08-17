@@ -5,9 +5,7 @@ import type {
 } from '@vben-core/typings';
 import type { RouteRecordRaw } from 'vue-router';
 
-import { cloneDeep, mapTree } from '@vben-core/shared';
-
-import { listToTree } from './treeHelper.ts';
+import { cloneDeep, listToTree, mapTree } from '@vben-core/shared';
 
 /**
  * 动态生成路由 - 后端方式
@@ -16,7 +14,6 @@ async function generateRoutesByBackend(
   options: GenerateMenuAndRoutesOptions,
 ): Promise<RouteRecordRaw[]> {
   const { fetchMenuListAsync, layoutMap = {}, pageMap = {} } = options;
-
   try {
     const menuRoutes = await fetchMenuListAsync?.();
     if (!menuRoutes) {
