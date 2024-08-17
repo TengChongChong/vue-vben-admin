@@ -8,7 +8,7 @@ import { preferences } from '@vben/preferences';
 
 import { message } from 'ant-design-vue';
 
-import { getCurrentUserRouteApi } from '#/api/auth/auth.ts';
+import { getCurrentUserRouteApi } from '#/api/auth/auth';
 import { BasicLayout, IFrameView } from '#/layouts';
 import { $t } from '#/locales';
 
