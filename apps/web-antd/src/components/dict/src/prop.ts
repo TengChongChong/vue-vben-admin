@@ -39,10 +39,6 @@ export interface DictSelectProps extends BaseDictProps {
   value: Array<number> | Array<string> | number | string;
   // 设置 Select 的模式为多选或标签
   mode?: 'multiple' | 'tags' | undefined;
-  // 配置是否可搜索
-  showSearch?: boolean;
-  // 搜索时过滤对应的 option 属性，不支持 children
-  optionFilterProp?: string;
 }
 
 /**
@@ -51,4 +47,14 @@ export interface DictSelectProps extends BaseDictProps {
 export interface DictCascaderProps extends BaseDictProps {
   // value
   value: Array<number> | Array<string>;
+}
+
+/**
+ * 字典 TreeSelect (树选择)
+ */
+export interface DictTreeSelectProps extends BaseDictProps {
+  // value
+  value: Array<string> | string;
+  // 支持多选
+  multiple?: boolean;
 }

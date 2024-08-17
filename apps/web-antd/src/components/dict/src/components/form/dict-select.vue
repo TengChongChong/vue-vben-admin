@@ -11,18 +11,13 @@ import {
   getSelectModelArray,
 } from '#/components/dict/src/helper';
 
-const props = withDefaults(defineProps<DictSelectProps>(), {
-  optionFilterProp: 'label',
-});
+const props = withDefaults(defineProps<DictSelectProps>(), {});
 
 const emit = defineEmits(['change', 'update:value']);
 
 const currentValue = ref<
   Array<number> | Array<string> | null | number | string
 >();
-
-// 配置是否可搜索
-const showSearch = ref(props.showSearch);
 
 /**
  * 选项
@@ -57,11 +52,11 @@ function handleChange() {
   <Select
     v-bind="$attrs"
     v-model:value="currentValue!"
-    :allow-clear="true"
     :mode="props.mode"
-    :option-filter-prop="props.optionFilterProp"
     :options="options"
-    :show-search="showSearch"
+    :show-search="options.length > 4"
+    allow-clear
+    option-filter-prop="label"
     style="width: 100%"
     @change="handleChange"
   />

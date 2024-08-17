@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import type { ShowSearchType } from 'ant-design-vue/es/vc-cascader';
+
 import type { DictCascaderProps } from '#/components/dict/src/prop';
 
 import { computed, onMounted, ref, unref, watch } from 'vue';
@@ -38,6 +40,12 @@ function handleChange() {
   emit('change', relValue);
   emit('update:value', relValue);
 }
+
+const filter: ShowSearchType['filter'] = (inputValue, path) => {
+  return path.some((option) =>
+    option.label.toLowerCase().includes(inputValue.toLowerCase()),
+  );
+};
 </script>
 <template>
   <Cascader
@@ -45,6 +53,7 @@ function handleChange() {
     v-model:value="currentValue"
     :allow-clear="true"
     :options="options"
+    :show-search="{ filter }"
     style="width: 100%"
     @change="handleChange"
   />
