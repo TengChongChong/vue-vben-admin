@@ -54,7 +54,7 @@ function handleSelect() {
         </template>
         安全设置
       </MenuItem>
-      <MenuItem key="change-passwort">
+      <MenuItem key="change-password">
         <template #icon>
           <LockKeyhole />
         </template>

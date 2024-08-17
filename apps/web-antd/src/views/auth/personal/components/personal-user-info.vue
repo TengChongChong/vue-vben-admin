@@ -11,6 +11,8 @@ import {
   Tag,
 } from 'ant-design-vue';
 
+import { DictTag } from '#/components/dict';
+
 const userStore = useUserStore();
 
 const currentUser = computed(() => {
@@ -24,12 +26,11 @@ const currentUser = computed(() => {
     <div class="user-avatar">
       <Avatar
         v-if="currentUser?.avatar"
-        :alt="currentUser?.nickname.substring(0, 1)"
         :size="100"
         :src="currentUser?.avatar"
       />
       <Avatar v-else :size="100">
-        {{ currentUser?.nickname.substring(0, 1) }}
+        {{ currentUser?.nickname.substring(0, 2) }}
       </Avatar>
     </div>
     <div class="user-info p-2 pl-6">
@@ -40,7 +41,7 @@ const currentUser = computed(() => {
         {{ currentUser?.dept.name }}
       </div>
       <div class="user-tag">
-        <Tag :bordered="false">男</Tag>
+        <DictTag :code="currentUser?.sex!" dict-type="sex" />
         <Tag :bordered="false">18 岁</Tag>
       </div>
     </div>

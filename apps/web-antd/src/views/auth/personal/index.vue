@@ -5,6 +5,11 @@ import { Page } from '@vben/common-ui';
 
 import { Card, Layout, LayoutContent, LayoutSider } from 'ant-design-vue';
 
+import AccountInformation from '#/views/auth/personal/components/account-information.vue';
+import ChangePassword from '#/views/auth/personal/components/change-password.vue';
+import PersonalInformation from '#/views/auth/personal/components/personal-information.vue';
+import ProfileOverview from '#/views/auth/personal/components/profile-overview.vue';
+
 import PersonalNav from './components/personal-nav.vue';
 import PersonalUserInfo from './components/personal-user-info.vue';
 
@@ -15,7 +20,7 @@ const selectedKeys = ref('profile-overview');
   <Page>
     <Layout>
       <LayoutSider :width="360" class="rounded-lg" theme="light">
-        <Card :bordered="false">
+        <Card :bordered="false" style="height: 100%">
           <!-- 当前登录用户信息 -->
           <PersonalUserInfo />
 
@@ -24,7 +29,14 @@ const selectedKeys = ref('profile-overview');
         </Card>
       </LayoutSider>
       <LayoutContent :style="{ marginLeft: '24px', overflow: 'initial' }">
-        <Card :bordered="false"> 123 </Card>
+        <!-- 概览 -->
+        <ProfileOverview v-if="'profile-overview' === selectedKeys" />
+        <!-- 安全设置 -->
+        <AccountInformation v-if="'account-information' === selectedKeys" />
+        <!-- 修改密码 -->
+        <ChangePassword v-if="'change-password' === selectedKeys" />
+        <!-- 用户信息 -->
+        <PersonalInformation v-if="'personal-information' === selectedKeys" />
       </LayoutContent>
     </Layout>
   </Page>
