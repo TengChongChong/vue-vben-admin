@@ -6,3 +6,8 @@
   overscroll-behavior: none;
   color: inherit;
 }
+
+/* 修复tailwind造成的按钮图标偏下问题 */
+.ant-btn svg {
+  vertical-align: unset;
+}
