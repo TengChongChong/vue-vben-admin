@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
+import { useUserStore } from '@vben/stores';
 
 import { Card, Layout, LayoutContent, LayoutSider } from 'ant-design-vue';
 
@@ -14,6 +15,12 @@ import PersonalNav from './components/personal-nav.vue';
 import PersonalUserInfo from './components/personal-user-info.vue';
 
 const selectedKeys = ref('profile-overview');
+
+const userStore = useUserStore();
+
+const currentUser = computed(() => {
+  return userStore.userInfo;
+});
 </script>
 
 <template>
@@ -22,7 +29,7 @@ const selectedKeys = ref('profile-overview');
       <LayoutSider :width="360" class="rounded-lg" theme="light">
         <Card :bordered="false" style="height: 100%">
           <!-- 当前登录用户信息 -->
-          <PersonalUserInfo />
+          <PersonalUserInfo :current-user="currentUser!" />
 
           <!-- Nav -->
           <PersonalNav v-model:selectedKeys="selectedKeys" />
@@ -36,7 +43,10 @@ const selectedKeys = ref('profile-overview');
         <!-- 修改密码 -->
         <ChangePassword v-if="'change-password' === selectedKeys" />
         <!-- 用户信息 -->
-        <PersonalInformation v-if="'personal-information' === selectedKeys" />
+        <PersonalInformation
+          v-if="'personal-information' === selectedKeys"
+          :current-user="currentUser!"
+        />
       </LayoutContent>
     </Layout>
   </Page>

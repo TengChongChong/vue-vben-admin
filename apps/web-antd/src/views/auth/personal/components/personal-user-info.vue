@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-
-import { useUserStore } from '@vben/stores';
+import type { SessionUser } from '@vben/types';
 
 import {
   Avatar,
@@ -13,11 +11,7 @@ import {
 
 import { DictTag } from '#/components/dict';
 
-const userStore = useUserStore();
-
-const currentUser = computed(() => {
-  return userStore.userInfo;
-});
+const props = defineProps<{ currentUser: SessionUser }>();
 </script>
 
 <template>
@@ -25,23 +19,23 @@ const currentUser = computed(() => {
   <Flex class="mb-8">
     <div class="user-avatar">
       <Avatar
-        v-if="currentUser?.avatar"
+        v-if="props.currentUser?.avatar"
         :size="100"
-        :src="currentUser?.avatar"
+        :src="props.currentUser?.avatar"
       />
       <Avatar v-else :size="100">
-        {{ currentUser?.nickname.substring(0, 2) }}
+        {{ props.currentUser?.nickname.substring(0, 2) }}
       </Avatar>
     </div>
     <div class="user-info p-2 pl-6">
       <div class="mb-1 text-lg font-medium">
-        {{ currentUser?.nickname }}
+        {{ props.currentUser?.nickname }}
       </div>
       <div class="mb-1 text-gray-500">
-        {{ currentUser?.dept.name }}
+        {{ props.currentUser?.dept.name }}
       </div>
       <div class="user-tag">
-        <DictTag :code="currentUser?.sex!" dict-type="sex" />
+        <DictTag :code="props.currentUser?.sex!" dict-type="sex" />
         <Tag :bordered="false">18 岁</Tag>
       </div>
     </div>
@@ -56,14 +50,14 @@ const currentUser = computed(() => {
     size="small"
   >
     <DescriptionsItem label="邮箱">
-      {{ currentUser?.email }}
+      {{ props.currentUser?.email }}
     </DescriptionsItem>
     <DescriptionsItem label="手机号">
-      {{ currentUser?.phoneNumber }}
+      {{ props.currentUser?.phoneNumber }}
     </DescriptionsItem>
     <DescriptionsItem label="角色">
       <Tag
-        v-for="role in currentUser?.roleList"
+        v-for="role in props.currentUser?.roleList"
         :key="role.id"
         :bordered="false"
       >

@@ -1,21 +1,16 @@
 <script setup lang="ts">
+import type { SessionUser } from '@vben/types';
 import type { FormInstance } from 'ant-design-vue';
 import type { Rule } from 'ant-design-vue/es/form';
-
-import type { FileInfo } from '#/api/file/model/fileInfoModel';
 
 import { reactive, ref } from 'vue';
 
 import { Card, DatePicker, Form, FormItem, Input, Space } from 'ant-design-vue';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
 import { ButtonReset, ButtonSave } from '#/components/button';
-import {
-  DictCascader,
-  DictCheckbox,
-  DictRadio,
-  DictSelect,
-} from '#/components/dict';
+import { Cropper } from '#/components/cropper';
+import { DictRadio } from '#/components/dict';
 
 interface FormState {
   // 用户名
@@ -27,17 +22,21 @@ interface FormState {
   // 生日
   birthday?: Dayjs;
   // 头像
-  avatar?: FileInfo;
+  avatar?: string;
 }
+
+const props = defineProps<{ currentUser: SessionUser }>();
 
 const formRef = ref<FormInstance>();
 
 const formState = reactive<FormState>({
-  username: '',
-  nickname: '',
-  sex: '',
-  birthday: undefined,
-  avatar: undefined,
+  username: props.currentUser.username,
+  nickname: props.currentUser.nickname,
+  sex: props.currentUser.sex,
+  birthday: props.currentUser.birthday
+    ? dayjs(props.currentUser.birthday)
+    : undefined,
+  avatar: props.currentUser.avatar,
 });
 
 const rules: Record<string, Rule[]> = {
@@ -49,9 +48,6 @@ const layout = {
   labelCol: { span: 4 },
   wrapperCol: { span: 14 },
 };
-
-const sex = ref<string[]>([]);
-const levelSample = ref<string[]>([]);
 
 const handleFinish = (values: FormState) => {
   console.log(values, formState);
@@ -79,10 +75,9 @@ const resetForm = () => {
           <Input v-model:value="formState.nickname" />
         </FormItem>
         <FormItem has-feedback label="头像" name="avatar">
-          todo: avatar
+          <Cropper :url="formState.avatar!" alt="头像" />
         </FormItem>
         <FormItem has-feedback label="性别" name="sex">
-          formState.sex: {{ formState.sex }}
           <DictRadio v-model:value="formState.sex" dict-type="sex" />
         </FormItem>
         <FormItem has-feedback label="生日" name="birthday">
@@ -96,12 +91,6 @@ const resetForm = () => {
           </Space>
         </FormItem>
       </Form>
-      sex: {{ sex }}
-      <DictCheckbox v-model:value="sex" dict-type="sex" />
-      <DictSelect v-model:value="formState.sex" dict-type="sex" />
-      <DictSelect v-model:value="sex" dict-type="sex" mode="multiple" />
-      <DictSelect v-model:value="sex" dict-type="sex" mode="tags" />
-      <DictCascader v-model:value="levelSample" dict-type="levelSample" />
     </div>
   </Card>
 </template>
