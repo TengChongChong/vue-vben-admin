@@ -44,6 +44,11 @@
       "types": "./src/cache/index.ts",
       "development": "./src/cache/index.ts",
       "default": "./dist/cache/index.mjs"
+    },
+    "./store": {
+      "types": "./src/store.ts",
+      "development": "./src/store.ts",
+      "default": "./dist/store.mjs"
     }
   },
   "publishConfig": {
@@ -56,19 +61,17 @@
   },
   "dependencies": {
     "@ctrl/tinycolor": "^4.1.0",
+    "@tanstack/vue-store": "^0.5.5",
     "@vue/shared": "^3.4.38",
     "clsx": "^2.1.1",
-    "crypto-js": "^4.2.0",
     "defu": "^6.1.4",
-    "lodash-es": "^4.17.21",
+    "lodash.clonedeep": "^4.5.0",
     "nprogress": "^0.2.0",
-    "tailwind-merge": "^2.4.0",
+    "tailwind-merge": "^2.5.2",
     "theme-colors": "^0.1.0"
   },
   "devDependencies": {
-    "@types/crypto-js": "^4.2.0",
     "@types/lodash.clonedeep": "^4.5.9",
-    "@types/nprogress": "^0.2.3",
-    "@types/lodash-es": "^4.17.12"
+    "@types/nprogress": "^0.2.3"
   }
 }
