@@ -11,4 +11,10 @@ type TabOption = BasicOption;
 
 type BasicUserInfo = SessionUser;
 
-export type { BasicOption, BasicUserInfo, SelectOption, TabOption };
+export type {
+  BasicOption,
+  BasicUserInfo,
+  SelectOption,
+  SessionUser,
+  TabOption,
+};
