@@ -6,6 +6,7 @@ export * from './inference';
 export * from './letter';
 export * from './merge';
 export * from './nprogress';
+export * from './to';
 export * from './tree';
 export * from './treeHelper';
 export * from './unique';

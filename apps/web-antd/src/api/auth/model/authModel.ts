@@ -29,3 +29,25 @@ export interface LoginSmsParams {
   // 服务端二次验证验证码
   captchaVerification?: string;
 }
+
+export interface LoginResult {
+  /**
+   * accessToken
+   */
+  accessToken: string;
+
+  /**
+   * accessToken 有效期，单位：秒
+   */
+  accessTokenExpiresIn: number;
+
+  /**
+   * refreshToken
+   */
+  refreshToken: string;
+
+  /**
+   * refreshToken 有效期，单位：秒
+   */
+  refreshTokenExpiresIn: number;
+}

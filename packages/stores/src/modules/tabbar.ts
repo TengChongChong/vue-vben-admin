@@ -47,7 +47,7 @@ export const useTabbarStore = defineStore('core-tabbar', {
         return !paths.includes(getTabPath(item));
       });
 
-      this.updateCacheTab();
+      this.updateCacheTabs();
     },
     /**
      * @zh_CN 关闭标签页
@@ -129,7 +129,7 @@ export const useTabbarStore = defineStore('core-tabbar', {
         }
         this.tabs.splice(tabIndex, 1, mergedTab);
       }
-      this.updateCacheTab();
+      this.updateCacheTabs();
     },
     /**
      * @zh_CN 关闭所有标签页
@@ -137,7 +137,7 @@ export const useTabbarStore = defineStore('core-tabbar', {
     async closeAllTabs(router: Router) {
       this.tabs = this.tabs.filter((tab) => isAffixTab(tab));
       await this._goToDefaultTab(router);
-      this.updateCacheTab();
+      this.updateCacheTabs();
     },
     /**
      * @zh_CN 关闭左侧标签页
@@ -217,7 +217,7 @@ export const useTabbarStore = defineStore('core-tabbar', {
       // 关闭不是激活选项卡
       if (getTabPath(currentRoute.value) !== getTabPath(tab)) {
         this._close(tab);
-        this.updateCacheTab();
+        this.updateCacheTabs();
         return;
       }
       const index = this.getTabs.findIndex(
@@ -322,7 +322,7 @@ export const useTabbarStore = defineStore('core-tabbar', {
       );
       if (findTab) {
         findTab.meta.newTabTitle = undefined;
-        await this.updateCacheTab();
+        await this.updateCacheTabs();
       }
     },
 
@@ -350,7 +350,7 @@ export const useTabbarStore = defineStore('core-tabbar', {
       if (findTab) {
         findTab.meta.newTabTitle = title;
 
-        await this.updateCacheTab();
+        await this.updateCacheTabs();
       }
     },
 
@@ -400,7 +400,7 @@ export const useTabbarStore = defineStore('core-tabbar', {
     /**
      * 根据当前打开的选项卡更新缓存
      */
-    async updateCacheTab() {
+    async updateCacheTabs() {
       const cacheMap = new Set<string>();
 
       for (const tab of this.tabs) {
@@ -409,7 +409,7 @@ export const useTabbarStore = defineStore('core-tabbar', {
         if (!keepAlive) {
           continue;
         }
-        tab.matched.forEach((t, i) => {
+        (tab.matched || []).forEach((t, i) => {
           if (i > 0) {
             cacheMap.add(t.name as string);
           }

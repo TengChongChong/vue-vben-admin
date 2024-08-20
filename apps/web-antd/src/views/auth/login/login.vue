@@ -14,7 +14,7 @@ const authStore = useAuthStore();
  * 用户登录 - 用户名+密码
  */
 function handleLoginAccount(loginParams: LoginAndRegisterParams) {
-  authStore.loginAccount({
+  authStore.authLoginAccount({
     ...loginParams,
     rememberMe: false,
     captchaVerification: '',

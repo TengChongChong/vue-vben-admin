@@ -1,6 +1,6 @@
 {
   "name": "@vben-core/shared",
-  "version": "5.1.0",
+  "version": "5.1.1",
   "homepage": "https://github.com/vbenjs/vue-vben-admin",
   "bugs": "https://github.com/vbenjs/vue-vben-admin/issues",
   "repository": {
@@ -64,14 +64,18 @@
     "@tanstack/vue-store": "^0.5.5",
     "@vue/shared": "^3.4.38",
     "clsx": "^2.1.1",
+    "crypto-js": "^4.2.0",
     "defu": "^6.1.4",
     "lodash.clonedeep": "^4.5.0",
     "nprogress": "^0.2.0",
     "tailwind-merge": "^2.5.2",
-    "theme-colors": "^0.1.0"
+    "theme-colors": "^0.1.0",
+    "lodash-es": "^4.17.21"
   },
   "devDependencies": {
+    "@types/crypto-js": "^4.2.0",
     "@types/lodash.clonedeep": "^4.5.9",
+    "@types/lodash-es": "^4.17.12",
     "@types/nprogress": "^0.2.3"
   }
 }

@@ -3,6 +3,7 @@ import type { RouteRecordStringComponent, UserInfo } from '@vben/types';
 import type {
   LoginAccountParams,
   LoginQrCodeParams,
+  LoginResult,
   LoginSmsParams,
 } from '#/api/auth/model/authModel.ts';
 
@@ -12,30 +13,30 @@ import { requestClient } from '#/api/request';
  * 用户登录 - 用户名+密码
  *
  * @param loginParams login 参数
- * @return token
+ * @return LoginResult
  */
 export async function loginAccountApi(loginParams: LoginAccountParams) {
-  return requestClient.post<string>('/login/account', loginParams);
+  return requestClient.post<LoginResult>('/login/account', loginParams);
 }
 
 /**
  * 用户登录 - 扫码
  *
  * @param loginParams login 参数
- * @return token
+ * @return LoginResult
  */
 export async function loginQrCodeApi(loginParams: LoginQrCodeParams) {
-  return requestClient.post<string>('/login/qr/code', loginParams);
+  return requestClient.post<LoginResult>('/login/qr/code', loginParams);
 }
 
 /**
  * 用户登录 - 手机号+短信验证码
  *
  * @param loginParams login 参数
- * @return token
+ * @return LoginResult
  */
 export async function loginSmsApi(loginParams: LoginSmsParams) {
-  return requestClient.post<string>('/login/sms', loginParams);
+  return requestClient.post<LoginResult>('/login/sms', loginParams);
 }
 
 /**
