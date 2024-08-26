@@ -27,7 +27,7 @@ function useContentStyle() {
       position: 'fixed',
       top: `${top}px`,
       width: `${width}px`,
-      zIndex: 1000,
+      zIndex: 150,
     };
   });
 
