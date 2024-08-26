@@ -4,7 +4,7 @@ import type { DictTagProps } from '#/components/dict/src/prop';
 
 import { computed } from 'vue';
 
-import { isArray, isNumber, isString } from '@vben/utils';
+import { isNumber, isString } from '@vben/utils';
 
 import { Tag } from 'ant-design-vue';
 
@@ -43,7 +43,7 @@ function convertDictCode() {
     dictCodeArray = props.code.includes(',')
       ? props.code.split(',')
       : [props.code];
-  } else if (isArray(props.code)) {
+  } else if (Array.isArray(props.code)) {
     props.code.forEach((item) => {
       dictCodeArray.push(isString(item) ? item : item.toString());
     });
