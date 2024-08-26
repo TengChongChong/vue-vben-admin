@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { ref, unref, watch } from 'vue';
 
-import { Layers, LockKeyhole, ShieldCheck, UserRound } from '@vben/icons';
-
 import { Menu, MenuItem } from 'ant-design-vue';
+
+import {
+  Layers,
+  LockKeyhole,
+  ShieldCheck,
+  UserRound,
+} from '#/components/icons';
 
 const prop = defineProps({
   selectedKeys: {

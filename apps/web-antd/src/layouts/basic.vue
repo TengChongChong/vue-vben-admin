@@ -2,10 +2,10 @@
 import type { NotificationItem } from '@vben/layouts';
 
 import { computed, onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 import { AuthenticationLoginExpiredModal } from '@vben/common-ui';
 import { VBEN_DOC_URL, VBEN_GITHUB_URL } from '@vben/constants';
-import { BookOpenText, CircleHelp, MdiGithub } from '@vben/icons';
 import {
   BasicLayout,
   LockScreen,
@@ -16,6 +16,12 @@ import { preferences } from '@vben/preferences';
 import { storeToRefs, useAccessStore, useUserStore } from '@vben/stores';
 import { openWindow } from '@vben/utils';
 
+import {
+  BookOpenText,
+  CircleHelp,
+  MdiGithub,
+  UserRound,
+} from '#/components/icons';
 import { $t } from '#/locales';
 import { useAuthStore, useDictStore } from '#/store';
 
@@ -58,6 +64,8 @@ const showDot = computed(() =>
   notifications.value.some((item) => !item.isRead),
 );
 
+const router = useRouter();
+
 onMounted(() => {
   dictStore.initDict(true);
 });
@@ -90,6 +98,13 @@ const menus = computed(() => [
     icon: CircleHelp,
     text: $t('widgets.qa'),
   },
+  {
+    handler: () => {
+      router.push('/auth/personal/index');
+    },
+    icon: UserRound,
+    text: '个人中心',
+  },
 ]);
 
 const { loginLoading } = storeToRefs(authStore);
@@ -117,7 +132,7 @@ function handleMakeAll() {
       <UserDropdown
         :avatar
         :description="userStore.userInfo?.dept?.name"
-        :menus
+        :menus="menus"
         :text="userStore.userInfo?.nickname"
         @logout="handleLogout"
       />
