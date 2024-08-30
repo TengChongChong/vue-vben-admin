@@ -181,7 +181,7 @@ if (enableShortcutKey.value) {
             class="text-foreground mb-1 flex items-center text-sm font-medium"
           >
             {{ text }}
-            <Badge class="ml-2 text-green-400">
+            <Badge v-if="tagText" class="ml-2 text-green-400">
               {{ tagText }}
             </Badge>
           </div>
