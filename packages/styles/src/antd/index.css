@@ -12,6 +12,31 @@
   vertical-align: unset;
 }
 
+/* 修复 iconify 位置问题 */
+.ant-btn > .iconify + span,
+.ant-btn > span + .iconify,
+.ant-btn > .lucide + span,
+.ant-btn > span + .lucide {
+  margin-inline-start: 8px;
+}
+
+.ant-btn .iconify,
+.ant-btn .lucide {
+  display: inline-flex;
+  align-items: center;
+  width: 1em;
+  height: 1em;
+  font-style: normal;
+  line-height: 0;
+  color: inherit;
+  text-align: center;
+  text-transform: none;
+  vertical-align: -0.125em;
+  text-rendering: optimizelegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 .ant-message-notice-content,
 .ant-notification-notice {
   @apply dark:border-border/60 dark:border;
