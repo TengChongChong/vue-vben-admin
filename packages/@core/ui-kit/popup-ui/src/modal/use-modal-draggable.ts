@@ -3,7 +3,7 @@
  * 调整部分细节
  */
 
-import { onBeforeUnmount, onMounted, ref, watchEffect } from 'vue';
+import { onBeforeUnmount, onMounted, reactive, ref, watchEffect } from 'vue';
 import type { ComputedRef, Ref } from 'vue';
 
 import { unrefElement } from '@vueuse/core';
@@ -13,16 +13,13 @@ export function useModalDraggable(
   dragRef: Ref<HTMLElement | undefined>,
   draggable: ComputedRef<boolean>,
 ) {
-  let transform = {
+  const transform = reactive({
     offsetX: 0,
     offsetY: 0,
-  };
+  });
 
   const dragging = ref(false);
 
-  // let isFirstDrag = true;
-  // let initialX = 0;
-  // let initialY = 0;
   const onMousedown = (e: MouseEvent) => {
     const downX = e.clientX;
     const downY = e.clientY;
@@ -30,12 +27,6 @@ export function useModalDraggable(
     if (!targetRef.value) {
       return;
     }
-
-    // if (isFirstDrag) {
-    //   const { x, y } = getInitialTransform(targetRef.value);
-    //   initialX = x;
-    //   initialY = y;
-    // }
 
     const targetRect = targetRef.value.getBoundingClientRect();
 
@@ -56,17 +47,12 @@ export function useModalDraggable(
     const onMousemove = (e: MouseEvent) => {
       let moveX = offsetX + e.clientX - downX;
       let moveY = offsetY + e.clientY - downY;
-      // const x = isFirstDrag ? initialX : 0;
-      // const y = isFirstDrag ? initialY : 0;
-      moveX = Math.min(Math.max(moveX, minLeft), maxLeft);
-      // + x;
-      moveY = Math.min(Math.max(moveY, minTop), maxTop);
-      //  + y;
 
-      transform = {
-        offsetX: moveX,
-        offsetY: moveY,
-      };
+      moveX = Math.min(Math.max(moveX, minLeft), maxLeft);
+      moveY = Math.min(Math.max(moveY, minTop), maxTop);
+
+      transform.offsetX = moveX;
+      transform.offsetY = moveY;
 
       if (targetRef.value) {
         targetRef.value.style.transform = `translate(${moveX}px, ${moveY}px)`;
@@ -75,7 +61,6 @@ export function useModalDraggable(
     };
 
     const onMouseup = () => {
-      // isFirstDrag = false;
       dragging.value = false;
       document.removeEventListener('mousemove', onMousemove);
       document.removeEventListener('mouseup', onMouseup);
@@ -100,10 +85,9 @@ export function useModalDraggable(
   };
 
   const resetPosition = () => {
-    transform = {
-      offsetX: 0,
-      offsetY: 0,
-    };
+    transform.offsetX = 0;
+    transform.offsetY = 0;
+
     const target = unrefElement(targetRef);
     if (target) {
       target.style.transform = 'none';
@@ -127,22 +111,6 @@ export function useModalDraggable(
   return {
     dragging,
     resetPosition,
+    transform,
   };
 }
-
-// function getInitialTransform(target: HTMLElement) {
-//   let x = 0;
-//   let y = 0;
-//   const transformValue = window.getComputedStyle(target)?.transform;
-//   if (transformValue) {
-//     const match = transformValue.match(/matrix\(([^)]+)\)/);
-//     if (match) {
-//       const values = match[1]?.split(', ') ?? [];
-//       // 获取 translateX 值
-//       x = Number.parseFloat(`${values[4]}`);
-//       // 获取 translateY 值
-//       y = Number.parseFloat(`${values[5]}`);
-//     }
-//   }
-//   return { x, y };
-// }

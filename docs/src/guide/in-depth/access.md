@@ -11,7 +11,7 @@ outline: deep
 
 ## 前端访问控制
 
-**实现原理**: 在前端固定写死路由的权限，指定路由有哪些权限可以查看。只初始化通用的路由，需要权限才能访问的路由没有被加入路由表内。在登陆后或者其他方式获取用户角色后，通过角色去遍历路由表，获取该角色可以访问的路由表，生成路由表，再通过 `router.addRoutes` 添加到路由实例，实现权限的过滤。
+**实现原理**: 在前端固定写死路由的权限，指定路由有哪些权限可以查看。只初始化通用的路由，需要权限才能访问的路由没有被加入路由表内。在登陆后或者其他方式获取用户角色后，通过角色去遍历路由表，获取该角色可以访问的路由表，生成路由表，再通过 `router.addRoute` 添加到路由实例，实现权限的过滤。
 
 **缺点**: 权限相对不自由，如果后台改动角色，前台也需要跟着改动。适合角色较固定的系统
 
@@ -71,7 +71,7 @@ authStore.setUserInfo(userInfo);
 
 ## 后端访问控制
 
-**实现原理**: 是通过接口动态生成路由表，且遵循一定的数据结构返回。前端根据需要处理该数据为可识别的结构，再通过 router.addRoutes 添加到路由实例，实现权限的动态生成。
+**实现原理**: 是通过接口动态生成路由表，且遵循一定的数据结构返回。前端根据需要处理该数据为可识别的结构，再通过 `router.addRoute` 添加到路由实例，实现权限的动态生成。
 
 **缺点**: 后端需要提供符合规范的数据结构，前端需要处理数据结构，适合权限较为复杂的系统。
 
@@ -229,10 +229,12 @@ const { hasAccessByCodes } = useAccess();
 
 #### 指令方式
 
+> 指令支持绑定单个或多个权限码。单个时可以直接传入字符串或数组中包含一个权限码，多个权限码则传入数组。
+
 ```vue
 <template>
-  <Button class="mr-4" v-access:code="['AC_100100']">
-    Super 账号可见 ["AC_1000001"]
+  <Button class="mr-4" v-access:code="'AC_100100'">
+    Super 账号可见 'AC_100100'
   </Button>
   <Button class="mr-4" v-access:code="['AC_100030']">
     Admin 账号可见 ["AC_100010"]
@@ -294,8 +296,11 @@ const { hasAccessByRoles } = useAccess();
 
 #### 指令方式
 
+> 指令支持绑定单个或多个权限码。单个时可以直接传入字符串或数组中包含一个权限码，多个权限码则传入数组。
+
 ```vue
 <template>
+  <Button class="mr-4" v-access:role="'super'"> Super 角色可见 </Button>
   <Button class="mr-4" v-access:role="['super']"> Super 角色可见 </Button>
   <Button class="mr-4" v-access:role="['admin']"> Admin 角色可见 </Button>
   <Button class="mr-4" v-access:role="['user']"> User 角色可见 </Button>

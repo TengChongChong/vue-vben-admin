@@ -13,7 +13,8 @@ export const en = defineConfig({
       prev: 'Previous Page',
     },
     editLink: {
-      pattern: 'https://github.com/vuejs/vitepress/edit/main/docs/:path',
+      pattern:
+        'https://github.com/vbenjs/vue-vben-admin/edit/main/docs/src/:path',
       text: 'Edit this page on GitHub',
     },
     footer: {
@@ -203,7 +204,7 @@ function nav(): DefaultTheme.NavItem[] {
     },
     {
       link: '/commercial/technical-support',
-      text: '🦄 Technical Support',
+      text: '🦄 Tech Support',
     },
     {
       link: '/sponsor/personal',

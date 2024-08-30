@@ -1,6 +1,6 @@
 {
   "name": "@vben-core/shadcn-ui",
-  "version": "5.1.2",
+  "version": "5.2.0",
   "homepage": "https://github.com/vbenjs/vue-vben-admin",
   "bugs": "https://github.com/vbenjs/vue-vben-admin/issues",
   "repository": {
@@ -46,10 +46,10 @@
     "@vben-core/icons": "workspace:*",
     "@vben-core/shared": "workspace:*",
     "@vben-core/typings": "workspace:*",
-    "@vueuse/core": "^11.0.1",
+    "@vueuse/core": "^11.0.3",
     "class-variance-authority": "^0.7.0",
-    "lucide-vue-next": "^0.435.0",
-    "radix-vue": "^1.9.4",
+    "lucide-vue-next": "^0.436.0",
+    "radix-vue": "^1.9.5",
     "vue": "^3.4.38"
   }
 }

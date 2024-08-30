@@ -11,7 +11,7 @@ The framework has built-in two types of access control methods:
 
 ## Frontend Access Control
 
-**Implementation Principle**: The permissions for routes are hardcoded on the frontend, specifying which permissions are required to view certain routes. Only general routes are initialized, and routes that require permissions are not added to the route table. After logging in or obtaining user roles through other means, the roles are used to traverse the route table to generate a route table that the role can access. This table is then added to the router instance using `router.addRoutes`, achieving permission filtering.
+**Implementation Principle**: The permissions for routes are hardcoded on the frontend, specifying which permissions are required to view certain routes. Only general routes are initialized, and routes that require permissions are not added to the route table. After logging in or obtaining user roles through other means, the roles are used to traverse the route table to generate a route table that the role can access. This table is then added to the router instance using `router.addRoute`, achieving permission filtering.
 
 **Disadvantage**: The permissions are relatively inflexible; if the backend changes roles, the frontend needs to be adjusted accordingly. This is suitable for systems with relatively fixed roles.
 
@@ -71,7 +71,7 @@ Sometimes, we need the menu to be visible but access to it forbidden. This can b
 
 ## Backend Access Control
 
-**Implementation Principle**: It is achieved by dynamically generating a routing table through an API, which returns data following a certain structure. The frontend processes this data into a recognizable structure, then adds it to the routing instance using `router.addRoutes`, realizing the dynamic generation of permissions.
+**Implementation Principle**: It is achieved by dynamically generating a routing table through an API, which returns data following a certain structure. The frontend processes this data into a recognizable structure, then adds it to the routing instance using `router.addRoute`, realizing the dynamic generation of permissions.
 
 **Disadvantage**: The backend needs to provide a data structure that meets the standards, and the frontend needs to process this structure. This is suitable for systems with more complex permissions.
 
@@ -231,10 +231,12 @@ const { hasAccessByCodes } = useAccess();
 
 #### Directive Method
 
+> The directive supports binding single or multiple permission codes. For a single one, you can pass a string or an array containing one permission code, and for multiple permission codes, you can pass an array.
+
 ```vue
 <template>
-  <Button class="mr-4" v-access:code="['AC_100100']">
-    Visible to Super account ["AC_1000001"]
+  <Button class="mr-4" v-access:code="'AC_100100'">
+    Visible to Super account 'AC_100100'
   </Button>
   <Button class="mr-4" v-access:code="['AC_100030']">
     Visible to Admin account ["AC_100010"]
@@ -296,9 +298,11 @@ const { hasAccessByRoles } = useAccess();
 
 #### Directive Method
 
+> The directive supports binding single or multiple permission codes. For a single one, you can pass a string or an array containing one permission code, and for multiple permission codes, you can pass an array.
+
 ```vue
 <template>
-  <Button class="mr-4" v-access:role="['super']">
+  <Button class="mr-4" v-access:role="'super'">
     Visible to Super account
   </Button>
   <Button class="mr-4" v-access:role="['admin']">

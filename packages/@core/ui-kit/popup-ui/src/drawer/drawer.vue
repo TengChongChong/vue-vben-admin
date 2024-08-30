@@ -1,7 +1,13 @@
 <script lang="ts" setup>
 import type { DrawerProps, ExtendedDrawerApi } from './drawer';
 
-import { useIsMobile, usePriorityValue } from '@vben-core/composables';
+import { ref, watch } from 'vue';
+
+import {
+  useIsMobile,
+  usePriorityValue,
+  useSimpleLocale,
+} from '@vben-core/composables';
 import { Info, X } from '@vben-core/icons';
 import {
   Sheet,
@@ -31,6 +37,8 @@ const props = withDefaults(defineProps<Props>(), {
   drawerApi: undefined,
 });
 
+const wrapperRef = ref<HTMLElement>();
+const { $t } = useSimpleLocale();
 const { isMobile } = useIsMobile();
 const state = props.drawerApi?.useStore?.();
 
@@ -46,6 +54,18 @@ const cancelText = usePriorityValue('cancelText', props, state);
 const confirmText = usePriorityValue('confirmText', props, state);
 const closeOnClickModal = usePriorityValue('closeOnClickModal', props, state);
 const closeOnPressEscape = usePriorityValue('closeOnPressEscape', props, state);
+
+watch(
+  () => showLoading.value,
+  (v) => {
+    if (v && wrapperRef.value) {
+      wrapperRef.value.scrollTo({
+        // behavior: 'smooth',
+        top: 0,
+      });
+    }
+  },
+);
 
 function interactOutside(e: Event) {
   if (!closeOnClickModal.value) {
@@ -129,9 +149,10 @@ function pointerDownOutside(e: Event) {
       </SheetHeader>
 
       <div
+        ref="wrapperRef"
         :class="
-          cn('relative flex-1 p-3', contentClass, {
-            'overflow-y-auto': !showLoading,
+          cn('relative flex-1 overflow-y-auto p-3', contentClass, {
+            'overflow-hidden': showLoading,
           })
         "
       >
@@ -148,7 +169,7 @@ function pointerDownOutside(e: Event) {
         <slot name="footer">
           <VbenButton variant="ghost" @click="() => drawerApi?.onCancel()">
             <slot name="cancelText">
-              {{ cancelText }}
+              {{ cancelText || $t('cancel') }}
             </slot>
           </VbenButton>
           <VbenButton
@@ -156,7 +177,7 @@ function pointerDownOutside(e: Event) {
             @click="() => drawerApi?.onConfirm()"
           >
             <slot name="confirmText">
-              {{ confirmText }}
+              {{ confirmText || $t('confirm') }}
             </slot>
           </VbenButton>
         </slot>

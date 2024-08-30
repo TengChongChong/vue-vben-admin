@@ -3,6 +3,7 @@ import { Page, useVbenModal } from '@vben/common-ui';
 
 import { Button, Card } from 'ant-design-vue';
 
+import DocButton from '../doc-button.vue';
 import AutoHeightDemo from './auto-height-demo.vue';
 import BaseDemo from './base-demo.vue';
 import DragDemo from './drag-demo.vue';
@@ -10,7 +11,7 @@ import DynamicDemo from './dynamic-demo.vue';
 import SharedDataDemo from './shared-data-demo.vue';
 
 const [BaseModal, baseModalApi] = useVbenModal({
-  // 链接抽离的组件
+  // 连接抽离的组件
   connectedComponent: BaseDemo,
 });
 
@@ -38,7 +39,7 @@ function openAutoHeightModal() {
   autoHeightModalApi.open();
 }
 
-function openDargModal() {
+function openDragModal() {
   dragModalApi.open();
 }
 
@@ -62,9 +63,12 @@ function handleUpdateTitle() {
 
 <template>
   <Page
-    description="弹窗组件常用于在不离开当前页面的情况下，显示额外的信息、表单或操作提示。"
+    description="弹窗组件常用于在不离开当前页面的情况下，显示额外的信息、表单或操作提示，更多api请查看组件文档。"
     title="弹窗组件示例"
   >
+    <template #extra>
+      <DocButton path="/components/common-ui/vben-modal" />
+    </template>
     <BaseModal />
     <AutoHeightModal />
     <DragModal />
@@ -83,7 +87,7 @@ function handleUpdateTitle() {
 
     <Card class="mb-4" title="可拖拽示例">
       <p class="mb-3">配置 draggable 可开启拖拽功能</p>
-      <Button type="primary" @click="openDargModal">打开弹窗</Button>
+      <Button type="primary" @click="openDragModal">打开弹窗</Button>
     </Card>
 
     <Card class="mb-4" title="动态配置示例">
