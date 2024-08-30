@@ -69,13 +69,11 @@
     "lodash.clonedeep": "^4.5.0",
     "nprogress": "^0.2.0",
     "tailwind-merge": "^2.5.2",
-    "theme-colors": "^0.1.0",
-    "lodash-es": "^4.17.21"
+    "theme-colors": "^0.1.0"
   },
   "devDependencies": {
     "@types/crypto-js": "^4.2.0",
     "@types/lodash.clonedeep": "^4.5.9",
-    "@types/lodash-es": "^4.17.12",
     "@types/nprogress": "^0.2.3"
   }
 }
