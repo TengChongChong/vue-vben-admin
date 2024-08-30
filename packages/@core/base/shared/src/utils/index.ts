@@ -12,4 +12,4 @@ export * from './treeHelper';
 export * from './unique';
 export * from './update-css-variables';
 export * from './window';
-export { cloneDeep } from 'lodash-es';
+export { default as cloneDeep } from 'lodash.clonedeep';
