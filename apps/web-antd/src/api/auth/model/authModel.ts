@@ -30,6 +30,9 @@ export interface LoginSmsParams {
   captchaVerification?: string;
 }
 
+/**
+ * 登录响应信息
+ */
 export interface LoginResult {
   /**
    * accessToken

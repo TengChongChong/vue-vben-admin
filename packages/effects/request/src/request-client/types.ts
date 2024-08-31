@@ -47,11 +47,48 @@ interface HttpResponse<T = any> {
   host?: string;
 }
 
+// multipart/form-data: upload file
+interface UploadFileParams {
+  // Other parameters
+  data?: any;
+  // File parameter interface field name
+  name?: string;
+  // file name
+  file: Blob | File;
+  // file name
+  filename?: string;
+  [key: string]: any;
+}
+
+/**
+ * 上传文件响应对象
+ */
+interface FileUploadResponse {
+  // 显示名称
+  displayName: string;
+  // 文件名称
+  name: string;
+  // 根目录（local - 文件夹名称 / oss - bucket名称）
+  bucketName: string;
+  // local - 文件路径 /  oss - objectName
+  objectName: string;
+  // url
+  url: string;
+  // 大小
+  size: number;
+  // 后缀
+  suffix: string;
+  // 内容类型
+  contentType: string;
+}
+
 export type {
+  FileUploadResponse,
   HttpResponse,
   MakeErrorMessageFn,
   RequestClientOptions,
   RequestContentType,
   RequestInterceptorConfig,
   ResponseInterceptorConfig,
+  UploadFileParams,
 };
