@@ -11,7 +11,7 @@ export interface DictTagProps extends BaseDictProps {
   code: Array<number> | Array<string> | number | string;
   // 使用tag样式
   useTag?: boolean;
-  // 当有多个字典时，字典与字典直接的分隔符
+  // 当有多个字典时，字典与字典之间的分隔符
   separator?: string;
 }
 
