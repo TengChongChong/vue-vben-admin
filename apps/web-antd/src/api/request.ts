@@ -8,6 +8,7 @@ import {
   authenticateResponseInterceptor,
   errorMessageResponseInterceptor,
   RequestClient,
+  type ResponseInterceptorConfig,
 } from '@vben/request';
 import { useAccessStore } from '@vben/stores';
 
@@ -57,6 +58,32 @@ function createRequestClient(baseURL: string) {
     return token ? `${token}` : null;
   }
 
+  /**
+   * 通用的错误处理
+   */
+  const easyVbenErrorMessageResponseInterceptor =
+    (): ResponseInterceptorConfig => {
+      return {
+        rejected: (error: any) => {
+          // eslint-disable-next-line no-unsafe-optional-chaining
+          const { errorMessage, showType } = error?.response?.data;
+          if (errorMessage) {
+            // 如果后端有响应错误消息
+            message.open({
+              type: showType || 'error',
+              content: errorMessage,
+            });
+            return Promise.reject(error);
+          }
+
+          // 使用通用错误消息提示
+          return errorMessageResponseInterceptor((msg: string) =>
+            message.error(msg),
+          );
+        },
+      };
+    };
+
   // 请求头处理
   client.addRequestInterceptor({
     fulfilled: async (config) => {
@@ -93,9 +120,7 @@ function createRequestClient(baseURL: string) {
   );
 
   // 通用的错误处理,如果没有进入上面的错误处理逻辑，就会进入这里
-  client.addResponseInterceptor(
-    errorMessageResponseInterceptor((msg: string) => message.error(msg)),
-  );
+  client.addResponseInterceptor(easyVbenErrorMessageResponseInterceptor());
 
   return client;
 }
