@@ -43,10 +43,7 @@ const currentUser = computed(() => {
         <!-- 修改密码 -->
         <ChangePassword v-if="'change-password' === selectedKeys" />
         <!-- 用户信息 -->
-        <PersonalInformation
-          v-if="'personal-information' === selectedKeys"
-          :current-user="currentUser!"
-        />
+        <PersonalInformation v-if="'personal-information' === selectedKeys" />
       </LayoutContent>
     </Layout>
   </Page>

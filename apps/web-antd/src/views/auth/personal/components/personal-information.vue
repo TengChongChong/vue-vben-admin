@@ -1,13 +1,19 @@
 <script setup lang="ts">
-import type { SessionUser } from '@vben/types';
-import type { FormInstance } from 'ant-design-vue';
 import type { Rule } from 'ant-design-vue/es/form';
 
-import { reactive, ref } from 'vue';
+import type { SysUser } from '#/api/auth/model/sysUserModel';
+import type { FileInfo } from '#/api/file/model/fileInfoModel';
 
+import { onMounted, reactive, ref } from 'vue';
+
+import { useUserStore } from '@vben/stores';
+
+import { type FormInstance, message } from 'ant-design-vue';
 import { Card, DatePicker, Form, FormItem, Input, Space } from 'ant-design-vue';
 import dayjs, { Dayjs } from 'dayjs';
 
+import { getUserInfoApi } from '#/api/auth/auth';
+import { currentUser, saveUserInfo } from '#/api/auth/sysUserPersonal';
 import { ButtonReset, ButtonSave } from '#/components/button';
 import { Cropper } from '#/components/cropper';
 import { DictRadio } from '#/components/dict';
@@ -22,21 +28,19 @@ interface FormState {
   // 生日
   birthday?: Dayjs;
   // 头像
-  avatar?: string;
+  avatar?: FileInfo;
 }
 
-const props = defineProps<{ currentUser: SessionUser }>();
+const saveBtnLoading = ref(false);
 
 const formRef = ref<FormInstance>();
 
 const formState = reactive<FormState>({
-  username: props.currentUser.username,
-  nickname: props.currentUser.nickname,
-  sex: props.currentUser.sex,
-  birthday: props.currentUser.birthday
-    ? dayjs(props.currentUser.birthday)
-    : undefined,
-  avatar: props.currentUser.avatar,
+  username: '',
+  nickname: '',
+  sex: '',
+  birthday: undefined,
+  avatar: undefined,
 });
 
 const rules: Record<string, Rule[]> = {
@@ -49,8 +53,30 @@ const layout = {
   wrapperCol: { span: 14 },
 };
 
-const handleFinish = (values: FormState) => {
-  console.log(values, formState);
+onMounted(() => {
+  currentUser().then((data) => {
+    const { username, nickname, sex, birthday, avatar } = data;
+    formState.username = username!;
+    formState.nickname = nickname!;
+    formState.sex = sex!;
+    formState.birthday = birthday ? dayjs(birthday) : undefined;
+    formState.avatar = avatar;
+  });
+});
+
+const handleFinish = async (values: FormState) => {
+  try {
+    saveBtnLoading.value = true;
+    await saveUserInfo(values as SysUser);
+    message.success('保存成功');
+    const userStore = useUserStore();
+    const userInfo = await getUserInfoApi();
+    userStore.setUserInfo(userInfo);
+  } catch (error) {
+    console.error(error);
+  } finally {
+    saveBtnLoading.value = false;
+  }
 };
 
 const resetForm = () => {
@@ -75,7 +101,7 @@ const resetForm = () => {
           <Input v-model:value="formState.nickname" />
         </FormItem>
         <FormItem has-feedback label="头像" name="avatar">
-          <Cropper :url="formState.avatar!" alt="头像" />
+          <Cropper v-model:value="formState.avatar!" alt="头像" />
         </FormItem>
         <FormItem has-feedback label="性别" name="sex">
           <DictRadio v-model:value="formState.sex" dict-type="sex" />
@@ -86,7 +112,7 @@ const resetForm = () => {
 
         <FormItem :wrapper-col="{ span: 14, offset: 4 }">
           <Space>
-            <ButtonSave html-type="submit" />
+            <ButtonSave :loading="saveBtnLoading" html-type="submit" />
             <ButtonReset @click="resetForm" />
           </Space>
         </FormItem>
