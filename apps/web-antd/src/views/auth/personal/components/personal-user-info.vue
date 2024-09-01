@@ -16,27 +16,29 @@ const props = defineProps<{ currentUser: SessionUser }>();
 
 <template>
   <!-- 用户头像 -->
-  <Flex class="mb-8">
+  <Flex v-if="props.currentUser" class="mb-8">
     <div class="user-avatar">
       <Avatar
-        v-if="props.currentUser?.avatar"
+        v-if="props.currentUser.avatar"
         :size="100"
-        :src="props.currentUser?.avatar"
+        :src="props.currentUser.avatar"
       />
       <Avatar v-else :size="100">
-        {{ props.currentUser?.nickname.substring(0, 2) }}
+        {{ props.currentUser.nickname.substring(0, 2) }}
       </Avatar>
     </div>
     <div class="user-info p-2 pl-6">
       <div class="mb-1 text-lg font-medium">
-        {{ props.currentUser?.nickname }}
+        {{ props.currentUser.nickname }}
       </div>
       <div class="mb-1 text-gray-500">
-        {{ props.currentUser?.dept.name }}
+        {{ props.currentUser.dept.name }}
       </div>
       <div class="user-tag">
-        <DictTag :code="props.currentUser?.sex!" dict-type="sex" />
-        <Tag :bordered="false">18 岁</Tag>
+        <DictTag :code="props.currentUser.sex!" dict-type="sex" />
+        <Tag v-if="props.currentUser.age" :bordered="false">
+          {{ props.currentUser.age }} 岁
+        </Tag>
       </div>
     </div>
   </Flex>

@@ -15,13 +15,13 @@ export function currentUser() {
 /**
  * 密码修改
  *
- * @param oldPassword
- * @param password
+ * @param currentPassword 当前密码
+ * @param newPassword 新密码
  */
-export function changePassword(oldPassword: string, password: string) {
+export function changePassword(currentPassword: string, newPassword: string) {
   return requestClient.post<boolean>(`${BASE_URL}/change/password`, {
-    oldPassword,
-    password,
+    currentPassword,
+    newPassword,
   });
 }
 

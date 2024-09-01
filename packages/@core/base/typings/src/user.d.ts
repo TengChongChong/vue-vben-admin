@@ -56,6 +56,8 @@ export interface SessionUser {
   homePath: string;
   // 生日
   birthday: Date;
+  // 年龄
+  age: number;
   // 来源
   source: string;
   // 状态

@@ -39,7 +39,6 @@ export const useAuthStore = defineStore('auth', () => {
       loginLoading.value = true;
       params.password = HashingFactory.createMD5Hashing().hash(params.password);
       const { accessToken } = await loginAccountApi(params);
-
       // 如果成功获取到 accessToken
       if (accessToken) {
         accessStore.setAccessToken(accessToken);

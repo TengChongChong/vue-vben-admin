@@ -1,18 +1,24 @@
 <script setup lang="ts">
-import type { FormInstance } from 'ant-design-vue';
 import type { Rule } from 'ant-design-vue/es/form';
 
-import { reactive, ref } from 'vue';
+import { h, reactive, ref } from 'vue';
 
+import { HashingFactory } from '@vben/utils';
+
+import { type FormInstance, Modal } from 'ant-design-vue';
 import { Card, Form, FormItem, InputPassword, Space } from 'ant-design-vue';
 
+import { changePassword } from '#/api/auth/sysUserPersonal';
 import { ButtonReset, ButtonSave } from '#/components/button';
+import { useAuthStore } from '#/store';
 
 interface FormState {
   currentPassword: string;
   password: string;
   confirmPassword: string;
 }
+
+const saveBtnLoading = ref(false);
 
 const formRef = ref<FormInstance>();
 
@@ -43,8 +49,7 @@ const validatePassword = async (_rule: Rule, value: string) => {
 const validateConfirmPassword = async (_rule: Rule, value: string) => {
   if (value === '') {
     throw '请输入确认密码';
-  } else if (value === formState.password) {
-  } else {
+  } else if (value !== formState.password) {
     throw '两次输入的密码不一致';
   }
 };
@@ -64,8 +69,27 @@ const layout = {
   wrapperCol: { span: 14 },
 };
 
-const handleFinish = (values: FormState) => {
-  console.log(values, formState);
+const handleFinish = async (values: FormState) => {
+  try {
+    saveBtnLoading.value = true;
+    await changePassword(
+      HashingFactory.createMD5Hashing().hash(values.currentPassword),
+      HashingFactory.createMD5Hashing().hash(values.password),
+    );
+    Modal.success({
+      title: '密码修改成功',
+      content: h('div', {}, [h('p', '点击知道了重新登录')]),
+      onOk() {
+        const authStore = useAuthStore();
+        // 重新登录
+        authStore.logout();
+      },
+    });
+  } catch (error) {
+    console.error(error);
+  } finally {
+    saveBtnLoading.value = false;
+  }
 };
 
 const resetForm = () => {
@@ -108,7 +132,7 @@ const resetForm = () => {
         </FormItem>
         <FormItem :wrapper-col="{ span: 14, offset: 4 }">
           <Space>
-            <ButtonSave html-type="submit" />
+            <ButtonSave :loading="saveBtnLoading" html-type="submit" />
             <ButtonReset @click="resetForm" />
           </Space>
         </FormItem>

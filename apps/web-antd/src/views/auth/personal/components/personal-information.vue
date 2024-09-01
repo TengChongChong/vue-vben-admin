@@ -85,7 +85,7 @@ const resetForm = () => {
 </script>
 
 <template>
-  <Card :bordered="false" title="用户信息">
+  <Card :bordered="false" title="我的资料">
     <div class="form-wrapper">
       <Form
         ref="formRef"

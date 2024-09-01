@@ -51,7 +51,7 @@ function handleSelect() {
         <template #icon>
           <UserRound />
         </template>
-        用户信息
+        我的资料
       </MenuItem>
       <MenuItem key="account-information">
         <template #icon>
