@@ -532,8 +532,8 @@ function handleHeaderToggle() {
       >
         <slot name="content"></slot>
 
-        <template #overlay="{ overlayStyle }">
-          <slot :overlay-style="overlayStyle" name="content-overlay"></slot>
+        <template #overlay>
+          <slot name="content-overlay"></slot>
         </template>
       </LayoutContent>
 
