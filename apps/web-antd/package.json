@@ -1,6 +1,6 @@
 {
   "name": "@vben/web-antd",
-  "version": "5.2.1",
+  "version": "5.2.2",
   "homepage": "https://vben.pro",
   "bugs": "https://github.com/vbenjs/vue-vben-admin/issues",
   "repository": {
@@ -48,7 +48,7 @@
     "cropperjs": "^1.6.2",
     "dayjs": "^1.11.13",
     "pinia": "2.2.2",
-    "vue": "^3.4.38",
+    "vue": "^3.5.3",
     "vue-router": "^4.4.3"
   }
 }

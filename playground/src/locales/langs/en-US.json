@@ -67,6 +67,9 @@
       },
       "ellipsis": {
         "title": "EllipsisText"
+      },
+      "captcha": {
+        "title": "Captcha"
       }
     }
   }
