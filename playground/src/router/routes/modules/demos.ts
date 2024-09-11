@@ -161,9 +161,36 @@ const routes: RouteRecordRaw[] = [
                   import(
                     '#/views/demos/features/hide-menu-children/children.vue'
                   ),
-                meta: { title: 'HideChildrenInMenuChildrenDemo' },
+                meta: { title: $t('page.demos.features.hideChildrenInMenu') },
               },
             ],
+          },
+          {
+            name: 'FullScreenDemo',
+            path: '/demos/features/full-screen',
+            component: () =>
+              import('#/views/demos/features/full-screen/index.vue'),
+            meta: {
+              title: $t('page.demos.features.fullScreen.title'),
+            },
+          },
+          {
+            name: 'ClipboardDemo',
+            path: '/demos/features/clipboard',
+            component: () =>
+              import('#/views/demos/features/clipboard/index.vue'),
+            meta: {
+              title: $t('page.demos.features.clipboard'),
+            },
+          },
+          {
+            name: 'VueQueryDemo',
+            path: '/demos/features/vue-query',
+            component: () =>
+              import('#/views/demos/features/vue-query/index.vue'),
+            meta: {
+              title: 'Tanstack Query',
+            },
           },
         ],
       },

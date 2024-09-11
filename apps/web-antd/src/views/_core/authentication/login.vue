@@ -1,14 +1,89 @@
 <script lang="ts" setup>
-import {
+import type {
   AuthenticationLogin,
   type LoginAndRegisterParams,
+  VbenFormSchema,
+  z,
 } from '@vben/common-ui';
+import type { BasicOption } from '@vben/types';
+
+import { computed } from 'vue';
+
+import { $t } from '@vben/locales';
 
 import { useAuthStore } from '#/store';
 
 defineOptions({ name: 'Login' });
 
 const authStore = useAuthStore();
+
+const MOCK_USER_OPTIONS: BasicOption[] = [
+  {
+    label: '超级管理员',
+    value: 'vben',
+  },
+  {
+    label: '管理员',
+    value: 'admin',
+  },
+  {
+    label: '用户',
+    value: 'jack',
+  },
+];
+
+const formSchema = computed((): VbenFormSchema[] => {
+  return [
+    {
+      component: 'VbenSelect',
+      componentProps: {
+        options: MOCK_USER_OPTIONS,
+        placeholder: $t('authentication.selectAccount'),
+      },
+      fieldName: 'selectAccount',
+      label: $t('authentication.selectAccount'),
+      rules: z
+        .string()
+        .min(1, { message: $t('authentication.selectAccount') })
+        .optional()
+        .default('vben'),
+    },
+    {
+      component: 'VbenInput',
+      componentProps: {
+        placeholder: $t('authentication.usernameTip'),
+      },
+      dependencies: {
+        trigger(values, form) {
+          if (values.selectAccount) {
+            const findUser = MOCK_USER_OPTIONS.find(
+              (item) => item.value === values.selectAccount,
+            );
+            if (findUser) {
+              form.setValues({
+                password: '123456',
+                username: findUser.value,
+              });
+            }
+          }
+        },
+        triggerFields: ['selectAccount'],
+      },
+      fieldName: 'username',
+      label: $t('authentication.username'),
+      rules: z.string().min(1, { message: $t('authentication.usernameTip') }),
+    },
+    {
+      component: 'VbenInputPassword',
+      componentProps: {
+        placeholder: $t('authentication.password'),
+      },
+      fieldName: 'password',
+      label: $t('authentication.password'),
+      rules: z.string().min(1, { message: $t('authentication.passwordTip') }),
+    },
+  ];
+});
 
 /**
  * 用户登录 - 用户名+密码
@@ -24,9 +99,8 @@ function handleLoginAccount(loginParams: LoginAndRegisterParams) {
 
 <template>
   <AuthenticationLogin
+    :form-schema="formSchema"
     :loading="authStore.loginLoading"
-    password-placeholder="请输入密码"
-    username-placeholder="请输入用户名"
     @submit="handleLoginAccount"
   />
 </template>
