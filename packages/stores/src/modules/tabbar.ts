@@ -448,7 +448,7 @@ export const useTabbarStore = defineStore('core-tabbar', {
   persist: [
     // tabs不需要保存在localStorage
     {
-      paths: ['tabs'],
+      pick: ['tabs'],
       storage: sessionStorage,
     },
   ],

@@ -1,13 +1,20 @@
 <script lang="ts" setup>
 import { useVbenModal } from '@vben/common-ui';
 
+import { message } from 'ant-design-vue';
+
 import { useVbenForm } from '#/adapter';
 
 defineOptions({
   name: 'FormModelDemo',
 });
 
+function onSubmit(values: Record<string, any>) {
+  message.info(JSON.stringify(values)); // 只会执行一次
+}
+
 const [Form, formApi] = useVbenForm({
+  handleSubmit: onSubmit,
   schema: [
     {
       component: 'Input',
@@ -25,6 +32,19 @@ const [Form, formApi] = useVbenForm({
       },
       fieldName: 'field2',
       label: '字段2',
+      rules: 'required',
+    },
+    {
+      component: 'Select',
+      componentProps: {
+        options: [
+          { label: '选项1', value: '1' },
+          { label: '选项2', value: '2' },
+        ],
+        placeholder: '请输入',
+      },
+      fieldName: 'field3',
+      label: '字段3',
       rules: 'required',
     },
   ],
