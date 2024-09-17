@@ -49,13 +49,13 @@ const queryFormStyle = computed(() => {
 });
 
 async function handleSubmit(e: Event) {
+  e?.preventDefault();
+  e?.stopPropagation();
+  const { valid } = await form.validate();
+  if (!valid) {
+    return;
+  }
   try {
-    e?.preventDefault();
-    e?.stopPropagation();
-    const { valid } = await form.validate();
-    if (!valid) {
-      return;
-    }
     submitLoading.value = true;
     await unref(rootProps).handleSubmit?.(toRaw(form.values));
   } catch (error) {
