@@ -5,7 +5,7 @@ import type {
 } from '@vben-core/typings';
 import type { RouteRecordRaw } from 'vue-router';
 
-import { cloneDeep, listToTree, mapTree } from '@vben-core/shared';
+import { cloneDeep, listToTree, mapTree } from '@vben-core/shared/utils';
 
 /**
  * 动态生成路由 - 后端方式
