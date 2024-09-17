@@ -32,6 +32,14 @@ import {
   Upload,
 } from 'ant-design-vue';
 
+import {
+  DictCascader,
+  DictCheckbox,
+  DictRadio,
+  DictSelect,
+  DictTreeSelect,
+} from '#/components/dict';
+
 // 业务表单组件适配
 
 export type FormComponentType =
@@ -39,6 +47,11 @@ export type FormComponentType =
   | 'Checkbox'
   | 'CheckboxGroup'
   | 'DatePicker'
+  | 'DictCascader'
+  | 'DictCheckbox'
+  | 'DictRadio'
+  | 'DictSelect'
+  | 'DictTreeSelect'
   | 'Divider'
   | 'Input'
   | 'InputNumber'
@@ -71,6 +84,11 @@ setupVbenForm<FormComponentType>({
     DefaultSubmitActionButton: (props, { attrs, slots }) => {
       return h(Button, { ...props, attrs, type: 'primary' }, slots);
     },
+    DictCascader,
+    DictCheckbox,
+    DictRadio,
+    DictSelect,
+    DictTreeSelect,
     Divider,
     Input,
     InputNumber,
