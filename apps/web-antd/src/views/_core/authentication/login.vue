@@ -1,14 +1,10 @@
 <script lang="ts" setup>
-import type {
-  AuthenticationLogin,
-  type LoginAndRegisterParams,
-  VbenFormSchema,
-  z,
-} from '@vben/common-ui';
+import type { VbenFormSchema } from '@vben/common-ui';
 import type { BasicOption } from '@vben/types';
 
 import { computed } from 'vue';
 
+import { AuthenticationLogin, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 
 import { useAuthStore } from '#/store';
@@ -84,23 +80,11 @@ const formSchema = computed((): VbenFormSchema[] => {
     },
   ];
 });
-
-/**
- * 用户登录 - 用户名+密码
- */
-function handleLoginAccount(loginParams: LoginAndRegisterParams) {
-  authStore.loginAccount({
-    ...loginParams,
-    rememberMe: false,
-    captchaVerification: '',
-  });
-}
 </script>
 
 <template>
   <AuthenticationLogin
     :form-schema="formSchema"
     :loading="authStore.loginLoading"
-    @submit="handleLoginAccount"
   />
 </template>
