@@ -26,6 +26,7 @@
     "#/*": "./src/*"
   },
   "dependencies": {
+    "@ant-design/icons-vue": "^7.0.1",
     "@vben/access": "workspace:*",
     "@vben/common-ui": "workspace:*",
     "@vben/constants": "workspace:*",
@@ -40,8 +41,11 @@
     "@vben/styles": "workspace:*",
     "@vben/types": "workspace:*",
     "@vben/utils": "workspace:*",
+    "@vue/shared": "^3.4.38",
     "@vueuse/core": "^11.0.3",
+    "@vueuse/shared": "^11.0.3",
     "ant-design-vue": "^4.2.4",
+    "cropperjs": "^1.6.2",
     "dayjs": "^1.11.13",
     "pinia": "2.2.2",
     "vue": "^3.5.5",
