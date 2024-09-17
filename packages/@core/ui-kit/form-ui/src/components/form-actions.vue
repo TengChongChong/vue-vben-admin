@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, toRaw, unref } from 'vue';
+import { computed, ref, toRaw, unref } from 'vue';
 
 import { useSimpleLocale } from '@vben-core/composables';
 import { VbenExpandableArrow } from '@vben-core/shadcn-ui';
@@ -14,6 +14,8 @@ const [rootProps, form] = injectFormProps();
 
 const collapsed = defineModel({ default: false });
 
+const submitLoading = ref(false);
+
 const resetButtonOptions = computed(() => {
   return {
     show: true,
@@ -26,6 +28,7 @@ const submitButtonOptions = computed(() => {
   return {
     show: true,
     text: `${$t.value('submit')}`,
+    loading: submitLoading.value,
     ...unref(rootProps).submitButtonOptions,
   };
 });
@@ -46,13 +49,20 @@ const queryFormStyle = computed(() => {
 });
 
 async function handleSubmit(e: Event) {
-  e?.preventDefault();
-  e?.stopPropagation();
-  const { valid } = await form.validate();
-  if (!valid) {
-    return;
+  try {
+    e?.preventDefault();
+    e?.stopPropagation();
+    const { valid } = await form.validate();
+    if (!valid) {
+      return;
+    }
+    submitLoading.value = true;
+    await unref(rootProps).handleSubmit?.(toRaw(form.values));
+  } catch (error) {
+    console.error('form submit error:', error);
+  } finally {
+    submitLoading.value = false;
   }
-  await unref(rootProps).handleSubmit?.(toRaw(form.values));
 }
 
 async function handleReset(e: Event) {
