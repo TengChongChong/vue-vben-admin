@@ -9,7 +9,7 @@ import { listToTree } from '@vben/utils';
 
 import { defineStore } from 'pinia';
 
-import { selectAll } from '#/api/sys/sysDict';
+import { selectAllApi } from '#/api/sys/sysDict';
 
 interface DictState {
   isLoading: boolean;
@@ -172,7 +172,7 @@ export const useDictStore = defineStore('sys-dict', {
       }
       this.isLoading = true;
       // 初始化字典数据
-      selectAll().then((data) => {
+      selectAllApi().then((data) => {
         this.setDict(data);
         callback();
       });

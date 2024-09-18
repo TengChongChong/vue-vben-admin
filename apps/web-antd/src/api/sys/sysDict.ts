@@ -13,7 +13,7 @@ const BASE_URL = '/auth/sys/dict';
  * @param params 查询条件
  * @param page 分页
  */
-export function select(params: SysDict, page: Page<SysDict>) {
+export function selectApi(params: SysDict, page: Page<SysDict>) {
   return requestClient.get<Page<SysDict>>(BASE_URL, {
     params: Object.assign(params, page),
   });
@@ -22,7 +22,7 @@ export function select(params: SysDict, page: Page<SysDict>) {
 /**
  * 查询所有，请勿频繁调用，应缓存此数据
  */
-export function selectAll() {
+export function selectAllApi() {
   return requestClient.get<SysDict[]>(`${BASE_URL}/all`);
 }
 
@@ -31,7 +31,7 @@ export function selectAll() {
  *
  * @param dictType dictType
  */
-export function selectByDictType(dictType: string) {
+export function selectByDictTypeApi(dictType: string) {
   return requestClient.get<SelectModel[]>(`${BASE_URL}/dict-type`, {
     params: { dictType },
   });
@@ -42,7 +42,7 @@ export function selectByDictType(dictType: string) {
  *
  * @param id id
  */
-export function get(id: string) {
+export function getApi(id: string) {
   return requestClient.get<SysDict>(`${BASE_URL}/${id}`);
 }
 
@@ -52,7 +52,7 @@ export function get(id: string) {
  * @param id 父id
  * @param dictType 字典类型
  */
-export function add(id: string | undefined, dictType: string | undefined) {
+export function addApi(id: string | undefined, dictType: string | undefined) {
   return requestClient.get<SysDict>(`${BASE_URL}/add/${id || ''}`, {
     params: {
       dictType,
@@ -65,7 +65,7 @@ export function add(id: string | undefined, dictType: string | undefined) {
  *
  * @param ids ids
  */
-export function remove(ids: string) {
+export function removeApi(ids: string) {
   return requestClient.delete<boolean>(`${BASE_URL}/${ids}`);
 }
 
@@ -74,14 +74,14 @@ export function remove(ids: string) {
  *
  * @param params 表单数据
  */
-export function save(params: SysDict) {
+export function saveApi(params: SysDict) {
   return requestClient.post<SysDict>(BASE_URL, params);
 }
 
 /**
  * 刷新缓存数据
  */
-export function refresh() {
+export function refreshApi() {
   return requestClient.post<boolean>(`${BASE_URL}/refresh`);
 }
 
@@ -90,7 +90,7 @@ export function refresh() {
  *
  * @param params 查询条件
  */
-export function exportData(params: SysDict) {
+export function exportDataApi(params: SysDict) {
   return requestClient.get<string>(`${BASE_URL}/export/data`, {
     params,
   });

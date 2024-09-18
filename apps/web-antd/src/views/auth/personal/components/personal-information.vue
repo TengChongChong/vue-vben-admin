@@ -9,7 +9,7 @@ import { Card, message } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter';
 import { getUserInfoApi } from '#/api/auth/auth';
-import { currentUser, saveUserInfo } from '#/api/auth/sysUserPersonal';
+import { currentUserApi, saveUserInfoApi } from '#/api/auth/sysUserPersonal';
 import { Cropper } from '#/components/cropper';
 
 const [BaseForm, baseFormApi] = useVbenForm({
@@ -43,14 +43,14 @@ const [BaseForm, baseFormApi] = useVbenForm({
 });
 
 onMounted(() => {
-  currentUser().then((data) => {
+  currentUserApi().then((data) => {
     const { username, nickname, sex, birthday, avatar } = data;
     baseFormApi.setValues({ username, nickname, sex, birthday, avatar });
   });
 });
 
 async function onSubmit(values: Record<string, any>) {
-  await saveUserInfo(values as SysUser);
+  await saveUserInfoApi(values as SysUser);
   message.success('保存成功');
   const userStore = useUserStore();
   const userInfo = await getUserInfoApi();
