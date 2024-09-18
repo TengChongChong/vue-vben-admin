@@ -43,7 +43,6 @@
     "@vben/utils": "workspace:*",
     "@vueuse/core": "^11.1.0",
     "@vue/shared": "^3.4.38",
-    "@vueuse/core": "^11.0.3",
     "@vueuse/shared": "^11.0.3",
     "ant-design-vue": "^4.2.4",
     "cropperjs": "^1.6.2",
