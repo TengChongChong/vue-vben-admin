@@ -1,7 +1,9 @@
 <script lang="ts" setup>
-import type { DictSelectProps } from '#/components/dict/src/prop';
+import type { DictSelectProps } from '#/components/dict/src/type';
 
 import { computed, onMounted, ref, unref, watch } from 'vue';
+
+import { cn } from '@vben/utils';
 
 import { Select } from 'ant-design-vue';
 
@@ -10,6 +12,10 @@ import {
   convertSingleValue,
   getSelectModelArray,
 } from '#/components/dict/src/helper';
+
+defineOptions({
+  inheritAttrs: false,
+});
 
 const props = withDefaults(defineProps<DictSelectProps>(), {});
 
@@ -52,12 +58,12 @@ function handleChange() {
   <Select
     v-bind="$attrs"
     v-model:value="currentValue!"
+    :class="cn(props.class, 'w-full')"
     :mode="props.mode"
     :options="options"
     :show-search="options.length > 4"
     allow-clear
     option-filter-prop="label"
-    style="width: 100%"
     @change="handleChange"
   />
 </template>

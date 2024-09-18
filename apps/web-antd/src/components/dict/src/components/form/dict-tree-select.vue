@@ -1,11 +1,18 @@
 <script lang="ts" setup>
-import type { DictTreeSelectProps } from '#/components/dict/src/prop';
+import type { DictTreeSelectProps } from '#/components/dict/src/type';
 
 import { computed, onMounted, ref, unref, watch } from 'vue';
 
+import { cn } from '@vben/utils';
+
 import { TreeSelect } from 'ant-design-vue';
 
+import { HighlightText } from '#/components/highlight-text';
 import { useDictStore } from '#/store';
+
+defineOptions({
+  inheritAttrs: false,
+});
 
 const props = withDefaults(defineProps<DictTreeSelectProps>(), {
   multiple: false,
@@ -46,34 +53,21 @@ function handleChange() {
 <template>
   <TreeSelect
     v-bind="$attrs"
-    v-model:searchValue="searchValue"
+    v-model:search-value="searchValue"
     v-model:value="currentValue"
+    :class="cn(props.class, 'w-full')"
     :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
     :multiple="props.multiple"
     :tree-data="options"
     allow-clear
     show-search
-    style="width: 100%"
     tree-node-filter-prop="label"
     @change="handleChange"
   >
     <template #title="{ label }">
       <!-- 高亮关键字 -->
       <template v-if="label">
-        <template
-          v-for="(fragment, i) in label.split(
-            new RegExp(`(?<=${searchValue})|(?=${searchValue})`, 'i'),
-          )"
-        >
-          <span
-            v-if="fragment.toLowerCase() === searchValue.toLowerCase()"
-            :key="i"
-            style="color: hsl(var(--primary))"
-          >
-            {{ fragment }}
-          </span>
-          <template v-else>{{ fragment }}</template>
-        </template>
+        <HighlightText :keyword="searchValue" :text="label" />
       </template>
     </template>
   </TreeSelect>

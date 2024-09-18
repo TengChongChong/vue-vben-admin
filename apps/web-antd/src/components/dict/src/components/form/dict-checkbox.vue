@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { DictCheckboxProps } from '#/components/dict/src/prop';
+import type { DictCheckboxProps } from '#/components/dict/src/type';
 
 import { computed, onMounted, ref, unref, watch } from 'vue';
 
@@ -9,6 +9,10 @@ import {
   convertArrayValue,
   getSelectModelArray,
 } from '#/components/dict/src/helper';
+
+defineOptions({
+  inheritAttrs: false,
+});
 
 const props = withDefaults(defineProps<DictCheckboxProps>(), {
   value: [],

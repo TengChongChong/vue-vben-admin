@@ -1,4 +1,5 @@
 interface BaseDictProps {
+  class?: any;
   // 字典类别
   dictType: string;
 }

@@ -30,9 +30,9 @@ export function getSelectModelArray(dictType: string): SelectModel[] {
  * @param propValue 传入的字典编码
  */
 export function convertSingleValue(
-  propValue: boolean | null | number | string,
+  propValue: boolean | null | number | string | undefined,
 ): string {
-  if (propValue === null) {
+  if (propValue === null || propValue === undefined) {
     return '';
   }
   return isString(propValue) ? propValue : propValue.toString();
