@@ -19,6 +19,11 @@ export interface Hashing {
   hash(data: string): string;
 }
 
+export interface EncryptionParams {
+  key: string;
+  iv?: string;
+}
+
 class AesEncryption implements Encryption {
   private readonly iv;
   private readonly key;
