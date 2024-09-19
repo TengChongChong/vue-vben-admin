@@ -74,6 +74,7 @@
     "@vue/reactivity": "catalog:",
     "@vue/shared": "catalog:",
     "clsx": "catalog:",
+    "crypto-js": "catalog:",
     "defu": "catalog:",
     "lodash.clonedeep": "catalog:",
     "nprogress": "catalog:",
@@ -81,6 +82,7 @@
     "theme-colors": "catalog:"
   },
   "devDependencies": {
+    "@types/crypto-js": "catalog:",
     "@types/lodash.clonedeep": "catalog:",
     "@types/nprogress": "catalog:"
   }

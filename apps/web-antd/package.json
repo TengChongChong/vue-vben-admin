@@ -26,7 +26,7 @@
     "#/*": "./src/*"
   },
   "dependencies": {
-    "@ant-design/icons-vue": "^7.0.1",
+    "@ant-design/icons-vue": "catalog:",
     "@vben/access": "workspace:*",
     "@vben/common-ui": "workspace:*",
     "@vben/constants": "workspace:*",
@@ -41,11 +41,15 @@
     "@vben/styles": "workspace:*",
     "@vben/types": "workspace:*",
     "@vben/utils": "workspace:*",
-    "@vueuse/core": "^11.1.0",
-    "ant-design-vue": "^4.2.4",
-    "dayjs": "^1.11.13",
-    "pinia": "2.2.2",
-    "vue": "^3.5.6",
-    "vue-router": "^4.4.5"
+    "@vueuse/core": "catalog:",
+    "@vue/shared": "catalog:",
+    "@vueuse/shared": "catalog:",
+    "ant-design-vue": "catalog:",
+    "cropperjs": "catalog:",
+    "dayjs": "catalog:",
+    "pinia": "catalog:",
+    "vue": "catalog:",
+    "vue-router": "catalog:",
+    "vue-json-pretty": "catalog:"
   }
 }
