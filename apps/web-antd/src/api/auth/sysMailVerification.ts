@@ -1,0 +1,12 @@
+import { requestClient } from '#/api/request';
+
+/**
+ * 验证邮箱
+ *
+ * @param code 验证码
+ */
+export function verifiesApi(code: string) {
+  return requestClient.post<boolean>(`/api/mail/verification`, {
+    code,
+  });
+}
