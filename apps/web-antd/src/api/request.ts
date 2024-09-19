@@ -61,28 +61,30 @@ function createRequestClient(baseURL: string) {
   /**
    * 通用的错误处理
    */
-  const easyVbenErrorMessageResponseInterceptor =
-    (): ResponseInterceptorConfig => {
-      return {
-        rejected: (error: any) => {
-          // eslint-disable-next-line no-unsafe-optional-chaining
-          const { errorMessage, showType } = error?.response?.data;
-          if (errorMessage) {
-            // 如果后端有响应错误消息
-            message.open({
-              type: showType || 'error',
-              content: errorMessage,
-            });
-            return Promise.reject(error);
-          }
+  const easyErrorMessageResponseInterceptor = (): ResponseInterceptorConfig => {
+    return {
+      rejected: (error: any) => {
+        if (error.config.errorMessageMode === 'silent') {
+          return Promise.reject(error);
+        }
+        // eslint-disable-next-line no-unsafe-optional-chaining
+        const { errorMessage, showType } = error?.response?.data;
+        if (errorMessage) {
+          // 如果后端有响应错误消息
+          message.open({
+            type: showType || 'error',
+            content: errorMessage,
+          });
+          return Promise.reject(error);
+        }
 
-          // 使用通用错误消息提示
-          return errorMessageResponseInterceptor((msg: string) =>
-            message.error(msg),
-          );
-        },
-      };
+        // 使用通用错误消息提示
+        return errorMessageResponseInterceptor((msg: string) =>
+          message.error(msg),
+        );
+      },
     };
+  };
 
   // 请求头处理
   client.addRequestInterceptor({
@@ -120,7 +122,7 @@ function createRequestClient(baseURL: string) {
   );
 
   // 通用的错误处理,如果没有进入上面的错误处理逻辑，就会进入这里
-  client.addResponseInterceptor(easyVbenErrorMessageResponseInterceptor());
+  client.addResponseInterceptor(easyErrorMessageResponseInterceptor());
 
   return client;
 }
