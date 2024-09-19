@@ -1,6 +1,9 @@
+import { decrypt as aesDecrypt, encrypt as aesEncrypt } from 'crypto-js/aes';
 import Base64 from 'crypto-js/enc-base64';
-import UTF8 from 'crypto-js/enc-utf8';
+import UTF8, { parse } from 'crypto-js/enc-utf8';
 import MD5 from 'crypto-js/md5';
+import ECB from 'crypto-js/mode-ecb';
+import pkcs7 from 'crypto-js/pad-pkcs7';
 import SHA256 from 'crypto-js/sha256';
 import SHA512 from 'crypto-js/sha512';
 
@@ -14,6 +17,34 @@ export interface Encryption {
 // 定义一个哈希算法的接口
 export interface Hashing {
   hash(data: string): string;
+}
+
+class AesEncryption implements Encryption {
+  private readonly iv;
+  private readonly key;
+
+  constructor({ key, iv }: EncryptionParams) {
+    this.key = parse(key);
+    if (iv) {
+      this.iv = parse(iv);
+    }
+  }
+
+  decrypt(cipherText: string) {
+    return aesDecrypt(cipherText, this.key, this.getOptions).toString(UTF8);
+  }
+
+  encrypt(plainText: string) {
+    return aesEncrypt(plainText, this.key, this.getOptions).toString();
+  }
+
+  get getOptions() {
+    return {
+      mode: ECB,
+      padding: pkcs7,
+      iv: this.iv,
+    };
+  }
 }
 
 // Define a singleton class for Base64 encryption
@@ -93,6 +124,9 @@ class SHA512Hashing implements Hashing {
 }
 
 class EncryptionFactory {
+  public static createAesEncryption(params: EncryptionParams): Encryption {
+    return new AesEncryption(params);
+  }
   public static createBase64Encryption(): Encryption {
     return Base64Encryption.getInstance();
   }
