@@ -1,19 +1,21 @@
 <script setup lang="ts">
-import type { BaseButtonProps } from '../props';
+import type { ButtonImportProps } from '../props';
+
+import { useRouter } from 'vue-router';
 
 import { AccessControl } from '@vben/access';
 import { cn } from '@vben/utils';
 
-import { SaveOutlined } from '@ant-design/icons-vue';
+import { UploadOutlined } from '@ant-design/icons-vue';
 import { Button } from 'ant-design-vue';
 
 defineOptions({
   inheritAttrs: false,
 });
 
-const props = withDefaults(defineProps<BaseButtonProps>(), {
+const props = withDefaults(defineProps<ButtonImportProps>(), {
   authType: 'code',
-  text: '保存',
+  text: '导入',
   loading: false,
   disabled: false,
   type: 'primary',
@@ -22,8 +24,11 @@ const props = withDefaults(defineProps<BaseButtonProps>(), {
 
 const emit = defineEmits(['click']);
 
+const router = useRouter();
+
 function handleClick() {
   emit('click');
+  router.push(`/sys/import/excel/data/view/${props.importCode}`);
 }
 </script>
 
@@ -38,7 +43,7 @@ function handleClick() {
       @click="handleClick"
     >
       <template #icon>
-        <SaveOutlined />
+        <UploadOutlined />
       </template>
       {{ props.text }}
     </Button>

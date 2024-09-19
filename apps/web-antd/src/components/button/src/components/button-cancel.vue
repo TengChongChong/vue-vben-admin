@@ -4,7 +4,7 @@ import type { BaseButtonProps } from '../props';
 import { AccessControl } from '@vben/access';
 import { cn } from '@vben/utils';
 
-import { SaveOutlined } from '@ant-design/icons-vue';
+import { CloseOutlined } from '@ant-design/icons-vue';
 import { Button } from 'ant-design-vue';
 
 defineOptions({
@@ -13,10 +13,9 @@ defineOptions({
 
 const props = withDefaults(defineProps<BaseButtonProps>(), {
   authType: 'code',
-  text: '保存',
+  text: '取消',
   loading: false,
   disabled: false,
-  type: 'primary',
   size: 'middle',
 });
 
@@ -38,7 +37,7 @@ function handleClick() {
       @click="handleClick"
     >
       <template #icon>
-        <SaveOutlined />
+        <CloseOutlined />
       </template>
       {{ props.text }}
     </Button>

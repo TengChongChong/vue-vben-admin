@@ -1,29 +1,35 @@
 <script setup lang="ts">
-import type { BaseButtonProps } from '../props';
+import type { ButtonInfoProps } from '../props';
+
+import { useRouter } from 'vue-router';
 
 import { AccessControl } from '@vben/access';
 import { cn } from '@vben/utils';
 
-import { SaveOutlined } from '@ant-design/icons-vue';
+import { SearchOutlined } from '@ant-design/icons-vue';
 import { Button } from 'ant-design-vue';
 
 defineOptions({
   inheritAttrs: false,
 });
 
-const props = withDefaults(defineProps<BaseButtonProps>(), {
+const props = withDefaults(defineProps<ButtonInfoProps>(), {
   authType: 'code',
-  text: '保存',
+  text: '详情',
   loading: false,
   disabled: false,
-  type: 'primary',
   size: 'middle',
 });
 
 const emit = defineEmits(['click']);
 
+const router = useRouter();
+
 function handleClick() {
   emit('click');
+  if (props.path) {
+    router.push(props.path);
+  }
 }
 </script>
 
@@ -38,7 +44,7 @@ function handleClick() {
       @click="handleClick"
     >
       <template #icon>
-        <SaveOutlined />
+        <SearchOutlined />
       </template>
       {{ props.text }}
     </Button>

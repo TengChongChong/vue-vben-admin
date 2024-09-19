@@ -4,7 +4,7 @@ import type { BaseButtonProps } from '../props';
 import { AccessControl } from '@vben/access';
 import { cn } from '@vben/utils';
 
-import { SaveOutlined } from '@ant-design/icons-vue';
+import { CheckOutlined } from '@ant-design/icons-vue';
 import { Button } from 'ant-design-vue';
 
 defineOptions({
@@ -13,7 +13,7 @@ defineOptions({
 
 const props = withDefaults(defineProps<BaseButtonProps>(), {
   authType: 'code',
-  text: '保存',
+  text: '提交',
   loading: false,
   disabled: false,
   type: 'primary',
@@ -38,7 +38,7 @@ function handleClick() {
       @click="handleClick"
     >
       <template #icon>
-        <SaveOutlined />
+        <CheckOutlined />
       </template>
       {{ props.text }}
     </Button>

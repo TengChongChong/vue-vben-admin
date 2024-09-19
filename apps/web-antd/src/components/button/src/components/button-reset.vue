@@ -1,18 +1,19 @@
 <script setup lang="ts">
-import type { ButtonProps } from '#/components/button/src/prop';
+import type { BaseButtonProps } from '../props';
+
+import { cn } from '@vben/utils';
 
 import { RedoOutlined } from '@ant-design/icons-vue';
 import { Button } from 'ant-design-vue';
 
 defineOptions({
-  name: 'ButtonSave',
+  inheritAttrs: false,
 });
 
-const props = withDefaults(defineProps<ButtonProps>(), {
+const props = withDefaults(defineProps<BaseButtonProps>(), {
   text: '重置',
   loading: false,
   disabled: false,
-  danger: false,
   type: 'default',
   size: 'middle',
 });
@@ -27,6 +28,7 @@ function handleClick() {
 <template>
   <Button
     v-bind="$attrs"
+    :class="cn(props.class)"
     :disabled="props.disabled"
     :size="props.size"
     :type="props.type"
