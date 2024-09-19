@@ -37,7 +37,7 @@ export interface DictCheckboxProps extends BaseDictProps {
  */
 export interface DictSelectProps extends BaseDictProps {
   // value
-  value: Array<number> | Array<string> | number | string;
+  value: Array<number> | Array<string> | number | string | undefined;
   // 设置 Select 的模式为多选或标签
   mode?: 'multiple' | 'tags' | undefined;
 }
@@ -47,7 +47,7 @@ export interface DictSelectProps extends BaseDictProps {
  */
 export interface DictCascaderProps extends BaseDictProps {
   // value
-  value: Array<number> | Array<string>;
+  value: Array<number> | Array<string> | undefined;
 }
 
 /**
@@ -55,7 +55,7 @@ export interface DictCascaderProps extends BaseDictProps {
  */
 export interface DictTreeSelectProps extends BaseDictProps {
   // value
-  value: Array<string> | string;
+  value: Array<string> | string | undefined;
   // 支持多选
   multiple?: boolean;
 }

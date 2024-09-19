@@ -33,7 +33,7 @@ export function convertSingleValue(
   propValue: boolean | null | number | string | undefined,
 ): string {
   if (propValue === null || propValue === undefined) {
-    return '';
+    return undefined;
   }
   return isString(propValue) ? propValue : propValue.toString();
 }
@@ -47,7 +47,7 @@ export function convertArrayValue(
   propValue: Array<boolean> | Array<number> | Array<string>,
 ): Array<string> {
   const value: string[] = [];
-  if (propValue === null || propValue.length === 0) {
+  if (propValue === null || propValue === undefined || propValue.length === 0) {
     return value;
   }
   propValue.forEach((item) => {

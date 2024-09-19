@@ -10,7 +10,6 @@ import { Card, message } from 'ant-design-vue';
 import { useVbenForm } from '#/adapter';
 import { getUserInfoApi } from '#/api/auth/auth';
 import { currentUserApi, saveUserInfoApi } from '#/api/auth/sysUserPersonal';
-import { Cropper } from '#/components/cropper';
 
 const [BaseForm, baseFormApi] = useVbenForm({
   handleSubmit: onSubmit,
@@ -29,7 +28,8 @@ const [BaseForm, baseFormApi] = useVbenForm({
       rules: 'required',
     },
     {
-      component: 'Input',
+      component: 'Cropper',
+      componentProps: { alt: '头像' },
       fieldName: 'avatar',
       label: '头像',
     },
@@ -61,11 +61,7 @@ async function onSubmit(values: Record<string, any>) {
 <template>
   <Card :bordered="false" title="我的资料">
     <div class="form-wrapper">
-      <BaseForm>
-        <template #avatar="slotProps">
-          <Cropper v-bind="slotProps" alt="头像" />
-        </template>
-      </BaseForm>
+      <BaseForm />
     </div>
   </Card>
 </template>

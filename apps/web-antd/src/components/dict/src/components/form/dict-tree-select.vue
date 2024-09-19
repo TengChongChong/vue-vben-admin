@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { DictTreeSelectProps } from '#/components/dict/src/type';
+import type { DictTreeSelectProps } from '../../props';
 
 import { computed, onMounted, ref, unref, watch } from 'vue';
 
@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<DictTreeSelectProps>(), {
 
 const emit = defineEmits(['change', 'update:value']);
 
-const currentValue = ref<Array<string> | string>();
+const currentValue = ref<Array<string> | string | undefined>();
 const searchValue = ref('');
 
 const dictStore = useDictStore();
@@ -39,7 +39,7 @@ onMounted(() => {
 function convertValue() {
   currentValue.value = props.multiple
     ? (props.value ?? [])
-    : (props.value ?? '');
+    : (props.value ?? undefined);
 }
 
 watch(() => props.value, convertValue);

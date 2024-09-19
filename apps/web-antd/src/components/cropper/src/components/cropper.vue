@@ -74,7 +74,12 @@ function handleOpenCropperModal() {
           <img :src="currentValue.url" alt="" />
         </template>
         <template v-else>
-          <Avatar :size="props.width">{{ props.alt }}</Avatar>
+          <Avatar
+            :shape="props.circled ? 'circle' : 'square'"
+            :size="props.width"
+          >
+            {{ props.alt }}
+          </Avatar>
         </template>
       </div>
       <div :style="getImageWrapperStyle" class="vben-cropper-image-mask">
@@ -90,6 +95,9 @@ function handleOpenCropperModal() {
 .vben-cropper {
   display: inline-block;
   text-align: center;
+  &-wrapper {
+    position: relative;
+  }
 
   &-image-wrapper {
     overflow: hidden;
@@ -102,8 +110,8 @@ function handleOpenCropperModal() {
 
   &-image-mask {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 50%;
+    left: 50%;
     display: inline-flex;
     width: 100%;
     height: 100%;
@@ -113,6 +121,7 @@ function handleOpenCropperModal() {
     border-radius: inherit;
     opacity: 0;
     transition: opacity 0.4s;
+    transform: translate(-50%, -50%);
 
     &:hover {
       opacity: 40;

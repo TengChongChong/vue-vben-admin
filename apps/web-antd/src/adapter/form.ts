@@ -32,6 +32,8 @@ import {
   Upload,
 } from 'ant-design-vue';
 
+import { Cropper } from '#/components/cropper';
+import { DeptSelect } from '#/components/dept';
 import {
   DictCascader,
   DictCheckbox,
@@ -39,6 +41,8 @@ import {
   DictSelect,
   DictTreeSelect,
 } from '#/components/dict';
+import { RoleSelect } from '#/components/role';
+import { UserSelect } from '#/components/user';
 
 // 业务表单组件适配
 
@@ -46,7 +50,9 @@ export type FormComponentType =
   | 'AutoComplete'
   | 'Checkbox'
   | 'CheckboxGroup'
+  | 'Cropper'
   | 'DatePicker'
+  | 'DeptSelect'
   | 'DictCascader'
   | 'DictCheckbox'
   | 'DictRadio'
@@ -61,12 +67,14 @@ export type FormComponentType =
   | 'RadioGroup'
   | 'RangePicker'
   | 'Rate'
+  | 'RoleSelect'
   | 'Select'
   | 'Space'
   | 'Switch'
   | 'TimePicker'
   | 'TreeSelect'
   | 'Upload'
+  | 'UserSelect'
   | BaseFormComponentType;
 
 // 初始化表单组件，并注册到form组件内部
@@ -75,6 +83,7 @@ setupVbenForm<FormComponentType>({
     AutoComplete,
     Checkbox,
     CheckboxGroup,
+    Cropper,
     DatePicker,
     // 自定义默认的重置按钮
     DefaultResetActionButton: (props, { attrs, slots }) => {
@@ -90,6 +99,7 @@ setupVbenForm<FormComponentType>({
     DictSelect,
     DictTreeSelect,
     Divider,
+    DeptSelect,
     Input,
     InputNumber,
     InputPassword,
@@ -98,12 +108,14 @@ setupVbenForm<FormComponentType>({
     RadioGroup,
     RangePicker,
     Rate,
+    RoleSelect,
     Select,
     Space,
     Switch,
     TimePicker,
     TreeSelect,
     Upload,
+    UserSelect,
   },
   config: {
     baseModelPropName: 'value',

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { DictRadioProps } from '#/components/dict/src/type';
+import type { DictRadioProps } from '../../props';
 
 import { computed, onMounted, ref, unref, watch } from 'vue';
 
@@ -8,7 +8,7 @@ import { Segmented } from 'ant-design-vue';
 import {
   convertSingleValue,
   getSelectModelArray,
-} from '#/components/dict/src/helper';
+} from '#/components/form/src/helper';
 
 defineOptions({
   inheritAttrs: false,
@@ -30,7 +30,8 @@ const options = computed(() => {
 });
 
 onMounted(() => {
-  currentValue.value = convertSingleValue(props.value);
+  // Segmented value null或者undefined 会有警告
+  currentValue.value = convertSingleValue(props.value) || '';
 });
 
 watch(

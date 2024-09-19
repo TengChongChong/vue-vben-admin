@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { DictSelectProps } from '#/components/dict/src/type';
+import type { DictSelectProps } from '../../props';
 
 import { computed, onMounted, ref, unref, watch } from 'vue';
 
@@ -11,7 +11,7 @@ import {
   convertArrayValue,
   convertSingleValue,
   getSelectModelArray,
-} from '#/components/dict/src/helper';
+} from '#/components/form/src/helper';
 
 defineOptions({
   inheritAttrs: false,
@@ -22,7 +22,7 @@ const props = withDefaults(defineProps<DictSelectProps>(), {});
 const emit = defineEmits(['change', 'update:value']);
 
 const currentValue = ref<
-  Array<number> | Array<string> | null | number | string
+  Array<number> | Array<string> | null | number | string | undefined
 >();
 
 /**

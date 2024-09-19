@@ -13,7 +13,7 @@ import { searchApi, selectUsersByIdsApi } from '#/api/auth/sysUser';
 import {
   convertArrayValue,
   convertSingleValue,
-} from '#/components/dict/src/helper';
+} from '#/components/form/src/helper';
 import { HighlightText } from '#/components/highlight-text';
 
 defineOptions({
@@ -21,7 +21,6 @@ defineOptions({
 });
 
 const props = withDefaults(defineProps<UserSelect>(), {
-  multiple: false,
   range: 'all',
   deptIds: [],
 });
@@ -40,7 +39,7 @@ onMounted(() => {
 });
 
 function convertValue() {
-  currentValue.value = props.multiple
+  currentValue.value = props.mode
     ? convertArrayValue(props.value as string[])
     : convertSingleValue(props.value as string);
 }
@@ -65,32 +64,35 @@ const initSelectValue = () => {
 
 initSelectValue();
 
-const fetchUser = useDebounceFn((value) => {
-  searchValue = value;
-  lastFetchId += 1;
-  const fetchId = lastFetchId;
-  options.value = [];
-  loading.value = true;
-  if (value === null || value === '') {
-    return;
-  }
-  searchApi(value, props.range, props.deptId, {
-    current: 1,
-    pageSize: 20,
-  }).then((res) => {
+const fetchUser = useDebounceFn(async (value: string) => {
+  try {
+    searchValue = value;
+    lastFetchId += 1;
+    const fetchId = lastFetchId;
+    options.value = [];
+    loading.value = true;
+    if (value === null || value === '') {
+      return;
+    }
+    const res = await searchApi(value, props.range, props.deptId, {
+      current: 1,
+      pageSize: 20,
+    });
     if (fetchId !== lastFetchId) {
       return;
     }
-
     options.value = res.records as SysUser[];
+  } catch (error) {
+    console.error('获取用户数据失败，', error);
+  } finally {
     loading.value = false;
-  });
+  }
 }, 300);
 
 function handleChange() {
   let relValue = unref(currentValue);
   if (unref(currentValue) === null) {
-    relValue = props.multiple ? [] : '';
+    relValue = props.mode ? [] : '';
   }
   emit('change', relValue);
   emit('update:value', relValue);
@@ -101,7 +103,7 @@ function handleChange() {
   <Select
     :allow-clear="true"
     :filter-option="false"
-    :mode="multiple ? 'multiple' : ''"
+    :mode="props.mode"
     option-filter-prop="label"
     show-search
     v-bind="$attrs"
@@ -118,7 +120,7 @@ function handleChange() {
     >
       <HighlightText
         :keyword="searchValue"
-        :text="`${item.username} - ${item.nickname} - ${item.deptName} `"
+        :text="`${item.username} - ${item.nickname} - ${item.deptName}`"
       />
     </SelectOption>
 

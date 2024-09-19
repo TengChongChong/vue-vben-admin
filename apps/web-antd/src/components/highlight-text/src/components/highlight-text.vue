@@ -24,7 +24,7 @@ defineProps<{
   </template>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .highlight-text {
   color: hsl(var(--primary));
 }
