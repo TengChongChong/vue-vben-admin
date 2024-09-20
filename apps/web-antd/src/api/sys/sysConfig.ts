@@ -32,7 +32,7 @@ export function getApi(id: string) {
  * @param key key
  */
 export function getByKeyApi(key: string) {
-  return requestClient.get<SysConfig>(`/api/sys/config/key/${key}`);
+  return requestClient.get<SysConfig>(`/sys/config/key/${key}`);
 }
 
 /**
