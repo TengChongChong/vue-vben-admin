@@ -30,6 +30,11 @@ export interface ApiTreeSelectProps extends BaseApiProps {
   treeNodeFilterProp?: string;
 }
 
+export interface ApiTreeProps extends BaseApiProps {
+  // value
+  value: Array<number> | Array<string> | undefined;
+}
+
 export interface OptionsItem {
   [name: string]: any;
   disabled?: boolean;

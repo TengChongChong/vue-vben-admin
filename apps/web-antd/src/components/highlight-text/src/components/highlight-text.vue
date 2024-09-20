@@ -8,19 +8,24 @@ defineProps<{
 </script>
 
 <template>
-  <template
-    v-for="(fragment, i) in text
-      .toString()
-      .split(new RegExp(`(?<=${keyword})|(?=${keyword})`, 'i'))"
-  >
-    <span
-      v-if="fragment.toLowerCase() === keyword.toLowerCase()"
-      :key="i"
-      class="highlight-text"
+  <template v-if="keyword">
+    <template
+      v-for="(fragment, i) in text
+        .toString()
+        .split(new RegExp(`(?<=${keyword})|(?=${keyword})`, 'i'))"
     >
-      {{ fragment }}
-    </span>
-    <template v-else>{{ fragment }}</template>
+      <span
+        v-if="fragment.toLowerCase() === keyword.toLowerCase()"
+        :key="i"
+        class="highlight-text"
+      >
+        {{ fragment }}
+      </span>
+      <template v-else>{{ fragment }}</template>
+    </template>
+  </template>
+  <template v-else>
+    {{ text }}
   </template>
 </template>
 

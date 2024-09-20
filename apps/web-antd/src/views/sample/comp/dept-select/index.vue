@@ -3,10 +3,17 @@ import { defineComponent, onMounted, ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
-import { Card, Col, Descriptions, DescriptionsItem, Row } from 'ant-design-vue';
+import {
+  Card,
+  Col,
+  Descriptions,
+  DescriptionsItem,
+  Row,
+  Tag,
+} from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter';
-import { DeptSelect } from '#/components/dept';
+import { DeptSelect, DeptTree } from '#/components/dept';
 
 defineComponent({
   name: 'SampleCompDeptSelectIndex',
@@ -14,6 +21,7 @@ defineComponent({
 
 const deptId = ref<string>('1531875536031301633');
 const deptIds = ref<string[]>(['1', '1531875430343229442']);
+const deptTree = ref<string[]>(['1531875430343229442']);
 
 async function onSubmit(values: Record<string, any>) {
   console.log('form values:', values);
@@ -51,7 +59,7 @@ onMounted(() => {
   <Page>
     <Row :gutter="16">
       <Col :lg="24" :xl="12">
-        <Card :bordered="false" title="基础示例">
+        <Card :bordered="false" class="mb-4" title="基础示例">
           <Descriptions
             :column="1"
             :label-style="{ width: '150px' }"
@@ -66,6 +74,12 @@ onMounted(() => {
               <DeptSelect v-model:value="deptIds" :multiple="true" />
             </DescriptionsItem>
           </Descriptions>
+        </Card>
+
+        <Card :bordered="false" title="DeptTree">
+          <Tag :bordered="false" class="mb-2">SelectKey： {{ deptTree }}</Tag>
+
+          <DeptTree v-model:value="deptTree" />
         </Card>
       </Col>
       <Col :xl="24" :xxl="12">

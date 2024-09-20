@@ -1,21 +1,21 @@
 <script setup lang="ts">
 import type { TreeNode, TreeNodeModel } from '#/api/base/model/treeModel';
-import type { DeptSelectProps } from '#/components/dept/src/props';
+import type { DeptTreeProps } from '#/components/dept/src/props';
 
 import { onMounted, ref, watch } from 'vue';
 
 import { listToTree } from '@vben/utils';
 
 import { selectAllApi } from '#/api/auth/sysDept';
-import { ApiTreeSelect } from '#/components/form';
+import { ApiTree } from '#/components/form';
 
 defineOptions({
   inheritAttrs: false,
 });
-const props = defineProps<DeptSelectProps>();
+const props = defineProps<DeptTreeProps>();
 const emit = defineEmits(['change', 'update:value']);
 
-const currentValue = ref<Array<string> | string | undefined>();
+const currentValue = ref<Array<string> | undefined>();
 
 watch(
   () => props.value,
@@ -35,7 +35,7 @@ function afterFetch(res: TreeNodeModel[]) {
     treeNodes.push({
       id,
       parentId,
-      label: title,
+      title,
       value: id,
       key: id,
     });
@@ -51,12 +51,11 @@ function handleChange(value) {
 </script>
 
 <template>
-  <ApiTreeSelect
+  <ApiTree
     v-bind="$attrs"
     v-model:value="currentValue"
     :after-fetch="afterFetch"
     :api="selectAllApi"
-    :multiple="props.multiple"
     @change="handleChange"
   />
 </template>
