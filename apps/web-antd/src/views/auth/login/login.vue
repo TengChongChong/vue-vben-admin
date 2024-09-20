@@ -1,14 +1,27 @@
 <script lang="ts" setup>
-import type { LoginAndRegisterParams, VbenFormSchema } from '@vben/common-ui';
-
 import { computed } from 'vue';
 
+import {
+  type LoginAndRegisterParams,
+  useVbenModal,
+  type VbenFormSchema,
+} from '@vben/common-ui';
 import { AuthenticationLogin, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 
+import { getByKeyApi } from '#/api/sys/sysConfig';
+import { SlideVerifyModal } from '#/components/verify';
 import { useAuthStore } from '#/store';
 
 defineOptions({ name: 'Login' });
+
+// 是否开启登录验证码
+let loginVerificationCode = true;
+getByKeyApi('loginVerificationCode').then((res) => {
+  if (res && res.value) {
+    loginVerificationCode = res.value === 'true';
+  }
+});
 
 const authStore = useAuthStore();
 
@@ -35,22 +48,59 @@ const formSchema = computed((): VbenFormSchema[] => {
   ];
 });
 
+// 验证码
+let captchaVerification: null | string = null;
+
+let loginParams: LoginAndRegisterParams = null;
+
+function handleVerifySuccess(code: string) {
+  captchaVerification = code;
+  handleLoginAccount();
+}
+
+const [BaseModal, baseModalApi] = useVbenModal({
+  // 连接抽离的组件
+  connectedComponent: SlideVerifyModal,
+});
+
+function openVerifyModal() {
+  baseModalApi.open();
+}
+
+/**
+ * 点击登录按钮
+ */
+function handleLoginClick(params: LoginAndRegisterParams) {
+  // 存储登录参数
+  loginParams = params;
+  if (loginVerificationCode) {
+    // 开启了登录验证码
+    openVerifyModal();
+  } else {
+    handleLoginAccount();
+  }
+}
+
 /**
  * 用户登录 - 用户名+密码
  */
-function handleLoginAccount(loginParams: LoginAndRegisterParams) {
+function handleLoginAccount() {
   authStore.authLoginAccount({
     ...loginParams,
     rememberMe: false,
-    captchaVerification: '',
+    captchaVerification,
   });
 }
 </script>
 
 <template>
-  <AuthenticationLogin
-    :form-schema="formSchema"
-    :loading="authStore.loginLoading"
-    @submit="handleLoginAccount"
-  />
+  <div class="login-wrapper">
+    <AuthenticationLogin
+      :form-schema="formSchema"
+      :loading="authStore.loginLoading"
+      @submit="handleLoginClick"
+    />
+
+    <BaseModal @success="handleVerifySuccess" />
+  </div>
 </template>
