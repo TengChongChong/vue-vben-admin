@@ -27,6 +27,7 @@ import {
   Select,
   Space,
   Switch,
+  Textarea,
   TimePicker,
   TreeSelect,
   Upload,
@@ -71,6 +72,7 @@ export type FormComponentType =
   | 'Select'
   | 'Space'
   | 'Switch'
+  | 'Textarea'
   | 'TimePicker'
   | 'TreeSelect'
   | 'Upload'
@@ -114,6 +116,7 @@ setupVbenForm<FormComponentType>({
     Switch,
     TimePicker,
     TreeSelect,
+    Textarea,
     Upload,
     UserSelect,
   },
