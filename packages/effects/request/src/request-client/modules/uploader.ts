@@ -1,7 +1,6 @@
-import type { AxiosRequestConfig } from 'axios';
+import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 import type { RequestClient } from '../request-client';
-import type { FileUploadResponse, UploadFileParams } from '../types';
 
 class FileUploader {
   private client: RequestClient;
@@ -12,15 +11,14 @@ class FileUploader {
 
   public async upload(
     url: string,
-    uploadFileParams: UploadFileParams,
+    data: { file: Blob | File } & Record<string, any>,
     config?: AxiosRequestConfig,
-  ): Promise<FileUploadResponse> {
+  ): Promise<AxiosResponse> {
     const formData = new FormData();
-    formData.append(
-      uploadFileParams.name || 'file',
-      uploadFileParams.file,
-      uploadFileParams.filename,
-    );
+
+    Object.entries(data).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
 
     const finalConfig: AxiosRequestConfig = {
       ...config,
