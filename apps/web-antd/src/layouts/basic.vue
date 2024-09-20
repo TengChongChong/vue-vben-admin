@@ -116,12 +116,32 @@ async function handleLogout() {
   await authStore.logout(false);
 }
 
+/**
+ * 清空消息
+ */
 function handleNoticeClear() {
   notifications.value = [];
 }
 
-function handleMakeAll() {
+/**
+ * 消息全部标记为已读
+ */
+function handleMakeAllAsRead() {
   notifications.value.forEach((item) => (item.isRead = true));
+}
+
+/**
+ * 查看所有消息
+ */
+function handleViewAll() {
+  router.push(`/sys/message/receive`);
+}
+
+/**
+ * 查看消息详情
+ */
+function handleReadNotification(notification: NotificationItem) {
+  // todo: 查看消息详情
 }
 </script>
 
@@ -141,7 +161,9 @@ function handleMakeAll() {
         :dot="showDot"
         :notifications="notifications"
         @clear="handleNoticeClear"
-        @make-all="handleMakeAll"
+        @make-all="handleMakeAllAsRead"
+        @read="handleReadNotification"
+        @view-all="handleViewAll"
       />
     </template>
     <template #extra>

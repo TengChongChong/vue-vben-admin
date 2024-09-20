@@ -18,6 +18,7 @@ const userRoutes: RouteRecordRaw[] = [
           title: '个人中心',
           keepAlive: true,
           hideInMenu: true,
+          icon: 'lucide:user-round',
         },
         name: 'AuthPersonalIndex',
         path: '/auth/personal/index',
