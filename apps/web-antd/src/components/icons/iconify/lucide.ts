@@ -11,3 +11,8 @@ export const MoveVertical = createIconifyIcon('lucide:move-vertical');
 export const MoveHorizontal = createIconifyIcon('lucide:move-horizontal');
 export const ZoomIn = createIconifyIcon('lucide:zoom-in');
 export const ZoomOut = createIconifyIcon('lucide:zoom-out');
+
+export const FilePen = createIconifyIcon('lucide:file-pen');
+export const Mail = createIconifyIcon('lucide:mail');
+export const Mails = createIconifyIcon('lucide:mails');
+export const Mailbox = createIconifyIcon('lucide:mailbox');
