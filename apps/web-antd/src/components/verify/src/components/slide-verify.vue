@@ -216,13 +216,14 @@ async function handleDragEnd() {
       position: absolute;
       top: 10px;
       right: 10px;
-      color: #fff;
+      color: rgb(252 252 252);
     }
 
     img {
+      display: block;
       width: 100%;
       height: 155px;
-      display: block;
+      border-radius: var(--radius);
     }
 
     > img {
@@ -245,7 +246,7 @@ async function handleDragEnd() {
       height: 30px;
       font-size: 12px;
       line-height: 30px;
-      color: #fff;
+      color: rgb(252 252 252);
       text-align: center;
 
       &.success {

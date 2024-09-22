@@ -60,24 +60,22 @@ export default defineComponent({
     });
 
     const getWrapStyleRef = computed(() => {
-      const { height, width, circle, wrapStyle } = props;
+      const { height, width, wrapStyle } = props;
       const h = Number.parseInt(height as string);
       const w = `${Number.parseInt(width as string)}px`;
       return {
         width: w,
         height: `${h}px`,
         lineHeight: `${h}px`,
-        borderRadius: circle ? `${h / 2}px` : 0,
         ...wrapStyle,
       };
     });
 
     const getBarStyleRef = computed(() => {
-      const { height, circle, barStyle } = props;
+      const { height, barStyle } = props;
       const h = Number.parseInt(height as string);
       return {
         height: `${h}px`,
-        borderRadius: circle ? `${h / 2}px 0 0 ${h / 2}px` : 0,
         ...barStyle,
       };
     });
@@ -328,17 +326,17 @@ export default defineComponent({
 .darg-verify {
   position: relative;
   overflow: hidden;
-  border: 1px solid #ddd;
-  border-radius: var(--radius);
-  background-color: rgb(238 238 238);
   text-align: center;
+  background-color: hsl(var(--background-deep));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
 
   &-bar {
     position: absolute;
     width: 0;
     height: 36px;
-    border-radius: var(--radius);
     background-color: var(--success);
+    border-radius: var(--radius);
 
     &.to-left {
       width: 0 !important;
@@ -349,41 +347,33 @@ export default defineComponent({
   &-content {
     position: absolute;
     top: 0;
-    animation: slidetounlock 3s infinite;
-    background-clip: text;
-    background-color: -webkit-gradient(
-      linear,
-      left top,
-      right top,
-      color-stop(0, #333),
-      color-stop(0.4, #333),
-      color-stop(0.5, #fff),
-      color-stop(0.6, #333),
-      color-stop(1, #333)
-    );
     font-size: 12px;
+    color: hsl(var(--foreground));
     user-select: none;
+    //background-clip: text;
+    background-color: hsl(var(--background-deep));
+    animation: slidetounlock 3s infinite;
     text-size-adjust: none;
 
     &.success {
-      -webkit-text-fill-color: #fff;
+      -webkit-text-fill-color: hsl(var(--foreground));
     }
 
     & > * {
-      -webkit-text-fill-color: #333;
+      -webkit-text-fill-color: hsl(var(--foreground));
     }
   }
 
   &-action {
-    display: flex;
     position: absolute;
     top: 0;
     left: 0;
+    display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: var(--radius);
-    background-color: #fff;
     cursor: move;
+    background-color: hsl(var(--input-background));
+    border-radius: var(--radius);
 
     &__icon {
       cursor: inherit;
