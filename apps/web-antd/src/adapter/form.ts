@@ -47,6 +47,7 @@ import { UserSelect } from '#/components/user';
 
 // 业务表单组件适配
 
+// 这里需要自行根据业务组件库进行适配，需要用到的组件都需要在这里类型说明
 export type FormComponentType =
   | 'AutoComplete'
   | 'Checkbox'
@@ -114,6 +115,7 @@ setupVbenForm<FormComponentType>({
     Select,
     Space,
     Switch,
+    Textarea,
     TimePicker,
     TreeSelect,
     Textarea,
@@ -121,7 +123,10 @@ setupVbenForm<FormComponentType>({
     UserSelect,
   },
   config: {
+    // ant design vue组件库默认都是 v-model:value
     baseModelPropName: 'value',
+
+    // 一些组件是 v-model:checked 或者 v-model:fileList
     modelPropNameMap: {
       Checkbox: 'checked',
       Radio: 'checked',
@@ -130,12 +135,14 @@ setupVbenForm<FormComponentType>({
     },
   },
   defineRules: {
+    // 输入项目必填国际化适配
     required: (value, _params, ctx) => {
-      if ((!value && value !== 0) || value.length === 0) {
+      if (value === undefined || value === null || value.length === 0) {
         return $t('formRules.required', [ctx.label]);
       }
       return true;
     },
+    // 选择项目必填国际化适配
     selectRequired: (value, _params, ctx) => {
       if (value === undefined || value === null) {
         return $t('formRules.selectRequired', [ctx.label]);
