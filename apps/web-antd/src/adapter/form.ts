@@ -115,7 +115,6 @@ setupVbenForm<FormComponentType>({
     Select,
     Space,
     Switch,
-    Textarea,
     TimePicker,
     TreeSelect,
     Textarea,
