@@ -5,14 +5,13 @@ import type { CaptchaVO } from '#/api/sys/model/sysCaptchaModel';
 
 import { reactive, ref, unref, watch } from 'vue';
 
+import { SliderCaptcha } from '@vben/common-ui';
 import { EncryptionFactory } from '@vben/utils';
 
 import { ReloadOutlined } from '@ant-design/icons-vue';
 import { Button, Spin } from 'ant-design-vue';
 
 import { checkCaptchaApi, getCaptchaApi } from '#/api/sys/sysCaptcha';
-
-import BaseDragVerify from './drag-verify.vue';
 
 const emit = defineEmits(['success', 'change', 'update:value']);
 // 拖动条
@@ -191,7 +190,8 @@ async function handleDragEnd() {
         }}
       </span>
     </div>
-    <BaseDragVerify
+
+    <SliderCaptcha
       ref="basicRef"
       v-model:value="state.isPassing"
       :is-slot="true"
