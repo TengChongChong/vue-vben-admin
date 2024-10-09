@@ -58,34 +58,6 @@ function createRequestClient(baseURL: string) {
     return token ? `${token}` : null;
   }
 
-  /**
-   * 通用的错误处理
-   */
-  const easyErrorMessageResponseInterceptor = (): ResponseInterceptorConfig => {
-    return {
-      rejected: (error: any) => {
-        if (error.config.errorMessageMode === 'silent') {
-          return Promise.reject(error);
-        }
-        // eslint-disable-next-line no-unsafe-optional-chaining
-        const { errorMessage, showType } = error?.response?.data;
-        if (errorMessage) {
-          // 如果后端有响应错误消息
-          message.open({
-            type: showType || 'error',
-            content: errorMessage,
-          });
-          return Promise.reject(error);
-        }
-
-        // 使用通用错误消息提示
-        return errorMessageResponseInterceptor((msg: string) =>
-          message.error(msg),
-        );
-      },
-    };
-  };
-
   // 请求头处理
   client.addRequestInterceptor({
     fulfilled: async (config) => {
@@ -122,11 +94,28 @@ function createRequestClient(baseURL: string) {
   );
 
   // 通用的错误处理,如果没有进入上面的错误处理逻辑，就会进入这里
-  client.addResponseInterceptor(easyErrorMessageResponseInterceptor());
   client.addResponseInterceptor(
-    errorMessageResponseInterceptor((msg: string, _error) => {
+    errorMessageResponseInterceptor((_msg: string, error) => {
       // 这里可以根据业务进行定制,你可以拿到 error 内的信息进行定制化处理，根据不同的 code 做不同的提示，而不是直接使用 message.error 提示 msg
-      message.error(msg);
+      // message.error(msg);
+      if (error.config.errorMessageMode === 'silent') {
+        return Promise.reject(error);
+      }
+      // eslint-disable-next-line no-unsafe-optional-chaining
+      const { errorMessage, showType } = error?.response?.data;
+      if (errorMessage) {
+        // 如果后端有响应错误消息
+        message.open({
+          type: showType || 'error',
+          content: errorMessage,
+        });
+        return Promise.reject(error);
+      }
+
+      // 使用通用错误消息提示
+      return errorMessageResponseInterceptor((msg: string) =>
+        message.error(msg),
+      );
     }),
   );
 
