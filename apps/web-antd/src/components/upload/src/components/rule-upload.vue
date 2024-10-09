@@ -1,0 +1,237 @@
+<script setup lang="ts">
+import type { FileInfo } from '#/api/file/model/fileInfoModel';
+import type { FileUploadRule } from '#/api/file/model/fileUploadRuleModel';
+import type {
+  RuleUploadProps,
+  UploadFileModel,
+} from '#/components/upload/src/type';
+
+import { onMounted, ref, watch } from 'vue';
+
+import { useAccessStore } from '@vben/stores';
+
+import { UploadOutlined } from '@ant-design/icons-vue';
+import { Button, message, Tag, Upload } from 'ant-design-vue';
+import { isArray, isString } from 'lodash-es';
+
+import { getBySlugApi } from '#/api/file/fileUploadRule';
+import {
+  convertToFileInfo,
+  convertToUploadFileModelArray,
+} from '#/components/upload/src/helper';
+import { useUploadType } from '#/components/upload/src/useUpload';
+
+const props = withDefaults(defineProps<RuleUploadProps>(), {
+  listType: 'text',
+  maxNumber: 1,
+  multiple: false,
+  showHelpText: false,
+});
+
+const emit = defineEmits(['change', 'update:value']);
+
+const accessStore = useAccessStore();
+
+const loaded = ref(false);
+let uploadRule: FileUploadRule = null;
+
+// 已上传文件
+let uploadedFileList: FileInfo[] = [];
+// 未上传文件
+let uploadingFileList: UploadFileModel[] = [];
+// 用于显示的文件列表 已上传 + 未上传
+const displayFileList = ref<UploadFileModel[]>([]);
+
+// 后端文件上传地址
+const url = ref();
+
+onMounted(async () => {
+  initUpload();
+});
+
+async function initUpload() {
+  loaded.value = false;
+  uploadRule = null;
+  if (props.rule) {
+    uploadRule = await getBySlugApi(props.rule);
+  }
+  url.value = `${import.meta.env.VITE_GLOB_API_URL}/auth/file/upload/${props.rule}`;
+  loaded.value = true;
+}
+
+watch(
+  () => props.rule,
+  () => {
+    initUpload();
+  },
+);
+
+watch(
+  () => props.value,
+  () => {
+    setValue();
+  },
+  { deep: true },
+);
+
+setValue();
+
+const { getStringAccept, getHelpText } = useUploadType({
+  acceptRef: uploadRule?.suffixArray,
+  helpTextRef: props.helpText,
+  maxNumberRef: props?.maxNumber,
+  maxSizeRef: uploadRule?.upperLimit,
+});
+
+function setValue() {
+  if (props.value === null || props.value === '' || isString(props.value)) {
+    uploadedFileList = [];
+    refreshDisplayFileList();
+    return;
+  }
+  uploadedFileList = isArray(props.value)
+    ? initValue(props.value)
+    : initValue([props.value]);
+  refreshDisplayFileList();
+}
+
+function initValue(value: FileInfo[]): FileInfo[] {
+  if (!isArray(value)) {
+    return [];
+  }
+  value.forEach((item) => {
+    item.status = 'done';
+  });
+  return value;
+}
+
+/**
+ * 检查是否允许上传
+ *
+ * @param file 文件
+ */
+const beforeUpload = (file: File) => {
+  const { maxNumber, maxSize } = props;
+
+  // 上传数量是否超出，此时当前选择的文件尚未添加到上传中数组，所以使用 >=
+  if (uploadedFileList.length + uploadingFileList?.length >= maxNumber) {
+    message.warning(t('component.upload.maxNumber', [maxNumber]));
+    return false;
+  }
+
+  // 单文件大小是否超出
+  if (maxSize && file.size / 1024 / 1024 >= maxSize) {
+    message.error(t('component.upload.maxSizeMultiple', [maxSize]));
+    return false;
+  }
+  return true;
+};
+
+/**
+ * 文件状态变更
+ *
+ * @param info info
+ */
+const handleChange = (info: UploadChangeParam) => {
+  const { file, fileList } = info;
+  if (!info.file.status) {
+    // 如果状态为空，说明在beforeUpload返回了false
+    return;
+  }
+  uploadedFileList = [];
+  uploadingFileList = [];
+  fileList.forEach((item) => {
+    if (item.status === 'error') {
+      message.error(item.response?.errorMessage);
+    }
+    if (item.status === 'success' || item.status === 'done') {
+      uploadedFileList.push(convertToFileInfo(item));
+    } else {
+      uploadingFileList.push(item);
+    }
+  });
+  if (
+    file.status === 'success' ||
+    file.status === 'done' ||
+    file.status === 'removed'
+  ) {
+    handleValueChange();
+  }
+  refreshDisplayFileList();
+};
+
+/**
+ * 已上传文件值改变
+ */
+function handleValueChange() {
+  if (props.multiple) {
+    emit('change', uploadedFileList);
+    emit('update:value', uploadedFileList);
+  } else {
+    if (uploadedFileList.length > 0) {
+      emit('change', uploadedFileList[0]);
+      emit('update:value', uploadedFileList[0]);
+    } else {
+      emit('change', null);
+      emit('update:value', null);
+    }
+  }
+}
+
+/**
+ * 刷新显示的文件列表
+ */
+function refreshDisplayFileList() {
+  displayFileList.value = [
+    ...convertToUploadFileModelArray(uploadedFileList),
+    ...uploadingFileList,
+  ];
+}
+</script>
+
+<template>
+  <template v-if="loaded">
+    <Upload
+      v-if="uploadRule"
+      :accept="getStringAccept"
+      :action="url"
+      :before-upload="beforeUpload"
+      :file-list="displayFileList"
+      :headers="{ Authorization: accessStore.accessToken }"
+      :list-type="props.listType"
+      :multiple="multiple"
+      @change="handleChange"
+    >
+      <template
+        v-if="props.listType === 'picture-card'"
+      >
+        <div>
+          <UploadOutlined />
+          <div class="ant-upload-text">选择文件</div>
+        </div>
+      </template>
+
+      <template v-if="props.listType === 'text' || props.listType === 'picture'">
+        <Button>
+          <template #icon>
+            <UploadOutlined />
+          </template>
+
+          选择文件
+        </Button>
+      </template>
+    </Upload>
+    <Tag v-else color="red">获取上传策略失败</Tag>
+
+    <div v-if="props.showHelpText" class="upload-help-text py-1">
+      {{ getHelpText }}
+    </div>
+  </template>
+</template>
+
+<style lang="scss" scoped>
+.upload-help-text {
+  font-size: 14px;
+  color: hsl(var(--secondary-foreground));
+}
+</style>

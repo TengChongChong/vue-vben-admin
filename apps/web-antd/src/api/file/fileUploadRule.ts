@@ -1,18 +1,18 @@
-import { FileUploadRule } from '@/api/file/model/fileUploadRuleModel';
-import { Page } from '@/api/model/pageModel';
-import { defHttp } from '@/utils/http/axios';
+import type { Page } from '#/api/base/model/pageModel';
+import type { FileUploadRule } from '#/api/file/model/fileUploadRuleModel';
+
+import { requestClient } from '#/api/request';
 
 // base url
-const BASE_URL = '/api/auth/file/upload/rule';
+const BASE_URL = '/auth/file/upload/rule';
 /**
  * 查询数据
  *
  * @param params 查询条件
  * @param page 分页
  */
-export function select(params: FileUploadRule, page: Page<FileUploadRule>) {
-  return defHttp.get<Page<FileUploadRule>>({
-    url: BASE_URL,
+export function selectApi(params: FileUploadRule, page: Page<FileUploadRule>) {
+  return requestClient.get<Page<FileUploadRule>>(BASE_URL, {
     params: Object.assign(params, page),
   });
 }
@@ -22,10 +22,8 @@ export function select(params: FileUploadRule, page: Page<FileUploadRule>) {
  *
  * @param slug 规则别名
  */
-export function getBySlug(slug: string) {
-  return defHttp.get<FileUploadRule>({
-    url: `${BASE_URL}/slug/${slug}`,
-  });
+export function getBySlugApi(slug: string) {
+  return requestClient.get<FileUploadRule>(`${BASE_URL}/slug/${slug}`);
 }
 
 /**
@@ -33,19 +31,15 @@ export function getBySlug(slug: string) {
  *
  * @param id id
  */
-export function get(id: string) {
-  return defHttp.get<FileUploadRule>({
-    url: `${BASE_URL}/${id}`,
-  });
+export function getApi(id: string) {
+  return requestClient.get<FileUploadRule>(`${BASE_URL}/${id}`);
 }
 
 /**
  * 新增
  */
-export function add() {
-  return defHttp.get<FileUploadRule>({
-    url: `${BASE_URL}/add`,
-  });
+export function addApi() {
+  return requestClient.get<FileUploadRule>(`${BASE_URL}/add`);
 }
 
 /**
@@ -53,10 +47,8 @@ export function add() {
  *
  * @param ids ids
  */
-export function remove(ids: string) {
-  return defHttp.delete<boolean>({
-    url: `${BASE_URL}/${ids}`,
-  });
+export function removeApi(ids: string) {
+  return requestClient.delete<boolean>(`${BASE_URL}/${ids}`);
 }
 
 /**
@@ -64,11 +56,8 @@ export function remove(ids: string) {
  *
  * @param params 表单数据
  */
-export function save(params: FileUploadRule) {
-  return defHttp.post<FileUploadRule>({
-    url: BASE_URL,
-    data: params,
-  });
+export function saveApi(params: FileUploadRule) {
+  return requestClient.post<FileUploadRule>(BASE_URL, params);
 }
 
 /**
@@ -77,8 +66,6 @@ export function save(params: FileUploadRule) {
  * @param ids ids
  * @param status 状态
  */
-export function setStatus(ids: string, status: string) {
-  return defHttp.post<boolean>({
-    url: `${BASE_URL}/${ids}/status/${status}`,
-  });
+export function setStatusApi(ids: string, status: string) {
+  return requestClient.post<boolean>(`${BASE_URL}/${ids}/status/${status}`);
 }
