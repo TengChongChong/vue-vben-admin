@@ -1,20 +1,38 @@
-import type { BasicUserInfo } from '@vben-core/typings';
-
 import { acceptHMRUpdate, defineStore } from 'pinia';
 
-interface UserState {
+interface BasicUserInfo {
+  [key: string]: any;
+  /**
+   * 头像
+   */
+  avatar: string;
+  /**
+   * 用户昵称
+   */
+  realName: string;
+  /**
+   * 用户角色
+   */
+  roles?: string[];
+  /**
+   * 用户id
+   */
+  userId: string;
+  /**
+   * 用户名
+   */
+  username: string;
+}
+
+interface AccessState {
   /**
    * 用户信息
    */
   userInfo: BasicUserInfo | null;
   /**
-   * 用户角色标识
+   * 用户角色
    */
-  roleCodeList: string[];
-  /**
-   * 用户权限标识
-   */
-  permissionCodeList: string[];
+  userRoles: string[];
 }
 
 /**
@@ -26,22 +44,16 @@ export const useUserStore = defineStore('core-user', {
       // 设置用户信息
       this.userInfo = userInfo;
       // 设置角色信息
-      const roleCodeList = userInfo?.roleCodeList ?? [];
-      const permissionCodeList = userInfo?.permissionCodeList ?? [];
-      this.setRoleCodeList(roleCodeList);
-      this.setPermissionCodeList(permissionCodeList);
+      const roles = userInfo?.roles ?? [];
+      this.setUserRoles(roles);
     },
-    setRoleCodeList(roles: string[]) {
-      this.roleCodeList = roles;
-    },
-    setPermissionCodeList(roles: string[]) {
-      this.permissionCodeList = roles;
+    setUserRoles(roles: string[]) {
+      this.userRoles = roles;
     },
   },
-  state: (): UserState => ({
+  state: (): AccessState => ({
     userInfo: null,
-    roleCodeList: [],
-    permissionCodeList: [],
+    userRoles: [],
   }),
 });
 

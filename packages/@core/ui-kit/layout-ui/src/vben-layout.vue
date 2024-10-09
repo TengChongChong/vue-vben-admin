@@ -4,7 +4,11 @@ import type { VbenLayoutProps } from './vben-layout';
 import type { CSSProperties } from 'vue';
 import { computed, ref, watch } from 'vue';
 
-import { SCROLL_FIXED_CLASS } from '@vben-core/composables';
+import {
+  SCROLL_FIXED_CLASS,
+  useLayoutFooterStyle,
+  useLayoutHeaderStyle,
+} from '@vben-core/composables';
 import { Menu } from '@vben-core/icons';
 import { VbenIconButton } from '@vben-core/shadcn-ui';
 
@@ -62,6 +66,11 @@ const sidebarExtraCollapse = defineModel<boolean>('sidebarExtraCollapse');
 const sidebarExpandOnHover = defineModel<boolean>('sidebarExpandOnHover');
 const sidebarEnable = defineModel<boolean>('sidebarEnable', { default: true });
 
+// side是否处于hover状态展开菜单中
+const sidebarExpandOnHovering = ref(false);
+const headerIsHidden = ref(false);
+const contentRef = ref();
+
 const {
   arrivedState,
   directions,
@@ -69,11 +78,10 @@ const {
   y: scrollY,
 } = useScroll(document);
 
-const { y: mouseY } = useMouse({ type: 'client' });
+const { setLayoutHeaderHeight } = useLayoutHeaderStyle();
+const { setLayoutFooterHeight } = useLayoutFooterStyle();
 
-// side是否处于hover状态展开菜单中
-const sidebarExpandOnHovering = ref(false);
-const headerIsHidden = ref(false);
+const { y: mouseY } = useMouse({ target: contentRef, type: 'client' });
 
 const {
   currentLayout,
@@ -355,6 +363,26 @@ watch(
   },
 );
 
+watch(
+  [() => headerWrapperHeight.value, () => isFullContent.value],
+  ([height]) => {
+    setLayoutHeaderHeight(isFullContent.value ? 0 : height);
+  },
+  {
+    immediate: true,
+  },
+);
+
+watch(
+  () => props.footerHeight,
+  (height: number) => {
+    setLayoutFooterHeight(height);
+  },
+  {
+    immediate: true,
+  },
+);
+
 {
   const mouseMove = () => {
     mouseY.value > headerWrapperHeight.value
@@ -474,6 +502,7 @@ function handleHeaderToggle() {
     </LayoutSidebar>
 
     <div
+      ref="contentRef"
       class="flex flex-1 flex-col overflow-hidden transition-all duration-300 ease-in"
     >
       <div

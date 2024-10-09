@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { computed, ref, toRaw, unref } from 'vue';
+import { computed, toRaw, unref, watch } from 'vue';
 
 import { useSimpleLocale } from '@vben-core/composables';
 import { VbenExpandableArrow } from '@vben-core/shadcn-ui';
-import { cn, isFunction } from '@vben-core/shared/utils';
+import { cn, isFunction, triggerWindowResize } from '@vben-core/shared/utils';
 
 import { COMPONENT_MAP } from '../config';
 import { injectFormProps } from '../use-form-context';
@@ -14,31 +14,28 @@ const [rootProps, form] = injectFormProps();
 
 const collapsed = defineModel({ default: false });
 
-const submitLoading = ref(false);
-
 const resetButtonOptions = computed(() => {
   return {
+    content: `${$t.value('reset')}`,
     show: true,
-    text: `${$t.value('reset')}`,
     ...unref(rootProps).resetButtonOptions,
   };
 });
 
 const submitButtonOptions = computed(() => {
   return {
+    content: `${$t.value('submit')}`,
     show: true,
-    text: `${$t.value('submit')}`,
-    loading: submitLoading.value,
     ...unref(rootProps).submitButtonOptions,
   };
 });
 
-const isQueryForm = computed(() => {
-  return !!unref(rootProps).showCollapseButton;
-});
+// const isQueryForm = computed(() => {
+//   return !!unref(rootProps).showCollapseButton;
+// });
 
 const queryFormStyle = computed(() => {
-  if (isQueryForm.value) {
+  if (!unref(rootProps).actionWrapperClass) {
     return {
       'grid-column': `-2 / -1`,
       marginLeft: 'auto',
@@ -55,14 +52,7 @@ async function handleSubmit(e: Event) {
   if (!valid) {
     return;
   }
-  try {
-    submitLoading.value = true;
-    await unref(rootProps).handleSubmit?.(toRaw(form.values));
-  } catch (error) {
-    console.error('form submit error:', error);
-  } finally {
-    submitLoading.value = false;
-  }
+  await unref(rootProps).handleSubmit?.(toRaw(form.values));
 }
 
 async function handleReset(e: Event) {
@@ -75,10 +65,22 @@ async function handleReset(e: Event) {
     form.resetForm();
   }
 }
+
+watch(
+  () => collapsed.value,
+  () => {
+    const props = unref(rootProps);
+    if (props.collapseTriggerResize) {
+      triggerWindowResize();
+    }
+  },
+);
 </script>
 <template>
   <div
-    :class="cn('col-span-full w-full text-right', rootProps.actionWrapperClass)"
+    :class="
+      cn('col-span-full w-full pb-6 text-right', rootProps.actionWrapperClass)
+    "
     :style="queryFormStyle"
   >
     <component
@@ -89,7 +91,7 @@ async function handleReset(e: Event) {
       @click="handleReset"
       v-bind="resetButtonOptions"
     >
-      {{ resetButtonOptions.text }}
+      {{ resetButtonOptions.content }}
     </component>
 
     <component
@@ -99,7 +101,7 @@ async function handleReset(e: Event) {
       @click="handleSubmit"
       v-bind="submitButtonOptions"
     >
-      {{ submitButtonOptions.text }}
+      {{ submitButtonOptions.content }}
     </component>
 
     <VbenExpandableArrow

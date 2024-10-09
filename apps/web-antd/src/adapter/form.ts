@@ -4,6 +4,7 @@ import type {
   VbenFormProps,
 } from '@vben/common-ui';
 
+import type { Component, SetupContext } from 'vue';
 import { h } from 'vue';
 
 import { setupVbenForm, useVbenForm as useForm, z } from '@vben/common-ui';
@@ -33,33 +34,12 @@ import {
   Upload,
 } from 'ant-design-vue';
 
-import { Cropper } from '#/components/cropper';
-import { DeptSelect } from '#/components/dept';
-import {
-  DictCascader,
-  DictCheckbox,
-  DictRadio,
-  DictSelect,
-  DictTreeSelect,
-} from '#/components/dict';
-import { RoleSelect } from '#/components/role';
-import { UserSelect } from '#/components/user';
-
-// 业务表单组件适配
-
 // 这里需要自行根据业务组件库进行适配，需要用到的组件都需要在这里类型说明
 export type FormComponentType =
   | 'AutoComplete'
   | 'Checkbox'
   | 'CheckboxGroup'
-  | 'Cropper'
   | 'DatePicker'
-  | 'DeptSelect'
-  | 'DictCascader'
-  | 'DictCheckbox'
-  | 'DictRadio'
-  | 'DictSelect'
-  | 'DictTreeSelect'
   | 'Divider'
   | 'Input'
   | 'InputNumber'
@@ -69,7 +49,6 @@ export type FormComponentType =
   | 'RadioGroup'
   | 'RangePicker'
   | 'Rate'
-  | 'RoleSelect'
   | 'Select'
   | 'Space'
   | 'Switch'
@@ -77,8 +56,17 @@ export type FormComponentType =
   | 'TimePicker'
   | 'TreeSelect'
   | 'Upload'
-  | 'UserSelect'
   | BaseFormComponentType;
+
+const withDefaultPlaceholder = <T extends Component>(
+  component: T,
+  type: 'input' | 'select',
+) => {
+  return (props: any, { attrs, slots }: Omit<SetupContext, 'expose'>) => {
+    const placeholder = props?.placeholder || $t(`placeholder.${type}`);
+    return h(component, { ...props, ...attrs, placeholder }, slots);
+  };
+};
 
 // 初始化表单组件，并注册到form组件内部
 setupVbenForm<FormComponentType>({
@@ -86,7 +74,6 @@ setupVbenForm<FormComponentType>({
     AutoComplete,
     Checkbox,
     CheckboxGroup,
-    Cropper,
     DatePicker,
     // 自定义默认的重置按钮
     DefaultResetActionButton: (props, { attrs, slots }) => {
@@ -96,30 +83,22 @@ setupVbenForm<FormComponentType>({
     DefaultSubmitActionButton: (props, { attrs, slots }) => {
       return h(Button, { ...props, attrs, type: 'primary' }, slots);
     },
-    DictCascader,
-    DictCheckbox,
-    DictRadio,
-    DictSelect,
-    DictTreeSelect,
     Divider,
-    DeptSelect,
-    Input,
-    InputNumber,
-    InputPassword,
-    Mentions,
+    Input: withDefaultPlaceholder(Input, 'input'),
+    InputNumber: withDefaultPlaceholder(InputNumber, 'input'),
+    InputPassword: withDefaultPlaceholder(InputPassword, 'input'),
+    Mentions: withDefaultPlaceholder(Mentions, 'input'),
     Radio,
     RadioGroup,
     RangePicker,
     Rate,
-    RoleSelect,
-    Select,
+    Select: withDefaultPlaceholder(Select, 'select'),
     Space,
     Switch,
+    Textarea: withDefaultPlaceholder(Textarea, 'input'),
     TimePicker,
-    TreeSelect,
-    Textarea,
+    TreeSelect: withDefaultPlaceholder(TreeSelect, 'select'),
     Upload,
-    UserSelect,
   },
   config: {
     // ant design vue组件库默认都是 v-model:value
