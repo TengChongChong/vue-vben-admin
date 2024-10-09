@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, toRaw, unref, watch } from 'vue';
+import { computed, ref, toRaw, unref, watch } from 'vue';
 
 import { useSimpleLocale } from '@vben-core/composables';
 import { VbenExpandableArrow } from '@vben-core/shadcn-ui';
@@ -13,6 +13,7 @@ const { $t } = useSimpleLocale();
 const [rootProps, form] = injectFormProps();
 
 const collapsed = defineModel({ default: false });
+const submitLoading = ref(false);
 
 const resetButtonOptions = computed(() => {
   return {
@@ -26,6 +27,7 @@ const submitButtonOptions = computed(() => {
   return {
     content: `${$t.value('submit')}`,
     show: true,
+    loading: submitLoading.value,
     ...unref(rootProps).submitButtonOptions,
   };
 });
@@ -52,7 +54,14 @@ async function handleSubmit(e: Event) {
   if (!valid) {
     return;
   }
-  await unref(rootProps).handleSubmit?.(toRaw(form.values));
+  try {
+    submitLoading.value = true;
+    await unref(rootProps).handleSubmit?.(toRaw(form.values));
+  } catch (error) {
+    console.error('form submit error:', error);
+  } finally {
+    submitLoading.value = false;
+  }
 }
 
 async function handleReset(e: Event) {

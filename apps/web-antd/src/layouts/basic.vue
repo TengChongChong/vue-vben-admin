@@ -6,7 +6,6 @@ import { computed, ref, watch } from 'vue';
 import { AuthenticationLoginExpiredModal } from '@vben/common-ui';
 import { VBEN_DOC_URL, VBEN_GITHUB_URL } from '@vben/constants';
 import { useWatermark } from '@vben/hooks';
-import { BookOpenText, CircleHelp, MdiGithub } from '@vben/icons';
 import {
   BasicLayout,
   LockScreen,
@@ -17,8 +16,15 @@ import { preferences } from '@vben/preferences';
 import { useAccessStore, useUserStore } from '@vben/stores';
 import { openWindow } from '@vben/utils';
 
+import {
+  BookOpenText,
+  CircleHelp,
+  MdiGithub,
+  UserRound,
+} from '#/components/icons';
 import { $t } from '#/locales';
-import { useAuthStore } from '#/store';
+import { router } from '#/router';
+import { useAuthStore, useDictStore } from '#/store';
 import LoginForm from '#/views/_core/authentication/login.vue';
 
 const notifications = ref<NotificationItem[]>([
@@ -55,10 +61,13 @@ const notifications = ref<NotificationItem[]>([
 const userStore = useUserStore();
 const authStore = useAuthStore();
 const accessStore = useAccessStore();
+const dictStore = useDictStore();
 const { destroyWatermark, updateWatermark } = useWatermark();
 const showDot = computed(() =>
   notifications.value.some((item) => !item.isRead),
 );
+
+dictStore.initDict(true);
 
 const menus = computed(() => [
   {
@@ -88,6 +97,13 @@ const menus = computed(() => [
     icon: CircleHelp,
     text: $t('widgets.qa'),
   },
+  {
+    handler: () => {
+      router.push('/auth/personal/index');
+    },
+    icon: UserRound,
+    text: '个人中心',
+  },
 ]);
 
 const avatar = computed(() => {
@@ -102,9 +118,27 @@ function handleNoticeClear() {
   notifications.value = [];
 }
 
-function handleMakeAll() {
+/**
+ * 消息全部标记为已读
+ */
+function handleMakeAllAsRead() {
   notifications.value.forEach((item) => (item.isRead = true));
 }
+
+/**
+ * 查看所有消息
+ */
+function handleViewAll() {
+  router.push(`/sys/message/receive`);
+}
+
+/**
+ * 查看消息详情
+ */
+function handleReadNotification(notification: NotificationItem) {
+  // todo: 查看消息详情
+}
+
 watch(
   () => preferences.app.watermark,
   async (enable) => {
@@ -127,10 +161,9 @@ watch(
     <template #user-dropdown>
       <UserDropdown
         :avatar
-        :menus
-        :text="userStore.userInfo?.realName"
-        description="ann.vben@gmail.com"
-        tag-text="Pro"
+        :description="userStore.userInfo?.dept?.name"
+        :menus="menus"
+        :text="userStore.userInfo?.nickname"
         @logout="handleLogout"
       />
     </template>
@@ -139,7 +172,9 @@ watch(
         :dot="showDot"
         :notifications="notifications"
         @clear="handleNoticeClear"
-        @make-all="handleMakeAll"
+        @make-all="handleMakeAllAsRead"
+        @read="handleReadNotification"
+        @view-all="handleViewAll"
       />
     </template>
     <template #extra>

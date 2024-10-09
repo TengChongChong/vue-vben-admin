@@ -13,6 +13,7 @@ packages:
   - docs
   - playground
 catalog:
+  "@ant-design/icons-vue": ^7.0.1
   '@changesets/changelog-github': ^0.5.0
   '@changesets/cli': ^2.27.9
   '@changesets/git': ^3.0.1
@@ -38,10 +39,12 @@ catalog:
   '@tanstack/vue-store': ^0.5.5
   '@types/archiver': ^6.0.2
   '@types/chalk': ^2.2.0
+  '@types/crypto-js': ^4.2.0
   '@types/eslint': ^9.6.1
   '@types/html-minifier-terser': ^7.0.2
   '@types/jsonwebtoken': ^9.0.7
   '@types/lodash.clonedeep': ^4.5.9
+  '@types/lodash-es': ^4.17.12
   '@types/node': ^22.7.5
   '@types/nprogress': ^0.2.3
   '@types/postcss-import': ^14.0.3
@@ -53,6 +56,7 @@ catalog:
   '@vite-pwa/vitepress': ^0.5.3
   '@vitejs/plugin-vue': ^5.1.4
   '@vitejs/plugin-vue-jsx': ^4.0.1
+  '@vueuse/shared': ^11.0.3
   '@vue/reactivity': ^3.5.11
   '@vue/shared': ^3.5.11
   '@vue/test-utils': ^2.4.6
@@ -72,6 +76,8 @@ catalog:
   commitlint-plugin-function-rules: ^4.0.0
   consola: ^3.2.3
   cross-env: ^7.0.3
+  cropperjs: ^1.6.2
+  crypto-js: ^4.2.0
   cspell: ^8.14.4
   cssnano: ^7.0.6
   cz-git: ^1.10.1
@@ -111,6 +117,7 @@ catalog:
   jsonwebtoken: ^9.0.2
   lint-staged: ^15.2.10
   lodash.clonedeep: ^4.5.0
+  lodash-es: ^4.17.21
   lucide-vue-next: ^0.451.0
   medium-zoom: ^1.1.0
   naive-ui: ^2.40.1
@@ -176,5 +183,6 @@ catalog:
   vxe-pc-ui: ^4.2.18
   vxe-table: ^4.7.86
   watermark-js-plus: ^1.5.7
+  vue-json-pretty: ^2.4.0
   zod: ^3.23.8
   zod-defaults: ^0.1.3

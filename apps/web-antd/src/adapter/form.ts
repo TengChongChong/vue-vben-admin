@@ -34,12 +34,32 @@ import {
   Upload,
 } from 'ant-design-vue';
 
+// 业务表单组件适配
+import { Cropper } from '#/components/cropper';
+import { DeptSelect } from '#/components/dept';
+import {
+  DictCascader,
+  DictCheckbox,
+  DictRadio,
+  DictSelect,
+  DictTreeSelect,
+} from '#/components/dict';
+import { RoleSelect } from '#/components/role';
+import { UserSelect } from '#/components/user';
+
 // 这里需要自行根据业务组件库进行适配，需要用到的组件都需要在这里类型说明
 export type FormComponentType =
   | 'AutoComplete'
   | 'Checkbox'
   | 'CheckboxGroup'
+  | 'Cropper'
   | 'DatePicker'
+  | 'DeptSelect'
+  | 'DictCascader'
+  | 'DictCheckbox'
+  | 'DictRadio'
+  | 'DictSelect'
+  | 'DictTreeSelect'
   | 'Divider'
   | 'Input'
   | 'InputNumber'
@@ -49,6 +69,7 @@ export type FormComponentType =
   | 'RadioGroup'
   | 'RangePicker'
   | 'Rate'
+  | 'RoleSelect'
   | 'Select'
   | 'Space'
   | 'Switch'
@@ -56,6 +77,7 @@ export type FormComponentType =
   | 'TimePicker'
   | 'TreeSelect'
   | 'Upload'
+  | 'UserSelect'
   | BaseFormComponentType;
 
 const withDefaultPlaceholder = <T extends Component>(
@@ -74,6 +96,7 @@ setupVbenForm<FormComponentType>({
     AutoComplete,
     Checkbox,
     CheckboxGroup,
+    Cropper,
     DatePicker,
     // 自定义默认的重置按钮
     DefaultResetActionButton: (props, { attrs, slots }) => {
@@ -83,7 +106,13 @@ setupVbenForm<FormComponentType>({
     DefaultSubmitActionButton: (props, { attrs, slots }) => {
       return h(Button, { ...props, attrs, type: 'primary' }, slots);
     },
+    DictCascader,
+    DictCheckbox,
+    DictRadio,
+    DictSelect,
+    DictTreeSelect,
     Divider,
+    DeptSelect,
     Input: withDefaultPlaceholder(Input, 'input'),
     InputNumber: withDefaultPlaceholder(InputNumber, 'input'),
     InputPassword: withDefaultPlaceholder(InputPassword, 'input'),
@@ -92,6 +121,7 @@ setupVbenForm<FormComponentType>({
     RadioGroup,
     RangePicker,
     Rate,
+    RoleSelect,
     Select: withDefaultPlaceholder(Select, 'select'),
     Space,
     Switch,
@@ -99,6 +129,7 @@ setupVbenForm<FormComponentType>({
     TimePicker,
     TreeSelect: withDefaultPlaceholder(TreeSelect, 'select'),
     Upload,
+    UserSelect,
   },
   config: {
     // ant design vue组件库默认都是 v-model:value

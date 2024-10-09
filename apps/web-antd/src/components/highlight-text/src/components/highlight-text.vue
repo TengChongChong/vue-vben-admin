@@ -1,7 +1,7 @@
 <script setup lang="ts">
 defineProps<{
   // 高亮文字
-  keyword: string;
+  keyword?: string;
   // 文字
   text: string;
 }>();
