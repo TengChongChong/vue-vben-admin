@@ -41,15 +41,19 @@
     "@vben/styles": "workspace:*",
     "@vben/types": "workspace:*",
     "@vben/utils": "workspace:*",
-    "@vueuse/core": "catalog:",
     "@vue/shared": "catalog:",
+    "@vueuse/core": "catalog:",
     "@vueuse/shared": "catalog:",
     "ant-design-vue": "catalog:",
     "cropperjs": "catalog:",
     "dayjs": "catalog:",
+    "lodash-es": "catalog:",
     "pinia": "catalog:",
     "vue": "catalog:",
-    "vue-router": "catalog:",
-    "vue-json-pretty": "catalog:"
+    "vue-json-pretty": "catalog:",
+    "vue-router": "catalog:"
+  },
+  "devDependencies": {
+    "@types/lodash-es": "catalog:"
   }
 }
