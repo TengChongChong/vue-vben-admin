@@ -229,3 +229,48 @@ export function treeMapEach(
         ...conversionData,
       };
 }
+
+/**
+ * 将后端返回的选中数据转为Tree所需的选中数据
+ *
+ * @param treeData 树数据
+ * @param checkedKeys 选中节点key
+ */
+export function convertCheckedKeys(treeData: any[], checkedKeys: string[]) {
+  if (!checkedKeys || !Array.isArray(checkedKeys) || checkedKeys.length === 0) {
+    return [];
+  }
+  const checked: {
+    checked: string[];
+    halfCheckedKeys: string[];
+  } = {
+    halfCheckedKeys: [],
+    checked: [],
+  };
+
+  checkedKeys.forEach((key) => {
+    const currentNode = findNode(treeData, (n: any) => n.key === key);
+    if (currentNode) {
+      if (currentNode.children && currentNode.children.length > 0) {
+        const childrenArray = treeToList(currentNode.children);
+        let hav = true;
+        for (let i = 0; i < childrenArray.length && hav; i++) {
+          if (!checkedKeys.includes(childrenArray[i].key)) {
+            // 子节点未全部选中
+            hav = false;
+          }
+        }
+        if (hav) {
+          checked.checked.push(key);
+        } else {
+          checked.halfCheckedKeys.push(key);
+        }
+      } else {
+        // 没有子节点，全选状态
+        checked.checked.push(key);
+      }
+    }
+  });
+
+  return checked;
+}
