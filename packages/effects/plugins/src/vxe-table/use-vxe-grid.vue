@@ -73,7 +73,7 @@ const [Form, formApi] = useTableForm({
   submitButtonOptions: {
     content: $t('common.query'),
   },
-  wrapperClass: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
+  wrapperClass: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
 });
 
 const showToolbar = computed(() => {
@@ -235,7 +235,7 @@ onMounted(() => {
       ref="gridRef"
       :class="
         cn(
-          'p-2',
+          'p-4',
           {
             'pt-0': showToolbar && !formOptions,
           },
@@ -266,7 +266,7 @@ onMounted(() => {
             </Form>
           </slot>
           <div
-            class="bg-background-deep z-100 absolute -left-2 bottom-1 h-2 w-[calc(100%+1rem)] overflow-hidden md:bottom-2 md:h-3"
+            class="bg-background-deep z-100 absolute -left-4 bottom-1 h-2 w-[calc(100%+2rem)] overflow-hidden md:bottom-2 md:h-3"
           ></div>
         </div>
       </template>

@@ -55,6 +55,21 @@ export class VxeGridApi {
     bindMethods(this);
   }
 
+  /**
+   * 获取选中行Id数据
+   */
+  getCheckboxRecordIds(): string[] {
+    const records = this.grid.getCheckboxRecords();
+    return records.map((record) => record.id);
+  }
+
+  /**
+   * 获取选中行数据
+   */
+  getCheckboxRecords(): string[] {
+    return this.grid.getCheckboxRecords();
+  }
+
   mount(instance: null | VxeGridInstance, formApi: ExtendedFormApi) {
     if (!this.isMounted && instance) {
       this.grid = instance;
@@ -78,6 +93,13 @@ export class VxeGridApi {
     } catch (error) {
       console.error('Error occurred while reloading:', error);
     }
+  }
+
+  /**
+   * 查询数据
+   */
+  search() {
+    this.formApi.submitForm();
   }
 
   setGridOptions(options: Partial<VxeGridProps['gridOptions']>) {

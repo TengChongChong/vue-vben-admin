@@ -80,3 +80,24 @@
 .vxe-pager--wrapper {
   @apply justify-center md:justify-end;
 }
+
+.vxe-grid {
+  .table-title {
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .vxe-tools--operate {
+    padding-left: 8px;
+    margin-left: 8px;
+    border-left: 1px solid hsl(var(--border));
+  }
+}
+
+.vxe-table {
+  .vxe-cell--checkbox {
+    .vxe-checkbox--label {
+      display: none;
+    }
+  }
+}
