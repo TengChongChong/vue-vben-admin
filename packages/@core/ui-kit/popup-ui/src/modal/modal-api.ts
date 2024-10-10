@@ -35,7 +35,7 @@ export class ModalApi {
       closeOnPressEscape: true,
       confirmLoading: false,
       contentClass: '',
-      draggable: false,
+      draggable: true,
       footer: true,
       footerClass: '',
       fullscreen: false,
@@ -127,6 +127,10 @@ export class ModalApi {
 
   setData<T>(payload: T) {
     this.sharedData.payload = payload;
+  }
+
+  setLoading(loading: boolean) {
+    this.setState({ loading });
   }
 
   setState(
