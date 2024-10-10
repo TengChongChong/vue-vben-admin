@@ -106,13 +106,13 @@ setupVbenForm<FormComponentType>({
     DefaultSubmitActionButton: (props, { attrs, slots }) => {
       return h(Button, { ...props, attrs, type: 'primary' }, slots);
     },
-    DictCascader,
+    DictCascader: withDefaultPlaceholder(DictCascader, 'select'),
     DictCheckbox,
     DictRadio,
-    DictSelect,
-    DictTreeSelect,
+    DictSelect: withDefaultPlaceholder(DictSelect, 'select'),
+    DictTreeSelect: withDefaultPlaceholder(DictTreeSelect, 'select'),
     Divider,
-    DeptSelect,
+    DeptSelect: withDefaultPlaceholder(DeptSelect, 'select'),
     Input: withDefaultPlaceholder(Input, 'input'),
     InputNumber: withDefaultPlaceholder(InputNumber, 'input'),
     InputPassword: withDefaultPlaceholder(InputPassword, 'input'),
@@ -121,7 +121,7 @@ setupVbenForm<FormComponentType>({
     RadioGroup,
     RangePicker,
     Rate,
-    RoleSelect,
+    RoleSelect: withDefaultPlaceholder(RoleSelect, 'select'),
     Select: withDefaultPlaceholder(Select, 'select'),
     Space,
     Switch,
@@ -129,7 +129,7 @@ setupVbenForm<FormComponentType>({
     TimePicker,
     TreeSelect: withDefaultPlaceholder(TreeSelect, 'select'),
     Upload,
-    UserSelect,
+    UserSelect: withDefaultPlaceholder(UserSelect, 'select'),
   },
   config: {
     // ant design vue组件库默认都是 v-model:value
