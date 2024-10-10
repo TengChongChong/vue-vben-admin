@@ -1,3 +1,5 @@
+export { renderDictTag } from '#/components/dict/src/util';
+
 export { default as DictTag } from './src/components/display/dict-tag.vue';
 export { default as DictCascader } from './src/components/form/dict-cascader.vue';
 export { default as DictCheckbox } from './src/components/form/dict-checkbox.vue';
