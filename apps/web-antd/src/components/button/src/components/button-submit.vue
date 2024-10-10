@@ -14,8 +14,6 @@ defineOptions({
 const props = withDefaults(defineProps<BaseButtonProps>(), {
   authType: 'code',
   text: '提交',
-  loading: false,
-  disabled: false,
   type: 'primary',
   size: 'middle',
 });
@@ -28,11 +26,10 @@ function handleClick() {
 </script>
 
 <template>
-  <AccessControl :codes="props.codes" :type="props.authType">
+  <AccessControl :codes="props.authCodes" :type="props.authType">
     <Button
       v-bind="$attrs"
       :class="cn(props.class)"
-      :disabled="props.disabled"
       :size="props.size"
       :type="props.type"
       @click="handleClick"

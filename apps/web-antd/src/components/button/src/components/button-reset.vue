@@ -12,8 +12,6 @@ defineOptions({
 
 const props = withDefaults(defineProps<BaseButtonProps>(), {
   text: '重置',
-  loading: false,
-  disabled: false,
   type: 'default',
   size: 'middle',
 });
@@ -29,7 +27,6 @@ function handleClick() {
   <Button
     v-bind="$attrs"
     :class="cn(props.class)"
-    :disabled="props.disabled"
     :size="props.size"
     :type="props.type"
     @click="handleClick"

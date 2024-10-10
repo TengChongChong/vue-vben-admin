@@ -1,34 +1,26 @@
 <script setup lang="ts">
-import type { ButtonAddProps } from '../props';
-
-import { useRouter } from 'vue-router';
+import type { BaseButtonProps } from '../props';
 
 import { AccessControl } from '@vben/access';
 import { cn } from '@vben/utils';
 
-import { PlusOutlined } from '@ant-design/icons-vue';
+import { CloseOutlined } from '@ant-design/icons-vue';
 import { Button } from 'ant-design-vue';
 
 defineOptions({
   inheritAttrs: false,
 });
 
-const props = withDefaults(defineProps<ButtonAddProps>(), {
+const props = withDefaults(defineProps<BaseButtonProps>(), {
   authType: 'code',
-  text: '新增',
-  type: 'primary',
+  text: '关闭',
   size: 'middle',
 });
 
 const emit = defineEmits(['click']);
 
-const router = useRouter();
-
 function handleClick() {
   emit('click');
-  if (props.path) {
-    router.push(props.path);
-  }
 }
 </script>
 
@@ -42,7 +34,7 @@ function handleClick() {
       @click="handleClick"
     >
       <template #icon>
-        <PlusOutlined />
+        <CloseOutlined />
       </template>
       {{ props.text }}
     </Button>

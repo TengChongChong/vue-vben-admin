@@ -10,17 +10,16 @@ import {
   DeleteOutlined,
   ExclamationCircleOutlined,
 } from '@ant-design/icons-vue';
-import { Button, Modal } from 'ant-design-vue';
+import { Button, message, Modal } from 'ant-design-vue';
 
 defineOptions({
   inheritAttrs: false,
 });
 
 const props = withDefaults(defineProps<ButtonRemoveProps>(), {
+  ids: [],
   authType: 'code',
   text: '删除',
-  danger: true,
-  disabled: false,
   type: 'primary',
   size: 'middle',
 });
@@ -30,8 +29,19 @@ const emit = defineEmits(['click', 'success', 'fail']);
 const loading = ref(false);
 
 function handleClick() {
+  let selectRecordIds: string = props.ids;
+  if (!selectRecordIds?.length) {
+    selectRecordIds = props.gridApi.getCheckboxRecordIds();
+    if (selectRecordIds.length === 0) {
+      message.warning('请选择要删除的数据后重试');
+      return;
+    }
+  }
+
   Modal.confirm({
-    title: `确定要删除选中 ${props.id.length} 条数据吗?`,
+    title: props.ids?.length
+      ? ` 确定要删除吗?`
+      : ` 确定要删除选中 ${selectRecordIds.length} 条数据吗?`,
     icon: createVNode(ExclamationCircleOutlined),
     content: createVNode(
       'div',
@@ -45,16 +55,16 @@ function handleClick() {
       loading.value = true;
       let result;
       try {
-        result = await api(props.id.join(','));
+        result = await api(selectRecordIds.join(','));
       } catch (error) {
         console.error(error);
       } finally {
         loading.value = false;
       }
       if (result) {
-        emit('success', props.id);
+        emit('success', selectRecords);
       } else {
-        emit('fail', props.id);
+        emit('fail', selectRecords);
       }
     },
   });
@@ -62,16 +72,14 @@ function handleClick() {
 </script>
 
 <template>
-  <AccessControl :codes="props.codes" :type="props.authType">
+  <AccessControl :codes="props.authCodes" :type="props.authType">
     <Button
-      v-if="props.id.length > 0"
       v-bind="$attrs"
       :class="cn(props.class)"
-      :danger="props.danger"
-      :disabled="props.disabled"
       :loading="loading"
       :size="props.size"
       :type="props.type"
+      danger
       @click="handleClick"
     >
       <template #icon>
