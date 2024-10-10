@@ -6,6 +6,10 @@ import { defineOverridesPreferences } from '@vben/preferences';
  */
 export const overridesPreferences = defineOverridesPreferences({
   // overrides
+  theme: {
+    mode: 'auto',
+    radius: '0.25',
+  },
   app: {
     // 权限模式
     accessMode: 'backend',
