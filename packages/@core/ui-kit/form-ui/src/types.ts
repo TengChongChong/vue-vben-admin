@@ -190,6 +190,14 @@ export interface FormCommonConfig {
    * 所有表单项的wrapper样式
    */
   wrapperClass?: string;
+  /**
+   * 是否显示（通过css控制）
+   */
+  show?: boolean;
+  /**
+   * 是否显示（通过v-if控制）
+   */
+  ifShow?: boolean;
 }
 
 type RenderComponentContentType = (

@@ -96,14 +96,23 @@ const computedSchema = computed(
       labelWidth = 100,
       wrapperClass = '',
     } = mergeWithArrayOverride(props.commonConfig, props.globalCommonConfig);
-    return (props.schema || []).map((schema, index) => {
+    // 显示的表单数量
+    let displayCount = 0;
+    return (props.schema || []).map((schema) => {
       const keepIndex = keepFormItemIndex.value;
-
+      if (schema.ifShow === false) {
+        return schema;
+      }
+      // 折叠状态 & 显示折叠按钮 & 当前索引大于保留索引
       const hidden =
-        // 折叠状态 & 显示折叠按钮 & 当前索引大于保留索引
         props.showCollapseButton && !!formCollapsed.value && keepIndex
-          ? keepIndex <= index
+          ? keepIndex <= displayCount
           : false;
+
+      if (!hidden) {
+        // 不隐藏，计数
+        displayCount++;
+      }
 
       return {
         disabled,
@@ -126,6 +135,7 @@ const computedSchema = computed(
           { hidden },
           formItemClass,
           schema.formItemClass,
+          schema.show === false && 'hidden',
         ),
         labelClass: cn(labelClass, schema.labelClass),
       };
@@ -142,6 +152,7 @@ const computedSchema = computed(
           <slot :definition="cSchema" :name="cSchema.fieldName"> </slot>
         </div> -->
         <FormField
+          v-if="cSchema.ifShow !== false"
           v-bind="cSchema"
           :class="cSchema.formItemClass"
           :rules="cSchema.rules"

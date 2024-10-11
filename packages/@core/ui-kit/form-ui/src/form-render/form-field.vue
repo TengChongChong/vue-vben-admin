@@ -267,7 +267,7 @@ function autofocus() {
       :class="{
         'form-valid-error': isInValid,
         'flex-col': isVertical,
-        'flex-row items-center': !isVertical,
+        'flex-row': !isVertical,
       }"
       class="flex pb-6"
       v-bind="$attrs"
@@ -276,7 +276,7 @@ function autofocus() {
         v-if="!hideLabel"
         :class="
           cn(
-            'flex leading-6',
+            'flex h-[32px] leading-6',
             {
               'mr-2 flex-shrink-0': !isVertical,
               'flex-row': isVertical,
@@ -290,7 +290,7 @@ function autofocus() {
       >
         {{ label }}
       </FormLabel>
-      <div :class="cn('relative flex w-full items-center', wrapperClass)">
+      <div :class="cn('relative w-full items-center', wrapperClass)">
         <FormControl :class="cn(controlClass)">
           <slot
             v-bind="{
@@ -325,7 +325,7 @@ function autofocus() {
           <VbenRenderContent :content="suffix" />
         </div>
 
-        <FormDescription v-if="description">
+        <FormDescription v-if="description" class="mt-1">
           <VbenRenderContent :content="description" />
         </FormDescription>
 
