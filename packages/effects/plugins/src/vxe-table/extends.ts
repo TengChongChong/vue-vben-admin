@@ -35,8 +35,15 @@ function extendProxyOption(
 
   const wrapperFn = async (params: any, _formValues: any, ...args: any[]) => {
     const formValues = getFormValues();
-    const data = await configFn(params, formValues, ...args);
-    return data;
+    // 将page转为后端要求的结构
+    const { page, sort } = params;
+    params.page = {
+      current: page.currentPage,
+      pageSize: page.pageSize,
+      sortField: sort.field,
+      sortOrder: sort.order,
+    };
+    return await configFn(params, formValues, ...args);
   };
   api.setState({
     gridOptions: {

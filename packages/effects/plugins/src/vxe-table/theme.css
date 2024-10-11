@@ -66,12 +66,12 @@
   }
 
   .vxe-pager {
-    &--wrapper {
+    & --wrapper {
       display: flex;
       align-items: center;
     }
 
-    &--sizes {
+    & --sizes {
       margin-right: auto;
     }
   }
@@ -98,6 +98,12 @@
   .vxe-cell--checkbox {
     .vxe-checkbox--label {
       display: none;
+    }
+  }
+
+  .vxe-cell {
+    .ant-tag {
+      margin: 0;
     }
   }
 }
