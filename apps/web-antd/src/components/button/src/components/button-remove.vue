@@ -62,9 +62,9 @@ function handleClick() {
         loading.value = false;
       }
       if (result) {
-        emit('success', selectRecords);
+        emit('success', selectRecordIds);
       } else {
-        emit('fail', selectRecords);
+        emit('fail', selectRecordIds);
       }
     },
   });
