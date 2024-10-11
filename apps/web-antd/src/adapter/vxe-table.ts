@@ -42,6 +42,12 @@ setupVbenVxeTable({
           // 当鼠标移到行时，是否要高亮当前行
           isHover: true,
         },
+        treeConfig: {
+          // 用于 tree-config.transform，树节点的字段名
+          rowField: 'id',
+          // 用于 tree-config.transform，树父节点的字段名
+          parentField: 'parentId',
+        },
         // 排序配置项
         sortConfig: {
           // 是否启用多列组合筛选
@@ -106,7 +112,7 @@ setupVbenVxeTable({
         // 数据代理配置项（基于 Promise API）
         proxyConfig: {
           // 是否自动加载查询数据
-          autoLoad: true,
+          // autoLoad: true,
           // 是否代理排序
           sort: true,
           // 是否代理筛选
@@ -118,7 +124,7 @@ setupVbenVxeTable({
             // 只对 pager-config 配置了有效，响应结果中获取分页的属性（分页场景）
             total: 'total',
             // 响应结果中获取数据列表的属性（不分页场景）
-            list: 'records',
+            // list: 'data',
           },
           // showActiveMsg: true,
           // showResponseMsg: false,
