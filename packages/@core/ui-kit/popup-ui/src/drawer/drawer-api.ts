@@ -119,6 +119,10 @@ export class DrawerApi {
     this.sharedData.payload = payload;
   }
 
+  setLoading(loading: boolean) {
+    this.setState({ loading });
+  }
+
   setState(
     stateOrFn:
       | ((prev: DrawerState) => Partial<DrawerState>)

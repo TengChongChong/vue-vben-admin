@@ -115,4 +115,10 @@ export interface DrawerApiOptions extends DrawerState {
    * @returns
    */
   onOpenChange?: (isOpen: boolean) => void;
+  /**
+   * 更改 loading
+   *
+   * @param loading
+   */
+  setLoading: (loading: boolean) => void;
 }
