@@ -21,6 +21,8 @@ setupVbenVxeTable({
         height: 'auto',
         // 表格最小高度
         minHeight: 260,
+        // 表格最大高度
+        // maxHeight: 900,
         // 自动监听父元素的变化去重新计算表格
         // autoResize: true,
         // 是否带有斑马纹
@@ -32,7 +34,7 @@ setupVbenVxeTable({
         // 设置所有内容过长时显示为省略号 ellipsis（只显示省略号）,title（并且显示为原生 title）,tooltip（并且显示为 tooltip 提示）
         showOverflow: 'tooltip',
         // 保持原始值的状态，被某些功能所依赖，比如编辑状态、还原数据等（开启后影响性能，具体取决于数据量）
-        keepSource: true,
+        // keepSource: true,
         // 行配置信息
         rowConfig: {
           // 自定义行数据唯一主键的字段名（默认自动生成）
@@ -41,12 +43,6 @@ setupVbenVxeTable({
           isCurrent: true,
           // 当鼠标移到行时，是否要高亮当前行
           isHover: true,
-        },
-        treeConfig: {
-          // 用于 tree-config.transform，树节点的字段名
-          rowField: 'id',
-          // 用于 tree-config.transform，树父节点的字段名
-          parentField: 'parentId',
         },
         // 排序配置项
         sortConfig: {
@@ -95,7 +91,7 @@ setupVbenVxeTable({
           reserve: true,
           // 高亮勾选行
           highlight: true,
-          // labelField: 'name',
+          trigger: 'row',
         },
         // 复选框配置项
         checkboxConfig: {
