@@ -62,6 +62,7 @@ function handleClick() {
         loading.value = false;
       }
       if (result) {
+        message.success('删除成功');
         emit('success', selectRecordIds);
       } else {
         emit('fail', selectRecordIds);
@@ -80,7 +81,7 @@ function handleClick() {
       :size="props.size"
       :type="props.type"
       danger
-      @click="handleClick"
+      @click.stop="handleClick"
     >
       <template #icon>
         <DeleteOutlined />
