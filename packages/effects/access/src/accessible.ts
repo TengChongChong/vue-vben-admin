@@ -9,7 +9,6 @@ import {
   generateMenus,
   generateRoutesByBackend,
   generateRoutesByFrontend,
-  mapTree,
 } from '@vben/utils';
 
 async function generateAccessible(
@@ -21,7 +20,6 @@ async function generateAccessible(
   options.routes = cloneDeep(options.routes);
   // 生成路由
   const accessibleRoutes = await generateRoutes(mode, options);
-
   // 动态添加到router实例内
   accessibleRoutes.forEach((route) => {
     router.addRoute(route);
@@ -64,21 +62,21 @@ async function generateRoutes(
    * 调整路由树，做以下处理：
    * 1. 对未添加redirect的路由添加redirect
    */
-  resultRoutes = mapTree(resultRoutes, (route) => {
-    // 如果有redirect或者没有子路由，则直接返回
-    if (route.redirect || !route.children || route.children.length === 0) {
-      return route;
-    }
-    const firstChild = route.children[0];
-
-    // 如果子路由不是以/开头，则直接返回,这种情况需要计算全部父级的path才能得出正确的path，这里不做处理
-    if (!firstChild?.path || !firstChild.path.startsWith('/')) {
-      return route;
-    }
-
-    route.redirect = firstChild.path;
-    return route;
-  });
+  // resultRoutes = mapTree(resultRoutes, (route) => {
+  //   // 如果有redirect或者没有子路由，则直接返回
+  //   if (route.redirect || !route.children || route.children.length === 0) {
+  //     return route;
+  //   }
+  //   const firstChild = route.children[0];
+  //
+  //   // 如果子路由不是以/开头，则直接返回,这种情况需要计算全部父级的path才能得出正确的path，这里不做处理
+  //   if (!firstChild?.path || !firstChild.path.startsWith('/')) {
+  //     return route;
+  //   }
+  //
+  //   route.redirect = firstChild.path;
+  //   return route;
+  // });
 
   return resultRoutes;
 }
