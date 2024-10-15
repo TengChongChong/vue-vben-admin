@@ -2,17 +2,25 @@
 import type { VbenFormProps, VxeGridProps } from '#/adapter';
 import type { SysConfig } from '#/api/sys/model/sysConfigModel';
 
+import { useAccess } from '@vben/access';
 import { Page, useVbenModal } from '@vben/common-ui';
 
 import { ReloadOutlined } from '@ant-design/icons-vue';
 import { Button, message, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter';
-import { refreshApi, removeApi, selectApi } from '#/api/sys/sysConfig';
+import { getApi, refreshApi, removeApi, selectApi } from '#/api/sys/sysConfig';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
-import { columns } from '#/views/sys/config/config.data';
+import { RoleEnum } from '#/enums/roleEnum';
 
+import { initColumns } from './data';
 import InputModal from './input.vue';
+
+const { hasAccessByRoles } = useAccess();
+
+function handleSearch() {
+  gridApi.search();
+}
 
 const formOptions: VbenFormProps = {
   collapsed: true,
@@ -37,6 +45,16 @@ const formOptions: VbenFormProps = {
       component: 'Input',
     },
     {
+      fieldName: 'sys',
+      label: '系统',
+      component: 'DictSelect',
+      componentProps: {
+        dictType: 'whether',
+      },
+      ifShow: hasAccessByRoles([RoleEnum.SYS_ADMIN]),
+      onChange: () => handleSearch(),
+    },
+    {
       fieldName: 'type',
       label: '类型',
       component: 'DictSelect',
@@ -55,45 +73,41 @@ const formOptions: VbenFormProps = {
 
 const gridOptions: VxeGridProps<SysConfig> = {
   id: 'sys-config',
-  columns,
-  height: 'auto',
+  columns: initColumns(),
   proxyConfig: {
     ajax: {
-      query: async ({ page, sort }, formValues) => {
-        return await selectApi(
-          { ...formValues },
-          {
-            current: page.currentPage,
-            pageSize: page.pageSize,
-            sortField: sort.field,
-            sortOrder: sort.order,
-          },
-        );
+      query: async ({ page }, formValues) => {
+        return await selectApi({ ...formValues }, page);
       },
     },
   },
 };
 
-const [Grid, gridApi] = useVbenVxeGrid({ formOptions, gridOptions });
-
-function handleSearch() {
-  gridApi.search();
-}
+const [Grid, gridApi] = useVbenVxeGrid({
+  formOptions,
+  gridOptions,
+});
 
 const [BaseInputModal, baseInputModalApi] = useVbenModal({
   connectedComponent: InputModal,
 });
 
-async function handleAdd() {
+async function handleCreate() {
   // 将部分查询条件作为默认值
   const { category, type, sys } = await gridApi.formApi.getValues();
-  baseInputModalApi.setData({ category, type, sys });
+  baseInputModalApi.setData({
+    category,
+    type: type || 'text',
+    sys: sys || '0',
+  });
   baseInputModalApi.open();
 }
 
 function handleEdit(id: string) {
-  baseInputModalApi.setData({ id });
-  baseInputModalApi.open();
+  getApi(id).then((res) => {
+    baseInputModalApi.setData(res);
+    baseInputModalApi.open();
+  });
 }
 
 function handleReloadCache() {
@@ -111,12 +125,13 @@ function handleReloadCache() {
       </template>
       <template #toolbar-tools>
         <Space>
-          <ButtonAdd :auth-codes="['sys:config:save']" @click="handleAdd" />
+          <ButtonAdd :auth-codes="['sys:config:save']" @click="handleCreate" />
 
           <ButtonRemove
             :api="removeApi"
             :auth-codes="['sys:config:remove']"
             :grid-api="gridApi"
+            @success="handleSearch"
           />
 
           <Button @click="handleReloadCache">
@@ -139,6 +154,7 @@ function handleReloadCache() {
           :ids="[row.id]"
           size="small"
           type="link"
+          @success="handleSearch"
         />
       </template>
     </Grid>

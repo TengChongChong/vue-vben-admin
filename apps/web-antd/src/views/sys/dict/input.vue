@@ -1,23 +1,47 @@
 <script lang="ts" setup>
-import type { SysConfig } from '#/api/sys/model/sysConfigModel';
+import type { SysDict } from '#/api/sys/model/sysDictModel';
 
 import { ref } from 'vue';
 
-import { useAccess } from '@vben/access';
 import { useVbenModal, z } from '@vben/common-ui';
 
 import { message, Space } from 'ant-design-vue';
+import { isArray } from 'lodash-es';
 
 import { useVbenForm } from '#/adapter';
-import { saveApi } from '#/api/sys/sysConfig';
+import { saveApi } from '#/api/sys/sysDict';
+import { selectAllApi } from '#/api/sys/sysDictType';
 import { ButtonClose, ButtonSave } from '#/components/button';
-import { RoleEnum } from '#/enums/roleEnum';
 
 const emit = defineEmits(['success']);
 
 const saveBtnLoading = ref(false);
 
-const { hasAccessByRoles } = useAccess();
+/**
+ * 更改字典类型
+ *
+ * @param dictType 字典类型
+ * @param cleanParentCode 是否清空上级字典
+ */
+async function changeDictType(
+  dictType: string,
+  cleanParentCode: boolean = true,
+) {
+  // 更新上级字典
+  baseFormApi.updateSchema([
+    {
+      fieldName: 'parentCode',
+      componentProps: {
+        dictType,
+      },
+    },
+  ]);
+
+  if (cleanParentCode) {
+    // 清空值
+    await baseFormApi.setFieldValue('parentCode', []);
+  }
+}
 
 const [BaseForm, baseFormApi] = useVbenForm({
   showDefaultActions: false,
@@ -25,57 +49,69 @@ const [BaseForm, baseFormApi] = useVbenForm({
     { fieldName: 'id', component: 'Input', formItemClass: 'hidden' },
     { fieldName: 'version', component: 'Input', formItemClass: 'hidden' },
     {
-      fieldName: 'category',
-      label: '所属分类',
-      component: 'DictRadio',
+      fieldName: 'dictType',
+      label: '字典类型',
+      component: 'ApiSelect',
       componentProps: {
-        dictType: 'configCategory',
+        api: selectAllApi,
+      },
+      onChange(value) {
+        changeDictType(value);
       },
       rules: 'required',
     },
     {
-      fieldName: 'type',
-      label: '类型',
+      fieldName: 'parentCode',
+      label: '上级字典',
+      component: 'DictCascader',
+      componentProps: {
+        dictType: '',
+      },
+    },
+    {
+      fieldName: 'code',
+      label: '字典编码',
+      component: 'Input',
+      rules: z
+        .string()
+        .min(1, { message: '请输入字典编码' })
+        .max(64, { message: '字典编码最多输入64个字符' }),
+      description: '同一字典类型下字典编码不可重复',
+    },
+    {
+      fieldName: 'name',
+      label: '字典名称',
+      component: 'Input',
+      rules: z
+        .string()
+        .min(1, { message: '请输入字典名称' })
+        .max(64, { message: '字典名称最多输入64个字符' }),
+    },
+    {
+      fieldName: 'status',
+      label: '状态',
       component: 'DictRadio',
       componentProps: {
-        dictType: 'dataType',
+        dictType: 'commonStatus',
       },
-      onChange: (value) => {
-        setInputComponent(value);
-      },
-      rules: 'required',
-    },
-    {
-      fieldName: 'sysKey',
-      label: 'Key',
-      component: 'Input',
-      rules: z
-        .string()
-        .min(1, { message: '请输入Key' })
-        .max(32, { message: 'Key最多输入32个字符' }),
-      itemProps: {
-        extra: 'Key不可重复',
-      },
-    },
-    {
-      fieldName: 'value',
-      label: 'Value',
-      component: 'Input',
-      rules: z
-        .string()
-        .min(1, { message: '请输入Value' })
-        .max(255, { message: 'Value最多输入255个字符' }),
-    },
-    {
-      fieldName: 'sys',
-      label: '是否系统',
       rules: 'selectRequired',
-      component: 'DictRadio',
+    },
+    {
+      fieldName: 'orderNo',
+      label: '排序值',
+      component: 'InputNumber',
+      rules: z
+        .number()
+        .min(0, { message: '排序值不能小于0' })
+        .max(999, { message: '排序值不能大于999' }),
+      description: '按升序排列，数字越小越靠前',
+    },
+    {
+      fieldName: 'color',
+      label: '标签色',
+      component: 'DictSelect',
       componentProps: {
-        dictType: 'whether',
-      },
-      ifShow: () => {
-        return hasAccessByRoles([RoleEnum.SYS_ADMIN]);
+        dictType: 'tagColor',
       },
     },
     {
@@ -96,58 +132,21 @@ const [BaseForm, baseFormApi] = useVbenForm({
   ],
 });
 
-/**
- * 根据类型切换 Value 组件
- * @param type
- */
-function setInputComponent(type: string) {
-  switch (type) {
-    case 'text': {
-      baseFormApi.updateSchema([
-        {
-          fieldName: 'value',
-          component: 'Input',
-          rules: z
-            .string()
-            .min(1, { message: '请输入Value' })
-            .max(255, { message: '最多输入255个字符' }),
-        },
-      ]);
-      break;
-    }
-    case 'number': {
-      baseFormApi.updateSchema([
-        {
-          fieldName: 'value',
-          component: 'InputNumber',
-          rules: 'required',
-        },
-      ]);
-      break;
-    }
-    case 'boolean': {
-      baseFormApi.updateSchema([
-        {
-          fieldName: 'value',
-          component: 'DictRadio',
-          componentProps: {
-            dictType: 'boolean',
-          },
-          rules: 'selectRequired',
-        },
-      ]);
-    }
-  }
-}
-
-async function handleSubmit(callback: (res: SysConfig) => any) {
+async function handleSubmit(callback: (res: SysDict) => any) {
   try {
     saveBtnLoading.value = true;
     const { valid } = await baseFormApi.validate();
     if (!valid) {
       return;
     }
-    const res = await saveApi(await baseFormApi.getValues());
+    const values = await baseFormApi.getValues();
+    const res = await saveApi({
+      ...values,
+      parentCode:
+        values && isArray(values.parentCode) && values.parentCode?.length
+          ? values.parentCode[values.parentCode.length - 1]
+          : '',
+    });
     message.success('保存成功');
     emit('success');
     callback(res);
@@ -178,13 +177,15 @@ const [Modal, modalApi] = useVbenModal({
       // 打开时根据id获取详情
       const data = modalApi.getData<Record<string, any>>();
       await baseFormApi.setValues(data);
-      setInputComponent(data.type);
+      if (data.dictType) {
+        await changeDictType(data.dictType, false);
+      }
     }
   },
 });
 </script>
 <template>
-  <Modal class="w-[600px]" title="系统参数信息">
+  <Modal class="w-[600px]" title="字典信息">
     <BaseForm />
 
     <template #footer>

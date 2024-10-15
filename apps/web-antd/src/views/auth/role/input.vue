@@ -4,7 +4,7 @@ import type { SysConfig } from '#/api/sys/model/sysConfigModel';
 import { ref } from 'vue';
 
 import { useAccess } from '@vben/access';
-import { useVbenModal, z } from '@vben/common-ui';
+import { useVbenDrawer, z } from '@vben/common-ui';
 
 import { message, Space } from 'ant-design-vue';
 
@@ -25,46 +25,22 @@ const [BaseForm, baseFormApi] = useVbenForm({
     { fieldName: 'id', component: 'Input', formItemClass: 'hidden' },
     { fieldName: 'version', component: 'Input', formItemClass: 'hidden' },
     {
-      fieldName: 'category',
-      label: '所属分类',
-      component: 'DictRadio',
-      componentProps: {
-        dictType: 'configCategory',
-      },
-      rules: 'required',
-    },
-    {
-      fieldName: 'type',
-      label: '类型',
-      component: 'DictRadio',
-      componentProps: {
-        dictType: 'dataType',
-      },
-      onChange: (value) => {
-        setInputComponent(value);
-      },
-      rules: 'required',
-    },
-    {
-      fieldName: 'sysKey',
-      label: 'Key',
+      fieldName: 'name',
+      label: '名称',
       component: 'Input',
       rules: z
         .string()
-        .min(1, { message: '请输入Key' })
-        .max(32, { message: 'Key最多输入32个字符' }),
-      itemProps: {
-        extra: 'Key不可重复',
-      },
+        .min(1, { message: '请输入名称' })
+        .max(32, { message: '名称最多输入32个字符' }),
     },
     {
-      fieldName: 'value',
-      label: 'Value',
+      fieldName: 'code',
+      label: '标识',
       component: 'Input',
       rules: z
         .string()
-        .min(1, { message: '请输入Value' })
-        .max(255, { message: 'Value最多输入255个字符' }),
+        .min(1, { message: '请输入标识' })
+        .max(64, { message: '标识最多输入32个字符' }),
     },
     {
       fieldName: 'sys',
@@ -77,6 +53,30 @@ const [BaseForm, baseFormApi] = useVbenForm({
       ifShow: () => {
         return hasAccessByRoles([RoleEnum.SYS_ADMIN]);
       },
+    },
+    {
+      fieldName: 'status',
+      label: '状态',
+      component: 'DictRadio',
+      componentProps: {
+        dictType: 'commonStatus',
+      },
+      rules: 'selectRequired',
+    },
+    {
+      fieldName: 'orderNo',
+      label: '排序值',
+      component: 'InputNumber',
+      rules: z
+        .number()
+        .min(0, { message: '排序值不能小于0' })
+        .max(999, { message: '排序值不能大于999' }),
+      description: '按升序排列，数字越小越靠前',
+    },
+    {
+      label: '菜单',
+      fieldName: 'permissionIds',
+      component: 'Input',
     },
     {
       fieldName: 'remarks',
@@ -95,50 +95,6 @@ const [BaseForm, baseFormApi] = useVbenForm({
     },
   ],
 });
-
-/**
- * 根据类型切换 Value 组件
- * @param type
- */
-function setInputComponent(type: string) {
-  switch (type) {
-    case 'text': {
-      baseFormApi.updateSchema([
-        {
-          fieldName: 'value',
-          component: 'Input',
-          rules: z
-            .string()
-            .min(1, { message: '请输入Value' })
-            .max(255, { message: '最多输入255个字符' }),
-        },
-      ]);
-      break;
-    }
-    case 'number': {
-      baseFormApi.updateSchema([
-        {
-          fieldName: 'value',
-          component: 'InputNumber',
-          rules: 'required',
-        },
-      ]);
-      break;
-    }
-    case 'boolean': {
-      baseFormApi.updateSchema([
-        {
-          fieldName: 'value',
-          component: 'DictRadio',
-          componentProps: {
-            dictType: 'boolean',
-          },
-          rules: 'selectRequired',
-        },
-      ]);
-    }
-  }
-}
 
 async function handleSubmit(callback: (res: SysConfig) => any) {
   try {
@@ -160,7 +116,7 @@ async function handleSubmit(callback: (res: SysConfig) => any) {
 
 async function handleSave() {
   await handleSubmit(() => {
-    modalApi.close();
+    drawerApi.close();
   });
 }
 
@@ -172,24 +128,23 @@ async function handleSaveAndAdd() {
   });
 }
 
-const [Modal, modalApi] = useVbenModal({
+const [Drawer, drawerApi] = useVbenDrawer({
   onOpenChange: async (isOpen: boolean) => {
     if (isOpen) {
       // 打开时根据id获取详情
-      const data = modalApi.getData<Record<string, any>>();
+      const data = drawerApi.getData<Record<string, any>>();
       await baseFormApi.setValues(data);
-      setInputComponent(data.type);
     }
   },
 });
 </script>
 <template>
-  <Modal class="w-[600px]" title="系统参数信息">
+  <Drawer class="w-[600px]" title="角色信息">
     <BaseForm />
 
     <template #footer>
       <Space>
-        <ButtonClose @click="modalApi.close()" />
+        <ButtonClose @click="drawerApi.close()" />
         <ButtonSave :loading="saveBtnLoading" @click="handleSave" />
         <ButtonSave
           :loading="saveBtnLoading"
@@ -198,5 +153,5 @@ const [Modal, modalApi] = useVbenModal({
         />
       </Space>
     </template>
-  </Modal>
+  </Drawer>
 </template>
