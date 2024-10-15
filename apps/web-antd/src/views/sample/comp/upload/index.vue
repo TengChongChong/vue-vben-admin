@@ -7,7 +7,7 @@ import { Page } from '@vben/common-ui';
 
 import { Card, Col, Row } from 'ant-design-vue';
 
-import { useVbenForm } from '#/adapter';
+import { useVbenForm } from '#/adapter/form';
 import { currentUserApi } from '#/api/auth/sysUserPersonal';
 import { JsonPreview } from '#/components/code-editor';
 import { RuleUpload } from '#/components/upload';

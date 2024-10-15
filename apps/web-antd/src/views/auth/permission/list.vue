@@ -13,7 +13,7 @@ import {
 } from '@ant-design/icons-vue';
 import { Button, Space } from 'ant-design-vue';
 
-import { useVbenVxeGrid } from '#/adapter';
+import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { addApi, getApi, removeApi, selectApi } from '#/api/auth/sysPermission';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
 

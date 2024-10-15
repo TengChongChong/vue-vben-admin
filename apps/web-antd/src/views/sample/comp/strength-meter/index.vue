@@ -3,7 +3,7 @@ import { Page, z } from '@vben/common-ui';
 
 import { Card } from 'ant-design-vue';
 
-import { useVbenForm } from '#/adapter';
+import { useVbenForm } from '#/adapter/form';
 
 const validatePassword = async (password: string) => {
   return /^(?![A-Za-z]+$)(?![\dA-Z]+$)(?![\WA-Z]+$)(?![\da-z]+$)(?![\Wa-z]+$)(?![\W\d]+$)\S{8,18}$/.test(

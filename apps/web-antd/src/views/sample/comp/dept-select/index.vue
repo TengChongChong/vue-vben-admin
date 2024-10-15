@@ -12,7 +12,7 @@ import {
   Tag,
 } from 'ant-design-vue';
 
-import { useVbenForm } from '#/adapter';
+import { useVbenForm } from '#/adapter/form';
 import { DeptSelect, DeptTree } from '#/components/dept';
 
 defineComponent({

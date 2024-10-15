@@ -8,7 +8,7 @@ import { useVbenDrawer, z } from '@vben/common-ui';
 
 import { message, Space } from 'ant-design-vue';
 
-import { useVbenForm } from '#/adapter';
+import { useVbenForm } from '#/adapter/form';
 import { saveApi } from '#/api/sys/sysConfig';
 import { ButtonClose, ButtonSave } from '#/components/button';
 import { RoleEnum } from '#/enums/roleEnum';

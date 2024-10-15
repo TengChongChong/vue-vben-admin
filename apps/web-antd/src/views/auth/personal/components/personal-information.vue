@@ -7,7 +7,7 @@ import { useUserStore } from '@vben/stores';
 
 import { Card, message } from 'ant-design-vue';
 
-import { useVbenForm } from '#/adapter';
+import { useVbenForm } from '#/adapter/form';
 import { getUserInfoApi } from '#/api/auth/auth';
 import { currentUserApi, saveUserInfoApi } from '#/api/auth/sysUserPersonal';
 

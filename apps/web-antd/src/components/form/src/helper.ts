@@ -5,14 +5,13 @@ import { isString } from '@vben/utils';
 
 import { useDictStore } from '#/store';
 
-const dictStore = useDictStore();
-
 /**
  * 根据字典类别获取 SelectModel[]
  *
  * @param dictType 字典类别
  */
 export function getSelectModelArray(dictType: string): SelectModel[] {
+  const dictStore = useDictStore();
   const dictArray: SysDict[] = dictStore.selectDictArray(dictType);
   const options: SelectModel[] = [];
   dictArray.forEach((item) => {

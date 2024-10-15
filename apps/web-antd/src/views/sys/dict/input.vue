@@ -8,7 +8,7 @@ import { useVbenModal, z } from '@vben/common-ui';
 import { message, Space } from 'ant-design-vue';
 import { isArray } from 'lodash-es';
 
-import { useVbenForm } from '#/adapter';
+import { useVbenForm } from '#/adapter/form';
 import { saveApi } from '#/api/sys/sysDict';
 import { selectAllApi } from '#/api/sys/sysDictType';
 import { ButtonClose, ButtonSave } from '#/components/button';

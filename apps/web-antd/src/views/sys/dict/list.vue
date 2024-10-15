@@ -9,7 +9,7 @@ import { Page, useVbenModal } from '@vben/common-ui';
 import { ReloadOutlined } from '@ant-design/icons-vue';
 import { Button, message, Space } from 'ant-design-vue';
 
-import { useVbenVxeGrid } from '#/adapter';
+import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
   addApi,
   getApi,

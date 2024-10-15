@@ -8,7 +8,7 @@ import { Page, useVbenDrawer } from '@vben/common-ui';
 import { ReloadOutlined } from '@ant-design/icons-vue';
 import { Button, message, Space } from 'ant-design-vue';
 
-import { useVbenVxeGrid } from '#/adapter';
+import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { getApi, refreshApi, removeApi, selectApi } from '#/api/auth/sysRole';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
 import { RoleEnum } from '#/enums/roleEnum';

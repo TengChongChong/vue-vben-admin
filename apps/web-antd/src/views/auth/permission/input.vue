@@ -9,7 +9,7 @@ import { listToTree } from '@vben/utils';
 
 import { Space } from 'ant-design-vue';
 
-import { useVbenForm } from '#/adapter';
+import { useVbenForm } from '#/adapter/form';
 import { saveApi, selectAllApi } from '#/api/auth/sysPermission';
 import { ButtonClose, ButtonSave } from '#/components/button';
 import { MenuTypeEnum } from '#/views/auth/permission/data';

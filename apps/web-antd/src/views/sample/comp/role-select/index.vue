@@ -5,7 +5,7 @@ import { Page } from '@vben/common-ui';
 
 import { Card, Col, Descriptions, DescriptionsItem, Row } from 'ant-design-vue';
 
-import { useVbenForm } from '#/adapter';
+import { useVbenForm } from '#/adapter/form';
 import { RoleSelect } from '#/components/role';
 
 defineComponent({

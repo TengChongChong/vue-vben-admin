@@ -8,7 +8,7 @@ import { useVbenModal } from '@vben/common-ui';
 
 import { InputSearch, Space } from 'ant-design-vue';
 
-import { useVbenVxeGrid } from '#/adapter';
+import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { addApi, getApi, removeApi, selectApi } from '#/api/sys/sysDictType';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
 

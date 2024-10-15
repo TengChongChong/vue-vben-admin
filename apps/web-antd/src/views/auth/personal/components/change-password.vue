@@ -6,7 +6,7 @@ import { HashingFactory } from '@vben/utils';
 
 import { Card, Modal } from 'ant-design-vue';
 
-import { useVbenForm } from '#/adapter';
+import { useVbenForm } from '#/adapter/form';
 import { changePasswordApi } from '#/api/auth/sysUserPersonal';
 import { useAuthStore } from '#/store';
 
