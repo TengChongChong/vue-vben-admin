@@ -134,6 +134,10 @@ type ComponentProps =
     ) => MaybeComponentProps)
   | MaybeComponentProps;
 
+interface showFunc {
+  (): boolean;
+}
+
 export interface FormCommonConfig {
   /**
    * 所有表单项的props
@@ -193,11 +197,11 @@ export interface FormCommonConfig {
   /**
    * 是否显示（通过css控制）
    */
-  show?: boolean;
+  show?: boolean | showFunc;
   /**
    * 是否显示（通过v-if控制）
    */
-  ifShow?: boolean;
+  ifShow?: boolean | showFunc;
 }
 
 type RenderComponentContentType = (

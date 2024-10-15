@@ -11,7 +11,12 @@ import type {
 import { computed } from 'vue';
 
 import { Form } from '@vben-core/shadcn-ui';
-import { cn, isString, mergeWithArrayOverride } from '@vben-core/shared/utils';
+import {
+  cn,
+  isFunction,
+  isString,
+  mergeWithArrayOverride,
+} from '@vben-core/shared/utils';
 
 import { type GenericObject } from 'vee-validate';
 
@@ -123,6 +128,9 @@ const computedSchema = computed(
         labelWidth,
         wrapperClass,
         ...schema,
+        ifShow: isFunction(schema.ifShow)
+          ? schema.ifShow()
+          : schema.ifShow !== false,
         commonComponentProps: componentProps,
         componentProps: schema.componentProps,
         controlClass: cn(controlClass, schema.controlClass),
