@@ -36,6 +36,18 @@ import {
   Upload,
 } from 'ant-design-vue';
 
+import { DeptSelect } from '#/components/dept';
+import {
+  DictCascader,
+  DictCheckbox,
+  DictRadio,
+  DictSelect,
+  DictTreeSelect,
+} from '#/components/dict';
+import { ApiSelect, ApiTreeSelect } from '#/components/form';
+import { RoleSelect } from '#/components/role';
+import { UserSelect } from '#/components/user';
+
 const withDefaultPlaceholder = <T extends Component>(
   component: T,
   type: 'input' | 'select',
@@ -48,11 +60,20 @@ const withDefaultPlaceholder = <T extends Component>(
 
 // 这里需要自行根据业务组件库进行适配，需要用到的组件都需要在这里类型说明
 export type ComponentType =
+  | 'ApiSelect'
+  | 'ApiTreeSelect'
   | 'AutoComplete'
   | 'Checkbox'
   | 'CheckboxGroup'
+  | 'Cropper'
   | 'DatePicker'
   | 'DefaultButton'
+  | 'DeptSelect'
+  | 'DictCascader'
+  | 'DictCheckbox'
+  | 'DictRadio'
+  | 'DictSelect'
+  | 'DictTreeSelect'
   | 'Divider'
   | 'Input'
   | 'InputNumber'
@@ -63,6 +84,7 @@ export type ComponentType =
   | 'RadioGroup'
   | 'RangePicker'
   | 'Rate'
+  | 'RoleSelect'
   | 'Select'
   | 'Space'
   | 'Switch'
@@ -70,6 +92,7 @@ export type ComponentType =
   | 'TimePicker'
   | 'TreeSelect'
   | 'Upload'
+  | 'UserSelect'
   | BaseFormComponentType;
 
 async function initComponentAdapter() {
@@ -77,7 +100,6 @@ async function initComponentAdapter() {
     // 如果你的组件体积比较大，可以使用异步加载
     // Button: () =>
     // import('xxx').then((res) => res.Button),
-
     AutoComplete,
     Checkbox,
     CheckboxGroup,
@@ -106,6 +128,17 @@ async function initComponentAdapter() {
     TimePicker,
     TreeSelect: withDefaultPlaceholder(TreeSelect, 'select'),
     Upload,
+    //
+    ApiTreeSelect: withDefaultPlaceholder(ApiTreeSelect, 'select'),
+    ApiSelect: withDefaultPlaceholder(ApiSelect, 'select'),
+    DictCascader: withDefaultPlaceholder(DictCascader, 'select'),
+    DictCheckbox,
+    DictRadio,
+    DictSelect: withDefaultPlaceholder(DictSelect, 'select'),
+    DictTreeSelect: withDefaultPlaceholder(DictTreeSelect, 'select'),
+    DeptSelect: withDefaultPlaceholder(DeptSelect, 'select'),
+    RoleSelect: withDefaultPlaceholder(RoleSelect, 'select'),
+    UserSelect: withDefaultPlaceholder(UserSelect, 'select'),
   };
 
   // 将组件注册到全局共享状态中
