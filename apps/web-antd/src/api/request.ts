@@ -55,7 +55,7 @@ function createRequestClient(baseURL: string) {
   }
 
   function formatToken(token: null | string) {
-    return token ? `${token}` : null;
+    return token ? `Bearer ${token}` : null;
   }
 
   // 请求头处理
@@ -74,11 +74,12 @@ function createRequestClient(baseURL: string) {
     fulfilled: (response) => {
       const { data: responseData, status } = response;
 
-      const { success, data, errorMessage } = responseData;
-      if (success) {
+      const { code, data } = responseData;
+      if (status >= 200 && status < 400 && code === 0) {
         return data;
       }
-      throw new Error(`Error ${status}: ${errorMessage}`);
+
+      throw Object.assign({}, response, { response });
     },
   });
 
@@ -95,27 +96,13 @@ function createRequestClient(baseURL: string) {
 
   // 通用的错误处理,如果没有进入上面的错误处理逻辑，就会进入这里
   client.addResponseInterceptor(
-    errorMessageResponseInterceptor((_msg: string, error) => {
+    errorMessageResponseInterceptor((msg: string, error) => {
       // 这里可以根据业务进行定制,你可以拿到 error 内的信息进行定制化处理，根据不同的 code 做不同的提示，而不是直接使用 message.error 提示 msg
-      // message.error(msg);
-      if (error.config.errorMessageMode === 'silent') {
-        return Promise.reject(error);
-      }
-      // eslint-disable-next-line no-unsafe-optional-chaining
-      const { errorMessage, showType } = error?.response?.data;
-      if (errorMessage) {
-        // 如果后端有响应错误消息
-        message.open({
-          type: showType || 'error',
-          content: errorMessage,
-        });
-        return Promise.reject(error);
-      }
-
-      // 使用通用错误消息提示
-      return errorMessageResponseInterceptor((msg: string) =>
-        message.error(msg),
-      );
+      // 当前mock接口返回的错误字段是 error 或者 message
+      const responseData = error?.response?.data ?? {};
+      const errorMessage = responseData?.error ?? responseData?.message ?? '';
+      // 如果没有错误信息，则会根据状态码进行提示
+      message.error(errorMessage || msg);
     }),
   );
 
