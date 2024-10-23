@@ -5,7 +5,7 @@ import type { ApiTreeProps } from '../props';
 
 import { onMounted, ref, unref, watch } from 'vue';
 
-import { findPath, isFunction, isNumber, isString } from '@vben/utils';
+import { isFunction } from '@vben/utils';
 
 import { get } from '@vueuse/shared';
 import { Tree } from 'ant-design-vue';
@@ -49,7 +49,6 @@ async function fetch() {
   treeData.value = result || [];
   isFirstLoaded.value = true;
   emit('optionsChange', treeData.value);
-  setExpandedKeys();
 }
 
 watch(
@@ -64,20 +63,6 @@ watch(
   () => props.immediate,
   (v) => {
     v && unref(isFirstLoaded) && fetch();
-  },
-);
-
-watch(
-  () => currentValue.value,
-  () => {
-    handleChange();
-  },
-);
-
-watch(
-  () => props.value,
-  () => {
-    setExpandedKeys();
   },
 );
 
@@ -97,37 +82,6 @@ function handleChange() {
   emit('update:value', unref(currentValue));
 }
 
-/**
- * 展开选中节点
- */
-function setExpandedKeys() {
-  treeExpandedKeys.value = [];
-
-  if (treeData.value === null || treeData.value.length === 0) {
-    return;
-  }
-
-  let pathArray: any[] = [];
-  // value 有值
-  if (isString(props.value) || isNumber(props.value)) {
-    pathArray = findPath(treeData.value, (n) => n.value === props.value);
-  } else if (Array.isArray(props.value)) {
-    props.value.forEach((item) => {
-      pathArray = [
-        ...pathArray,
-        ...findPath(treeData.value, (n) => n.value === item),
-      ];
-    });
-  }
-  if (pathArray && pathArray.length > 1) {
-    // 去掉最后一级（当前节点不需要展开）
-    pathArray = pathArray.slice(0, -1);
-    pathArray.forEach((item) => {
-      treeExpandedKeys.value.push(item.key);
-    });
-  }
-}
-
 function treeExpand(keys) {
   treeExpandedKeys.value = keys;
 }
@@ -138,6 +92,7 @@ function treeExpand(keys) {
     v-model:expanded-keys="treeExpandedKeys"
     v-model:selected-keys="currentValue"
     :tree-data="treeData"
+    @select="handleChange"
     @tree-expand="treeExpand"
   />
 </template>

@@ -89,7 +89,7 @@ export interface BasicTreeProps {
   headStyle?: object;
   value?: CheckKeys | KeyType[];
   helpMessage?: string | string[];
-  title: string;
+  title?: string;
   size?: string;
   showToolbar?: boolean;
   height?: number;

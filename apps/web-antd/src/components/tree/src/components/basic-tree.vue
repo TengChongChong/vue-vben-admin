@@ -279,28 +279,28 @@ watch(
 
 const handleTreeToolbarClick: MenuProps['onClick'] = ({ key }) => {
   switch (key) {
-    case ToolbarEnum.SELECT_ALL: {
-      checkAll(true);
-      break;
-    }
-    case ToolbarEnum.UN_SELECT_ALL: {
-      checkAll(false);
-      break;
-    }
-    case ToolbarEnum.EXPAND_ALL: {
-      expandAll(true);
-      break;
-    }
-    case ToolbarEnum.UN_EXPAND_ALL: {
-      expandAll(false);
-      break;
-    }
     case ToolbarEnum.CHECK_STRICTLY: {
       onStrictlyChange(false);
       break;
     }
     case ToolbarEnum.CHECK_UN_STRICTLY: {
       onStrictlyChange(true);
+      break;
+    }
+    case ToolbarEnum.EXPAND_ALL: {
+      expandAll(true);
+      break;
+    }
+    case ToolbarEnum.SELECT_ALL: {
+      checkAll(true);
+      break;
+    }
+    case ToolbarEnum.UN_EXPAND_ALL: {
+      expandAll(false);
+      break;
+    }
+    case ToolbarEnum.UN_SELECT_ALL: {
+      checkAll(false);
       break;
     }
   }
@@ -339,14 +339,14 @@ watch(
   { immediate: true },
 );
 
-watch(
-  () => state.checkedKeys,
-  () => {
-    const v = toRaw(state.checkedKeys);
-    emit('update:value', v);
-    emit('change', v);
-  },
-);
+// watch(
+//   () => state.checkedKeys,
+//   () => {
+//     const v = toRaw(state.checkedKeys);
+//     emit('update:value', v);
+//     emit('change', v);
+//   },
+// );
 
 watchEffect(() => {
   state.checkStrictly = props.checkStrictly;
