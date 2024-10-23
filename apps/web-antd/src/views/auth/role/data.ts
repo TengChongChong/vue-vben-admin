@@ -31,6 +31,17 @@ export const initColumns = (): VxeGridPropTypes.Columns[] => {
       minWidth: 150,
     },
     {
+      title: '数据权限',
+      field: 'dataPermission',
+      sortable: true,
+      width: 140,
+      slots: {
+        default: ({ row }) => {
+          return renderDictTag('dataPermission', row.dataPermission);
+        },
+      },
+    },
+    {
       title: '排序值',
       field: 'orderNo',
       sorter: true,

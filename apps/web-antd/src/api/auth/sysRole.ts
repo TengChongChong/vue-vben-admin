@@ -1,4 +1,4 @@
-import type { SysRole } from '#/api/auth/model/sysRoleModel';
+import type { SysRole, SysRoleVO } from '#/api/auth/model/sysRoleModel';
 import type { Page } from '#/api/base/model/pageModel';
 
 import { requestClient } from '#/api/request';
@@ -38,7 +38,7 @@ export function getApi(id: string) {
  * 新增
  */
 export function addApi() {
-  return requestClient.get<SysRole>(`${BASE_URL}/add`);
+  return requestClient.get<SysRoleVO>(`${BASE_URL}/add`);
 }
 
 /**
@@ -55,8 +55,8 @@ export function removeApi(ids: string) {
  *
  * @param params 表单数据
  */
-export function saveApi(params: SysRole) {
-  return requestClient.post<SysRole>(BASE_URL, params);
+export function saveApi(params: SysRoleVO) {
+  return requestClient.post<SysRoleVO>(BASE_URL, params);
 }
 
 /**

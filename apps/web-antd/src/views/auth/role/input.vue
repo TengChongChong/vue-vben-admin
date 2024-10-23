@@ -1,16 +1,23 @@
 <script lang="ts" setup>
-import type { SysConfig } from '#/api/sys/model/sysConfigModel';
+import type { TreeDataItem } from 'ant-design-vue/es/tree/Tree';
 
-import { ref } from 'vue';
+import type { SysRoleVO } from '#/api/auth/model/sysRoleModel';
+
+import { ref, unref } from 'vue';
 
 import { useAccess } from '@vben/access';
 import { useVbenDrawer, z } from '@vben/common-ui';
+import { convertCheckedKeys, listToTree } from '@vben/utils';
 
 import { message, Space } from 'ant-design-vue';
+import { isArray } from 'lodash-es';
 
 import { useVbenForm } from '#/adapter/form';
-import { saveApi } from '#/api/sys/sysConfig';
+import { selectAllApi as selectAllDeptApi } from '#/api/auth/sysDept';
+import { selectAllApi as selectAllPermissionApi } from '#/api/auth/sysPermission';
+import { saveApi } from '#/api/auth/sysRole';
 import { ButtonClose, ButtonSave } from '#/components/button';
+import { BasicTree } from '#/components/tree';
 import { RoleEnum } from '#/enums/roleEnum';
 
 const emit = defineEmits(['success']);
@@ -18,6 +25,21 @@ const emit = defineEmits(['success']);
 const saveBtnLoading = ref(false);
 
 const { hasAccessByRoles } = useAccess();
+
+const permissionTreeData = ref<TreeDataItem[]>([]);
+const deptTreeData = ref<TreeDataItem[]>([]);
+
+function initData() {
+  selectAllPermissionApi().then((res) => {
+    permissionTreeData.value = listToTree(res);
+  });
+
+  selectAllDeptApi().then((res) => {
+    deptTreeData.value = listToTree(res);
+  });
+}
+
+initData();
 
 const [BaseForm, baseFormApi] = useVbenForm({
   showDefaultActions: false,
@@ -43,6 +65,42 @@ const [BaseForm, baseFormApi] = useVbenForm({
         .max(64, { message: '标识最多输入32个字符' }),
     },
     {
+      fieldName: 'orderNo',
+      label: '排序值',
+      component: 'InputNumber',
+      rules: z
+        .number()
+        .min(0, { message: '排序值不能小于0' })
+        .max(999, { message: '排序值不能大于999' }),
+      description: '按升序排列，数字越小越靠前',
+    },
+    {
+      label: '菜单',
+      fieldName: 'permissionIds',
+      component: 'Input',
+    },
+    {
+      label: '数据权限',
+      fieldName: 'dataPermission',
+      component: 'DictRadio',
+      componentProps: {
+        dictType: 'dataPermission',
+      },
+      rules: 'required',
+    },
+    {
+      label: '自定义数据权限',
+      fieldName: 'dataPermissionDeptIds',
+      component: 'Input',
+      dependencies: {
+        triggerFields: ['dataPermission'],
+        show(values) {
+          return values.dataPermission === 'custom';
+        },
+      },
+      description: '请选择当前角色可以访问的部门数据',
+    },
+    {
       fieldName: 'sys',
       label: '是否系统',
       rules: 'selectRequired',
@@ -64,21 +122,6 @@ const [BaseForm, baseFormApi] = useVbenForm({
       rules: 'selectRequired',
     },
     {
-      fieldName: 'orderNo',
-      label: '排序值',
-      component: 'InputNumber',
-      rules: z
-        .number()
-        .min(0, { message: '排序值不能小于0' })
-        .max(999, { message: '排序值不能大于999' }),
-      description: '按升序排列，数字越小越靠前',
-    },
-    {
-      label: '菜单',
-      fieldName: 'permissionIds',
-      component: 'Input',
-    },
-    {
       fieldName: 'remarks',
       label: '备注',
       component: 'Textarea',
@@ -96,14 +139,23 @@ const [BaseForm, baseFormApi] = useVbenForm({
   ],
 });
 
-async function handleSubmit(callback: (res: SysConfig) => any) {
+async function handleSubmit(callback: (res: SysRoleVO) => any) {
   try {
     saveBtnLoading.value = true;
     const { valid } = await baseFormApi.validate();
     if (!valid) {
       return;
     }
-    const res = await saveApi(await baseFormApi.getValues());
+    const values: SysRoleVO = { ...(await baseFormApi.getValues()) };
+    if (!isArray(values.permissionIds)) {
+      const { checked, halfCheckedKeys } = values.permissionIds;
+      values.permissionIds = [...checked, ...halfCheckedKeys];
+    }
+    if (!isArray(values.dataPermissionDeptIds)) {
+      const { checked, halfCheckedKeys } = values.dataPermissionDeptIds;
+      values.dataPermissionDeptIds = [...checked, ...halfCheckedKeys];
+    }
+    const res = await saveApi(values);
     message.success('保存成功');
     emit('success');
     callback(res);
@@ -133,14 +185,49 @@ const [Drawer, drawerApi] = useVbenDrawer({
     if (isOpen) {
       // 打开时根据id获取详情
       const data = drawerApi.getData<Record<string, any>>();
-      await baseFormApi.setValues(data);
+      await baseFormApi.setValues({
+        ...data,
+        permissionIds: convertCheckedKeys(
+          unref(permissionTreeData),
+          data.permissionIds,
+        ),
+        dataPermissionDeptIds: convertCheckedKeys(
+          unref(deptTreeData),
+          data.dataPermissionDeptIds,
+        ),
+      });
     }
   },
 });
 </script>
 <template>
   <Drawer class="w-[600px]" title="角色信息">
-    <BaseForm />
+    <BaseForm>
+      <template #permissionIds="slotProps">
+        <BasicTree
+          :show-search="true"
+          :show-toolbar="true"
+          :tree-data="permissionTreeData"
+          checkable
+          size="small"
+          title="请勾选菜单"
+          v-bind="slotProps"
+        />
+      </template>
+
+      <template #dataPermissionDeptIds="slotProps">
+        <BasicTree
+          :default-expand-level="1"
+          :show-search="true"
+          :show-toolbar="true"
+          :tree-data="deptTreeData"
+          checkable
+          size="small"
+          title="请勾选部门"
+          v-bind="slotProps"
+        />
+      </template>
+    </BaseForm>
 
     <template #footer>
       <Space>

@@ -12,8 +12,11 @@ export interface SysRole extends BasicModel {
   dataPermission: string;
   // 备注
   remarks: string;
+}
+
+export interface SysRoleVO extends SysRole {
   // 权限ids
   permissionIds: string[];
   // 部门ids - 数据权限
-  deptIds: string[];
+  dataPermissionDeptIds: string[];
 }
