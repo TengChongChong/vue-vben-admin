@@ -1,6 +1,6 @@
 import type { Page } from '#/api/base/model/pageModel';
 import type { SelectModel } from '#/api/base/model/selectModel';
-import type { SysDict } from '#/api/sys/model/sysDictModel';
+import type { SysDict, SysDictVO } from '#/api/sys/model/sysDictModel';
 
 import { requestClient } from '#/api/request';
 
@@ -13,8 +13,8 @@ const BASE_URL = '/auth/sys/dict';
  * @param params 查询条件
  * @param page 分页
  */
-export function selectApi(params: SysDict, page: Page<SysDict>) {
-  return requestClient.get<Page<SysDict>>(BASE_URL, {
+export function selectApi(params: SysDictVO, page: Page<SysDictVO>) {
+  return requestClient.get<Page<SysDictVO>>(BASE_URL, {
     params: Object.assign(params, page),
   });
 }

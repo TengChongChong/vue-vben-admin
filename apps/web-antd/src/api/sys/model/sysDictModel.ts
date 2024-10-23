@@ -16,10 +16,11 @@ export interface SysDict extends BasicModel {
   icon?: string;
   // 显示方式
   color?: string;
+}
+
+export interface SysDictVO extends SysDict {
   // 父字典名称
   parentName: string;
-  // 字典类型名称
-  dictTypeName: string;
 }
 
 /**
