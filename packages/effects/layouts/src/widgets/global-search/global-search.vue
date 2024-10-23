@@ -132,7 +132,7 @@ onMounted(() => {
       </template>
     </Modal>
     <div
-      class="md:bg-accent group flex h-8 cursor-pointer items-center gap-3 rounded-2xl border-none bg-none px-2 py-0.5 outline-none"
+      class="md:bg-accent group flex h-8 cursor-pointer items-center gap-3 rounded border-none bg-none px-2 py-0.5 outline-none"
       @click="toggleOpen()"
     >
       <Search

@@ -142,11 +142,11 @@ const [BaseForm, baseFormApi] = useVbenForm({
         triggerFields: ['type', 'externalLink'],
         show(values) {
           return (
-            values.type === MenuTypeEnum.MENU && values.externalLink === '1'
+            values.type === MenuTypeEnum.MENU && values.externalLink !== '1'
           );
         },
       },
-      description: '如不填写将根据组件路径转为首字母大写驼峰规则自动生成',
+      description: '如不填写将根据组件路径转自动生成（首字母大写&驼峰）',
     },
     {
       fieldName: 'orderNo',
