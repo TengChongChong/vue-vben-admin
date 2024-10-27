@@ -13,11 +13,13 @@ import { Store } from '@vben-core/shared/store';
 import {
   bindMethods,
   isFunction,
+  isNumber,
   mergeWithArrayOverride,
   StateHandler,
 } from '@vben-core/shared/utils';
 
 import { objectPick } from '@vueuse/core';
+import dayjs from 'dayjs';
 
 function getDefaultState(): VbenFormProps {
   return {
@@ -238,6 +240,17 @@ export class FormApi {
       return;
     }
     const fieldNames = this.state?.schema?.map((item) => item.fieldName) ?? [];
+    // 处理日期格式，后端返回的是时间戳
+    this.state?.schema?.forEach((item) => {
+      if (
+        fields[item.fieldName] &&
+        item.component === 'DatePicker' &&
+        isNumber(fields[item.fieldName])
+      ) {
+        fields[item.fieldName] = dayjs(fields[item.fieldName]);
+      }
+    });
+
     const filteredFields = objectPick(fields, fieldNames);
     form.setValues(filteredFields, shouldValidate);
   }

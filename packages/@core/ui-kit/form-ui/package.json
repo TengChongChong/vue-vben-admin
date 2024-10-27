@@ -42,6 +42,7 @@
     "@vben-core/shared": "workspace:*",
     "@vee-validate/zod": "catalog:",
     "@vueuse/core": "catalog:",
+    "dayjs": "catalog:",
     "vee-validate": "catalog:",
     "vue": "catalog:",
     "zod": "catalog:",
