@@ -36,6 +36,7 @@ import {
   Upload,
 } from 'ant-design-vue';
 
+import { Cropper } from '#/components/cropper';
 import { DeptSelect } from '#/components/dept';
 import {
   DictCascader,
@@ -101,6 +102,8 @@ async function initComponentAdapter() {
     // Button: () =>
     // import('xxx').then((res) => res.Button),
     AutoComplete,
+    Checkbox,
+    Cropper,
     Checkbox,
     CheckboxGroup,
     DatePicker,
