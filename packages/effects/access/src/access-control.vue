@@ -30,7 +30,7 @@ defineOptions({
 
 const props = withDefaults(defineProps<Props>(), {
   codes: () => [],
-  type: 'role',
+  type: 'code',
 });
 
 const { hasAccessByCodes, hasAccessByRoles } = useAccess();
