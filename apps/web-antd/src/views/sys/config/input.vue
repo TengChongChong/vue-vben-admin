@@ -102,15 +102,15 @@ const [BaseForm, baseFormApi] = useVbenForm({
  */
 function setInputComponent(type: string) {
   switch (type) {
-    case 'text': {
+    case 'boolean': {
       baseFormApi.updateSchema([
         {
           fieldName: 'value',
-          component: 'Input',
-          rules: z
-            .string()
-            .min(1, { message: '请输入Value' })
-            .max(255, { message: '最多输入255个字符' }),
+          component: 'DictRadio',
+          componentProps: {
+            dictType: 'boolean',
+          },
+          rules: 'selectRequired',
         },
       ]);
       break;
@@ -125,15 +125,15 @@ function setInputComponent(type: string) {
       ]);
       break;
     }
-    case 'boolean': {
+    case 'text': {
       baseFormApi.updateSchema([
         {
           fieldName: 'value',
-          component: 'DictRadio',
-          componentProps: {
-            dictType: 'boolean',
-          },
-          rules: 'selectRequired',
+          component: 'Input',
+          rules: z
+            .string()
+            .min(1, { message: '请输入Value' })
+            .max(255, { message: '最多输入255个字符' }),
         },
       ]);
     }

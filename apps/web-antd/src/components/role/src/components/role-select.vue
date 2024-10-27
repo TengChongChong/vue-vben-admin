@@ -43,6 +43,11 @@ function convertValue() {
 
 watch(() => props.value, convertValue);
 
+watch(
+  () => [props.type, props.deptId],
+  () => loadOptions(),
+);
+
 function loadOptions() {
   if (props.type === 'all') {
     selectAllApi().then((res) => {
@@ -53,9 +58,11 @@ function loadOptions() {
       roleList.value = res;
     });
   } else {
-    selectRoleByDeptApi(props.deptId).then((res) => {
-      roleList.value = res;
-    });
+    if (props.deptId) {
+      selectRoleByDeptApi(props.deptId).then((res) => {
+        roleList.value = res;
+      });
+    }
   }
 }
 

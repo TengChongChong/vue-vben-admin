@@ -28,7 +28,6 @@ const [BaseForm, baseFormApi] = useVbenForm({
       fieldName: 'type',
       label: '类型',
       component: 'Input',
-      required: true,
       rules: z
         .string()
         .min(1, { message: '请输入类型' })
@@ -38,7 +37,6 @@ const [BaseForm, baseFormApi] = useVbenForm({
       fieldName: 'name',
       label: '名称',
       component: 'Input',
-      required: true,
       rules: z
         .string()
         .min(1, { message: '请输入名称' })

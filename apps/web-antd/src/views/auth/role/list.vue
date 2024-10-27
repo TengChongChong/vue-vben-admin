@@ -1,16 +1,23 @@
 <script lang="ts" setup>
-import type { VbenFormProps, VxeGridProps } from '#/adapter';
+import type { VbenFormProps } from '#/adapter/form';
+import type { VxeGridProps } from '#/adapter/vxe-table';
 import type { SysRole } from '#/api/auth/model/sysRoleModel';
 
 import { useAccess } from '@vben/access';
 import { Page, useVbenDrawer } from '@vben/common-ui';
 
-import { ReloadOutlined } from '@ant-design/icons-vue';
 import { Button, message, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { getApi, refreshApi, removeApi, selectApi } from '#/api/auth/sysRole';
+import {
+  addApi,
+  getApi,
+  refreshApi,
+  removeApi,
+  selectApi,
+} from '#/api/auth/sysRole';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
+import { LucideRefreshCw } from '#/components/icons';
 import { RoleEnum } from '#/enums/roleEnum';
 
 import { initColumns } from './data';
@@ -78,14 +85,10 @@ const [BaseInputDrawer, baseInputDrawerApi] = useVbenDrawer({
 });
 
 async function handleCreate() {
-  // 将部分查询条件作为默认值
-  const { category, type, sys } = await gridApi.formApi.getValues();
-  baseInputDrawerApi.setData({
-    category,
-    type: type || 'text',
-    sys: sys || '0',
+  addApi().then((res) => {
+    baseInputDrawerApi.setData(res);
+    baseInputDrawerApi.open();
   });
-  baseInputDrawerApi.open();
 }
 
 function handleEdit(id: string) {
@@ -120,7 +123,7 @@ function handleReloadCache() {
           />
 
           <Button @click="handleReloadCache">
-            <template #icon> <ReloadOutlined /> </template>
+            <template #icon> <LucideRefreshCw /> </template>
             刷新缓存
           </Button>
         </Space>

@@ -140,12 +140,13 @@ async function handleSubmit(callback: (res: SysDict) => any) {
       return;
     }
     const values = await baseFormApi.getValues();
+    const parentCode: string =
+      values && isArray(values.parentCode) && values.parentCode?.length
+        ? values.parentCode[values.parentCode.length - 1]
+        : '';
     const res = await saveApi({
       ...values,
-      parentCode:
-        values && isArray(values.parentCode) && values.parentCode?.length
-          ? values.parentCode[values.parentCode.length - 1]
-          : '',
+      parentCode,
     });
     message.success('保存成功');
     emit('success');

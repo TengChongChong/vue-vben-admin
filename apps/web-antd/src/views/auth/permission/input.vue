@@ -1,6 +1,6 @@
 <script lang="ts" setup>
+import type { SysPermission } from '#/api/auth/model/sysPermissionModel';
 import type { TreeNode } from '#/api/base/model/treeModel';
-import type { SysConfig } from '#/api/sys/model/sysConfigModel';
 
 import { ref } from 'vue';
 
@@ -10,7 +10,7 @@ import { listToTree } from '@vben/utils';
 import { Space } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { saveApi, selectAllApi } from '#/api/auth/sysPermission';
+import { addApi, saveApi, selectAllApi } from '#/api/auth/sysPermission';
 import { ButtonClose, ButtonSave } from '#/components/button';
 import { MenuTypeEnum } from '#/views/auth/permission/data';
 
@@ -30,7 +30,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
       componentProps: {
         dictType: 'permissionType',
       },
-      required: true,
+      rules: 'selectRequired',
     },
     {
       fieldName: 'parentId',
@@ -58,7 +58,6 @@ const [BaseForm, baseFormApi] = useVbenForm({
       fieldName: 'title',
       label: '标题',
       component: 'Input',
-      required: true,
       rules: z
         .string()
         .min(1, { message: '请输入标题' })
@@ -135,7 +134,6 @@ const [BaseForm, baseFormApi] = useVbenForm({
       component: 'Input',
       rules: z
         .string()
-        .min(1, { message: '请输入组件Name' })
         .max(64, { message: '组件Name不能超过64个字符' })
         .optional(),
       dependencies: {
@@ -152,7 +150,6 @@ const [BaseForm, baseFormApi] = useVbenForm({
       fieldName: 'orderNo',
       label: '排序值',
       component: 'InputNumber',
-      required: true,
       rules: z
         .number()
         .min(0, { message: '排序值不能小于0' })
@@ -162,7 +159,6 @@ const [BaseForm, baseFormApi] = useVbenForm({
     {
       fieldName: 'showInMenu',
       label: '在菜单中显示',
-      required: true,
       component: 'DictRadio',
       componentProps: {
         dictType: 'whether',
@@ -173,11 +169,11 @@ const [BaseForm, baseFormApi] = useVbenForm({
           return values.type !== MenuTypeEnum.BUTTON;
         },
       },
+      rules: 'selectRequired',
     },
     {
       fieldName: 'externalLink',
       label: '外部链接',
-      required: true,
       component: 'DictRadio',
       componentProps: {
         dictType: 'whether',
@@ -189,11 +185,11 @@ const [BaseForm, baseFormApi] = useVbenForm({
         },
       },
       description: '外部链接菜单点击将打开Path中设置的地址',
+      rules: 'selectRequired',
     },
     {
       fieldName: 'openMode',
       label: '打开方式',
-      required: true,
       component: 'DictRadio',
       componentProps: {
         dictType: 'openMode',
@@ -206,15 +202,16 @@ const [BaseForm, baseFormApi] = useVbenForm({
           );
         },
       },
+      rules: 'selectRequired',
     },
     {
       fieldName: 'status',
       label: '状态',
-      required: true,
       component: 'DictRadio',
       componentProps: {
         dictType: 'commonStatus',
       },
+      rules: 'selectRequired',
     },
     {
       fieldName: 'remarks',
@@ -234,7 +231,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
   ],
 });
 
-async function handleSubmit(callback: (res: SysConfig) => any) {
+async function handleSubmit(callback: (res: SysPermission) => any) {
   try {
     saveBtnLoading.value = true;
     const { valid } = await baseFormApi.validate();
@@ -260,8 +257,9 @@ async function handleSave() {
 async function handleSaveAndAdd() {
   await handleSubmit((res) => {
     baseFormApi.resetForm();
-    const { category, type, sys } = res;
-    baseFormApi.setValues({ category, type, sys });
+    addApi(res.parentId).then((data) => {
+      baseFormApi.setValues(data);
+    });
   });
 }
 

@@ -32,7 +32,7 @@ const currentUser = computed(() => {
           <PersonalUserInfo :current-user="currentUser!" />
 
           <!-- Nav -->
-          <PersonalNav v-model:selectedKeys="selectedKeys" />
+          <PersonalNav v-model:selected-keys="selectedKeys" />
         </Card>
       </LayoutSider>
       <LayoutContent :style="{ marginLeft: '24px', overflow: 'initial' }">

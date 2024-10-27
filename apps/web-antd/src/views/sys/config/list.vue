@@ -1,16 +1,17 @@
 <script lang="ts" setup>
-import type { VbenFormProps, VxeGridProps } from '#/adapter';
+import type { VbenFormProps } from '#/adapter/form';
+import type { VxeGridProps } from '#/adapter/vxe-table';
 import type { SysConfig } from '#/api/sys/model/sysConfigModel';
 
 import { useAccess } from '@vben/access';
 import { Page, useVbenModal } from '@vben/common-ui';
 
-import { ReloadOutlined } from '@ant-design/icons-vue';
 import { Button, message, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { getApi, refreshApi, removeApi, selectApi } from '#/api/sys/sysConfig';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
+import { LucideRefreshCw } from '#/components/icons';
 import { RoleEnum } from '#/enums/roleEnum';
 
 import { initColumns } from './data';
@@ -135,7 +136,7 @@ function handleReloadCache() {
           />
 
           <Button @click="handleReloadCache">
-            <template #icon> <ReloadOutlined /> </template>
+            <template #icon> <LucideRefreshCw /> </template>
             刷新缓存
           </Button>
         </Space>

@@ -150,8 +150,13 @@ function onDrop(info: AntTreeNodeDropEvent) {
 }
 </script>
 <template>
-  <Drawer class="w-[600px]" title="菜单详情">
-    <Alert banner message="拖动节点更改菜单顺序或结构" type="info" />
+  <Drawer class="w-[600px]" title="菜单排序">
+    <Alert
+      banner
+      class="mb-2"
+      message="拖动节点更改菜单顺序或结构"
+      type="info"
+    />
 
     <Tree
       :tree-data="treeData"

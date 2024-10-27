@@ -1,12 +1,12 @@
 <script lang="ts" setup>
-import type { VbenFormProps, VxeGridProps } from '#/adapter';
+import type { VbenFormProps } from '#/adapter/form';
+import type { VxeGridProps } from '#/adapter/vxe-table';
 import type { SysDict } from '#/api/sys/model/sysDictModel';
 
 import { ref, unref } from 'vue';
 
 import { Page, useVbenModal } from '@vben/common-ui';
 
-import { ReloadOutlined } from '@ant-design/icons-vue';
 import { Button, message, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
@@ -18,6 +18,7 @@ import {
   selectApi,
 } from '#/api/sys/sysDict';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
+import { LucideRefreshCw } from '#/components/icons';
 
 import { initColumns } from './data';
 import InputModal from './input.vue';
@@ -132,7 +133,7 @@ function handleDictTypeChange(value: string) {
               />
 
               <Button @click="handleReloadCache">
-                <template #icon> <ReloadOutlined /> </template>
+                <template #icon> <LucideRefreshCw /> </template>
                 刷新缓存
               </Button>
             </Space>

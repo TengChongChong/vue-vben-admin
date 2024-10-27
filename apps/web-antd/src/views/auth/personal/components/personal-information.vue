@@ -39,13 +39,24 @@ const [BaseForm, baseFormApi] = useVbenForm({
       fieldName: 'sex',
       label: '性别',
     },
+    {
+      component: 'DatePicker',
+      fieldName: 'birthday',
+      label: '生日',
+    },
   ],
 });
 
 onMounted(() => {
   currentUserApi().then((data) => {
     const { username, nickname, sex, birthday, avatar } = data;
-    baseFormApi.setValues({ username, nickname, sex, birthday, avatar });
+    baseFormApi.setValues({
+      username,
+      nickname,
+      sex,
+      birthday,
+      avatar,
+    });
   });
 });
 

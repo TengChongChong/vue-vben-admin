@@ -1,21 +1,18 @@
 <script lang="ts" setup>
-import type { VbenFormProps, VxeGridProps } from '#/adapter';
+import type { VbenFormProps } from '#/adapter/form';
+import type { VxeGridProps } from '#/adapter/vxe-table';
 import type { SysPermission } from '#/api/auth/model/sysPermissionModel';
 
 import { ref, unref } from 'vue';
 
 import { Page, useVbenDrawer } from '@vben/common-ui';
 
-import {
-  MinusOutlined,
-  OrderedListOutlined,
-  PlusOutlined,
-} from '@ant-design/icons-vue';
 import { Button, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { addApi, getApi, removeApi, selectApi } from '#/api/auth/sysPermission';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
+import { LucideListOrdered, LucideMinus, LucidePlus } from '#/components/icons';
 
 import { initColumns } from './data';
 import InputDrawer from './input.vue';
@@ -133,19 +130,19 @@ function handleCollapseAll() {
           />
           <Button @click="handleOrder">
             <template #icon>
-              <OrderedListOutlined />
+              <LucideListOrdered />
             </template>
             排序
           </Button>
           <Button @click="handleExpandAll">
             <template #icon>
-              <PlusOutlined />
+              <LucidePlus />
             </template>
             展开全部
           </Button>
           <Button @click="handleCollapseAll">
             <template #icon>
-              <MinusOutlined />
+              <LucideMinus />
             </template>
             折叠全部
           </Button>

@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import {
-  LinkOutlined,
-  MailOutlined,
-  MobileOutlined,
-} from '@ant-design/icons-vue';
 import { Button, Card, List, ListItem, ListItemMeta } from 'ant-design-vue';
+
+import { LucideLink, LucideMail, LucideSmartphone } from '#/components/icons';
 </script>
 
 <template>
@@ -15,7 +12,7 @@ import { Button, Card, List, ListItem, ListItemMeta } from 'ant-design-vue';
           <template #actions>
             <Button size="small" type="link">
               <template #icon>
-                <LinkOutlined />
+                <LucideLink />
               </template>
               绑定
             </Button>
@@ -25,7 +22,7 @@ import { Button, Card, List, ListItem, ListItemMeta } from 'ant-design-vue';
               <span class="font-medium">手机：173****2808</span>
             </template>
             <template #avatar>
-              <MobileOutlined />
+              <LucideSmartphone />
             </template>
           </ListItemMeta>
         </ListItem>
@@ -33,7 +30,7 @@ import { Button, Card, List, ListItem, ListItemMeta } from 'ant-design-vue';
           <template #actions>
             <Button size="small" type="link">
               <template #icon>
-                <LinkOutlined />
+                <LucideLink />
               </template>
               绑定
             </Button>
@@ -43,7 +40,7 @@ import { Button, Card, List, ListItem, ListItemMeta } from 'ant-design-vue';
               <span class="font-medium">邮箱： easyframe@sina.com</span>
             </template>
             <template #avatar>
-              <MailOutlined />
+              <LucideMail />
             </template>
           </ListItemMeta>
         </ListItem>
