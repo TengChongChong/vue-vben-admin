@@ -17,10 +17,9 @@ import {
 } from 'vue';
 
 import { VbenScrollbar } from '@vben/common-ui';
-import { Icon } from '@vben/icons';
+import { IconifyIcon } from '@vben/icons';
 import { cn, filter, treeToList } from '@vben/utils';
 
-import { EllipsisOutlined } from '@ant-design/icons-vue';
 import { useDebounceFn } from '@vueuse/shared';
 import {
   Button,
@@ -38,6 +37,7 @@ import {
 import { difference, isArray, isString, omit } from 'lodash-es';
 
 import { HighlightText } from '#/components/highlight-text';
+import { LucideEllipsisVertical } from '#/components/icons';
 import { useTree } from '#/components/tree/src/hooks/useTree';
 import {
   type BasicTreeProps,
@@ -381,9 +381,9 @@ const instance: TreeActionType = {
 const TreeIcon = ({ icon }: { icon: string | undefined | VNode }) => {
   if (!icon) return null;
   if (isString(icon)) {
-    return h(Icon, { icon, class: 'mr-1' });
+    return h(IconifyIcon, { icon, class: 'mr-1' });
   }
-  return h(Icon);
+  return h(IconifyIcon);
 };
 
 defineExpose(instance);
@@ -410,7 +410,7 @@ defineExpose(instance);
         <Dropdown v-if="props.showToolbar">
           <Button :size="props.size">
             <template #icon>
-              <EllipsisOutlined />
+              <LucideEllipsisVertical />
             </template>
           </Button>
           <template #overlay>

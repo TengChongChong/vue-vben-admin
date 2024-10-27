@@ -6,11 +6,9 @@ import { createVNode, ref } from 'vue';
 import { AccessControl } from '@vben/access';
 import { cn, isFunction } from '@vben/utils';
 
-import {
-  DeleteOutlined,
-  ExclamationCircleOutlined,
-} from '@ant-design/icons-vue';
 import { Button, message, Modal } from 'ant-design-vue';
+
+import { LucideTrash } from '#/components/icons';
 
 defineOptions({
   inheritAttrs: false,
@@ -42,7 +40,6 @@ function handleClick() {
     title: props.ids?.length
       ? ` 确定要删除吗?`
       : ` 确定要删除选中 ${selectRecordIds.length} 条数据吗?`,
-    icon: createVNode(ExclamationCircleOutlined),
     content: createVNode(
       'div',
       { class: 'danger-tip' },
@@ -84,7 +81,7 @@ function handleClick() {
       @click.stop="handleClick"
     >
       <template #icon>
-        <DeleteOutlined />
+        <LucideTrash />
       </template>
       {{ props.text }}
     </Button>

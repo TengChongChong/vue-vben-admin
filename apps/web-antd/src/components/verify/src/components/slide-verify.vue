@@ -8,10 +8,10 @@ import { reactive, ref, unref, watch } from 'vue';
 import { SliderCaptcha } from '@vben/common-ui';
 import { EncryptionFactory } from '@vben/utils';
 
-import { ReloadOutlined } from '@ant-design/icons-vue';
 import { Button, Spin } from 'ant-design-vue';
 
 import { checkCaptchaApi, getCaptchaApi } from '#/api/sys/sysCaptcha';
+import { LucideRotateCcw } from '#/components/icons';
 
 const emit = defineEmits(['success', 'change', 'update:value']);
 // 拖动条
@@ -146,7 +146,7 @@ async function handleDragEnd() {
     <div class="verify-slide-originals">
       <Button class="btn-refresh" type="link" @click="handleRefresh">
         <template #icon>
-          <ReloadOutlined />
+          <LucideRotateCcw />
         </template>
       </Button>
 

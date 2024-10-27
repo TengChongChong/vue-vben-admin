@@ -4,8 +4,9 @@ import type { BaseButtonProps } from '../props';
 import { AccessControl } from '@vben/access';
 import { cn } from '@vben/utils';
 
-import { CloseOutlined } from '@ant-design/icons-vue';
 import { Button } from 'ant-design-vue';
+
+import { LucideX } from '#/components/icons';
 
 defineOptions({
   inheritAttrs: false,
@@ -34,7 +35,7 @@ function handleClick() {
       @click="handleClick"
     >
       <template #icon>
-        <CloseOutlined />
+        <LucideX />
       </template>
       {{ props.text }}
     </Button>

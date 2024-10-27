@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Icon } from '@vben/icons';
+import { IconifyIcon } from '@vben/icons';
 
 interface IconProps {
   icon: string;
@@ -9,7 +9,7 @@ const props = withDefaults(defineProps<IconProps>(), {});
 </script>
 
 <template>
-  <Icon :icon="props.icon" />
+  <IconifyIcon :icon="props.icon" />
 </template>
 
 <style scoped></style>

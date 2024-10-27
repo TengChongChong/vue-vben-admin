@@ -16,3 +16,31 @@ export const FilePen = createIconifyIcon('lucide:file-pen');
 export const Mail = createIconifyIcon('lucide:mail');
 export const Mails = createIconifyIcon('lucide:mails');
 export const Mailbox = createIconifyIcon('lucide:mailbox');
+
+export const LucidePlus = createIconifyIcon('lucide:plus');
+export const LucideTrash = createIconifyIcon('lucide:trash-2');
+export const LucideSquarePen = createIconifyIcon('lucide:square-pen');
+export const LucideSearch = createIconifyIcon('lucide:search');
+export const LucideSave = createIconifyIcon('lucide:save');
+export const LucideCheck = createIconifyIcon('lucide:check');
+export const LucideX = createIconifyIcon('lucide:x');
+export const LucideRotateCcw = createIconifyIcon('lucide:rotate-ccw');
+export const LucideRefreshCw = createIconifyIcon('lucide:refresh-cw');
+
+export const LucideHardDriveUpload = createIconifyIcon(
+  'lucide:hard-drive-upload',
+);
+export const LucideHardDriveDownload = createIconifyIcon(
+  'lucide:hard-drive-download',
+);
+export const LucideListOrdered = createIconifyIcon('lucide:list-ordered');
+export const LucideMinus = createIconifyIcon('lucide:minus');
+export const LucideListTree = createIconifyIcon('lucide:list-tree');
+export const LucideEllipsisVertical = createIconifyIcon(
+  'lucide:ellipsis-vertical',
+);
+export const LucideInfo = createIconifyIcon('lucide:info');
+
+export const LucideSmartphone = createIconifyIcon('lucide:smartphone');
+export const LucideMail = createIconifyIcon('lucide:mail');
+export const LucideLink = createIconifyIcon('lucide:link');

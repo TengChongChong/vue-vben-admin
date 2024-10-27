@@ -6,8 +6,9 @@ import { useRouter } from 'vue-router';
 import { AccessControl } from '@vben/access';
 import { cn } from '@vben/utils';
 
-import { PlusOutlined } from '@ant-design/icons-vue';
 import { Button } from 'ant-design-vue';
+
+import { LucidePlus } from '#/components/icons';
 
 defineOptions({
   inheritAttrs: false,
@@ -42,7 +43,7 @@ function handleClick() {
       @click.stop="handleClick"
     >
       <template #icon>
-        <PlusOutlined />
+        <LucidePlus />
       </template>
       {{ props.text }}
     </Button>

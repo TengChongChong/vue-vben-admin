@@ -10,11 +10,11 @@ import { onMounted, ref, watch } from 'vue';
 
 import { useAccessStore } from '@vben/stores';
 
-import { UploadOutlined } from '@ant-design/icons-vue';
 import { Button, message, Tag, Upload } from 'ant-design-vue';
 import { isArray, isString } from 'lodash-es';
 
 import { getBySlugApi } from '#/api/file/fileUploadRule';
+import { LucideHardDriveUpload } from '#/components/icons';
 import {
   convertToFileInfo,
   convertToUploadFileModelArray,
@@ -202,19 +202,19 @@ function refreshDisplayFileList() {
       :multiple="multiple"
       @change="handleChange"
     >
-      <template
-        v-if="props.listType === 'picture-card'"
-      >
+      <template v-if="props.listType === 'picture-card'">
         <div>
-          <UploadOutlined />
+          <LucideHardDriveUpload />
           <div class="ant-upload-text">选择文件</div>
         </div>
       </template>
 
-      <template v-if="props.listType === 'text' || props.listType === 'picture'">
+      <template
+        v-if="props.listType === 'text' || props.listType === 'picture'"
+      >
         <Button>
           <template #icon>
-            <UploadOutlined />
+            <LucideHardDriveUpload />
           </template>
 
           选择文件

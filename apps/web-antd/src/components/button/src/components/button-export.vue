@@ -4,8 +4,9 @@ import type { BaseButtonProps } from '../props';
 import { AccessControl } from '@vben/access';
 import { cn } from '@vben/utils';
 
-import { DownloadOutlined } from '@ant-design/icons-vue';
 import { Button } from 'ant-design-vue';
+
+import { LucideHardDriveDownload } from '#/components/icons';
 
 defineOptions({
   inheritAttrs: false,
@@ -34,7 +35,7 @@ function handleClick() {
       @click="handleClick"
     >
       <template #icon>
-        <DownloadOutlined />
+        <LucideHardDriveDownload />
       </template>
       {{ props.text }}
     </Button>

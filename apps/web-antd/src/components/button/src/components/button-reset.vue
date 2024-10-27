@@ -3,8 +3,9 @@ import type { BaseButtonProps } from '../props';
 
 import { cn } from '@vben/utils';
 
-import { RedoOutlined } from '@ant-design/icons-vue';
 import { Button } from 'ant-design-vue';
+
+import { LucideRotateCcw } from '#/components/icons';
 
 defineOptions({
   inheritAttrs: false,
@@ -32,7 +33,7 @@ function handleClick() {
     @click="handleClick"
   >
     <template #icon>
-      <RedoOutlined />
+      <LucideRotateCcw />
     </template>
     {{ props.text }}
   </Button>

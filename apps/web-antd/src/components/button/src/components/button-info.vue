@@ -6,8 +6,9 @@ import { useRouter } from 'vue-router';
 import { AccessControl } from '@vben/access';
 import { cn } from '@vben/utils';
 
-import { SearchOutlined } from '@ant-design/icons-vue';
 import { Button } from 'ant-design-vue';
+
+import { LucideSearch } from '#/components/icons';
 
 defineOptions({
   inheritAttrs: false,
@@ -41,7 +42,7 @@ function handleClick() {
       @click.stop="handleClick"
     >
       <template #icon>
-        <SearchOutlined />
+        <LucideSearch />
       </template>
       {{ props.text }}
     </Button>
