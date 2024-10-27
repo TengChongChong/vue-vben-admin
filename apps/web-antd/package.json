@@ -26,7 +26,6 @@
     "#/*": "./src/*"
   },
   "dependencies": {
-    "@ant-design/icons-vue": "catalog:",
     "@vben/access": "workspace:*",
     "@vben/common-ui": "workspace:*",
     "@vben/constants": "workspace:*",
