@@ -5,9 +5,12 @@ import type { BasicModel } from '#/api/base/model/baseModel.ts';
  */
 export interface SysDeptType extends BasicModel {
   // 名称
-  name?: string;
+  name: string;
   // 代码
-  code?: string;
+  code: string;
+}
+
+export interface SysDeptTypeVO extends SysDeptType {
   // 该部门类型可以选择的角色列表 1,2,3
   roleIdList?: string[];
 }

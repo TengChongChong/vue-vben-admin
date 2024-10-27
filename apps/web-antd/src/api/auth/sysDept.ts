@@ -1,4 +1,4 @@
-import type { SysDept } from '#/api/auth/model/sysDeptModel';
+import type { SysDept, SysDeptVO } from '#/api/auth/model/sysDeptModel';
 import type { TreeNodeModel } from '#/api/base/model/treeModel';
 
 import { requestClient } from '#/api/request';
@@ -11,8 +11,8 @@ const BASE_URL = '/auth/sys/dept';
  *
  * @param params 查询条件
  */
-export function selectApi(params: SysDept) {
-  return requestClient.get<SysDept[]>(BASE_URL, { params });
+export function selectApi(params: SysDeptVO) {
+  return requestClient.get<SysDeptVO[]>(BASE_URL, { params });
 }
 
 /**

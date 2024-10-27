@@ -1,4 +1,4 @@
-import type { SysUser } from '#/api/auth/model/sysUserModel';
+import type { SysUserVO } from '#/api/auth/model/sysUserModel';
 import type { Page } from '#/api/base/model/pageModel';
 
 import { requestClient } from '#/api/request';
@@ -10,9 +10,12 @@ const BASE_URL = '/auth/sys/user';
  * 查询
  *
  * @param params 查询条件
+ * @param page 分页
  */
-export function selectApi(params: SysUser) {
-  return requestClient.get<Page<SysUser>>(BASE_URL, { params });
+export function selectApi(params: SysUserVO, page: Page<SysUserVO>) {
+  return requestClient.get<Page<SysUserVO>>(BASE_URL, {
+    params: Object.assign(params, page),
+  });
 }
 
 /**
@@ -27,9 +30,9 @@ export function searchApi(
   keyword: string,
   range: string,
   deptId: string,
-  page: Page<SysUser>,
+  page: Page<SysUserVO>,
 ) {
-  return requestClient.get<Page<SysUser>>(`${BASE_URL}/search`, {
+  return requestClient.get<Page<SysUserVO>>(`${BASE_URL}/search`, {
     params: {
       keyword,
       range,
@@ -44,7 +47,7 @@ export function searchApi(
  * @param ids ids
  */
 export function selectUsersByIdsApi(ids: string | string[]) {
-  return requestClient.get<SysUser[]>(
+  return requestClient.get<SysUserVO[]>(
     `${BASE_URL}/users/${Array.isArray(ids) ? ids.join(',') : ids}`,
   );
 }
@@ -55,7 +58,7 @@ export function selectUsersByIdsApi(ids: string | string[]) {
  * @param id id
  */
 export function getApi(id: string) {
-  return requestClient.get<SysUser>(`${BASE_URL}/${id}`);
+  return requestClient.get<SysUserVO>(`${BASE_URL}/${id}`);
 }
 
 /**
@@ -64,7 +67,7 @@ export function getApi(id: string) {
  * @param deptId 部门id
  */
 export function addApi(deptId: string) {
-  return requestClient.get<SysUser>(`${BASE_URL}/add/${deptId}`);
+  return requestClient.get<SysUserVO>(`${BASE_URL}/add/${deptId}`);
 }
 
 /**
@@ -81,8 +84,8 @@ export function removeApi(ids: string) {
  *
  * @param params 表单数据
  */
-export function saveApi(params: SysUser) {
-  return requestClient.post<SysUser>(BASE_URL, params);
+export function saveApi(params: SysUserVO) {
+  return requestClient.post<SysUserVO>(BASE_URL, params);
 }
 
 /**

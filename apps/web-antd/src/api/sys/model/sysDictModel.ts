@@ -9,7 +9,7 @@ export interface SysDict extends BasicModel {
   // 编码
   code: string;
   // 父编码
-  parentCode: string | string[];
+  parentCode: string;
   // 字典类型
   dictType: string;
   // 图标

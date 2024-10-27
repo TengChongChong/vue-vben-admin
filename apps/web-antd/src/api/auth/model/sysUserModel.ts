@@ -6,11 +6,11 @@ import type { FileInfo } from '#/api/file/model/fileInfoModel.ts';
  */
 export interface SysUser extends BasicModel {
   // 用户名
-  username?: string;
+  username: string;
   // 昵称
-  nickname?: string;
+  nickname: string;
   // 密码
-  password?: string;
+  password: string;
   // 性别
   sex?: string;
   // 邮箱
@@ -28,9 +28,14 @@ export interface SysUser extends BasicModel {
   // 最后登录时间
   lastLoginDate?: Date;
   // 所属部门Id
-  deptId?: string;
+  deptId: string;
+}
+
+export interface SysUserVO extends SysUser {
   // 所属部门名称
-  deptName?: string;
+  deptName: string;
   // 头像
   avatar?: FileInfo;
+  // 头像
+  avatarUrl?: string;
 }

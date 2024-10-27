@@ -1,8 +1,10 @@
-import type { SysDeptType } from '#/api/auth/model/sysDeptTypeModel';
+import type {
+  SysDeptType,
+  SysDeptTypeVO,
+} from '#/api/auth/model/sysDeptTypeModel';
 import type { TreeNodeModel } from '#/api/base/model/treeModel';
 
 import { requestClient } from '#/api/request';
-import { selectAllApi } from '#/api/sys/sysDict';
 
 // base url
 const BASE_URL = '/auth/sys/dept/type';
@@ -19,7 +21,7 @@ export function selectApi(params: SysDeptType) {
 /**
  * 查询所有
  */
-export function selectAllApi() {
+export function selectAllDeptTypeApi() {
   return requestClient.get<TreeNodeModel[]>(`${BASE_URL}/all`);
 }
 
@@ -29,7 +31,7 @@ export function selectAllApi() {
  * @param id id
  */
 export function getApi(id: string) {
-  return requestClient.get<SysDeptType>(`${BASE_URL}/${id}`);
+  return requestClient.get<SysDeptTypeVO>(`${BASE_URL}/${id}`);
 }
 
 /**
@@ -38,7 +40,7 @@ export function getApi(id: string) {
  * @param id 父id
  */
 export function addApi(id: string | undefined) {
-  return requestClient.get<SysDeptType>(`${BASE_URL}/add/${id || ''}`);
+  return requestClient.get<SysDeptTypeVO>(`${BASE_URL}/add/${id || ''}`);
 }
 
 /**
@@ -55,8 +57,8 @@ export function removeApi(ids: string) {
  *
  * @param params 表单数据
  */
-export function saveApi(params: SysDeptType) {
-  return requestClient.post<SysDeptType>(BASE_URL, params);
+export function saveApi(params: SysDeptTypeVO) {
+  return requestClient.post<SysDeptTypeVO>(BASE_URL, params);
 }
 
 /**
