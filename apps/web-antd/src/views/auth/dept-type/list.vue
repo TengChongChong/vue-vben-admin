@@ -73,6 +73,7 @@ const gridOptions: VxeGridProps<SysDeptType> = {
 };
 
 const [Grid, gridApi] = useVbenVxeGrid({
+  tableTitle: '部门类型管理',
   formOptions,
   gridOptions,
   gridEvents: {
@@ -119,9 +120,6 @@ function handleCollapseAll() {
 <template>
   <Page auto-content-height>
     <Grid>
-      <template #toolbar-actions>
-        <span class="table-title">部门类型管理</span>
-      </template>
       <template #toolbar-tools>
         <Space>
           <ButtonAdd

@@ -74,6 +74,7 @@ const gridOptions: VxeGridProps<SysConfig> = {
 };
 
 const [Grid, gridApi] = useVbenVxeGrid({
+  tableTitle: '用户信息',
   formOptions,
   gridOptions,
 });
@@ -109,9 +110,6 @@ const handleResetPassword = (id: string) => {
 <template>
   <Page auto-content-height content-class="!pt-0 !pr-0 !pb-8">
     <Grid>
-      <template #toolbar-actions>
-        <span class="table-title">用户信息</span>
-      </template>
       <template #toolbar-tools>
         <Space>
           <ButtonAdd :auth-codes="['sys:user:save']" @click="handleCreate" />

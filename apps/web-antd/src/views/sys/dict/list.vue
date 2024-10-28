@@ -63,6 +63,7 @@ const gridOptions: VxeGridProps<SysDict> = {
 };
 
 const [Grid, gridApi] = useVbenVxeGrid({
+  tableTitle: '字典管理',
   formOptions,
   gridOptions,
 });
@@ -115,9 +116,6 @@ function handleDictTypeChange(value: string) {
       </div>
       <div class="flex-1" style="min-width: 500px">
         <Grid>
-          <template #toolbar-actions>
-            <span class="table-title">字典管理</span>
-          </template>
           <template #toolbar-tools>
             <Space>
               <ButtonAdd

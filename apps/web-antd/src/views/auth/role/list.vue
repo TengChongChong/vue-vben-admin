@@ -76,6 +76,7 @@ const gridOptions: VxeGridProps<SysRole> = {
 };
 
 const [Grid, gridApi] = useVbenVxeGrid({
+  tableTitle: '角色管理',
   formOptions,
   gridOptions,
 });
@@ -108,9 +109,6 @@ function handleReloadCache() {
 <template>
   <Page auto-content-height>
     <Grid>
-      <template #toolbar-actions>
-        <span class="table-title">角色管理</span>
-      </template>
       <template #toolbar-tools>
         <Space>
           <ButtonAdd :auth-codes="['sys:role:save']" @click="handleCreate" />

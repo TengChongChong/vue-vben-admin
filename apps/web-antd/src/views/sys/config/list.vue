@@ -85,6 +85,7 @@ const gridOptions: VxeGridProps<SysConfig> = {
 };
 
 const [Grid, gridApi] = useVbenVxeGrid({
+  tableTitle: '系统参数',
   formOptions,
   gridOptions,
 });
@@ -121,9 +122,6 @@ function handleReloadCache() {
 <template>
   <Page auto-content-height>
     <Grid>
-      <template #toolbar-actions>
-        <span class="table-title">系统参数</span>
-      </template>
       <template #toolbar-tools>
         <Space>
           <ButtonAdd :auth-codes="['sys:config:save']" @click="handleCreate" />

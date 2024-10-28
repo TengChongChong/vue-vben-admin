@@ -44,6 +44,7 @@ const gridOptions: VxeGridProps<SysDictType> = {
 };
 
 const [Grid, gridApi] = useVbenVxeGrid({
+  tableTitle: '字典类型',
   gridOptions,
   gridEvents: {
     radioChange: ({ newValue }) => {
@@ -82,9 +83,6 @@ function handleEdit(id: string) {
     </div>
     <div class="w-full">
       <Grid>
-        <template #toolbar-actions>
-          <span class="table-title">字典类型</span>
-        </template>
         <template #toolbar-tools>
           <Space>
             <ButtonAdd :auth-codes="['sys:dict:save']" @click="handleCreate" />

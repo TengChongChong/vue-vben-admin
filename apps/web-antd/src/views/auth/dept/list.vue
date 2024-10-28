@@ -80,6 +80,7 @@ const gridOptions: VxeGridProps<SysDept> = {
 };
 
 const [Grid, gridApi] = useVbenVxeGrid({
+  tableTitle: '部门管理',
   formOptions,
   gridOptions,
   gridEvents: {
@@ -130,9 +131,6 @@ function handleCollapseAll() {
 <template>
   <Page auto-content-height>
     <Grid>
-      <template #toolbar-actions>
-        <span class="table-title">部门管理</span>
-      </template>
       <template #toolbar-tools>
         <Space>
           <ButtonAdd :auth-codes="['sys:dept:save']" @click="handleCreate" />
