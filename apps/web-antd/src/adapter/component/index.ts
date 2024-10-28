@@ -102,7 +102,6 @@ async function initComponentAdapter() {
     // Button: () =>
     // import('xxx').then((res) => res.Button),
     AutoComplete,
-    Checkbox,
     Cropper,
     Checkbox,
     CheckboxGroup,
