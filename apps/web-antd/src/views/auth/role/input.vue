@@ -15,7 +15,7 @@ import { isArray } from 'lodash-es';
 import { useVbenForm } from '#/adapter/form';
 import { selectAllApi as selectAllDeptApi } from '#/api/auth/sysDept';
 import { selectAllApi as selectAllPermissionApi } from '#/api/auth/sysPermission';
-import { saveApi } from '#/api/auth/sysRole';
+import { addApi, saveApi } from '#/api/auth/sysRole';
 import { ButtonClose, ButtonSave } from '#/components/button';
 import { BasicTree } from '#/components/tree';
 import { RoleEnum } from '#/enums/roleEnum';
@@ -173,10 +173,11 @@ async function handleSave() {
 }
 
 async function handleSaveAndAdd() {
-  await handleSubmit((res) => {
+  await handleSubmit(() => {
     baseFormApi.resetForm();
-    const { category, type, sys } = res;
-    baseFormApi.setValues({ category, type, sys });
+    addApi().then((res) => {
+      baseFormApi.setValues(res);
+    });
   });
 }
 
