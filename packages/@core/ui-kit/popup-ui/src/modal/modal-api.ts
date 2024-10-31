@@ -32,7 +32,7 @@ export class ModalApi {
       bordered: true,
       centered: false,
       class: '',
-      closeOnClickModal: true,
+      closeOnClickModal: false,
       closeOnPressEscape: true,
       confirmLoading: false,
       contentClass: '',
