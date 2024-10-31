@@ -48,7 +48,9 @@ const hasChildren = computed(() => {
     :icon="menu.icon"
     :path="menu.path"
   >
-    <template #title>{{ menu.name }}</template>
+    <template #title>
+      <span>{{ menu.name }}</span>
+    </template>
   </MenuItem>
   <SubMenuComp
     v-else
@@ -65,7 +67,9 @@ const hasChildren = computed(() => {
         class="right-6"
       />
     </template>
-    <template #title>{{ menu.name }}</template>
+    <template #title>
+      <span>{{ menu.name }}</span>
+    </template>
     <template v-for="childItem in menu.children || []" :key="childItem.path">
       <SubMenu :menu="childItem" />
     </template>
