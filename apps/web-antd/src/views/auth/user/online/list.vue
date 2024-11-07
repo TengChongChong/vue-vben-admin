@@ -12,7 +12,8 @@ import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { forceLoginApi, selectApi } from '#/api/auth/sys-user-online';
 import { LucideLogOut } from '#/components/icons';
 import { UserAvatar } from '#/components/user';
-import { initColumns } from '#/views/auth/user/online/data';
+
+import { initColumns } from './data';
 
 function handleSearch() {
   gridApi.search();

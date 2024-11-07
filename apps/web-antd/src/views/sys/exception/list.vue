@@ -11,7 +11,8 @@ import dayjs from 'dayjs';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { removeApi, selectApi } from '#/api/sys/sys-exception';
 import { ButtonInfo, ButtonRemove } from '#/components/button';
-import { initColumns } from '#/views/auth/user/online/data';
+
+import { initColumns } from './data';
 
 function handleSearch() {
   gridApi.search();
