@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { SysDept } from '#/api/auth/model/sysDeptModel';
+import type { SysDept } from '#/api/auth/model/sys-dept-model';
 
 import { ref, unref } from 'vue';
 
@@ -11,7 +11,7 @@ import { Page, useVbenDrawer } from '@vben/common-ui';
 import { Button, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { addApi, getApi, removeApi, selectApi } from '#/api/auth/sysDept';
+import { addApi, getApi, removeApi, selectApi } from '#/api/auth/sys-dept';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
 import {
   LucideListOrdered,

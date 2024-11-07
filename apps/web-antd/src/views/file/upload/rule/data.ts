@@ -5,7 +5,7 @@ import { h } from 'vue';
 
 import { message, Switch } from 'ant-design-vue';
 
-import { setStatusApi } from '#/api/file/fileUploadRule.ts';
+import { setStatusApi } from '#/api/file/file-upload-rule.ts';
 import { renderDictTag } from '#/components/dict';
 
 export const initColumns = (): VxeGridPropTypes.Columns[] => {
@@ -15,7 +15,7 @@ export const initColumns = (): VxeGridPropTypes.Columns[] => {
     {
       title: '分类',
       field: 'category',
-      sorter: true,
+      sortable: true,
       width: 120,
       slots: {
         default: ({ row }) => {
@@ -26,32 +26,32 @@ export const initColumns = (): VxeGridPropTypes.Columns[] => {
     {
       title: '名称',
       field: 'name',
-      sorter: true,
+      sortable: true,
       minWidth: 160,
     },
     {
       title: '别名',
       field: 'slug',
-      sorter: true,
+      sortable: true,
       minWidth: 180,
     },
     {
       title: '存储目录',
       field: 'directory',
-      sorter: true,
+      sortable: true,
       minWidth: 160,
     },
     {
       title: '允许上传的文件大小',
       field: 'upperLimit',
-      sorter: true,
+      sortable: true,
       width: 200,
       slots: { default: 'upperLimit' },
     },
     {
       title: '文件拓展名',
       field: 'suffix',
-      sorter: true,
+      sortable: true,
       minWidth: 160,
     },
     {

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { SysRole } from '#/api/auth/model/sysRoleModel';
+import type { SysRole } from '#/api/auth/model/sys-role-model';
 
 import { useAccess } from '@vben/access';
 import { Page, useVbenDrawer } from '@vben/common-ui';
@@ -15,7 +15,7 @@ import {
   refreshApi,
   removeApi,
   selectApi,
-} from '#/api/auth/sysRole';
+} from '#/api/auth/sys-role';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
 import { LucideRefreshCw } from '#/components/icons';
 import { RoleEnum } from '#/enums/roleEnum';

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SysUser } from '#/api/auth/model/sysUserModel';
+import type { SysUser } from '#/api/auth/model/sys-user-model';
 import type { UserSelect } from '#/components/user/src/type';
 
 import { onMounted, ref, unref, watch } from 'vue';
@@ -9,7 +9,7 @@ import { cn } from '@vben/utils';
 import { useDebounceFn } from '@vueuse/shared';
 import { Select, SelectOption, Spin } from 'ant-design-vue';
 
-import { searchApi, selectUsersByIdsApi } from '#/api/auth/sysUser';
+import { searchApi, selectUsersByIdsApi } from '#/api/auth/sys-user';
 import {
   convertArrayValue,
   convertSingleValue,

@@ -2,14 +2,14 @@ import type {
   TableFilterModel,
   TempSelectModel,
   TreeSelectModel,
-} from '#/api/base/model/selectModel';
-import type { SysDict, SysDictTree } from '#/api/sys/model/sysDictModel';
+} from '#/api/base/model/select-model';
+import type { SysDict, SysDictTree } from '#/api/sys/model/sys-dict-model';
 
 import { listToTree } from '@vben/utils';
 
 import { defineStore } from 'pinia';
 
-import { selectAllApi } from '#/api/sys/sysDict';
+import { selectAllApi } from '#/api/sys/sys-dict';
 
 interface DictState {
   isLoading: boolean;

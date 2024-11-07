@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { FileUploadResponse } from '@vben/request';
 
-import type { FileInfo } from '#/api/file/model/fileInfoModel';
+import type { FileInfo } from '#/api/file/model/file-info-model';
 import type { CropperProps } from '#/components/cropper/src/props';
 
 import { computed, type CSSProperties, ref, unref, watch } from 'vue';

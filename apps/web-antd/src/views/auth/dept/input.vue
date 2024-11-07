@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { SysDept } from '#/api/auth/model/sysDeptModel';
-import type { TreeNode } from '#/api/base/model/treeModel';
+import type { SysDept } from '#/api/auth/model/sys-dept-model';
+import type { TreeNode } from '#/api/base/model/tree-model';
 
 import { ref } from 'vue';
 
@@ -10,8 +10,8 @@ import { listToTree } from '@vben/utils';
 import { Space } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { addApi, saveApi, selectAllApi } from '#/api/auth/sysDept';
-import { selectAllDeptTypeApi } from '#/api/auth/sysDeptType';
+import { addApi, saveApi, selectAllApi } from '#/api/auth/sys-dept';
+import { selectAllDeptTypeApi } from '#/api/auth/sys-dept-type';
 import { ButtonClose, ButtonSave } from '#/components/button';
 
 const emit = defineEmits(['success']);
@@ -94,6 +94,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
         .string()
         .max(32, { message: '部门编码不能超过32个字符' })
         .optional(),
+      description: '部门唯一标识',
     },
     {
       fieldName: 'orderNo',

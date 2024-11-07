@@ -3,8 +3,8 @@ import { onMounted, watch } from 'vue';
 
 import { Card } from 'ant-design-vue';
 
-import { useVbenForm, z } from '#/adapter';
-import { addApi, getApi } from '#/api/sys/sysMessage';
+import { useVbenForm, z } from '#/adapter/form';
+import { addApi, getApi } from '#/api/sys/sys-message';
 
 const props = defineProps<{ id?: string }>();
 

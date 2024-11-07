@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TreeItem } from '#/components/tree/src/props';
+import type { TreeItem } from '#/components/tree/src/types';
 
 import { onMounted, ref } from 'vue';
 
@@ -8,7 +8,7 @@ import { convertCheckedKeys, listToTree } from '@vben/utils';
 
 import { Col, Row } from 'ant-design-vue';
 
-import { selectAllApi } from '#/api/auth/sysPermission';
+import { selectAllApi } from '#/api/auth/sys-permission';
 import { BasicTree } from '#/components/tree';
 
 const menuTreeData = ref<TreeItem[]>([]);

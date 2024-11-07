@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SysUser } from '#/api/auth/model/sysUserModel';
+import type { SysUser } from '#/api/auth/model/sys-user-model';
 
 import { onMounted } from 'vue';
 
@@ -9,7 +9,7 @@ import { Card, message } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
 import { getUserInfoApi } from '#/api/auth/auth';
-import { currentUserApi, saveUserInfoApi } from '#/api/auth/sysUserPersonal';
+import { currentUserApi, saveUserInfoApi } from '#/api/auth/sys-user-personal';
 
 const [BaseForm, baseFormApi] = useVbenForm({
   handleSubmit: onSubmit,

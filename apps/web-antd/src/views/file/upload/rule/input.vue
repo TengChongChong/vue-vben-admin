@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { FileUploadRuleVO } from '#/api/file/model/fileUploadRuleModel';
+import type { FileUploadRuleVO } from '#/api/file/model/file-upload-rule-model';
 
 import { ref, unref } from 'vue';
 
@@ -15,7 +15,7 @@ import {
 } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { addApi, saveApi } from '#/api/file/fileUploadRule';
+import { addApi, saveApi } from '#/api/file/file-upload-rule';
 import { ButtonClose, ButtonSave } from '#/components/button';
 
 const emit = defineEmits(['success']);
@@ -38,6 +38,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
         dictType: 'sysFileUploadRuleCategory',
       },
       rules: 'selectRequired',
+      description: '建议根据业务分类，方便管理',
     },
     {
       fieldName: 'name',
@@ -56,7 +57,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
         .string()
         .min(1, { message: '请输入别名' })
         .max(32, { message: '别名最多输入32个字符' }),
-      description: '上传规则标识，不可重复',
+      description: '上传规则标识，不可重复，例如：user-avatar',
     },
     {
       fieldName: 'directory',
@@ -66,7 +67,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
         .string()
         .min(1, { message: '请输入存储目录' })
         .max(64, { message: '存储目录最多输入64个字符' }),
-      description: '文件存放路径，如：easy-doc、easy-images',
+      description: '文件存放目录，例如：easy-doc、easy-images',
     },
     {
       fieldName: 'fileSizeLimit',
@@ -97,7 +98,8 @@ const [BaseForm, baseFormApi] = useVbenForm({
         .string()
         .min(1, { message: '请输入文件拓展名' })
         .max(255, { message: '文件拓展名最多输入255个字符' }),
-      description: '允许上传的文件后缀，多个使用 , 隔开，例如：jpg,png,gif',
+      description:
+        '允许上传的文件后缀（忽略大小写），多个使用 , 隔开，例如：jpg,png,gif',
     },
     {
       fieldName: 'status',

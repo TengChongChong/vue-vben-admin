@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { SysDictType } from '#/api/sys/model/sysDictTypeModel';
+import type { SysDictType } from '#/api/sys/model/sys-dict-type-model';
 
 import { ref } from 'vue';
 
@@ -9,7 +9,7 @@ import { useVbenModal, z } from '@vben/common-ui';
 import { message, Space } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { saveApi } from '#/api/sys/sysDictType';
+import { saveApi } from '#/api/sys/sys-dict-type';
 import { ButtonClose, ButtonSave } from '#/components/button';
 import { RoleEnum } from '#/enums/roleEnum';
 
@@ -32,6 +32,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
         .string()
         .min(1, { message: '请输入类型' })
         .max(32, { message: '类型最多输入32个字符' }),
+      description: '支持大小写字母，例如：userType、userStatus',
     },
     {
       fieldName: 'name',

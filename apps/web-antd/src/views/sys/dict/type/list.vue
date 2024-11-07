@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { VxeGridProps } from '#/adapter';
-import type { SysDictType } from '#/api/sys/model/sysDictTypeModel';
+import type { VxeGridProps } from '#/adapter/vxe-table';
+import type { SysDictType } from '#/api/sys/model/sys-dict-type-model';
 
 import { ref, unref } from 'vue';
 
@@ -9,7 +9,7 @@ import { useVbenModal } from '@vben/common-ui';
 import { InputSearch, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { addApi, getApi, removeApi, selectApi } from '#/api/sys/sysDictType';
+import { addApi, getApi, removeApi, selectApi } from '#/api/sys/sys-dict-type';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
 
 import { initColumns } from './data';

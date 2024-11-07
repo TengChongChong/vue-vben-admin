@@ -5,7 +5,7 @@ import { createVNode, h } from 'vue';
 
 import { message, Switch } from 'ant-design-vue';
 
-import { setStatusApi } from '#/api/auth/sysPermission';
+import { setStatusApi } from '#/api/auth/sys-permission';
 import { renderDictTag } from '#/components/dict';
 import { Icon } from '#/components/icons';
 

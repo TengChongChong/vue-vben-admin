@@ -1,5 +1,5 @@
-import type { SelectModel } from '#/api/base/model/selectModel';
-import type { SysDict } from '#/api/sys/model/sysDictModel';
+import type { SelectModel } from '#/api/base/model/select-model';
+import type { SysDict } from '#/api/sys/model/sys-dict-model';
 
 import { isString } from '@vben/utils';
 

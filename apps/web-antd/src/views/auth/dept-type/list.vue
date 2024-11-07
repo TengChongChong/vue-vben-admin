@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { SysDeptType } from '#/api/auth/model/sysDeptTypeModel';
+import type { SysDeptType } from '#/api/auth/model/sys-dept-type-model';
 
 import { ref, unref } from 'vue';
 
@@ -15,7 +15,7 @@ import {
   getApi,
   removeApi,
   selectApi,
-} from '#/api/auth/sysDeptType.ts';
+} from '#/api/auth/sys-dept-type.ts';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
 import { LucideListOrdered, LucideMinus, LucidePlus } from '#/components/icons';
 

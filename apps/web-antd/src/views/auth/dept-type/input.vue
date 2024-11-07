@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { SysDeptTypeVO } from '#/api/auth/model/sysDeptTypeModel';
-import type { TreeNode } from '#/api/base/model/treeModel';
+import type { SysDeptTypeVO } from '#/api/auth/model/sys-dept-type-model';
+import type { TreeNode } from '#/api/base/model/tree-model';
 
 import { ref } from 'vue';
 
@@ -14,7 +14,7 @@ import {
   addApi,
   saveApi,
   selectAllDeptTypeApi,
-} from '#/api/auth/sysDeptType.ts';
+} from '#/api/auth/sys-dept-type.ts';
 import { ButtonClose, ButtonSave } from '#/components/button';
 
 const emit = defineEmits(['success']);
@@ -59,12 +59,13 @@ const [BaseForm, baseFormApi] = useVbenForm({
     },
     {
       fieldName: 'code',
-      label: '编码',
+      label: '代码',
       component: 'Input',
       rules: z
         .string()
-        .min(1, { message: '请输入编码' })
-        .max(32, { message: '编码不能超过32个字符' }),
+        .min(1, { message: '请输入代码' })
+        .max(32, { message: '代码不能超过32个字符' }),
+      description: '一般用于业务判断部门类型，例如：company、project:team',
     },
     {
       label: '角色',

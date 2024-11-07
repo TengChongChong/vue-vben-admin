@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { AntTreeNodeDropEvent } from 'ant-design-vue/lib/tree';
 
-import type { SysPermission } from '#/api/auth/model/sysPermissionModel';
+import type { SysPermission } from '#/api/auth/model/sys-permission-model';
 
 import { ref } from 'vue';
 
@@ -11,7 +11,7 @@ import { listToTree, treeToList } from '@vben/utils';
 import { Alert, Tree } from 'ant-design-vue';
 import { Space, type TreeProps } from 'ant-design-vue';
 
-import { saveOrderApi, selectAllApi } from '#/api/auth/sysPermission';
+import { saveOrderApi, selectAllApi } from '#/api/auth/sys-permission';
 import { ButtonClose, ButtonSave } from '#/components/button';
 
 const emit = defineEmits(['success']);

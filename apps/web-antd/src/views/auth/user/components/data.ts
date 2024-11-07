@@ -5,7 +5,7 @@ import { h } from 'vue';
 
 import { message, Switch } from 'ant-design-vue';
 
-import { setStatusApi } from '#/api/auth/sysUser';
+import { setStatusApi } from '#/api/auth/sys-user';
 import { renderDictTag } from '#/components/dict';
 
 export const initColumns = (): VxeGridPropTypes.Columns[] => {
@@ -15,7 +15,7 @@ export const initColumns = (): VxeGridPropTypes.Columns[] => {
     {
       title: '账号',
       field: 'username',
-      sorter: true,
+      sortable: true,
       fixed: 'left',
       minWidth: 140,
     },
@@ -28,19 +28,19 @@ export const initColumns = (): VxeGridPropTypes.Columns[] => {
     {
       title: '昵称',
       field: 'nickname',
-      sorter: true,
+      sortable: true,
       minWidth: 140,
     },
     {
       title: '手机号',
       field: 'phoneNumber',
-      sorter: true,
+      sortable: true,
       width: 140,
     },
     {
       title: '性别',
       field: 'sex',
-      sorter: true,
+      sortable: true,
       width: 80,
       slots: {
         default: ({ row }) => {
@@ -51,7 +51,7 @@ export const initColumns = (): VxeGridPropTypes.Columns[] => {
     {
       title: '状态',
       field: 'status',
-      sorter: true,
+      sortable: true,
       width: 100,
       slots: {
         default: ({ row }) => {
@@ -82,7 +82,7 @@ export const initColumns = (): VxeGridPropTypes.Columns[] => {
     {
       title: '最后登录',
       field: 'lastLoginDate',
-      sorter: true,
+      sortable: true,
       width: 160,
       formatter: 'dateTime',
     },

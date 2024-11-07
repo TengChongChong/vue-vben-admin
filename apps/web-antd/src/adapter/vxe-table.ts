@@ -5,6 +5,8 @@ import { setupVbenVxeTable, useVbenVxeGrid } from '@vben/plugins/vxe-table';
 import { Button, Image } from 'ant-design-vue';
 import dayjs from 'dayjs';
 
+import { formatToDuration } from '#/util/date';
+
 import { useVbenForm } from './form';
 
 setupVbenVxeTable({
@@ -158,6 +160,12 @@ setupVbenVxeTable({
     vxeUI.formats.add('dateTime', {
       tableCellFormatMethod({ cellValue }) {
         return dayjs(cellValue).format('YYYY-MM-DD HH:mm');
+      },
+    });
+
+    vxeUI.formats.add('dateDuration', {
+      tableCellFormatMethod({ cellValue }) {
+        return formatToDuration(cellValue);
       },
     });
   },

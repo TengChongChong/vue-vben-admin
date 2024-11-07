@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { SysConfig } from '#/api/sys/model/sysConfigModel';
+import type { SysConfig } from '#/api/sys/model/sys-config-model';
 
 import { watch } from 'vue';
 
@@ -17,7 +17,7 @@ import {
   removeApi,
   resetPasswordApi,
   selectApi,
-} from '#/api/auth/sysUser';
+} from '#/api/auth/sys-user';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
 import { LucideRotateCcw } from '#/components/icons';
 import { UserAvatar } from '#/components/user';

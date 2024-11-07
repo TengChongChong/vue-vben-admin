@@ -1,4 +1,4 @@
-import type { FileInfo } from '#/api/file/model/fileInfoModel';
+import type { FileInfo } from '#/api/file/model/file-info-model';
 
 import Cropper from 'cropperjs';
 

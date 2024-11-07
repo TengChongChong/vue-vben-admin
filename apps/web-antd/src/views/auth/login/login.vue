@@ -9,7 +9,7 @@ import {
 import { AuthenticationLogin, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 
-import { getByKeyApi } from '#/api/sys/sysConfig';
+import { getByKeyApi } from '#/api/sys/sys-config';
 import { SlideVerifyModal } from '#/components/verify';
 import { useAuthStore } from '#/store';
 

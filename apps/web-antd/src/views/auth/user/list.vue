@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { TreeDataItem } from 'ant-design-vue/es/tree/Tree';
 
-import type { TreeNode } from '#/api/base/model/treeModel';
+import type { TreeNode } from '#/api/base/model/tree-model';
 
 import { ref } from 'vue';
 
@@ -9,7 +9,7 @@ import { Page } from '@vben/common-ui';
 import { useUserStore } from '@vben/stores';
 import { listToTree } from '@vben/utils';
 
-import { selectAllApi } from '#/api/auth/sysDept';
+import { selectAllApi } from '#/api/auth/sys-dept';
 import { BasicTree } from '#/components/tree';
 
 import UserList from './components/user-list.vue';

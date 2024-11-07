@@ -7,12 +7,12 @@ export const initColumns = (): VxeGridPropTypes.Columns[] => {
     {
       title: '类型',
       field: 'type',
-      sorter: true,
+      sortable: true,
     },
     {
       title: '名称',
       field: 'name',
-      sorter: true,
+      sortable: true,
     },
     {
       title: '操作',

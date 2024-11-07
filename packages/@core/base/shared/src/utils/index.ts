@@ -9,7 +9,7 @@ export * from './nprogress';
 export * from './state-handler';
 export * from './to';
 export * from './tree';
-export * from './treeHelper';
+export * from './tree-helper';
 export * from './unique';
 export * from './update-css-variables';
 export * from './util';

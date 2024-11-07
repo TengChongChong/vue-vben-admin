@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { FileInfo } from '#/api/file/model/fileInfoModel';
-import type { FileUploadRule } from '#/api/file/model/fileUploadRuleModel';
+import type { FileInfo } from '#/api/file/model/file-info-model';
+import type { FileUploadRule } from '#/api/file/model/file-upload-rule-model';
 import type {
   RuleUploadProps,
   UploadFileModel,
@@ -13,7 +13,7 @@ import { useAccessStore } from '@vben/stores';
 import { Button, message, Tag, Upload } from 'ant-design-vue';
 import { isArray, isString } from 'lodash-es';
 
-import { getBySlugApi } from '#/api/file/fileUploadRule';
+import { getBySlugApi } from '#/api/file/file-upload-rule';
 import { LucideHardDriveUpload } from '#/components/icons';
 import {
   convertToFileInfo,

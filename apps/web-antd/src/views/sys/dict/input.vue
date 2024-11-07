@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { SysDict } from '#/api/sys/model/sysDictModel';
+import type { SysDict } from '#/api/sys/model/sys-dict-model';
 
 import { ref } from 'vue';
 
@@ -9,8 +9,8 @@ import { message, Space } from 'ant-design-vue';
 import { isArray } from 'lodash-es';
 
 import { useVbenForm } from '#/adapter/form';
-import { saveApi } from '#/api/sys/sysDict';
-import { selectAllApi } from '#/api/sys/sysDictType';
+import { saveApi } from '#/api/sys/sys-dict';
+import { selectAllApi } from '#/api/sys/sys-dict-type';
 import { ButtonClose, ButtonSave } from '#/components/button';
 
 const emit = defineEmits(['success']);
@@ -76,7 +76,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
         .string()
         .min(1, { message: '请输入字典编码' })
         .max(64, { message: '字典编码最多输入64个字符' }),
-      description: '同一字典类型下字典编码不可重复',
+      description: '建议使用字母 / 数字，同一字典类型下字典编码不可重复',
     },
     {
       fieldName: 'name',

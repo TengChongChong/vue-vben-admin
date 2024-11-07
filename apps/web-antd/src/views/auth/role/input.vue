@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { TreeDataItem } from 'ant-design-vue/es/tree/Tree';
 
-import type { SysRoleVO } from '#/api/auth/model/sysRoleModel';
+import type { SysRoleVO } from '#/api/auth/model/sys-role-model';
 
 import { ref, unref } from 'vue';
 
@@ -13,9 +13,9 @@ import { message, Space } from 'ant-design-vue';
 import { isArray } from 'lodash-es';
 
 import { useVbenForm } from '#/adapter/form';
-import { selectAllApi as selectAllDeptApi } from '#/api/auth/sysDept';
-import { selectAllApi as selectAllPermissionApi } from '#/api/auth/sysPermission';
-import { addApi, saveApi } from '#/api/auth/sysRole';
+import { selectAllApi as selectAllDeptApi } from '#/api/auth/sys-dept';
+import { selectAllApi as selectAllPermissionApi } from '#/api/auth/sys-permission';
+import { addApi, saveApi } from '#/api/auth/sys-role';
 import { ButtonClose, ButtonSave } from '#/components/button';
 import { BasicTree } from '#/components/tree';
 import { RoleEnum } from '#/enums/roleEnum';
@@ -63,6 +63,8 @@ const [BaseForm, baseFormApi] = useVbenForm({
         .string()
         .min(1, { message: '请输入标识' })
         .max(64, { message: '标识最多输入32个字符' }),
+      description:
+        '建议使用字母与:组合，一般用于业务逻辑判断，例如：sys:admin、project:manager',
     },
     {
       fieldName: 'orderNo',

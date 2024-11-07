@@ -1,6 +1,6 @@
 import type { UserInfo } from '@vben/types';
 
-import type { LoginAccountParams } from '#/api/auth/model/authModel';
+import type { LoginAccountParams } from '#/api/auth/model/auth-model';
 
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';

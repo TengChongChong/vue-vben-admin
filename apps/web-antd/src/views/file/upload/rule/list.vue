@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { FileUploadRule } from '#/api/file/model/fileUploadRuleModel';
+import type { FileUploadRule } from '#/api/file/model/file-upload-rule-model';
 
 import { Page, useVbenDrawer } from '@vben/common-ui';
 
@@ -13,7 +13,7 @@ import {
   getApi,
   removeApi,
   selectApi,
-} from '#/api/file/fileUploadRule';
+} from '#/api/file/file-upload-rule';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
 import { formatSize } from '#/util/format';
 

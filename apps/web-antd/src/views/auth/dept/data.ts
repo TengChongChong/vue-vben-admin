@@ -5,7 +5,7 @@ import { h } from 'vue';
 
 import { message, Switch } from 'ant-design-vue';
 
-import { setStatusApi } from '#/api/auth/sysDept';
+import { setStatusApi } from '#/api/auth/sys-dept';
 
 export const initColumns = (): VxeGridPropTypes.Columns[] => {
   return [
@@ -81,13 +81,13 @@ export const initColumns = (): VxeGridPropTypes.Columns[] => {
     {
       title: '编辑人',
       field: 'editUser',
-      sorter: true,
+      sortable: true,
       width: 120,
     },
     {
       title: '编辑时间',
       field: 'editDate',
-      sorter: true,
+      sortable: true,
       width: 160,
       formatter: 'dateTime',
     },

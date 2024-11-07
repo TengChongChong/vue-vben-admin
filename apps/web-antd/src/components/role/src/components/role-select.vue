@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SysRole } from '#/api/auth/model/sysRoleModel';
+import type { SysRole } from '#/api/auth/model/sys-role-model';
 import type { RoleSelectProps } from '#/components/role/src/props';
 
 import { onMounted, ref, watch } from 'vue';
@@ -9,7 +9,7 @@ import { cn } from '@vben/utils';
 
 import { Select, SelectOption } from 'ant-design-vue';
 
-import { selectAllApi, selectRoleByDeptApi } from '#/api/auth/sysRole';
+import { selectAllApi, selectRoleByDeptApi } from '#/api/auth/sys-role';
 import {
   convertArrayValue,
   convertSingleValue,

@@ -5,7 +5,7 @@ import { Page } from '@vben/common-ui';
 
 import { Button, Card, Col, Divider, Row, Space } from 'ant-design-vue';
 
-import { removeApi } from '#/api/sys/sysDict';
+import { removeApi } from '#/api/sys/sys-dict';
 import {
   ButtonAdd,
   ButtonCancel,

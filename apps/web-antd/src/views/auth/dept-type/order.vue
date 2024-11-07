@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { AntTreeNodeDropEvent } from 'ant-design-vue/lib/tree';
 
-import type { SysDeptType } from '#/api/auth/model/sysDeptTypeModel';
+import type { SysDeptType } from '#/api/auth/model/sys-dept-type-model';
 
 import { ref } from 'vue';
 
@@ -11,7 +11,10 @@ import { listToTree, treeToList } from '@vben/utils';
 import { Alert, Tree } from 'ant-design-vue';
 import { Space, type TreeProps } from 'ant-design-vue';
 
-import { saveOrderApi, selectAllDeptTypeApi } from '#/api/auth/sysDeptType.ts';
+import {
+  saveOrderApi,
+  selectAllDeptTypeApi,
+} from '#/api/auth/sys-dept-type.ts';
 import { ButtonClose, ButtonSave } from '#/components/button';
 
 const emit = defineEmits(['success']);

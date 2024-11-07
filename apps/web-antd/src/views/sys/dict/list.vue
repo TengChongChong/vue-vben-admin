@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { SysDict } from '#/api/sys/model/sysDictModel';
+import type { SysDict } from '#/api/sys/model/sys-dict-model';
 
 import { ref, unref } from 'vue';
 
@@ -16,7 +16,7 @@ import {
   refreshApi,
   removeApi,
   selectApi,
-} from '#/api/sys/sysDict';
+} from '#/api/sys/sys-dict';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
 import { LucideRefreshCw } from '#/components/icons';
 

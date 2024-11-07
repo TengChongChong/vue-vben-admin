@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { SysUserVO } from '#/api/auth/model/sysUserModel';
+import type { SysUserVO } from '#/api/auth/model/sys-user-model';
 
 import { ref } from 'vue';
 
@@ -8,7 +8,7 @@ import { useVbenDrawer, z } from '@vben/common-ui';
 import { message, Space } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { addApi, saveApi } from '#/api/auth/sysUser';
+import { addApi, saveApi } from '#/api/auth/sys-user';
 import { ButtonClose, ButtonSave } from '#/components/button';
 
 const emit = defineEmits(['success']);

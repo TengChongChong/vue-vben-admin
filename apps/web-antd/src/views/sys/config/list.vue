@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { SysConfig } from '#/api/sys/model/sysConfigModel';
+import type { SysConfig } from '#/api/sys/model/sys-config-model';
 
 import { useAccess } from '@vben/access';
 import { Page, useVbenModal } from '@vben/common-ui';
@@ -9,7 +9,7 @@ import { Page, useVbenModal } from '@vben/common-ui';
 import { Button, message, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { getApi, refreshApi, removeApi, selectApi } from '#/api/sys/sysConfig';
+import { getApi, refreshApi, removeApi, selectApi } from '#/api/sys/sys-config';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
 import { LucideRefreshCw } from '#/components/icons';
 import { RoleEnum } from '#/enums/roleEnum';
@@ -85,7 +85,7 @@ const gridOptions: VxeGridProps<SysConfig> = {
 };
 
 const [Grid, gridApi] = useVbenVxeGrid({
-  tableTitle: '系统参数',
+  tableTitle: '定时任务',
   formOptions,
   gridOptions,
 });

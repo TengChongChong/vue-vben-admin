@@ -10,26 +10,25 @@ export const initColumns = (): VxeGridPropTypes.Columns[] => {
     {
       title: '字典编码',
       field: 'code',
-      sorter: true,
+      sortable: true,
       fixed: 'left',
       minWidth: 150,
     },
     {
       title: '字典名称',
       field: 'name',
-      sorter: true,
+      sortable: true,
       minWidth: 150,
     },
     {
       title: '排序值',
       field: 'orderNo',
-      sorter: true,
       width: 80,
     },
     {
       title: '状态',
       field: 'status',
-      sorter: true,
+      sortable: true,
       width: 80,
       slots: {
         default: ({ row }) => {
@@ -40,7 +39,7 @@ export const initColumns = (): VxeGridPropTypes.Columns[] => {
     {
       title: '编辑时间',
       field: 'editDate',
-      sorter: true,
+      sortable: true,
       width: 160,
       formatter: 'dateTime',
     },

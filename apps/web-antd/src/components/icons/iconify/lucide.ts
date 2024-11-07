@@ -44,3 +44,12 @@ export const LucideInfo = createIconifyIcon('lucide:info');
 export const LucideSmartphone = createIconifyIcon('lucide:smartphone');
 export const LucideMail = createIconifyIcon('lucide:mail');
 export const LucideLink = createIconifyIcon('lucide:link');
+
+export const LucideChevronDown = createIconifyIcon('lucide:chevron-down');
+
+export const LucideCirclePlay = createIconifyIcon('lucide:circle-play');
+export const LucideCirclePause = createIconifyIcon('lucide:circle-pause');
+
+export const LucideLogs = createIconifyIcon('lucide:logs');
+
+export const LucideLogOut = createIconifyIcon('lucide:log-out');

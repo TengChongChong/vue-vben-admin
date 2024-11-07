@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type { TreeNode, TreeNodeModel } from '#/api/base/model/treeModel';
+import type { TreeNode, TreeNodeModel } from '#/api/base/model/tree-model';
 import type { DeptTreeProps } from '#/components/dept/src/props';
 
 import { onMounted, ref, watch } from 'vue';
 
 import { listToTree } from '@vben/utils';
 
-import { selectAllApi } from '#/api/auth/sysDept';
+import { selectAllApi } from '#/api/auth/sys-dept';
 import { ApiTree } from '#/components/form';
 
 defineOptions({

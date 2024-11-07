@@ -5,7 +5,7 @@ import type {
   LoginQrCodeParams,
   LoginResult,
   LoginSmsParams,
-} from '#/api/auth/model/authModel.ts';
+} from '#/api/auth/model/auth-model.ts';
 
 import { requestClient } from '#/api/request';
 

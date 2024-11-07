@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { SysConfig } from '#/api/sys/model/sysConfigModel';
+import type { SysConfig } from '#/api/sys/model/sys-config-model';
 
 import { ref } from 'vue';
 
@@ -9,7 +9,7 @@ import { useVbenModal, z } from '@vben/common-ui';
 import { message, Space } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { saveApi } from '#/api/sys/sysConfig';
+import { saveApi } from '#/api/sys/sys-config';
 import { ButtonClose, ButtonSave } from '#/components/button';
 import { RoleEnum } from '#/enums/roleEnum';
 
@@ -32,6 +32,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
         dictType: 'configCategory',
       },
       rules: 'required',
+      description: '建议根据业务分类，方便管理',
     },
     {
       fieldName: 'type',
@@ -53,9 +54,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
         .string()
         .min(1, { message: '请输入Key' })
         .max(32, { message: 'Key最多输入32个字符' }),
-      itemProps: {
-        extra: 'Key不可重复',
-      },
+      description: 'Key不可重复',
     },
     {
       fieldName: 'value',
@@ -184,7 +183,7 @@ const [Modal, modalApi] = useVbenModal({
 });
 </script>
 <template>
-  <Modal class="w-[600px]" title="系统参数信息">
+  <Modal class="w-[600px]" title="定时任务信息">
     <BaseForm />
 
     <template #footer>

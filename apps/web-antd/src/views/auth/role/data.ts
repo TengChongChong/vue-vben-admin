@@ -7,7 +7,7 @@ import { useAccess } from '@vben/access';
 
 import { message, Switch } from 'ant-design-vue';
 
-import { setStatusApi } from '#/api/auth/sysRole';
+import { setStatusApi } from '#/api/auth/sys-role';
 import { renderDictTag } from '#/components/dict';
 import { RoleEnum } from '#/enums/roleEnum';
 
@@ -20,14 +20,14 @@ export const initColumns = (): VxeGridPropTypes.Columns[] => {
     {
       title: '名称',
       field: 'name',
-      sorter: true,
+      sortable: true,
       fixed: 'left',
       minWidth: 150,
     },
     {
       title: '标识',
       field: 'code',
-      sorter: true,
+      sortable: true,
       minWidth: 150,
     },
     {
@@ -44,7 +44,6 @@ export const initColumns = (): VxeGridPropTypes.Columns[] => {
     {
       title: '排序值',
       field: 'orderNo',
-      sorter: true,
       width: 80,
     },
     {

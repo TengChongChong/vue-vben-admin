@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { SysPermission } from '#/api/auth/model/sysPermissionModel';
-import type { TreeNode } from '#/api/base/model/treeModel';
+import type { SysPermission } from '#/api/auth/model/sys-permission-model';
+import type { TreeNode } from '#/api/base/model/tree-model';
 
 import { ref } from 'vue';
 
@@ -10,7 +10,7 @@ import { listToTree } from '@vben/utils';
 import { Space } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { addApi, saveApi, selectAllApi } from '#/api/auth/sysPermission';
+import { addApi, saveApi, selectAllApi } from '#/api/auth/sys-permission';
 import { ButtonClose, ButtonSave } from '#/components/button';
 import { MenuTypeEnum } from '#/views/auth/permission/data';
 
@@ -103,6 +103,22 @@ const [BaseForm, baseFormApi] = useVbenForm({
         triggerFields: ['type'],
         show(values) {
           return values.type === MenuTypeEnum.MENU;
+        },
+      },
+      description: '页面访问地址',
+    },
+    {
+      fieldName: 'path',
+      label: '重定向',
+      component: 'Input',
+      rules: z
+        .string()
+        .max(255, { message: '重定向不能超过255个字符' })
+        .optional(),
+      dependencies: {
+        triggerFields: ['type'],
+        show(values) {
+          return values.type === MenuTypeEnum.CATALOGUE;
         },
       },
       description: '页面访问地址',
