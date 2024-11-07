@@ -8,7 +8,6 @@ import { useAccess } from '@vben/access';
 import { message, Switch } from 'ant-design-vue';
 
 import { pauseApi, startApi } from '#/api/scheduler/scheduler-job';
-import { renderDictTag } from '#/components/dict';
 import { RoleEnum } from '#/enums/roleEnum';
 
 const { hasAccessByRoles } = useAccess();
@@ -54,11 +53,7 @@ export const initColumns = (): VxeGridPropTypes.Columns[] => {
       sortable: true,
       width: 100,
       visible: hasAccessByRoles([RoleEnum.SYS_ADMIN]),
-      slots: {
-        default: ({ row }) => {
-          return renderDictTag('whether', row.sys);
-        },
-      },
+      cellRender: { name: 'DictTag', props: { dictType: 'whether' } },
     },
     {
       title: '状态',

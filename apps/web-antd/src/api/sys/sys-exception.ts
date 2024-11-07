@@ -1,5 +1,5 @@
 import type { Page } from '#/api/base/model/page-model';
-import type { SysException } from '#/api/sys/model/sysException-model';
+import type { SysException } from '#/api/sys/model/sys-exception-model';
 
 import { requestClient } from '#/api/request';
 // base url

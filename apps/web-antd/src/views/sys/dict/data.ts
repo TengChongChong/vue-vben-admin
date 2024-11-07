@@ -1,8 +1,6 @@
 // 表格列数据
 import type { VxeGridPropTypes } from '@vben/plugins/vxe-table';
 
-import { renderDictTag } from '#/components/dict';
-
 export const initColumns = (): VxeGridPropTypes.Columns[] => {
   return [
     { type: 'checkbox', width: 50, fixed: 'left' },
@@ -30,11 +28,7 @@ export const initColumns = (): VxeGridPropTypes.Columns[] => {
       field: 'status',
       sortable: true,
       width: 80,
-      slots: {
-        default: ({ row }) => {
-          return renderDictTag('commonStatus', row.status);
-        },
-      },
+      cellRender: { name: 'DictTag', props: { dictType: 'commonStatus' } },
     },
     {
       title: '编辑时间',

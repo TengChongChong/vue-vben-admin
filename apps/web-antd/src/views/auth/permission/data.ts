@@ -6,7 +6,6 @@ import { createVNode, h } from 'vue';
 import { message, Switch } from 'ant-design-vue';
 
 import { setStatusApi } from '#/api/auth/sys-permission';
-import { renderDictTag } from '#/components/dict';
 import { Icon } from '#/components/icons';
 
 export enum MenuTypeEnum {
@@ -46,11 +45,7 @@ export const initColumns = (): VxeGridPropTypes.Columns[] => {
       title: '类型',
       field: 'type',
       width: 100,
-      slots: {
-        default: ({ row }) => {
-          return renderDictTag('permissionType', row.type);
-        },
-      },
+      cellRender: { name: 'DictTag', props: { dictType: 'permissionType' } },
     },
     {
       title: '权限标识',
@@ -109,11 +104,7 @@ export const initColumns = (): VxeGridPropTypes.Columns[] => {
       title: '显示',
       field: 'showInMenu',
       width: 100,
-      slots: {
-        default: ({ row }) => {
-          return renderDictTag('whether', row.showInMenu);
-        },
-      },
+      cellRender: { name: 'DictTag', props: { dictType: 'whether' } },
     },
     {
       title: '操作',

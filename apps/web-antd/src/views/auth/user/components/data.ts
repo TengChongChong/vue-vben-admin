@@ -6,7 +6,6 @@ import { h } from 'vue';
 import { message, Switch } from 'ant-design-vue';
 
 import { setStatusApi } from '#/api/auth/sys-user';
-import { renderDictTag } from '#/components/dict';
 
 export const initColumns = (): VxeGridPropTypes.Columns[] => {
   return [
@@ -42,11 +41,7 @@ export const initColumns = (): VxeGridPropTypes.Columns[] => {
       field: 'sex',
       sortable: true,
       width: 80,
-      slots: {
-        default: ({ row }) => {
-          return renderDictTag('sex', row.sex);
-        },
-      },
+      cellRender: { name: 'DictTag', props: { dictType: 'sex' } },
     },
     {
       title: '状态',

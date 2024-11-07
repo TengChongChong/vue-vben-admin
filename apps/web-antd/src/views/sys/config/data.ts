@@ -3,7 +3,6 @@ import type { VxeGridPropTypes } from '@vben/plugins/vxe-table';
 
 import { useAccess } from '@vben/access';
 
-import { renderDictTag } from '#/components/dict';
 import { RoleEnum } from '#/enums/roleEnum';
 
 const { hasAccessByRoles } = useAccess();
@@ -24,11 +23,7 @@ export const initColumns = (): VxeGridPropTypes.Columns[] => {
       field: 'category',
       sortable: true,
       width: 120,
-      slots: {
-        default: ({ row }) => {
-          return renderDictTag('configCategory', row.category);
-        },
-      },
+      cellRender: { name: 'DictTag', props: { dictType: 'configCategory' } },
     },
     {
       title: 'Value',
@@ -41,11 +36,7 @@ export const initColumns = (): VxeGridPropTypes.Columns[] => {
       field: 'type',
       sortable: true,
       width: 80,
-      slots: {
-        default: ({ row }) => {
-          return renderDictTag('dataType', row.type);
-        },
-      },
+      cellRender: { name: 'DictTag', props: { dictType: 'dataType' } },
     },
     {
       title: '系统',
@@ -53,11 +44,7 @@ export const initColumns = (): VxeGridPropTypes.Columns[] => {
       sortable: true,
       width: 100,
       visible: hasAccessByRoles([RoleEnum.SYS_ADMIN]),
-      slots: {
-        default: ({ row }) => {
-          return renderDictTag('whether', row.sys);
-        },
-      },
+      cellRender: { name: 'DictTag', props: { dictType: 'whether' } },
     },
     {
       title: '备注',

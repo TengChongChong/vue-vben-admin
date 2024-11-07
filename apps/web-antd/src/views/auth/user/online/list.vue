@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { FileUploadRule } from '#/api/file/model/file-upload-rule-model';
+import type { SysUserOnline } from '#/api/auth/model/sys-user-online-model';
 
 import { AccessControl } from '@vben/access';
 import { Page } from '@vben/common-ui';
@@ -45,7 +45,7 @@ const formOptions: VbenFormProps = {
   ],
 };
 
-const gridOptions: VxeGridProps<FileUploadRule> = {
+const gridOptions: VxeGridProps<SysUserOnline> = {
   id: 'auth-user-online',
   columns: initColumns(),
   proxyConfig: {

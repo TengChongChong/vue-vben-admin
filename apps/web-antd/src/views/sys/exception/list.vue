@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { FileUploadRule } from '#/api/file/model/file-upload-rule-model';
+import type { SysException } from '#/api/sys/model/sys-exception-model';
 
 import { Page } from '@vben/common-ui';
 
@@ -78,7 +78,7 @@ const formOptions: VbenFormProps = {
   ],
 };
 
-const gridOptions: VxeGridProps<FileUploadRule> = {
+const gridOptions: VxeGridProps<SysException> = {
   id: 'sys-exception',
   columns: initColumns(),
   proxyConfig: {

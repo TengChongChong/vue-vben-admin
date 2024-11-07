@@ -6,7 +6,6 @@ import { h } from 'vue';
 import { message, Switch } from 'ant-design-vue';
 
 import { setStatusApi } from '#/api/file/file-upload-rule.ts';
-import { renderDictTag } from '#/components/dict';
 
 export const initColumns = (): VxeGridPropTypes.Columns[] => {
   return [
@@ -17,10 +16,9 @@ export const initColumns = (): VxeGridPropTypes.Columns[] => {
       field: 'category',
       sortable: true,
       width: 120,
-      slots: {
-        default: ({ row }) => {
-          return renderDictTag('sysFileUploadRuleCategory', row.category);
-        },
+      cellRender: {
+        name: 'DictTag',
+        props: { dictType: 'sysFileUploadRuleCategory' },
       },
     },
     {

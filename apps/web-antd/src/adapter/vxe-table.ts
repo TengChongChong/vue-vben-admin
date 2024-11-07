@@ -5,6 +5,7 @@ import { setupVbenVxeTable, useVbenVxeGrid } from '@vben/plugins/vxe-table';
 import { Button, Image } from 'ant-design-vue';
 import dayjs from 'dayjs';
 
+import { DictTag } from '#/components/dict';
 import { formatToDuration } from '#/util/date';
 
 import { useVbenForm } from './form';
@@ -152,6 +153,18 @@ setupVbenVxeTable({
           { size: 'small', type: 'link' },
           { default: () => props?.text },
         );
+      },
+    });
+
+    // 表格配置项可以用 cellRender: { name: 'DictTag' },
+    vxeUI.renderer.add('DictTag', {
+      renderTableDefault(renderOpts, params) {
+        const { column, row } = params;
+        const { props } = renderOpts;
+        return h(DictTag, {
+          code: row[column.field],
+          ...props,
+        });
       },
     });
 

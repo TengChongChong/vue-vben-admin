@@ -1,8 +1,6 @@
 // 表格列数据
 import type { VxeGridPropTypes } from '@vben/plugins/vxe-table';
 
-import { renderDictTag } from '#/components/dict';
-
 export const initColumns = (): VxeGridPropTypes.Columns[] => {
   return [
     { title: '序号', type: 'seq', width: 50, fixed: 'left' },
@@ -43,11 +41,7 @@ export const initColumns = (): VxeGridPropTypes.Columns[] => {
       title: '状态',
       field: 'sessionStatus',
       width: 100,
-      slots: {
-        default: ({ row }) => {
-          return renderDictTag('sessionStatus', row.sessionStatus);
-        },
-      },
+      cellRender: { name: 'DictTag', props: { dictType: 'sessionStatus' } },
     },
     {
       title: '登录时间',
