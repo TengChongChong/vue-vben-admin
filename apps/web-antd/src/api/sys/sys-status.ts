@@ -20,9 +20,7 @@ const BASE_URL = '/auth/sys/status';
  * @return JvmSpecInfo
  */
 export function getJvmSpecInfoApi() {
-  return requestClient.get<JvmSpecInfo>({
-    url: `${BASE_URL}/jvm/spec/info`,
-  });
+  return requestClient.get<JvmSpecInfo>(`${BASE_URL}/jvm/spec/info`);
 }
 
 /**
@@ -31,9 +29,7 @@ export function getJvmSpecInfoApi() {
  * @return JvmInfo
  */
 export function getJvmInfoApi() {
-  return requestClient.get<JvmInfo>({
-    url: `${BASE_URL}/jvm/info`,
-  });
+  return requestClient.get<JvmInfo>(`${BASE_URL}/jvm/info`);
 }
 
 /**
@@ -42,9 +38,7 @@ export function getJvmInfoApi() {
  * @return JavaSpecInfo
  */
 export function getJavaSpecInfoApi() {
-  return requestClient.get<JavaSpecInfo>({
-    url: `${BASE_URL}/java/spec/info`,
-  });
+  return requestClient.get<JavaSpecInfo>(`${BASE_URL}/java/spec/info`);
 }
 
 /**
@@ -53,9 +47,7 @@ export function getJavaSpecInfoApi() {
  * @return JavaInfo
  */
 export function getJavaInfoApi() {
-  return requestClient.get<JavaInfo>({
-    url: `${BASE_URL}/java/info`,
-  });
+  return requestClient.get<JavaInfo>(`${BASE_URL}/java/info`);
 }
 
 /**
@@ -64,9 +56,7 @@ export function getJavaInfoApi() {
  * @return JavaRuntimeInfo
  */
 export function getJavaRuntimeInfoApi() {
-  return requestClient.get<JavaRuntimeInfo>({
-    url: `${BASE_URL}/java/runtime/info`,
-  });
+  return requestClient.get<JavaRuntimeInfo>(`${BASE_URL}/java/runtime/info`);
 }
 
 /**
@@ -75,9 +65,7 @@ export function getJavaRuntimeInfoApi() {
  * @return OsInfo
  */
 export function getOsInfoApi() {
-  return requestClient.get<OsInfo>({
-    url: `${BASE_URL}/os/info`,
-  });
+  return requestClient.get<OsInfo>(`${BASE_URL}/os/info`);
 }
 
 /**
@@ -86,9 +74,7 @@ export function getOsInfoApi() {
  * @return UserInfo
  */
 export function getUserInfoApi() {
-  return requestClient.get<UserInfo>({
-    url: `${BASE_URL}/user/info`,
-  });
+  return requestClient.get<UserInfo>(`${BASE_URL}/user/info`);
 }
 
 /**
@@ -97,9 +83,7 @@ export function getUserInfoApi() {
  * @return HostInfo
  */
 export function getHostInfoApi() {
-  return requestClient.get<HostInfo>({
-    url: `${BASE_URL}/host/info`,
-  });
+  return requestClient.get<HostInfo>(`${BASE_URL}/host/info`);
 }
 
 /**
@@ -108,7 +92,5 @@ export function getHostInfoApi() {
  * @return RuntimeInfo
  */
 export function getRuntimeInfoApi() {
-  return requestClient.get<RuntimeInfo>({
-    url: `${BASE_URL}/runtime/info`,
-  });
+  return requestClient.get<RuntimeInfo>(`${BASE_URL}/runtime/info`);
 }

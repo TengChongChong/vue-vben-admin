@@ -14,6 +14,7 @@ export interface JavaInfo {
   version: string;
   vendor: string;
   vendorUrl: string;
+  vendorURL: string;
 }
 
 export interface JavaRuntimeInfo {

@@ -1,4 +1,4 @@
-import type { SysRedisVO } from '#/api/sys/model/sysRedis-model';
+import type { SysRedisVO } from '#/api/sys/model/sys-redis-model';
 
 import { requestClient } from '#/api/request';
 

@@ -8,6 +8,32 @@ dayjs.locale('zh-cn');
 dayjs.extend(relativeTime);
 dayjs.extend(duration);
 
+const DATE_TIME_FORMAT = 'YYYY-MM-DD HH:mm:ss';
+const DATE_FORMAT = 'YYYY-MM-DD';
+
+export function formatToDateTime(
+  date?: dayjs.ConfigType,
+  format = DATE_TIME_FORMAT,
+): string {
+  return dayjs(date).format(format);
+}
+
+export function formatToDate(
+  date?: dayjs.ConfigType,
+  format = DATE_FORMAT,
+): string {
+  return dayjs(date).format(format);
+}
+
+export function formatToNow(
+  date: Date | dayjs.Dayjs | undefined = undefined,
+): string {
+  if (isLongAgo(date)) {
+    return dayjs(date).format('YYYY-MM-DD HH:mm');
+  }
+  return dayjs(date).fromNow();
+}
+
 /**
  * 时长
  *
@@ -23,4 +49,8 @@ export function formatToDuration(duration: number) {
   } else {
     return dayjs.duration(duration * 1000).format('M月D天');
   }
+}
+
+function isLongAgo(date: Date | dayjs.Dayjs | undefined = undefined) {
+  return dayjs(new Date()).diff(date) > 60 * 60 * 24 * 30;
 }
