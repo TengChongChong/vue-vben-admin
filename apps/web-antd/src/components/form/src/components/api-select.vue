@@ -94,6 +94,10 @@ function convertValue() {
 
 watch(() => props.value, convertValue);
 
+function handleSearch(value: string) {
+  searchValue.value = value;
+}
+
 function handleChange() {
   const relValue = unref(currentValue) ?? (props.multiple ? [] : '');
   emit('change', relValue);
@@ -103,7 +107,6 @@ function handleChange() {
 <template>
   <Select
     v-bind="$attrs"
-    v-model:search-value="searchValue"
     v-model:value="currentValue"
     :class="cn(props.class, 'w-full')"
     :mode="props.mode"
@@ -112,8 +115,9 @@ function handleChange() {
     allow-clear
     show-search
     @change="handleChange"
+    @search="handleSearch"
   >
-    <template #title="{ label }">
+    <template #option="{ label }">
       <!-- 高亮关键字 -->
       <template v-if="label">
         <HighlightText :keyword="searchValue" :text="label" />

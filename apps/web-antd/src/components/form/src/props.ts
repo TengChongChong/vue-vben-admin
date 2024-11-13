@@ -1,7 +1,11 @@
+type AnyPromiseFunction<T extends any[] = any[], R = void> = (
+  ...arg: T
+) => PromiseLike<R>;
+
 export interface BaseApiProps {
   class?: any;
   // api
-  api: (id: string) => Promise<boolean>;
+  api: AnyPromiseFunction;
   // api 参数
   params?: Record<string, any>;
   // 回调，用于处理后端响应数据
