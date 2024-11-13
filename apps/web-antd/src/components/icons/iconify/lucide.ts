@@ -53,3 +53,8 @@ export const LucideCirclePause = createIconifyIcon('lucide:circle-pause');
 export const LucideLogs = createIconifyIcon('lucide:logs');
 
 export const LucideLogOut = createIconifyIcon('lucide:log-out');
+
+export const LucideArrowLeft = createIconifyIcon('lucide:arrow-left');
+export const LucideArrowRight = createIconifyIcon('lucide:arrow-right');
+
+export const LucideSettings = createIconifyIcon('lucide:settings');

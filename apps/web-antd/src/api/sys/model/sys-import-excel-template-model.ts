@@ -6,17 +6,20 @@ import type { SysImportExcelTemplateDetail } from '#/api/sys/model/sys-import-ex
  */
 export interface SysImportExcelTemplate extends BasicModel {
   // 模板名称
-  name?: string;
+  name: string;
   // 表
-  importTable?: string;
+  importTable: string;
   // 起始行
-  startRow?: number;
+  startRow: number;
   // 回调
-  callback?: string;
+  callback: string;
   // 模板代码
-  importCode?: string;
+  importCode: string;
   // 权限标识，用于检查当前登录用户是否允许使用此模板
   permissionCode?: string;
+}
+
+export interface SysImportExcelTemplateVO extends SysImportExcelTemplate {
   // 导入配置
-  detailList?: SysImportExcelTemplateDetail[];
+  detailList: SysImportExcelTemplateDetail[];
 }

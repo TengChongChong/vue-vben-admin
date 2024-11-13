@@ -1,3 +1,4 @@
+import type { Page } from '#/api/base/model/page-model';
 import type { SysMessage } from '#/api/sys/model/sys-message-model';
 
 import { requestClient } from '#/api/request';

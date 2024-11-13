@@ -1,5 +1,5 @@
 import type { Page } from '#/api/base/model/page-model';
-import type { SysImportExcelTemporary } from '#/api/sys/model/sys-importExcelTemporary-model';
+import type { SysImportExcelTemporary } from '#/api/sys/model/sys-import-excel-temporary-model';
 
 import { requestClient } from '#/api/request';
 // base url

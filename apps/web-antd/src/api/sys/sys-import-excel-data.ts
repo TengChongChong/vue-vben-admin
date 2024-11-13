@@ -1,6 +1,6 @@
 import type { FileInfo } from '#/api/file/model/fileInfo-model';
 import type { SysImportExcelTemplateDetailVO } from '#/api/sys/model/sys-import-excel-template-detail-model';
-import type { SysImportExcelTemplate } from '#/api/sys/model/sys-import-excel-template-model';
+import type { SysImportExcelTemplateVO } from '#/api/sys/model/sys-import-excel-template-model';
 
 import { requestClient } from '#/api/request';
 // base url
@@ -21,7 +21,9 @@ export interface SysImportSummary {
  * @param importCode 模板代码
  */
 export function getImportExcelTemplateApi(importCode: string) {
-  return requestClient.get<SysImportExcelTemplate>(`${BASE_URL}/${importCode}`);
+  return requestClient.get<SysImportExcelTemplateVO>(
+    `${BASE_URL}/${importCode}`,
+  );
 }
 
 /**

@@ -17,7 +17,6 @@ import {
   Checkbox,
   CheckboxGroup,
   DatePicker,
-  Divider,
   Input,
   InputNumber,
   InputPassword,
@@ -45,6 +44,7 @@ import {
   DictSelect,
   DictTreeSelect,
 } from '#/components/dict';
+import { Divider } from '#/components/divider';
 import { ApiSelect, ApiTreeSelect } from '#/components/form';
 import { RoleSelect } from '#/components/role';
 import { UserSelect } from '#/components/user';
@@ -86,6 +86,7 @@ export type ComponentType =
   | 'RangePicker'
   | 'Rate'
   | 'RoleSelect'
+  | 'RuleUpload'
   | 'Select'
   | 'Space'
   | 'Switch'
