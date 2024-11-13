@@ -9,14 +9,29 @@ import { useVbenModal } from '@vben/common-ui';
 import { InputSearch, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { addApi, getApi, removeApi, selectApi } from '#/api/sys/sys-dict-type';
-import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
+import {
+  addApi,
+  exportDataApi,
+  getApi,
+  removeApi,
+  selectApi,
+} from '#/api/sys/sys-dict-type';
+import {
+  ButtonAdd,
+  ButtonEdit,
+  ButtonExport,
+  ButtonRemove,
+} from '#/components/button';
+import { downloadFileById } from '#/util/download';
 
 import { initColumns } from './data';
 import InputModal from './input.vue';
 
 const emit = defineEmits(['change']);
 const searchValue = ref('');
+
+// 导出按钮状态
+const exportBtnLoading = ref<boolean>(false);
 
 function handleSearch() {
   gridApi.reload();
@@ -70,6 +85,19 @@ function handleEdit(id: string) {
     baseInputModalApi.open();
   });
 }
+
+const handelExportData = async () => {
+  exportBtnLoading.value = true;
+  try {
+    await exportDataApi({ name: unref(searchValue) }).then((id) => {
+      downloadFileById(id);
+    });
+  } catch (error) {
+    console.error('导出数据错误', error);
+  } finally {
+    exportBtnLoading.value = false;
+  }
+};
 </script>
 
 <template>
@@ -86,6 +114,11 @@ function handleEdit(id: string) {
         <template #toolbar-tools>
           <Space>
             <ButtonAdd :auth-codes="['sys:dict:save']" @click="handleCreate" />
+
+            <ButtonExport
+              :loading="exportBtnLoading"
+              @click="handelExportData"
+            />
           </Space>
         </template>
         <template #action="{ row }">

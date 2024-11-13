@@ -12,17 +12,27 @@ import { Button, message, Space } from 'ant-design-vue';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
   addApi,
+  exportDataApi,
   getApi,
   refreshApi,
   removeApi,
   selectApi,
 } from '#/api/sys/sys-dict';
-import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
+import {
+  ButtonAdd,
+  ButtonEdit,
+  ButtonExport,
+  ButtonRemove,
+} from '#/components/button';
 import { LucideRefreshCw } from '#/components/icons';
+import { downloadFileById } from '#/util/download';
 
 import { initColumns } from './data';
 import InputModal from './input.vue';
 import SysDictTypeList from './type/list.vue';
+
+// 导出按钮状态
+const exportBtnLoading = ref<boolean>(false);
 
 function handleSearch() {
   gridApi.search();
@@ -106,6 +116,22 @@ function handleDictTypeChange(value: string) {
   dictType.value = value;
   handleSearch();
 }
+
+const handelExportData = async () => {
+  exportBtnLoading.value = true;
+  try {
+    await exportDataApi({
+      dictType: unref(dictType),
+      ...(await gridApi.formApi.getValues()),
+    }).then((id) => {
+      downloadFileById(id);
+    });
+  } catch (error) {
+    console.error('导出数据错误', error);
+  } finally {
+    exportBtnLoading.value = false;
+  }
+};
 </script>
 
 <template>
@@ -128,6 +154,11 @@ function handleDictTypeChange(value: string) {
                 :auth-codes="['sys:dict:remove']"
                 :grid-api="gridApi"
                 @success="handleSearch"
+              />
+
+              <ButtonExport
+                :loading="exportBtnLoading"
+                @click="handelExportData"
               />
 
               <Button @click="handleReloadCache">
