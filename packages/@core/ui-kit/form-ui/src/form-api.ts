@@ -1,3 +1,4 @@
+import type { Recordable } from '@vben-core/typings';
 import type {
   FormState,
   GenericObject,
@@ -43,11 +44,14 @@ function getDefaultState(): VbenFormProps {
 }
 
 export class FormApi {
+  // 最后一次点击提交时的表单值
+  private latestSubmissionValues: null | Recordable<any> = null;
   private prevState: null | VbenFormProps = null;
+
   // private api: Pick<VbenFormProps, 'handleReset' | 'handleSubmit'>;
   public form = {} as FormActions;
-
   isMounted = false;
+
   public state: null | VbenFormProps = null;
 
   stateHandler: StateHandler;
@@ -112,6 +116,10 @@ export class FormApi {
     this.store.batch(cb);
   }
 
+  getLatestSubmissionValues() {
+    return this.latestSubmissionValues || {};
+  }
+
   getState() {
     return this.state;
   }
@@ -166,6 +174,7 @@ export class FormApi {
     if (!this.isMounted) {
       Object.assign(this.form, formActions);
       this.stateHandler.setConditionTrue();
+      this.setLatestSubmissionValues({ ...toRaw(this.form.values) });
       this.isMounted = true;
     }
   }
@@ -207,6 +216,10 @@ export class FormApi {
   async setFieldValue(field: string, value: any, shouldValidate?: boolean) {
     const form = await this.getForm();
     form.setFieldValue(field, value, shouldValidate);
+  }
+
+  setLatestSubmissionValues(values: null | Recordable<any>) {
+    this.latestSubmissionValues = { ...toRaw(values) };
   }
 
   setState(
@@ -262,12 +275,14 @@ export class FormApi {
     await form.submitForm();
     const rawValues = toRaw(form.values || {});
     await this.state?.handleSubmit?.(rawValues);
+
     return rawValues;
   }
 
   unmount() {
     this.form?.resetForm?.();
     // this.state = null;
+    this.latestSubmissionValues = null;
     this.isMounted = false;
     this.stateHandler.reset();
   }
@@ -315,5 +330,14 @@ export class FormApi {
       console.error('validate error', validateResult?.errors);
     }
     return validateResult;
+  }
+
+  async validateAndSubmitForm() {
+    const form = await this.getForm();
+    const { valid } = await form.validate();
+    if (!valid) {
+      return;
+    }
+    return await this.submitForm();
   }
 }

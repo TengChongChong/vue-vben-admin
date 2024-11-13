@@ -11,9 +11,12 @@ type TabOption = BasicOption;
 
 type BasicUserInfo = SessionUser;
 
+type ClassType = Array<object | string> | object | string;
+
 export type {
   BasicOption,
   BasicUserInfo,
+  ClassType,
   SelectOption,
   SessionUser,
   TabOption,

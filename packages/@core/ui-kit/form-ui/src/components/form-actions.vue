@@ -3,7 +3,12 @@ import { computed, ref, toRaw, unref, watch } from 'vue';
 
 import { useSimpleLocale } from '@vben-core/composables';
 import { VbenExpandableArrow } from '@vben-core/shadcn-ui';
-import { cn, isFunction, triggerWindowResize } from '@vben-core/shared/utils';
+import {
+  cn,
+  formatDate,
+  isFunction,
+  triggerWindowResize,
+} from '@vben-core/shared/utils';
 
 import { COMPONENT_MAP } from '../config';
 import { injectFormProps } from '../use-form-context';
@@ -54,6 +59,9 @@ async function handleSubmit(e: Event) {
   if (!valid) {
     return;
   }
+
+  const values = handleRangeTimeValue(toRaw(form.values));
+  await unref(rootProps).handleSubmit?.(values);
   try {
     submitLoading.value = true;
     await unref(rootProps).handleSubmit?.(toRaw(form.values));
@@ -68,11 +76,53 @@ async function handleReset(e: Event) {
   e?.preventDefault();
   e?.stopPropagation();
   const props = unref(rootProps);
+
+  const values = toRaw(form.values);
+  // 清理时间字段
+  props.fieldMappingTime &&
+    props.fieldMappingTime.forEach(([_, [startTimeKey, endTimeKey]]) => {
+      delete values[startTimeKey];
+      delete values[endTimeKey];
+    });
+
   if (isFunction(props.handleReset)) {
-    await props.handleReset?.(form.values);
+    await props.handleReset?.(values);
   } else {
     form.resetForm();
   }
+}
+
+function handleRangeTimeValue(values: Record<string, any>) {
+  const fieldMappingTime = unref(rootProps).fieldMappingTime;
+
+  if (!fieldMappingTime || !Array.isArray(fieldMappingTime)) {
+    return values;
+  }
+
+  fieldMappingTime.forEach(
+    ([field, [startTimeKey, endTimeKey], format = 'YYYY-MM-DD']) => {
+      if (!values[field]) {
+        delete values[field];
+        return;
+      }
+
+      const [startTime, endTime] = values[field];
+      const [startTimeFormat, endTimeFormat] = Array.isArray(format)
+        ? format
+        : [format, format];
+
+      values[startTimeKey] = startTime
+        ? formatDate(startTime, startTimeFormat)
+        : undefined;
+      values[endTimeKey] = endTime
+        ? formatDate(endTime, endTimeFormat)
+        : undefined;
+
+      delete values[field];
+    },
+  );
+
+  return values;
 }
 
 watch(
