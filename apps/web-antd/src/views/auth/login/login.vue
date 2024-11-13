@@ -1,11 +1,9 @@
 <script lang="ts" setup>
+import type { LoginAccountParams } from '#/api/auth/model/auth-model';
+
 import { computed } from 'vue';
 
-import {
-  type LoginAndRegisterParams,
-  useVbenModal,
-  type VbenFormSchema,
-} from '@vben/common-ui';
+import { useVbenModal, type VbenFormSchema } from '@vben/common-ui';
 import { AuthenticationLogin, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 
@@ -51,7 +49,7 @@ const formSchema = computed((): VbenFormSchema[] => {
 // 验证码
 let captchaVerification: null | string = null;
 
-let loginParams: LoginAndRegisterParams = null;
+let loginParams: LoginAccountParams = null;
 
 function handleVerifySuccess(code: string) {
   captchaVerification = code;
@@ -70,7 +68,7 @@ function openVerifyModal() {
 /**
  * 点击登录按钮
  */
-function handleLoginClick(params: LoginAndRegisterParams) {
+function handleLoginClick(params: LoginAccountParams) {
   // 存储登录参数
   loginParams = params;
   if (loginVerificationCode) {

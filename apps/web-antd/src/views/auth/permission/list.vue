@@ -103,7 +103,6 @@ function handleEdit(id: string) {
 }
 
 function handleCreate(id: string) {
-  baseInputDrawerApi.setData({ id });
   addApi(id).then((res) => {
     baseInputDrawerApi.setData(res);
     baseInputDrawerApi.open();

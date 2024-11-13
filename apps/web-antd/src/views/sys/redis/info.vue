@@ -3,7 +3,7 @@ import type { SysRedisVO } from '#/api/sys/model/sys-redis-model';
 
 import { ref } from 'vue';
 
-import { useVbenModal } from '@vben/common-ui';
+import { useVbenModal, VbenScrollbar } from '@vben/common-ui';
 
 import {
   Button,
@@ -62,7 +62,11 @@ const [Modal, modalApi] = useVbenModal({
         {{ sysRedis?.expire === -1 ? '永不过期' : `${sysRedis?.expire}秒` }}
       </DescriptionsItem>
       <DescriptionsItem label="Value">
-        <JsonPreview :data="sysRedis?.value" />
+        <VbenScrollbar shadow>
+          <div class="h-full max-h-[450px]">
+            <JsonPreview :data="sysRedis?.value" />
+          </div>
+        </VbenScrollbar>
       </DescriptionsItem>
     </Descriptions>
     <template #footer>
@@ -83,3 +87,8 @@ const [Modal, modalApi] = useVbenModal({
     </template>
   </Modal>
 </template>
+<style lang="scss" scoped>
+.vjs-tree {
+  position: relative;
+}
+</style>
