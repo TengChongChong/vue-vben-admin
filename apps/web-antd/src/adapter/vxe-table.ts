@@ -19,7 +19,7 @@ setupVbenVxeTable({
         // 所有的表头列的对齐方式
         headerAlign: 'center',
         // 是否带有边框
-        border: true,
+        border: false,
         // 表格的高度；支持铺满父容器或者固定高度，如果设置 auto 为铺满父容器（如果设置为 auto，则必须确保存在父节点且不允许存在相邻元素）
         height: 'auto',
         // 表格最小高度
