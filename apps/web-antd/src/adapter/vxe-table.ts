@@ -109,7 +109,6 @@ setupVbenVxeTable({
           // labelField: 'name',
         },
         // 数据代理配置项（基于 Promise API）
-        minHeight: 180,
         formConfig: {
           // 全局禁用vxe-table的表单配置，使用formOptions
           enabled: false,
