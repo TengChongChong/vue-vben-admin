@@ -7,7 +7,7 @@ import { formatDate, formatDateTime, isFunction } from '@vben/utils';
 export function extendProxyOptions(
   api: VxeGridApi,
   options: VxeGridProps,
-  getFormValues: () => Record<string, any>,
+  getFormValues: () => Recordable<any>,
 ) {
   [
     'query',
@@ -25,25 +25,37 @@ function extendProxyOption(
   key: string,
   api: VxeGridApi,
   options: VxeGridProps,
-  getFormValues: () => Record<string, any>,
+  getFormValues: () => Recordable<any>,
 ) {
   const { proxyConfig } = options;
-  const configFn = (proxyConfig?.ajax as any)?.[key];
+  const configFn = (proxyConfig?.ajax as Recordable<any>)?.[key];
   if (!isFunction(configFn)) {
     return options;
   }
 
-  const wrapperFn = async (params: any, _formValues: any, ...args: any[]) => {
+  const wrapperFn = async (
+    params: Recordable<any>,
+    customValues: Recordable<any>,
+    ...args: Recordable<any>[]
+  ) => {
     const formValues = getFormValues();
-    // 将page转为后端要求的结构
-    const { page, sort } = params;
-    params.page = {
-      current: page.currentPage,
-      pageSize: page.pageSize,
-      sortField: sort.field,
-      sortOrder: sort.order,
-    };
-    return await configFn(params, formValues, ...args);
+    // // 将page转为后端要求的结构
+    // const { page, sort } = params;
+    // params.page = {
+    //   current: page.currentPage,
+    //   pageSize: page.pageSize,
+    //   sortField: sort.field,
+    //   sortOrder: sort.order,
+    // };
+    const data = await configFn(
+      params,
+      {
+        ...customValues,
+        ...formValues,
+      },
+      ...args,
+    );
+    return data;
   };
   api.setState({
     gridOptions: {

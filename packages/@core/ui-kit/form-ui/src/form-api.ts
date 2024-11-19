@@ -13,8 +13,10 @@ import { toRaw } from 'vue';
 import { Store } from '@vben-core/shared/store';
 import {
   bindMethods,
+  createMerge,
   isFunction,
   isNumber,
+  isObject,
   mergeWithArrayOverride,
   StateHandler,
 } from '@vben-core/shared/utils';
@@ -265,6 +267,17 @@ export class FormApi {
     });
 
     const filteredFields = objectPick(fields, fieldNames);
+
+    const fieldMergeFn = createMerge((obj, key, value) => {
+      if (key in obj) {
+        obj[key] =
+          !Array.isArray(obj[key]) && isObject(obj[key])
+            ? fieldMergeFn(obj[key], value)
+            : value;
+      }
+      return true;
+    });
+    const filteredFields = fieldMergeFn(fields, form.values);
     form.setValues(filteredFields, shouldValidate);
   }
 
