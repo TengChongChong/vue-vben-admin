@@ -61,10 +61,9 @@ async function handleSubmit(e: Event) {
   }
 
   const values = handleRangeTimeValue(toRaw(form.values));
-  await unref(rootProps).handleSubmit?.(values);
   try {
     submitLoading.value = true;
-    await unref(rootProps).handleSubmit?.(toRaw(form.values));
+    await unref(rootProps).handleSubmit?.(values);
   } catch (error) {
     console.error('form submit error:', error);
   } finally {
