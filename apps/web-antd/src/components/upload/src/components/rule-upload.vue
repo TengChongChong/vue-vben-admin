@@ -84,7 +84,12 @@ const { getStringAccept, getHelpText } = useUploadType({
 });
 
 function setValue() {
-  if (props.value === null || props.value === '' || isString(props.value)) {
+  if (
+    props.value === null ||
+    props.value === undefined ||
+    props.value === '' ||
+    isString(props.value)
+  ) {
     uploadedFileList = [];
     refreshDisplayFileList();
     return;
@@ -203,7 +208,7 @@ function refreshDisplayFileList() {
       @change="handleChange"
     >
       <template v-if="props.listType === 'picture-card'">
-        <div>
+        <div class="ant-upload-select-picture-card">
           <LucideHardDriveUpload />
           <div class="ant-upload-text">选择文件</div>
         </div>
@@ -233,5 +238,13 @@ function refreshDisplayFileList() {
 .upload-help-text {
   font-size: 14px;
   color: hsl(var(--secondary-foreground));
+}
+
+.ant-upload-select-picture-card {
+  text-align: center;
+
+  .iconify {
+    margin: 0 auto 8px;
+  }
 }
 </style>

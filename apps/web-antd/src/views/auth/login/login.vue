@@ -56,7 +56,7 @@ function handleVerifySuccess(code: string) {
   handleLoginAccount();
 }
 
-const [BaseModal, baseModalApi] = useVbenModal({
+const [BaseSlideVerifyModal, baseModalApi] = useVbenModal({
   // 连接抽离的组件
   connectedComponent: SlideVerifyModal,
 });
@@ -99,6 +99,6 @@ function handleLoginAccount() {
       @submit="handleLoginClick"
     />
 
-    <BaseModal @success="handleVerifySuccess" />
+    <BaseSlideVerifyModal @success="handleVerifySuccess" />
   </div>
 </template>

@@ -1,4 +1,4 @@
-import { BasicModel } from '@/api/model/base-model';
+import type { BasicModel } from '#/api/base/model/base-model';
 
 /**
  * 角色

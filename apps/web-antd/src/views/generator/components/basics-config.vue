@@ -147,11 +147,6 @@ const [BaseForm, baseFormApi] = useVbenForm({
             label: '适用于复杂表单，6个及以上字段',
             value: 'drawer',
           },
-          {
-            name: '页面 - Page',
-            label: '适用于复杂表单，使用新标签页打开',
-            value: 'page',
-          },
         ],
       },
       rules: 'selectRequired',

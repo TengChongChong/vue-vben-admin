@@ -91,7 +91,7 @@ const [Modal, modalApi] = useVbenModal({
 });
 </script>
 <template>
-  <Modal class="w-[1200px]" title="查询条件配置">
+  <Modal class="w-[1200px]" title="表单配置">
     <Table
       :columns="columns"
       :data-source="inputConfig"
