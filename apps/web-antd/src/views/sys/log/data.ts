@@ -37,13 +37,13 @@ export const initColumns = (): VxeGridPropTypes.Columns[] => {
       minWidth: 280,
     },
     {
-      title: '触发用户',
+      title: '操作人',
       field: 'operationUser',
       sortable: true,
       width: 120,
     },
     {
-      title: '触发时间',
+      title: '操作时间',
       field: 'operationDate',
       sortable: true,
       width: 160,

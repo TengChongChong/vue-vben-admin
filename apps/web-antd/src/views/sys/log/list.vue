@@ -16,6 +16,13 @@ import InfoDrawer from './info.vue';
 
 const formOptions: VbenFormProps = {
   collapsed: true,
+  fieldMappingTime: [
+    [
+      'operationDateRange',
+      ['startOperationDate', 'endOperationDate'],
+      'YYYY-MM-DD HH:mm:ss',
+    ],
+  ],
   schema: [
     {
       fieldName: 'modular',
@@ -53,8 +60,8 @@ const formOptions: VbenFormProps = {
       component: 'Input',
     },
     {
-      fieldName: 'triggerTimeRange',
-      label: '触发时间',
+      fieldName: 'operationDateRange',
+      label: '操作时间',
       component: 'RangePicker',
       componentProps: {
         allowEmpty: [true, true],
@@ -86,14 +93,7 @@ const gridOptions: VxeGridProps<SysLog> = {
     ajax: {
       query: async ({ page }, formValues) => {
         try {
-          const queryValues = { ...formValues };
-          const [startTriggerTime, endTriggerTime] =
-            queryValues.triggerTimeRange || [];
-          delete queryValues.triggerTimeRange;
-          return await selectApi(
-            { ...queryValues, startTriggerTime, endTriggerTime },
-            page,
-          );
+          return await selectApi({ ...formValues }, page);
         } catch (error) {
           console.error(error);
         }

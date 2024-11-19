@@ -21,6 +21,13 @@ function handleSearch() {
 
 const formOptions: VbenFormProps = {
   collapsed: true,
+  fieldMappingTime: [
+    [
+      'triggerTimeRange',
+      ['startTriggerTime', 'endTriggerTime'],
+      'YYYY-MM-DD HH:mm:ss',
+    ],
+  ],
   schema: [
     {
       fieldName: 'id',
@@ -86,14 +93,7 @@ const gridOptions: VxeGridProps<SysException> = {
     ajax: {
       query: async ({ page }, formValues) => {
         try {
-          const queryValues = { ...formValues };
-          const [startTriggerTime, endTriggerTime] =
-            queryValues.triggerTimeRange || [];
-          delete queryValues.triggerTimeRange;
-          return await selectApi(
-            { ...queryValues, startTriggerTime, endTriggerTime },
-            page,
-          );
+          return await selectApi({ ...formValues }, page);
         } catch (error) {
           console.error(error);
         }
