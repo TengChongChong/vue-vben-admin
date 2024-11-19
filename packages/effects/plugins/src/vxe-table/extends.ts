@@ -1,3 +1,4 @@
+import type { Recordable } from '@vben/types';
 import type { VxeGridProps, VxeUIExport } from 'vxe-table';
 
 import type { VxeGridApi } from './api';
@@ -39,14 +40,14 @@ function extendProxyOption(
     ...args: Recordable<any>[]
   ) => {
     const formValues = getFormValues();
-    // // 将page转为后端要求的结构
-    // const { page, sort } = params;
-    // params.page = {
-    //   current: page.currentPage,
-    //   pageSize: page.pageSize,
-    //   sortField: sort.field,
-    //   sortOrder: sort.order,
-    // };
+    // 将page转为后端要求的结构;
+    const { page, sort } = params;
+    params.page = {
+      current: page.currentPage,
+      pageSize: page.pageSize,
+      sortField: sort.field,
+      sortOrder: sort.order,
+    };
     const data = await configFn(
       params,
       {

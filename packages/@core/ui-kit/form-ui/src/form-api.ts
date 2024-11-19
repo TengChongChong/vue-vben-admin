@@ -21,7 +21,6 @@ import {
   StateHandler,
 } from '@vben-core/shared/utils';
 
-import { objectPick } from '@vueuse/core';
 import dayjs from 'dayjs';
 
 function getDefaultState(): VbenFormProps {
@@ -254,7 +253,6 @@ export class FormApi {
       form.setValues(fields, shouldValidate);
       return;
     }
-    const fieldNames = this.state?.schema?.map((item) => item.fieldName) ?? [];
     // 处理日期格式，后端返回的是时间戳
     this.state?.schema?.forEach((item) => {
       if (
@@ -265,8 +263,6 @@ export class FormApi {
         fields[item.fieldName] = dayjs(fields[item.fieldName]);
       }
     });
-
-    const filteredFields = objectPick(fields, fieldNames);
 
     const fieldMergeFn = createMerge((obj, key, value) => {
       if (key in obj) {
