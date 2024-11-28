@@ -92,7 +92,7 @@
 
     &::after {
       position: absolute;
-      left: 8px;
+      left: -6px;
       display: block;
       width: 1px;
       height: 20px;

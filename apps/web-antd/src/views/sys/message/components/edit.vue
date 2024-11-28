@@ -43,11 +43,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
       rules: 'selectRequired',
     },
     {
-      component: 'Textarea',
-      componentProps: {
-        placeholder: '请输入内容',
-        autoSize: { minRows: 2, maxRows: 5 },
-      },
+      component: 'Editor',
       fieldName: 'content',
       label: '内容',
       rules: z
@@ -78,9 +74,7 @@ async function initPage() {
   baseFormApi.setValues({ ...data });
 }
 
-async function onSubmit(values: Record<string, any>) {
-  console.log(values);
-}
+async function onSubmit(values: Record<string, any>) {}
 </script>
 
 <template>

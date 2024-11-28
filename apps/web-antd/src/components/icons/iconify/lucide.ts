@@ -58,3 +58,5 @@ export const LucideArrowLeft = createIconifyIcon('lucide:arrow-left');
 export const LucideArrowRight = createIconifyIcon('lucide:arrow-right');
 
 export const LucideSettings = createIconifyIcon('lucide:settings');
+
+export const LucideSend = createIconifyIcon('lucide:send');

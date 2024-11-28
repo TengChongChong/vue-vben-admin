@@ -44,7 +44,13 @@ function convertValue() {
     : convertSingleValue(props.value as string);
 }
 
-watch(() => props.value, convertValue);
+watch(
+  () => props.value,
+  () => {
+    convertValue();
+    initSelectValue();
+  },
+);
 
 const initSelectValue = () => {
   if (props.value) {

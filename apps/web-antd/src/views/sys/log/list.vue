@@ -81,7 +81,6 @@ const formOptions: VbenFormProps = {
           },
         ],
       },
-      colProps: { xxl: 12, xl: 16, md: 24 },
     },
   ],
 };
