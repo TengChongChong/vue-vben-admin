@@ -113,6 +113,14 @@ setupVbenVxeTable({
           // 全局禁用vxe-table的表单配置，使用formOptions
           enabled: false,
         },
+        // 序号配置项
+        seqConfig: {
+          // 自定义序号的方法，返回处理后的值
+          seqMethod({ $grid, rowIndex }) {
+            const { pageSize, currentPage } = $grid.reactData.tablePage;
+            return (currentPage - 1) * pageSize + rowIndex + 1;
+          },
+        },
         proxyConfig: {
           // 是否自动加载查询数据
           // autoLoad: true,
