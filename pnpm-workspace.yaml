@@ -184,6 +184,7 @@ catalog:
   '@types/crypto-js': ^4.2.2
   '@types/lodash-es': ^4.17.12
   '@vueuse/shared': ^11.2.0
+  tinymce: ^5.10.7
   crypto-js: ^4.2.0
   cropperjs: ^1.6.2
   lodash-es: ^4.17.21

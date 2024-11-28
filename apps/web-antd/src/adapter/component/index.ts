@@ -45,6 +45,7 @@ import {
   DictTreeSelect,
 } from '#/components/dict';
 import { Divider } from '#/components/divider';
+import { Editor } from '#/components/editor';
 import { ApiSelect, ApiTreeSelect } from '#/components/form';
 import { RoleSelect } from '#/components/role';
 import { UserSelect } from '#/components/user';
@@ -76,6 +77,7 @@ export type ComponentType =
   | 'DictSelect'
   | 'DictTreeSelect'
   | 'Divider'
+  | 'Editor'
   | 'Input'
   | 'InputNumber'
   | 'InputPassword'
@@ -112,6 +114,7 @@ async function initComponentAdapter() {
       return h(Button, { ...props, attrs, type: 'default' }, slots);
     },
     Divider,
+    Editor,
     Input: withDefaultPlaceholder(Input, 'input'),
     InputNumber: withDefaultPlaceholder(InputNumber, 'input'),
     InputPassword: withDefaultPlaceholder(InputPassword, 'input'),

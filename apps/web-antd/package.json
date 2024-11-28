@@ -50,7 +50,8 @@
     "pinia": "catalog:",
     "vue": "catalog:",
     "vue-json-pretty": "catalog:",
-    "vue-router": "catalog:"
+    "vue-router": "catalog:",
+    "tinymce": "catalog:"
   },
   "devDependencies": {
     "@types/lodash-es": "catalog:"
