@@ -41,6 +41,7 @@ export class ModalApi {
       class: '',
       closeOnClickModal: false,
       closeOnPressEscape: true,
+      confirmDisabled: false,
       confirmLoading: false,
       contentClass: '',
       draggable: true,
