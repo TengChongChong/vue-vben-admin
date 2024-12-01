@@ -1,19 +1,27 @@
 <script setup lang="ts">
-import { onMounted, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 
-import { Card } from 'ant-design-vue';
+import { Card, message, Space } from 'ant-design-vue';
 
 import { useVbenForm, z } from '#/adapter/form';
-import { addApi, getApi } from '#/api/sys/sys-message';
+import { addApi, getApi, saveApi } from '#/api/sys/sys-message';
+import { ButtonSave } from '#/components/button';
 
 const props = defineProps<{ id?: string }>();
 
+const saveBtnLoading = ref(false);
+
 const [BaseForm, baseFormApi] = useVbenForm({
-  handleSubmit: onSubmit,
+  showDefaultActions: false,
   schema: [
+    { fieldName: 'id', component: 'Input', formItemClass: 'hidden' },
+    { fieldName: 'version', component: 'Input', formItemClass: 'hidden' },
     {
       component: 'UserSelect',
-      componentProps: { placeholder: '请选择收信人', mode: 'multiple' },
+      componentProps: {
+        placeholder: '输入用户名、昵称或部门名称搜索',
+        mode: 'multiple',
+      },
       fieldName: 'receivers',
       label: '收信人',
       rules: 'selectRequired',
@@ -74,13 +82,33 @@ async function initPage() {
   baseFormApi.setValues({ ...data });
 }
 
-async function onSubmit(values: Record<string, any>) {}
+async function handleSubmit() {
+  try {
+    saveBtnLoading.value = true;
+    const { valid } = await baseFormApi.validate();
+    if (!valid) {
+      return;
+    }
+    await saveApi(await baseFormApi.getValues());
+    message.success('保存成功');
+  } catch (error) {
+    console.error('保存失败', error);
+  } finally {
+    saveBtnLoading.value = false;
+  }
+}
 </script>
 
 <template>
   <Card :bordered="false" title="写消息">
     <div class="form-wrapper">
       <BaseForm />
+
+      <div class="text-center">
+        <Space>
+          <ButtonSave :loading="saveBtnLoading" @click="handleSubmit" />
+        </Space>
+      </div>
     </div>
   </Card>
 </template>

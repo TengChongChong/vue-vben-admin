@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const text = computed(() => {
-  return props.alt.slice(-2);
+  return props.alt?.slice(-2);
 });
 </script>
 

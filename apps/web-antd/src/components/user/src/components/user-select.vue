@@ -70,7 +70,7 @@ const initSelectValue = () => {
 
 initSelectValue();
 
-const fetchUser = useDebounceFn(async (value: string) => {
+const fetchUser = useDebounceFn(async (value: null | string) => {
   try {
     searchValue = value;
     lastFetchId += 1;

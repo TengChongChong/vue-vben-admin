@@ -3,7 +3,7 @@ import { ref, unref, watch } from 'vue';
 
 import { Menu, MenuItem } from 'ant-design-vue';
 
-import { FilePen, Mailbox, MailCheck, Mails } from '#/components/icons';
+import { FilePen, LucideMailCheck, Mailbox, Mails } from '#/components/icons';
 
 const prop = defineProps({
   selectedKeys: {
@@ -56,7 +56,7 @@ function handleSelect() {
       </MenuItem>
       <MenuItem key="has-been-sent">
         <template #icon>
-          <MailCheck />
+          <LucideMailCheck />
         </template>
         已发送
       </MenuItem>

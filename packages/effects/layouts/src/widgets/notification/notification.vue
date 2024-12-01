@@ -133,9 +133,10 @@ function handleClick(item: NotificationItem) {
       </template>
 
       <div
-        class="border-border flex items-center justify-between border-t px-4 py-3"
+        class="border-border flex items-center justify-end border-t px-4 py-3"
       >
         <VbenButton
+          v-if="false"
           :disabled="notifications.length <= 0"
           size="sm"
           variant="ghost"

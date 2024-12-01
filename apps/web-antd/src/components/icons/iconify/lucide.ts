@@ -60,3 +60,5 @@ export const LucideArrowRight = createIconifyIcon('lucide:arrow-right');
 export const LucideSettings = createIconifyIcon('lucide:settings');
 
 export const LucideSend = createIconifyIcon('lucide:send');
+
+export const LucideMailCheck = createIconifyIcon('lucide:mail-check');

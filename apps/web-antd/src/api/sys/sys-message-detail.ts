@@ -49,5 +49,5 @@ export function removeByIdsApi(ids: string) {
  * @param ids 消息ids
  */
 export function setReadApi(ids?: string) {
-  return requestClient.post<boolean>(`${BASE_URL}/read/${ids || ''}`);
+  return requestClient.post<boolean>(`${BASE_URL}/read${ids ? `/${ids}` : ''}`);
 }

@@ -21,6 +21,7 @@ import { openWindow } from '@vben/utils';
 
 import { getByKeyApi } from '#/api/sys/sys-config';
 import { infoApi, selectReceiveApi } from '#/api/sys/sys-message';
+import { setReadApi } from '#/api/sys/sys-message-detail';
 import {
   BookOpenText,
   CircleHelp,
@@ -35,36 +36,7 @@ import LoginForm from '#/views/_core/authentication/login.vue';
 import { SysMessageDetailsStatus } from '#/views/sys/message/components/data';
 import MessageInfoModal from '#/views/sys/message/components/info-modal.vue';
 
-const notifications = ref<NotificationItem[]>([
-  {
-    avatar: 'https://avatar.vercel.sh/vercel.svg?text=VB',
-    date: '3小时前',
-    isRead: true,
-    message: '描述信息描述信息描述信息',
-    title: '收到了 14 份新周报',
-  },
-  {
-    avatar: 'https://avatar.vercel.sh/1',
-    date: '刚刚',
-    isRead: false,
-    message: '描述信息描述信息描述信息',
-    title: '朱偏右 回复了你',
-  },
-  {
-    avatar: 'https://avatar.vercel.sh/1',
-    date: '2024-01-01',
-    isRead: false,
-    message: '描述信息描述信息描述信息',
-    title: '曲丽丽 评论了你',
-  },
-  {
-    avatar: 'https://avatar.vercel.sh/satori',
-    date: '1天前',
-    isRead: false,
-    message: '描述信息描述信息描述信息',
-    title: '代办提醒',
-  },
-]);
+const notifications = ref<NotificationItem[]>([]);
 
 const userStore = useUserStore();
 const authStore = useAuthStore();
@@ -187,15 +159,13 @@ function checkAuth() {
   }
 }
 
-function handleNoticeClear() {
-  notifications.value = [];
-}
-
 /**
  * 消息全部标记为已读
  */
 function handleMakeAllAsRead() {
-  notifications.value.forEach((item) => (item.isRead = true));
+  setReadApi().then(() => {
+    refreshMessage();
+  });
 }
 
 /**
@@ -269,7 +239,6 @@ onMounted(async () => {
       <Notification
         :dot="showDot"
         :notifications="notifications"
-        @clear="handleNoticeClear"
         @make-all="handleMakeAllAsRead"
         @read="handleReadNotification"
         @view-all="handleViewAll"

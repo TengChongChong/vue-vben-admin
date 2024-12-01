@@ -3,16 +3,22 @@ import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
 import type { FileUploadRule } from '#/api/file/model/file-upload-rule-model';
 
+import { ref } from 'vue';
+
 import { useVbenModal } from '@vben/common-ui';
 
-import { Space } from 'ant-design-vue';
+import { Button, Space } from 'ant-design-vue';
 import dayjs from 'dayjs';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { infoApi, removeApi, selectReceiveApi } from '#/api/sys/sys-message';
+import { setReadApi } from '#/api/sys/sys-message-detail';
 import { ButtonRemove } from '#/components/button';
+import { LucideMailCheck } from '#/components/icons';
 
 import InfoModal from './info-modal.vue';
+
+const setReadBtnLoading = ref(false);
 
 function handleSearch() {
   gridApi.search();
@@ -134,6 +140,21 @@ const [BaseInfoModal, baseInfoModalApi] = useVbenModal({
   connectedComponent: InfoModal,
 });
 
+/**
+ * 消息全部标记为已读
+ */
+async function handleMakeAllAsRead() {
+  try {
+    setReadBtnLoading.value = true;
+    await setReadApi();
+    await handleSearch();
+  } catch (error) {
+    console.error('消息全部标记为已读失败', error);
+  } finally {
+    setReadBtnLoading.value = false;
+  }
+}
+
 function handleOpenInfoModel(id: string, messageId: string) {
   infoApi(id, messageId).then((res) => {
     if (!res.readDate) {
@@ -152,6 +173,13 @@ function handleOpenInfoModel(id: string, messageId: string) {
     <Grid>
       <template #toolbar-tools>
         <Space>
+          <Button :loading="setReadBtnLoading" @click="handleMakeAllAsRead">
+            <template #icon>
+              <LucideMailCheck />
+            </template>
+            标记已读
+          </Button>
+
           <ButtonRemove
             :api="removeApi"
             :grid-api="gridApi"

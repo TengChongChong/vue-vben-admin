@@ -24,11 +24,11 @@ const [Modal, modalApi] = useVbenModal({
 </script>
 <template>
   <Modal class="w-[1080px]" title="消息详情">
-    <div class="message-info">
-      <div class="message-info-title">
+    <div class="message">
+      <div class="message__title">
         <h3>{{ messageInfo?.title }}</h3>
       </div>
-      <div class="message-info-property">
+      <div class="message__property">
         <UserAvatar
           :alt="messageInfo?.nickname"
           :size="40"
@@ -44,7 +44,7 @@ const [Modal, modalApi] = useVbenModal({
         }}
       </div>
       <Divider />
-      <div class="message-info-content" v-html="messageInfo?.content"></div>
+      <div class="message__content" v-html="messageInfo?.content"></div>
     </div>
 
     <template #footer>
@@ -55,24 +55,55 @@ const [Modal, modalApi] = useVbenModal({
   </Modal>
 </template>
 <style lang="scss" scoped>
-.message-info {
+.message {
   padding: 16px;
 
-  .message-info-title {
+  .message__title {
     margin-bottom: 24px;
     font-size: 24px;
     font-weight: bold;
     text-align: center;
   }
 
-  .message-info-property {
+  .message__property {
     text-align: center;
   }
 
-  .message-info-content {
+  :deep(.message__content) {
     padding: 0 16px;
     .editor-media {
       display: inline-block;
+    }
+
+    h1 {
+      @apply text-4xl;
+      @apply font-bold;
+      margin: 22px 0;
+    }
+    h2 {
+      @apply text-3xl;
+      @apply font-bold;
+      margin: 20px 0;
+    }
+    h3 {
+      @apply text-2xl;
+      @apply font-bold;
+      margin: 18px 0;
+    }
+    h4 {
+      @apply text-xl;
+      @apply font-semibold;
+      margin: 16px 0;
+    }
+    h5 {
+      @apply text-lg;
+      @apply font-semibold;
+      margin: 14px 0;
+    }
+    h6 {
+      @apply text-sm;
+      @apply font-semibold;
+      margin: 12px 0;
     }
   }
 }

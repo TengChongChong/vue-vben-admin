@@ -4,6 +4,7 @@ import type { TinymceProps } from '#/components/editor/src/props';
 import {
   computed,
   nextTick,
+  onActivated,
   onBeforeUnmount,
   onDeactivated,
   onMounted,
@@ -110,7 +111,15 @@ const initOptions = computed((): RawEditorSettings => {
 //   });
 // });
 
+onActivated(() => {
+  init();
+});
+
 onMounted(() => {
+  init();
+});
+
+function init() {
   if (!initOptions.value.inline) {
     tinymceId.value = buildShortUUID('tiny-vue');
   }
@@ -119,7 +128,7 @@ onMounted(() => {
       initEditor();
     }, 30);
   });
-});
+}
 
 onBeforeUnmount(() => {
   destroy();
