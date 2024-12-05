@@ -8,7 +8,7 @@ import type { BaseFormComponentType } from '@vben/common-ui';
 import type { Component, SetupContext } from 'vue';
 import { h } from 'vue';
 
-import { globalShareState } from '@vben/common-ui';
+import { ApiSelect, globalShareState, IconPicker } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 
 import {
@@ -78,6 +78,7 @@ export type ComponentType =
   | 'DictTreeSelect'
   | 'Divider'
   | 'Editor'
+  | 'IconPicker'
   | 'Input'
   | 'InputNumber'
   | 'InputPassword'
@@ -104,6 +105,20 @@ async function initComponentAdapter() {
     // 如果你的组件体积比较大，可以使用异步加载
     // Button: () =>
     // import('xxx').then((res) => res.Button),
+    ApiSelect: (props, { attrs, slots }) => {
+      return h(
+        ApiSelect,
+        {
+          ...props,
+          ...attrs,
+          component: Select,
+          loadingSlot: 'suffixIcon',
+          visibleEvent: 'onDropdownVisibleChange',
+          modelField: 'value',
+        },
+        slots,
+      );
+    },
     AutoComplete,
     Cropper,
     Checkbox,
@@ -115,6 +130,7 @@ async function initComponentAdapter() {
     },
     Divider,
     Editor,
+    IconPicker,
     Input: withDefaultPlaceholder(Input, 'input'),
     InputNumber: withDefaultPlaceholder(InputNumber, 'input'),
     InputPassword: withDefaultPlaceholder(InputPassword, 'input'),
@@ -136,7 +152,7 @@ async function initComponentAdapter() {
     Upload,
     //
     ApiTreeSelect: withDefaultPlaceholder(ApiTreeSelect, 'select'),
-    ApiSelect: withDefaultPlaceholder(ApiSelect, 'select'),
+    // ApiSelect: withDefaultPlaceholder(ApiSelect, 'select'),
     DictCascader: withDefaultPlaceholder(DictCascader, 'select'),
     DictCheckbox,
     DictRadio,
