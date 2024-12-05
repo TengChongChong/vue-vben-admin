@@ -1,18 +1,19 @@
 <script setup lang="ts">
-import type { SysUser } from '#/api/auth/model/sys-user-model';
-
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 
 import { useUserStore } from '@vben/stores';
 
-import { Card, message } from 'ant-design-vue';
+import { Card, message, Space } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
 import { getUserInfoApi } from '#/api/auth/auth';
 import { currentUserApi, saveUserInfoApi } from '#/api/auth/sys-user-personal';
+import { ButtonSave } from '#/components/button';
+
+const saveBtnLoading = ref(false);
 
 const [BaseForm, baseFormApi] = useVbenForm({
-  handleSubmit: onSubmit,
+  showDefaultActions: false,
   schema: [
     {
       component: 'Input',
@@ -60,12 +61,23 @@ onMounted(() => {
   });
 });
 
-async function onSubmit(values: Record<string, any>) {
-  await saveUserInfoApi(values as SysUser);
-  message.success('保存成功');
-  const userStore = useUserStore();
-  const userInfo = await getUserInfoApi();
-  userStore.setUserInfo(userInfo);
+async function handleSubmit() {
+  try {
+    saveBtnLoading.value = true;
+    const { valid } = await baseFormApi.validate();
+    if (!valid) {
+      return;
+    }
+    await saveUserInfoApi(await baseFormApi.getValues());
+    const userStore = useUserStore();
+    const userInfo = await getUserInfoApi();
+    userStore.setUserInfo(userInfo);
+    message.success('保存成功');
+  } catch (error) {
+    console.error('保存失败', error);
+  } finally {
+    saveBtnLoading.value = false;
+  }
 }
 </script>
 
@@ -73,6 +85,12 @@ async function onSubmit(values: Record<string, any>) {
   <Card :bordered="false" title="我的资料">
     <div class="form-wrapper">
       <BaseForm />
+
+      <div class="text-center">
+        <Space>
+          <ButtonSave :loading="saveBtnLoading" @click="handleSubmit" />
+        </Space>
+      </div>
     </div>
   </Card>
 </template>

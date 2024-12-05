@@ -2,6 +2,8 @@
 import { Button, Card, List, ListItem, ListItemMeta } from 'ant-design-vue';
 
 import { LucideLink, LucideMail, LucideSmartphone } from '#/components/icons';
+
+const props = defineProps<{ email: string; phoneNumber: string }>();
 </script>
 
 <template>
@@ -17,9 +19,13 @@ import { LucideLink, LucideMail, LucideSmartphone } from '#/components/icons';
               绑定
             </Button>
           </template>
-          <ListItemMeta description="用于账号登录与找回密码">
+          <ListItemMeta
+            description="账号绑定手机号可用于提升账号安全性，如身份验证、密码找回；方便账号登录与管理，包括便捷登录、接收重要通知与信息。"
+          >
             <template #title>
-              <span class="font-medium">手机：173****2808</span>
+              <span class="font-medium">
+                手机：{{ props.phoneNumber || '未绑定' }}
+              </span>
             </template>
             <template #avatar>
               <LucideSmartphone />
@@ -35,9 +41,13 @@ import { LucideLink, LucideMail, LucideSmartphone } from '#/components/icons';
               绑定
             </Button>
           </template>
-          <ListItemMeta description="用于账号登录与找回密码">
+          <ListItemMeta
+            description="账号绑定手机号可用于提升账号安全性，如身份验证、密码找回。"
+          >
             <template #title>
-              <span class="font-medium">邮箱： easyframe@sina.com</span>
+              <span class="font-medium">
+                邮箱： {{ props.email || '未绑定' }}
+              </span>
             </template>
             <template #avatar>
               <LucideMail />

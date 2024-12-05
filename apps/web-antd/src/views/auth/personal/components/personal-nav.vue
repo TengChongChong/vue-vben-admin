@@ -36,7 +36,7 @@ function handleSelect() {
   <!-- 导航 -->
   <div class="personal-nav-wrapper">
     <Menu
-      v-model:selectedKeys="selectedKeys"
+      v-model:selected-keys="selectedKeys"
       class="personal-nav"
       mode="inline"
       @select="handleSelect"

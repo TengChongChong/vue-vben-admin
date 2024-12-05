@@ -39,7 +39,11 @@ const currentUser = computed(() => {
         <!-- 概览 -->
         <ProfileOverview v-if="'profile-overview' === selectedKeys" />
         <!-- 安全设置 -->
-        <AccountInformation v-if="'account-information' === selectedKeys" />
+        <AccountInformation
+          v-if="'account-information' === selectedKeys"
+          :email="currentUser?.email"
+          :phone-number="currentUser?.phoneNumber"
+        />
         <!-- 修改密码 -->
         <ChangePassword v-if="'change-password' === selectedKeys" />
         <!-- 用户信息 -->
