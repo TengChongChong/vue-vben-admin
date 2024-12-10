@@ -19,6 +19,8 @@ import {
   NDivider,
   NInput,
   NInputNumber,
+  NRadio,
+  NRadioButton,
   NRadioGroup,
   NSelect,
   NSpace,
@@ -43,6 +45,7 @@ const withDefaultPlaceholder = <T extends Component>(
 // 这里需要自行根据业务组件库进行适配，需要用到的组件都需要在这里类型说明
 export type ComponentType =
   | 'ApiSelect'
+  | 'ApiTreeSelect'
   | 'Checkbox'
   | 'CheckboxGroup'
   | 'DatePicker'
@@ -69,16 +72,50 @@ async function initComponentAdapter() {
       return h(
         ApiSelect,
         {
+          placeholder: $t('ui.placeholder.select'),
           ...props,
           ...attrs,
           component: NSelect,
-          modelField: 'value',
+          modelPropName: 'value',
+        },
+        slots,
+      );
+    },
+    ApiTreeSelect: (props, { attrs, slots }) => {
+      return h(
+        ApiSelect,
+        {
+          placeholder: $t('ui.placeholder.select'),
+          ...props,
+          ...attrs,
+          component: NTreeSelect,
+          nodeKey: 'value',
+          loadingSlot: 'arrow',
+          keyField: 'value',
+          modelPropName: 'value',
+          optionsPropName: 'options',
+          visibleEvent: 'onVisibleChange',
         },
         slots,
       );
     },
     Checkbox: NCheckbox,
-    CheckboxGroup: NCheckboxGroup,
+    CheckboxGroup: (props, { attrs, slots }) => {
+      let defaultSlot;
+      if (Reflect.has(slots, 'default')) {
+        defaultSlot = slots.default;
+      } else {
+        const { options } = attrs;
+        if (Array.isArray(options)) {
+          defaultSlot = () => options.map((option) => h(NCheckbox, option));
+        }
+      }
+      return h(
+        NCheckboxGroup,
+        { ...props, ...attrs },
+        { default: defaultSlot },
+      );
+    },
     DatePicker: NDatePicker,
     // 自定义默认按钮
     DefaultButton: (props, { attrs, slots }) => {
@@ -89,10 +126,37 @@ async function initComponentAdapter() {
       return h(NButton, { ...props, attrs, type: 'primary' }, slots);
     },
     Divider: NDivider,
-    IconPicker,
+    IconPicker: (props, { attrs, slots }) => {
+      return h(
+        IconPicker,
+        { iconSlot: 'suffix', inputComponent: NInput, ...props, ...attrs },
+        slots,
+      );
+    },
     Input: withDefaultPlaceholder(NInput, 'input'),
     InputNumber: withDefaultPlaceholder(NInputNumber, 'input'),
-    RadioGroup: NRadioGroup,
+    RadioGroup: (props, { attrs, slots }) => {
+      let defaultSlot;
+      if (Reflect.has(slots, 'default')) {
+        defaultSlot = slots.default;
+      } else {
+        const { options } = attrs;
+        if (Array.isArray(options)) {
+          defaultSlot = () =>
+            options.map((option) =>
+              h(attrs.isButton ? NRadioButton : NRadio, option),
+            );
+        }
+      }
+      const groupRender = h(
+        NRadioGroup,
+        { ...props, ...attrs },
+        { default: defaultSlot },
+      );
+      return attrs.isButton
+        ? h(NSpace, { vertical: true }, () => groupRender)
+        : groupRender;
+    },
     Select: withDefaultPlaceholder(NSelect, 'select'),
     Space: NSpace,
     Switch: NSwitch,

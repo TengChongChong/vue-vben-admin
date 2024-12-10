@@ -109,12 +109,30 @@ async function initComponentAdapter() {
       return h(
         ApiSelect,
         {
+          placeholder: $t('ui.placeholder.select'),
           ...props,
           ...attrs,
           component: Select,
           loadingSlot: 'suffixIcon',
           visibleEvent: 'onDropdownVisibleChange',
-          modelField: 'value',
+          modelPropName: 'value',
+        },
+        slots,
+      );
+    },
+    ApiTreeSelect: (props, { attrs, slots }) => {
+      return h(
+        ApiSelect,
+        {
+          placeholder: $t('ui.placeholder.select'),
+          ...props,
+          ...attrs,
+          component: TreeSelect,
+          fieldNames: { label: 'label', value: 'value', children: 'children' },
+          loadingSlot: 'suffixIcon',
+          modelPropName: 'value',
+          optionsPropName: 'treeData',
+          visibleEvent: 'onVisibleChange',
         },
         slots,
       );
@@ -129,8 +147,14 @@ async function initComponentAdapter() {
       return h(Button, { ...props, attrs, type: 'default' }, slots);
     },
     Divider,
+    IconPicker: (props, { attrs, slots }) => {
+      return h(
+        IconPicker,
+        { iconSlot: 'addonAfter', inputComponent: Input, ...props, ...attrs },
+        slots,
+      );
+    },
     Editor,
-    IconPicker,
     Input: withDefaultPlaceholder(Input, 'input'),
     InputNumber: withDefaultPlaceholder(InputNumber, 'input'),
     InputPassword: withDefaultPlaceholder(InputPassword, 'input'),
