@@ -164,9 +164,10 @@ function emitChange() {
 }
 </script>
 <template>
-  <div v-bind="{ ...$attrs }">
+  <div v-bind="{ ...$attrs }" class="w-full">
     <component
       :is="component"
+      class="w-full"
       v-bind="bindProps"
       :options="getOptions"
       :placeholder="$attrs.placeholder"
