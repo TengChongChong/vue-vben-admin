@@ -94,7 +94,8 @@ const computedSchema = computed(
       componentProps = {},
       controlClass = '',
       disabled,
-      disabledOnChangeListener = false,
+      disabledOnChangeListener = true,
+      disabledOnInputListener = true,
       emptyStateValue = undefined,
       formFieldProps = {},
       formItemClass = '',
@@ -125,6 +126,7 @@ const computedSchema = computed(
       return {
         disabled,
         disabledOnChangeListener,
+        disabledOnInputListener,
         emptyStateValue,
         hideLabel,
         hideRequiredMark,
