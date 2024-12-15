@@ -23,7 +23,7 @@ setupVbenVxeTable({
         // 表格的高度；支持铺满父容器或者固定高度，如果设置 auto 为铺满父容器（如果设置为 auto，则必须确保存在父节点且不允许存在相邻元素）
         height: 'auto',
         // 表格最小高度
-        minHeight: 260,
+        minHeight: 180,
         // 表格最大高度
         // maxHeight: 900,
         // 自动监听父元素的变化去重新计算表格
@@ -37,7 +37,7 @@ setupVbenVxeTable({
         // 设置所有内容过长时显示为省略号 ellipsis（只显示省略号）,title（并且显示为原生 title）,tooltip（并且显示为 tooltip 提示）
         showOverflow: 'tooltip',
         // 保持原始值的状态，被某些功能所依赖，比如编辑状态、还原数据等（开启后影响性能，具体取决于数据量）
-        // keepSource: true,
+        keepSource: true,
         // 行配置信息
         rowConfig: {
           // 自定义行数据唯一主键的字段名（默认自动生成）
@@ -123,7 +123,7 @@ setupVbenVxeTable({
         },
         proxyConfig: {
           // 是否自动加载查询数据
-          // autoLoad: true,
+          autoLoad: true,
           // 是否代理排序
           sort: true,
           // 是否代理筛选
@@ -168,10 +168,7 @@ setupVbenVxeTable({
       renderTableDefault(renderOpts, params) {
         const { column, row } = params;
         const { props } = renderOpts;
-        return h(DictTag, {
-          code: row[column.field],
-          ...props,
-        });
+        return h(DictTag, { code: row[column.field], ...props });
       },
     });
 
