@@ -52,6 +52,10 @@ function handleComplete(e: string[]) {
   emit('complete');
 }
 
+function handleChange(e: string[]) {
+  modelValue.value = e.join('');
+}
+
 async function handleSend(e: Event) {
   try {
     e?.preventDefault();
@@ -92,6 +96,7 @@ const id = useId();
     placeholder="○"
     type="number"
     @complete="handleComplete"
+    @update:model-value="handleChange"
   >
     <div class="relative flex w-full">
       <PinInputGroup class="mr-2">
