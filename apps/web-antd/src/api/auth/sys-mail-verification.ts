@@ -5,8 +5,8 @@ import { requestClient } from '#/api/request';
  *
  * @param code 验证码
  */
-export function verifiesApi(code: string) {
-  return requestClient.post<boolean>(`/api/mail/verification`, {
+export function verifiesEmailApi(code: string) {
+  return requestClient.post<boolean>(`/mail/verification`, {
     code,
   });
 }

@@ -6,7 +6,7 @@ import { useUserStore } from '@vben/stores';
 
 import { Card, Layout, LayoutContent, LayoutSider } from 'ant-design-vue';
 
-import AccountInformation from '#/views/auth/personal/components/account-information.vue';
+import AccountSecurity from '#/views/auth/personal/components/account-security.vue';
 import ChangePassword from '#/views/auth/personal/components/change-password.vue';
 import PersonalInformation from '#/views/auth/personal/components/personal-information.vue';
 import ProfileOverview from '#/views/auth/personal/components/profile-overview.vue';
@@ -39,8 +39,8 @@ const currentUser = computed(() => {
         <!-- 概览 -->
         <ProfileOverview v-if="'profile-overview' === selectedKeys" />
         <!-- 安全设置 -->
-        <AccountInformation
-          v-if="'account-information' === selectedKeys"
+        <AccountSecurity
+          v-if="'account-security' === selectedKeys"
           :email="currentUser?.email"
           :phone-number="currentUser?.phoneNumber"
         />

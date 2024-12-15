@@ -53,7 +53,7 @@ function handleSelect() {
         </template>
         我的资料
       </MenuItem>
-      <MenuItem key="account-information">
+      <MenuItem key="account-security">
         <template #icon>
           <ShieldCheck />
         </template>

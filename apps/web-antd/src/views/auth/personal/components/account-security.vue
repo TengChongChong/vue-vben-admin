@@ -1,18 +1,47 @@
 <script setup lang="ts">
+import { useVbenModal } from '@vben/common-ui';
+import { useUserStore } from '@vben/stores';
+
 import { Button, Card, List, ListItem, ListItemMeta } from 'ant-design-vue';
 
+import { getUserInfoApi } from '#/api/auth/auth';
 import { LucideLink, LucideMail, LucideSmartphone } from '#/components/icons';
 
+import ChangeEmailModal from './modal/change-email-modal.vue';
+import ChangePhoneModal from './modal/change-phone-modal.vue';
+
 const props = defineProps<{ email: string; phoneNumber: string }>();
+
+const [BaseChangeEmailModal, baseChangeEmailModalApi] = useVbenModal({
+  connectedComponent: ChangeEmailModal,
+});
+
+const [BaseChangePhoneModal, baseChangePhoneModalApi] = useVbenModal({
+  connectedComponent: ChangePhoneModal,
+});
+
+function handleChangeEmail() {
+  baseChangeEmailModalApi.open();
+}
+
+function handleChangePhone() {
+  baseChangePhoneModalApi.open();
+}
+
+async function handleSuccess() {
+  const userStore = useUserStore();
+  const userInfo = await getUserInfoApi();
+  userStore.setUserInfo(userInfo);
+}
 </script>
 
 <template>
   <Card :bordered="false" title="安全设置">
-    <div class="account-information-wrapper">
+    <div class="account-security-wrapper">
       <List item-layout="horizontal">
         <ListItem>
           <template #actions>
-            <Button size="small" type="link">
+            <Button size="small" type="link" @click="handleChangePhone">
               <template #icon>
                 <LucideLink />
               </template>
@@ -34,7 +63,7 @@ const props = defineProps<{ email: string; phoneNumber: string }>();
         </ListItem>
         <ListItem>
           <template #actions>
-            <Button size="small" type="link">
+            <Button size="small" type="link" @click="handleChangeEmail">
               <template #icon>
                 <LucideLink />
               </template>
@@ -56,11 +85,15 @@ const props = defineProps<{ email: string; phoneNumber: string }>();
         </ListItem>
       </List>
     </div>
+
+    <BaseChangeEmailModal @success="handleSuccess" />
+
+    <BaseChangePhoneModal @success="handleSuccess" />
   </Card>
 </template>
 
 <style lang="scss" scoped>
-.account-information-wrapper {
+.account-security-wrapper {
   :deep(.ant-list) {
     .ant-list-item {
       .ant-list-item-meta {

@@ -22,7 +22,7 @@ const formSchema = computed((): VbenFormSchema[] => {
       rules: z
         .string()
         .min(1, { message: $t('authentication.emailTip') })
-        .email($t('authentication.emailValidErrorTip')),
+        .email('请输入正确的邮箱地址'),
     },
   ];
 });
