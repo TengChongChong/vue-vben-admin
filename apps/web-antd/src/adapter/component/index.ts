@@ -46,7 +46,8 @@ import {
 } from '#/components/dict';
 import { Divider } from '#/components/divider';
 import { Editor } from '#/components/editor';
-import { ApiSelect, ApiTreeSelect } from '#/components/form';
+// import { ApiSelect, ApiTreeSelect } from '#/components/form';
+import { ApiTreeSelect } from '#/components/form';
 import { RoleSelect } from '#/components/role';
 import { UserSelect } from '#/components/user';
 
@@ -120,23 +121,23 @@ async function initComponentAdapter() {
         slots,
       );
     },
-    ApiTreeSelect: (props, { attrs, slots }) => {
-      return h(
-        ApiComponent,
-        {
-          placeholder: $t('ui.placeholder.select'),
-          ...props,
-          ...attrs,
-          component: TreeSelect,
-          fieldNames: { label: 'label', value: 'value', children: 'children' },
-          loadingSlot: 'suffixIcon',
-          modelPropName: 'value',
-          optionsPropName: 'treeData',
-          visibleEvent: 'onVisibleChange',
-        },
-        slots,
-      );
-    },
+    // ApiTreeSelect: (props, { attrs, slots }) => {
+    //   return h(
+    //     ApiComponent,
+    //     {
+    //       placeholder: $t('ui.placeholder.select'),
+    //       ...props,
+    //       ...attrs,
+    //       component: TreeSelect,
+    //       fieldNames: { label: 'label', value: 'value', children: 'children' },
+    //       loadingSlot: 'suffixIcon',
+    //       modelPropName: 'value',
+    //       optionsPropName: 'treeData',
+    //       visibleEvent: 'onVisibleChange',
+    //     },
+    //     slots,
+    //   );
+    // },
     AutoComplete,
     Cropper,
     Checkbox,
