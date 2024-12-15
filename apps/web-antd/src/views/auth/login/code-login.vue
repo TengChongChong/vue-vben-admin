@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { LoginCodeParams, VbenFormSchema } from '@vben/common-ui';
+import type { VbenFormSchema } from '@vben/common-ui';
 
 import { computed, ref } from 'vue';
 
@@ -22,7 +22,7 @@ const formSchema = computed((): VbenFormSchema[] => {
       rules: z
         .string()
         .min(1, { message: $t('authentication.mobileTip') })
-        .refine((v) => /^\d{11}$/.test(v), {
+        .refine((v) => /^1[3-9]\d{9}$/.test(v), {
           message: $t('authentication.mobileErrortip'),
         }),
     },
