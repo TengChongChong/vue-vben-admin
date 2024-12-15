@@ -5,13 +5,16 @@ import { requestClient } from '#/api/request';
 /**
  * 绑定手机短信验证码
  *
- * @param phone 手机号
+ * @param phoneNumber 手机号
  */
-export function bindingPhoneCaptchaApi(phone: string) {
+export function sendBindingPhoneNumberSmsApi(phoneNumber: string) {
   // 注：此处仅为演示，实际场景勿返回验证码
-  return requestClient.get<string>('/auth/sys/binding/phone/captcha', {
-    params: { phone },
-  });
+  return requestClient.get<string>(
+    '/auth/sys/sms/captcha/binding/phone/number',
+    {
+      params: { phoneNumber },
+    },
+  );
 }
 
 /**

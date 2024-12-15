@@ -62,12 +62,12 @@ export function applicationBindingEmailApi(email: string) {
 /**
  * 绑定密保手机
  *
- * @param phone 手机号
+ * @param phoneNumber 手机号
  * @param captcha 验证码
  */
-export function bindingPhoneApi(phone: string, captcha: string) {
+export function bindingPhoneNumberApi(phoneNumber: string, captcha: string) {
   return requestClient.post<boolean>(`${BASE_URL}/phone`, {
-    phone,
+    phoneNumber,
     captcha,
   });
 }
