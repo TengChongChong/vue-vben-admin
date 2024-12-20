@@ -91,6 +91,7 @@ const computedSchema = computed(
     formFieldProps: Record<string, any>;
   } & Omit<FormSchema, 'formFieldProps'>)[] => {
     const {
+      colon = false,
       componentProps = {},
       controlClass = '',
       disabled,
@@ -124,6 +125,7 @@ const computedSchema = computed(
       }
 
       return {
+        colon,
         disabled,
         disabledOnChangeListener,
         disabledOnInputListener,

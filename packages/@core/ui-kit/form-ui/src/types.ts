@@ -141,6 +141,10 @@ interface showFunc {
 
 export interface FormCommonConfig {
   /**
+   * 在Label后显示一个冒号
+   */
+  colon?: boolean;
+  /**
    * 所有表单项的props
    */
   componentProps?: ComponentProps;
@@ -281,6 +285,10 @@ export interface FormRenderProps<
    * 表单项通用后备配置，当子项目没配置时使用这里的配置，子项目配置优先级高于此配置
    */
   commonConfig?: FormCommonConfig;
+  /**
+   * 紧凑模式（移除表单每一项底部为校验信息预留的空间）
+   */
+  compact?: boolean;
   /**
    * 组件v-model事件绑定
    */
