@@ -41,5 +41,5 @@ export interface CropperModalProps {
   // 是否圆形
   circled: boolean;
   // 文件上传策略
-  uploadRuleSlug: string;
+  uploadRuleKey: string;
 }

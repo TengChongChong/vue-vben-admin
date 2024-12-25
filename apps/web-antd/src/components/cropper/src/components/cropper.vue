@@ -59,7 +59,7 @@ function handleOpenCropperModal() {
     aspectRatio,
     circled,
     value: unref(currentValue),
-    uploadRuleSlug: 'default-image',
+    uploadRuleKey: 'default-image',
   });
   // dragModalApi.setState({ title: '外部动态标题' });
   dragModalApi.open();
@@ -95,6 +95,7 @@ function handleOpenCropperModal() {
 .vben-cropper {
   display: inline-block;
   text-align: center;
+
   &-wrapper {
     position: relative;
   }

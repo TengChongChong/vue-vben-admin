@@ -13,7 +13,7 @@ import { useAccessStore } from '@vben/stores';
 import { Button, message, Tag, Upload } from 'ant-design-vue';
 import { isArray, isString } from 'lodash-es';
 
-import { getBySlugApi } from '#/api/file/file-upload-rule';
+import { getByKeyApi } from '#/api/file/file-upload-rule';
 import { LucideHardDriveUpload } from '#/components/icons';
 import {
   convertToFileInfo,
@@ -53,7 +53,7 @@ async function initUpload() {
   loaded.value = false;
   uploadRule = null;
   if (props.rule) {
-    uploadRule = await getBySlugApi(props.rule);
+    uploadRule = await getByKeyApi(props.rule);
   }
   url.value = `${import.meta.env.VITE_GLOB_API_URL}/auth/file/upload/${props.rule}`;
   loaded.value = true;

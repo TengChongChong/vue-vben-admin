@@ -28,8 +28,8 @@ export const initColumns = (): VxeGridPropTypes.Columns[] => {
       minWidth: 160,
     },
     {
-      title: '别名',
-      field: 'slug',
+      title: 'Key',
+      field: 'ruleKey',
       sortable: true,
       minWidth: 180,
     },

@@ -20,10 +20,10 @@ export function selectApi(params: FileUploadRule, page: Page<FileUploadRule>) {
 /**
  * 获取上传规则
  *
- * @param slug 规则别名
+ * @param key 规则别名
  */
-export function getBySlugApi(slug: string) {
-  return requestClient.get<FileUploadRule>(`${BASE_URL}/slug/${slug}`);
+export function getByKeyApi(key: string) {
+  return requestClient.get<FileUploadRule>(`${BASE_URL}/key/${key}`);
 }
 
 /**

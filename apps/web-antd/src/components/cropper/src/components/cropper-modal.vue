@@ -49,8 +49,8 @@ const [Modal, modalApi] = useVbenModal({
   onOpenChange(isOpen) {
     if (isOpen) {
       const data = modalApi.getData<Record<string, any>>();
-      const { alt, circled, aspectRatio, uploadRuleSlug, value } = data;
-      cropperModalProps.value = { alt, circled, aspectRatio, uploadRuleSlug };
+      const { alt, circled, aspectRatio, uploadRuleKey, value } = data;
+      cropperModalProps.value = { alt, circled, aspectRatio, uploadRuleKey };
       if (value) {
         src.value = value.url;
       }
@@ -95,7 +95,7 @@ async function handleOk() {
   try {
     // setModalProps({ confirmLoading: true });
     // @ts-ignore
-    const result = await fileUpload(cropperModalProps.value?.uploadRuleSlug, {
+    const result = await fileUpload(cropperModalProps.value?.uploadRuleKey, {
       name: 'file',
       file: unref(imageBlob),
       filename,

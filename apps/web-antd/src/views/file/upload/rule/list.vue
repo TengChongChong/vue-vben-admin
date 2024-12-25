@@ -33,8 +33,8 @@ const formOptions: VbenFormProps = {
       component: 'Input',
     },
     {
-      fieldName: 'slug',
-      label: '别名',
+      fieldName: 'ruleKey',
+      label: 'Key',
       component: 'Input',
     },
     {

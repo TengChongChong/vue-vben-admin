@@ -50,13 +50,13 @@ const [BaseForm, baseFormApi] = useVbenForm({
         .max(32, { message: '名称最多输入32个字符' }),
     },
     {
-      fieldName: 'slug',
-      label: '别名',
+      fieldName: 'ruleKey',
+      label: 'Key',
       component: 'Input',
       rules: z
         .string()
-        .min(1, { message: '请输入别名' })
-        .max(32, { message: '别名最多输入32个字符' }),
+        .min(1, { message: '请输入Key' })
+        .max(32, { message: 'Key最多输入32个字符' }),
       description: '上传规则标识，不可重复，例如：user-avatar',
     },
     {
