@@ -1,13 +1,16 @@
-import type { RawEditorSettings } from 'tinymce';
+import { BubbleMenuItem, CustomMenu, MenuGroup } from 'aieditor';
 
-export interface TinymceProps {
+export interface EditorProps {
   class?: any;
-  options?: RawEditorSettings;
-  toolbar?: string[];
-  plugins?: string[];
   height?: number | string;
   width?: number | string;
-  // value
   value?: string;
   showImageUpload?: boolean;
+  toolbarKeys?: (CustomMenu | MenuGroup | string)[];
+  draggable?: boolean;
+  textSelectionBubbleMenu?: {
+    elementTagName?: string;
+    enable?: boolean;
+    items?: (BubbleMenuItem | string)[];
+  };
 }

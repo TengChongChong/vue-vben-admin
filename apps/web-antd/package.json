@@ -43,6 +43,7 @@
     "@vue/shared": "catalog:",
     "@vueuse/core": "catalog:",
     "@vueuse/shared": "catalog:",
+    "aieditor": "catalog:",
     "ant-design-vue": "catalog:",
     "cropperjs": "catalog:",
     "dayjs": "catalog:",
