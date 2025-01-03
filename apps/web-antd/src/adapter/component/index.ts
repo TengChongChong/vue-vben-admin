@@ -46,6 +46,7 @@ import {
 } from '#/components/dict';
 import { Divider } from '#/components/divider';
 import { Editor } from '#/components/editor';
+import { SmsVerificationCode } from '#/components/sms-verification-code';
 // import { ApiSelect, ApiTreeSelect } from '#/components/form';
 import { ApiTreeSelect } from '#/components/form';
 import { RoleSelect } from '#/components/role';
@@ -92,6 +93,7 @@ export type ComponentType =
   | 'RoleSelect'
   | 'RuleUpload'
   | 'Select'
+  | 'SmsVerificationCode'
   | 'Space'
   | 'Switch'
   | 'Textarea'
@@ -169,6 +171,7 @@ async function initComponentAdapter() {
     RangePicker,
     Rate,
     Select: withDefaultPlaceholder(Select, 'select'),
+    SmsVerificationCode,
     Space,
     Switch,
     Textarea: withDefaultPlaceholder(Textarea, 'input'),

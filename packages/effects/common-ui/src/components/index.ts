@@ -10,6 +10,9 @@ export * from '@vben-core/popup-ui';
 
 // 给文档用
 export {
+  PinInput,
+  PinInputGroup,
+  PinInputInput,
   VbenButton,
   VbenCountToAnimator,
   VbenInputPassword,
