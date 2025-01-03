@@ -31,12 +31,12 @@ const [BaseForm, baseFormApi] = useVbenForm({
     },
     {
       fieldName: 'username',
-      label: '账号',
+      label: '用户名',
       component: 'Input',
       rules: z
         .string()
-        .min(1, { message: '请输入账号' })
-        .max(32, { message: '账号最多输入32个字符' }),
+        .min(1, { message: '请输入用户名' })
+        .max(32, { message: '用户名最多输入32个字符' }),
     },
     {
       fieldName: 'password',
@@ -165,7 +165,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
 });
 </script>
 <template>
-  <Drawer class="w-[600px]" title="系统参数信息">
+  <Drawer class="w-[600px]" title="用户信息">
     <BaseForm />
 
     <template #footer>

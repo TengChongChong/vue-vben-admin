@@ -33,7 +33,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
         }),
     },
     {
-      component: 'VbenPinInput',
+      component: 'SmsVerificationCode',
       componentProps: {
         createText: (countdown: number) => {
           const text =
@@ -43,22 +43,18 @@ const [BaseForm, baseFormApi] = useVbenForm({
           return text;
         },
         placeholder: $t('authentication.code'),
-        handleSendCode() {
-          return new Promise((resolve, reject) => {
-            baseFormApi.form.validateField('phoneNumber').then((e: any) => {
-              if (e.valid) {
-                sendBindingPhoneNumberSmsApi(e.value)
-                  .then((code) => {
-                    // 注：此处仅为演示，实际场景无此提示
-                    message.success(`发送成功（此处仅模拟修改流程）：${code}`);
-                    resolve(true);
-                  })
-                  .catch(() => {
-                    reject(new Error('发送失败'));
-                  });
-              }
-            });
-          });
+        beforeSendCode: async () => {
+          const validateResult =
+            await baseFormApi.form.validateField('phoneNumber');
+          return validateResult.valid;
+        },
+        handleSendCode: async (captchaVerification) => {
+          const result = await sendBindingPhoneNumberSmsApi(
+            baseFormApi.getValues().phoneNumber,
+            captchaVerification,
+          );
+          // 注：此处仅为演示，实际场景无此提示
+          message.success(`发送成功（此处仅模拟修改流程）：${result}`);
         },
       },
       fieldName: 'captcha',

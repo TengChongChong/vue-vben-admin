@@ -6,11 +6,17 @@ const BASE_URL = '/sys/user/retrieve/password';
 /**
  * 发送重置密码邮件
  *
+ * @param captchaVerification 验证码
  * @param username 账号
  * @param email 邮箱
  */
-export function sendEmailApi(username: string, email: string) {
+export function sendEmailApi(
+  captchaVerification: string,
+  username: string,
+  email: string,
+) {
   return requestClient.post<boolean>(`${BASE_URL}/email`, {
+    captchaVerification,
     username,
     email,
   });
@@ -19,11 +25,17 @@ export function sendEmailApi(username: string, email: string) {
 /**
  * 发送重置密码短信
  *
+ * @param captchaVerification 验证码
  * @param username 账号
  * @param mobile 手机号码
  */
-export function sendSmsApi(username: string, mobile: string) {
+export function sendSmsApi(
+  captchaVerification: string,
+  username: string,
+  mobile: string,
+) {
   return requestClient.post<string>(`${BASE_URL}/sms`, {
+    captchaVerification,
     username,
     mobile,
   });

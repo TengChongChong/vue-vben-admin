@@ -1,3 +1,5 @@
+import type { SessionUser } from '@vben/types';
+
 import type { SysUser } from '#/api/auth/model/sys-user-model';
 
 import { requestClient } from '#/api/request';
@@ -9,7 +11,7 @@ const BASE_URL = '/auth/sys/user/personal/center';
  * 当前用户
  */
 export function currentUserApi() {
-  return requestClient.get<SysUser>(`${BASE_URL}/current/user`);
+  return requestClient.get<SessionUser>(`${BASE_URL}/current/user`);
 }
 
 /**

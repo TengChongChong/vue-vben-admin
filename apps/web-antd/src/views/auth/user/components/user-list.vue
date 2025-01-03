@@ -45,7 +45,7 @@ const formOptions: VbenFormProps = {
   schema: [
     {
       fieldName: 'username',
-      label: '账号',
+      label: '用户名',
       component: 'Input',
     },
     {
