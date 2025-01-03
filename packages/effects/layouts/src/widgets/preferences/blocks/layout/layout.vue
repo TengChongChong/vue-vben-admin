@@ -1,15 +1,17 @@
 <script setup lang="ts">
 import type { LayoutType } from '@vben/types';
-
-import { type Component, computed } from 'vue';
+import type { Component } from 'vue';
 
 import { CircleHelp } from '@vben/icons';
 import { $t } from '@vben/locales';
 import { VbenTooltip } from '@vben-core/shadcn-ui';
+import { computed } from 'vue';
 
 import {
   FullContent,
+  HeaderMixedNav,
   HeaderNav,
+  HeaderSidebarNav,
   MixedNav,
   SidebarMixedNav,
   SidebarNav,
@@ -33,6 +35,8 @@ const components: Record<LayoutType, Component> = {
   'mixed-nav': MixedNav,
   'sidebar-mixed-nav': SidebarMixedNav,
   'sidebar-nav': SidebarNav,
+  'header-mixed-nav': HeaderMixedNav,
+  'header-sidebar-nav': HeaderSidebarNav,
 };
 
 const PRESET = computed((): PresetItem[] => [
@@ -52,9 +56,19 @@ const PRESET = computed((): PresetItem[] => [
     type: 'header-nav',
   },
   {
+    name: $t('preferences.headerSidebarNav'),
+    tip: $t('preferences.headerSidebarNavTip'),
+    type: 'header-sidebar-nav',
+  },
+  {
     name: $t('preferences.mixedMenu'),
     tip: $t('preferences.mixedMenuTip'),
     type: 'mixed-nav',
+  },
+  {
+    name: $t('preferences.headerTwoColumn'),
+    tip: $t('preferences.headerTwoColumnTip'),
+    type: 'header-mixed-nav',
   },
   {
     name: $t('preferences.fullContent'),

@@ -1,3 +1,4 @@
+import type { Component } from 'vue';
 import type { RouteRecordRaw } from 'vue-router';
 
 /**
@@ -44,7 +45,7 @@ interface MenuRecordRaw extends MenuRecordBadgeRaw {
   /**
    * 图标名
    */
-  icon?: string;
+  icon?: Component | string;
   /**
    * 菜单名
    */

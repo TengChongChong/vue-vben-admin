@@ -1,11 +1,10 @@
 import type { MenuRecordRaw } from '@vben/types';
 
-import { computed, onBeforeMount, ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
-
 import { preferences, usePreferences } from '@vben/preferences';
 import { useAccessStore } from '@vben/stores';
 import { findRootMenuByPath } from '@vben/utils';
+import { computed, onBeforeMount, ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
 
 import { useNavigation } from './use-navigation';
 
@@ -15,12 +14,16 @@ function useMixedMenu() {
   const route = useRoute();
   const splitSideMenus = ref<MenuRecordRaw[]>([]);
   const rootMenuPath = ref<string>('');
+  const mixedRootMenuPath = ref<string>('');
+  const mixExtraMenus = ref<MenuRecordRaw[]>([]);
   /** 记录当前顶级菜单下哪个子菜单最后激活 */
   const defaultSubMap = new Map<string, string>();
-  const { isMixedNav } = usePreferences();
+  const { isMixedNav, isHeaderMixedNav } = usePreferences();
 
   const needSplit = computed(
-    () => preferences.navigation.split && isMixedNav.value,
+    () =>
+      (preferences.navigation.split && isMixedNav.value) ||
+      isHeaderMixedNav.value,
   );
 
   const sidebarVisible = computed(() => {
@@ -52,6 +55,10 @@ function useMixedMenu() {
    */
   const sidebarMenus = computed(() => {
     return needSplit.value ? splitSideMenus.value : menus.value;
+  });
+
+  const mixHeaderMenus = computed(() => {
+    return isHeaderMixedNav.value ? sidebarMenus.value : headerMenus.value;
   });
 
   /**
@@ -118,6 +125,9 @@ function useMixedMenu() {
     if (!rootMenu) {
       rootMenu = menus.value.find((item) => item.path === path);
     }
+    const result = findRootMenuByPath(rootMenu?.children || [], path, 1);
+    mixedRootMenuPath.value = result.rootMenuPath ?? '';
+    mixExtraMenus.value = result.rootMenu?.children ?? [];
     rootMenuPath.value = rootMenu?.path ?? '';
     splitSideMenus.value = rootMenu?.children ?? [];
   }
@@ -145,6 +155,8 @@ function useMixedMenu() {
     headerMenus,
     sidebarActive,
     sidebarMenus,
+    mixHeaderMenus,
+    mixExtraMenus,
     sidebarVisible,
   };
 }

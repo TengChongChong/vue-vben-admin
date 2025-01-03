@@ -4,13 +4,22 @@
  */
 
 import type { BaseFormComponentType } from '@vben/common-ui';
-
 import type { Component, SetupContext } from 'vue';
-import { h } from 'vue';
 
+import { Cropper } from '#/components/cropper';
+import { DeptSelect } from '#/components/dept';
+import {
+  DictCascader,
+  DictCheckbox,
+  DictRadio,
+  DictSelect,
+  DictTreeSelect,
+} from '#/components/dict';
+import { Divider } from '#/components/divider';
+import { Editor } from '#/components/editor';
+import { SmsVerificationCode } from '#/components/sms-verification-code';
 import { ApiComponent, globalShareState, IconPicker } from '@vben/common-ui';
 import { $t } from '@vben/locales';
-
 import {
   AutoComplete,
   Button,
@@ -34,19 +43,7 @@ import {
   TreeSelect,
   Upload,
 } from 'ant-design-vue';
-
-import { Cropper } from '#/components/cropper';
-import { DeptSelect } from '#/components/dept';
-import {
-  DictCascader,
-  DictCheckbox,
-  DictRadio,
-  DictSelect,
-  DictTreeSelect,
-} from '#/components/dict';
-import { Divider } from '#/components/divider';
-import { Editor } from '#/components/editor';
-import { SmsVerificationCode } from '#/components/sms-verification-code';
+import { h } from 'vue';
 // import { ApiSelect, ApiTreeSelect } from '#/components/form';
 import { ApiTreeSelect } from '#/components/form';
 import { RoleSelect } from '#/components/role';

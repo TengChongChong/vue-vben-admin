@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { GenericObject } from 'vee-validate';
 import type { ZodTypeAny } from 'zod';
 
 import type {
@@ -8,8 +9,6 @@ import type {
   FormShape,
 } from '../types';
 
-import { computed } from 'vue';
-
 import { Form } from '@vben-core/shadcn-ui';
 import {
   cn,
@@ -17,8 +16,7 @@ import {
   isString,
   mergeWithArrayOverride,
 } from '@vben-core/shared/utils';
-
-import { type GenericObject } from 'vee-validate';
+import { computed } from 'vue';
 
 import { provideFormRenderProps } from './context';
 import { useExpandable } from './expandable';
@@ -135,9 +133,6 @@ const computedSchema = computed(
         labelWidth,
         wrapperClass,
         ...schema,
-        ifShow: isFunction(schema.ifShow)
-          ? schema.ifShow()
-          : schema.ifShow !== false,
         commonComponentProps: componentProps,
         componentProps: schema.componentProps,
         controlClass: cn(controlClass, schema.controlClass),
@@ -152,6 +147,9 @@ const computedSchema = computed(
           schema.formItemClass,
           schema.show === false && 'hidden',
         ),
+        ifShow: isFunction(schema.ifShow)
+          ? schema.ifShow()
+          : schema.ifShow !== false,
         labelClass: cn(labelClass, schema.labelClass),
       };
     });

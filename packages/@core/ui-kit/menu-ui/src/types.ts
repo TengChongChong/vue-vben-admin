@@ -1,6 +1,5 @@
 import type { MenuRecordBadgeRaw, ThemeModeType } from '@vben-core/typings';
-
-import type { Ref } from 'vue';
+import type { Component, Ref } from 'vue';
 
 interface MenuProps {
   /**
@@ -61,7 +60,7 @@ interface SubMenuProps extends MenuRecordBadgeRaw {
   /**
    * @zh_CN 图标
    */
-  icon?: string;
+  icon?: Component | string;
   /**
    * @zh_CN submenu 名称
    */
@@ -80,7 +79,7 @@ interface MenuItemProps extends MenuRecordBadgeRaw {
   /**
    * @zh_CN 图标
    */
-  icon?: string;
+  icon?: Component | string;
   /**
    * @zh_CN menuitem 名称
    */
@@ -92,10 +91,6 @@ interface MenuItemRegistered {
   parentPaths: string[];
   path: string;
 }
-
-// export interface MenuItemClicked {
-//   name: string;
-// }
 
 interface MenuItemClicked {
   parentPaths: string[];

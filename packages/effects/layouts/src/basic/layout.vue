@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import type { MenuRecordRaw } from '@vben/types';
-
-import { computed, useSlots, watch } from 'vue';
+import type { SetupContext } from 'vue';
 
 import { useRefresh } from '@vben/hooks';
 import { $t } from '@vben/locales';
@@ -14,6 +13,7 @@ import { useLockStore } from '@vben/stores';
 import { cloneDeep, mapTree } from '@vben/utils';
 import { VbenAdminLayout } from '@vben-core/layout-ui';
 import { VbenBackTop, VbenLogo } from '@vben-core/shadcn-ui';
+import { computed, useSlots, watch } from 'vue';
 
 import { Breadcrumb, CheckUpdates, Preferences } from '../widgets';
 import { LayoutContent, LayoutContentSpinner } from './content';
@@ -39,6 +39,8 @@ const {
   isMixedNav,
   isMobile,
   isSideMixedNav,
+  isHeaderMixedNav,
+  isHeaderSidebarNav,
   layout,
   preferencesButtonPosition,
   sidebarCollapsed,
@@ -80,15 +82,31 @@ const logoCollapsed = computed(() => {
   if (isMobile.value && sidebarCollapsed.value) {
     return true;
   }
-  if (isHeaderNav.value || isMixedNav.value) {
+  if (isHeaderNav.value || isMixedNav.value || isHeaderSidebarNav.value) {
     return false;
   }
-  return sidebarCollapsed.value || isSideMixedNav.value;
+  return (
+    sidebarCollapsed.value || isSideMixedNav.value || isHeaderMixedNav.value
+  );
 });
 
 const showHeaderNav = computed(() => {
-  return !isMobile.value && (isHeaderNav.value || isMixedNav.value);
+  return (
+    !isMobile.value &&
+    (isHeaderNav.value || isMixedNav.value || isHeaderMixedNav.value)
+  );
 });
+
+const {
+  handleMenuSelect,
+  handleMenuOpen,
+  headerActive,
+  headerMenus,
+  sidebarActive,
+  sidebarMenus,
+  mixHeaderMenus,
+  sidebarVisible,
+} = useMixedMenu();
 
 // 侧边多列菜单
 const {
@@ -99,17 +117,7 @@ const {
   handleMixedMenuSelect,
   handleSideMouseLeave,
   sidebarExtraVisible,
-} = useExtraMenu();
-
-const {
-  handleMenuSelect,
-  handleMenuOpen,
-  headerActive,
-  headerMenus,
-  sidebarActive,
-  sidebarMenus,
-  sidebarVisible,
-} = useMixedMenu();
+} = useExtraMenu(mixHeaderMenus);
 
 /**
  * 包装菜单，翻译菜单名称
@@ -154,7 +162,7 @@ watch(
 // 语言更新后，刷新页面
 watch(() => preferences.app.locale, refresh, { flush: 'post' });
 
-const slots = useSlots();
+const slots: SetupContext['slots'] = useSlots();
 const headerSlots = computed(() => {
   return Object.keys(slots).filter((key) => key.startsWith('header-'));
 });
@@ -268,7 +276,7 @@ const headerSlots = computed(() => {
     <template #mixed-menu>
       <LayoutMixedMenu
         :active-path="extraActiveMenu"
-        :menus="wrapperMenus(headerMenus, false)"
+        :menus="wrapperMenus(mixHeaderMenus, false)"
         :rounded="isMenuRounded"
         :theme="sidebarTheme"
         @default-select="handleDefaultSelect"

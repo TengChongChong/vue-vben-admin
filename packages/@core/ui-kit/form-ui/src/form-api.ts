@@ -8,8 +8,6 @@ import type {
 
 import type { FormActions, FormSchema, VbenFormProps } from './types';
 
-import { toRaw } from 'vue';
-
 import { Store } from '@vben-core/shared/store';
 import {
   bindMethods,
@@ -22,8 +20,8 @@ import {
   mergeWithArrayOverride,
   StateHandler,
 } from '@vben-core/shared/utils';
-
 import dayjs from 'dayjs';
+import { toRaw } from 'vue';
 
 function getDefaultState(): VbenFormProps {
   return {
@@ -113,11 +111,6 @@ export class FormApi {
         this.form?.setFieldValue(schema.fieldName, undefined);
       }
     }
-  }
-
-  // 如果需要多次更新状态，可以使用 batch 方法
-  batchStore(cb: () => void) {
-    this.store.batch(cb);
   }
 
   getLatestSubmissionValues() {

@@ -1,11 +1,10 @@
 <script lang="ts" setup>
-import { computed, useSlots } from 'vue';
-
 import { useRefresh } from '@vben/hooks';
 import { RotateCw } from '@vben/icons';
 import { preferences, usePreferences } from '@vben/preferences';
 import { useAccessStore } from '@vben/stores';
 import { VbenFullScreen, VbenIconButton } from '@vben-core/shadcn-ui';
+import { computed, useSlots } from 'vue';
 
 import {
   GlobalSearch,
@@ -133,7 +132,10 @@ function clearPreferencesAndLogout() {
   >
     <slot :name="slot.name"></slot>
   </template>
-  <div class="flex h-full min-w-0 flex-1 items-center">
+  <div
+    :class="`menu-align-${preferences.header.menuAlign}`"
+    class="flex h-full min-w-0 flex-1 items-center"
+  >
     <slot name="menu"></slot>
   </div>
   <div class="flex h-full min-w-0 flex-shrink-0 items-center">
@@ -166,3 +168,16 @@ function clearPreferencesAndLogout() {
     </template>
   </div>
 </template>
+<style lang="scss" scoped>
+.menu-align-start {
+  --menu-align: start;
+}
+
+.menu-align-center {
+  --menu-align: center;
+}
+
+.menu-align-end {
+  --menu-align: end;
+}
+</style>

@@ -1,11 +1,10 @@
 import type { VbenButtonProps } from '@vben-core/shadcn-ui';
 import type { ClassType } from '@vben-core/typings';
 import type { FieldOptions, FormContext, GenericObject } from 'vee-validate';
+import type { Component, HtmlHTMLAttributes, Ref } from 'vue';
 import type { ZodTypeAny } from 'zod';
 
 import type { FormApi } from './form-api';
-
-import type { Component, HtmlHTMLAttributes, Ref } from 'vue';
 
 export type FormLayout = 'horizontal' | 'vertical';
 
@@ -192,6 +191,10 @@ export interface FormCommonConfig {
    */
   hideRequiredMark?: boolean;
   /**
+   * 是否显示（通过v-if控制）
+   */
+  ifShow?: boolean | showFunc;
+  /**
    * 所有表单项的label样式
    * @default ""
    */
@@ -201,17 +204,13 @@ export interface FormCommonConfig {
    */
   labelWidth?: number;
   /**
-   * 所有表单项的wrapper样式
-   */
-  wrapperClass?: string;
-  /**
    * 是否显示（通过css控制）
    */
   show?: boolean | showFunc;
   /**
-   * 是否显示（通过v-if控制）
+   * 所有表单项的wrapper样式
    */
-  ifShow?: boolean | showFunc;
+  wrapperClass?: string;
 }
 
 type RenderComponentContentType = (
