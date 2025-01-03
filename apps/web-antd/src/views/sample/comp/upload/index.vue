@@ -46,7 +46,7 @@ onMounted(() => {
             v-model:value="avatar"
             :show-help-text="true"
             help-text="请上传100px*100px图片"
-            rule="default-image"
+            rule-key="default-image"
           />
           <div v-if="avatar" class="mb-2">
             <JsonPreview :data="avatar" />
@@ -59,7 +59,7 @@ onMounted(() => {
             :show-help-text="true"
             help-text="请上传100px*100px图片"
             list-type="picture"
-            rule="default-image"
+            rule-key="default-image"
           />
           <div v-if="avatar" class="mb-2">
             <JsonPreview :data="avatar" />
@@ -72,7 +72,7 @@ onMounted(() => {
             :show-help-text="true"
             help-text="请上传100px*100px图片"
             list-type="picture-card"
-            rule="default-image"
+            rule-key="default-image"
           />
           <div v-if="avatar" class="mb-2">
             <JsonPreview :data="avatar" />

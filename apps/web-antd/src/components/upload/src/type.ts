@@ -6,7 +6,8 @@ import type { FileInfo } from '#/api/file/model/file-info-model';
  * 根据文件上传策略上传 Props
  */
 export interface RuleUploadProps {
-  rule: string;
+  // 文件上传策略key
+  ruleKey: string;
   value: any;
   // 上传列表的内建样式，支持三种基本样式 text, picture 和 picture-card
   listType?: string;

@@ -52,15 +52,15 @@ onMounted(async () => {
 async function initUpload() {
   loaded.value = false;
   uploadRule = null;
-  if (props.rule) {
-    uploadRule = await getByKeyApi(props.rule);
+  if (props.ruleKey) {
+    uploadRule = await getByKeyApi(props.ruleKey);
   }
-  url.value = `${import.meta.env.VITE_GLOB_API_URL}/auth/file/upload/${props.rule}`;
+  url.value = `${import.meta.env.VITE_GLOB_API_URL}/auth/file/upload/${props.ruleKey}`;
   loaded.value = true;
 }
 
 watch(
-  () => props.rule,
+  () => props.ruleKey,
   () => {
     initUpload();
   },
