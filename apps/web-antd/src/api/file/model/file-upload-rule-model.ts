@@ -18,6 +18,12 @@ export interface FileUploadRule extends BasicModel {
   upperLimit: number;
   // 文件后缀
   suffix: string;
+  // 启用图片自动压缩
+  enableImageCompression: string;
+  // 最大宽度
+  maxWidth: number;
+  // 最大高度
+  maxHeight: number;
 }
 
 export interface FileUploadRuleVO extends FileUploadRule {

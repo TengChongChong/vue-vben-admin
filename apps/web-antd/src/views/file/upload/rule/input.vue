@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import type { FileUploadRuleVO } from '#/api/file/model/file-upload-rule-model';
 
-import { ref, unref } from 'vue';
-
+import { useVbenForm } from '#/adapter/form';
+import { addApi, saveApi } from '#/api/file/file-upload-rule';
+import { ButtonClose, ButtonSave } from '#/components/button';
 import { useVbenDrawer, z } from '@vben/common-ui';
-
 import {
   FormItemRest,
   Input,
@@ -13,10 +13,7 @@ import {
   message,
   Space,
 } from 'ant-design-vue';
-
-import { useVbenForm } from '#/adapter/form';
-import { addApi, saveApi } from '#/api/file/file-upload-rule';
-import { ButtonClose, ButtonSave } from '#/components/button';
+import { ref, unref } from 'vue';
 
 const emit = defineEmits(['success']);
 
@@ -24,6 +21,9 @@ const saveBtnLoading = ref(false);
 
 const lowerLimit = ref(0);
 const upperLimit = ref(0);
+
+const maxWidth = ref(1000);
+const maxHeight = ref(1000);
 
 const [BaseForm, baseFormApi] = useVbenForm({
   showDefaultActions: false,
@@ -102,6 +102,33 @@ const [BaseForm, baseFormApi] = useVbenForm({
         '允许上传的文件后缀（忽略大小写），多个使用 , 隔开，例如：jpg,png,gif',
     },
     {
+      fieldName: 'enableImageCompression',
+      label: '图片自动压缩',
+      component: 'DictRadio',
+      componentProps: {
+        dictType: 'commonStatus',
+      },
+      dependencies: {
+        show(values) {
+          return containImage(values.suffix);
+        },
+        triggerFields: ['suffix'],
+      },
+    },
+    {
+      fieldName: 'maxSize',
+      label: '最大尺寸',
+      component: 'InputNumber',
+      slot: 'maxSize',
+      description: '超出最大尺寸将自动压缩',
+      dependencies: {
+        show(values) {
+          return values.enableImageCompression === '1';
+        },
+        triggerFields: ['enableImageCompression'],
+      },
+    },
+    {
       fieldName: 'status',
       label: '状态',
       component: 'DictRadio',
@@ -125,6 +152,8 @@ async function handleSubmit(callback: (res: FileUploadRuleVO) => any) {
       ...values,
       lowerLimit: unref(lowerLimit),
       upperLimit: unref(upperLimit),
+      maxWidth: unref(maxWidth),
+      maxHeight: unref(maxHeight),
     });
     message.success('保存成功');
     emit('success');
@@ -146,8 +175,10 @@ async function handleSaveAndAdd() {
   await handleSubmit(() => {
     baseFormApi.resetForm();
     addApi().then((res) => {
-      lowerLimit.value = res.lowerLimit;
-      upperLimit.value = res.upperLimit;
+      // lowerLimit.value = res.lowerLimit;
+      // upperLimit.value = res.upperLimit;
+      // maxWidth.value = res.maxWidth;
+      // maxHeight.value = res.maxHeight;
       baseFormApi.setValues(res);
     });
   });
@@ -163,9 +194,16 @@ const [Drawer, drawerApi] = useVbenDrawer({
       });
       lowerLimit.value = data.lowerLimit;
       upperLimit.value = data.upperLimit;
+      maxWidth.value = data.maxWidth;
+      maxHeight.value = data.maxHeight;
     }
   },
 });
+
+function containImage(suffix: string) {
+  const suffixArray = suffix.split(',');
+  return suffixArray.includes('jpg') || suffixArray.includes('jpeg');
+}
 </script>
 <template>
   <Drawer class="w-[600px]" title="文件上传策略">
@@ -191,6 +229,29 @@ const [Drawer, drawerApi] = useVbenDrawer({
               v-model:value="upperLimit"
               :max="1048576"
               :min="Math.max(lowerLimit + 1, 1)"
+              style="width: 120px"
+            />
+          </FormItemRest>
+        </InputGroup>
+      </template>
+
+      <template #maxSize>
+        <InputGroup compact>
+          <FormItemRest>
+            <InputNumber
+              v-model:value="maxWidth"
+              :min="1"
+              style="width: 120px"
+            />
+
+            <Input
+              disabled
+              placeholder=":"
+              style="width: 30px; pointer-events: none; background-color: #fff"
+            />
+            <InputNumber
+              v-model:value="maxHeight"
+              :min="1"
               style="width: 120px"
             />
           </FormItemRest>
