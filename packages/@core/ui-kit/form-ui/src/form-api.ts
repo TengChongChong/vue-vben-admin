@@ -228,6 +228,17 @@ export class FormApi {
       return;
     }
 
+    // 处理日期格式，后端返回的是时间戳
+    this.state?.schema?.forEach((item) => {
+      if (
+        fields[item.fieldName] &&
+        item.component === 'DatePicker' &&
+        isNumber(fields[item.fieldName])
+      ) {
+        fields[item.fieldName] = dayjs(fields[item.fieldName]);
+      }
+    });
+
     /**
      * 合并算法有待改进，目前的算法不支持object类型的值。
      * antd的日期时间相关组件的值类型为dayjs对象
