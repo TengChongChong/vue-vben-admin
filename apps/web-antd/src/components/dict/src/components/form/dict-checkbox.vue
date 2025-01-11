@@ -1,14 +1,12 @@
 <script lang="ts" setup>
 import type { DictCheckboxProps } from '../../props';
 
-import { computed, onMounted, ref, unref, watch } from 'vue';
-
-import { CheckboxGroup } from 'ant-design-vue';
-
 import {
   convertArrayValue,
   getSelectModelArray,
 } from '#/components/form/src/helper';
+import { CheckboxGroup } from 'ant-design-vue';
+import { computed, onMounted, ref, unref, watch } from 'vue';
 
 defineOptions({
   inheritAttrs: false,

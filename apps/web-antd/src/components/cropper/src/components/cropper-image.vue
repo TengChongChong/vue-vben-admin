@@ -1,18 +1,10 @@
 <script setup lang="ts">
 import type { CropperImageProps } from '#/components/cropper/src/props';
-
-import {
-  computed,
-  type CSSProperties,
-  onMounted,
-  onUnmounted,
-  ref,
-  unref,
-  useAttrs,
-} from 'vue';
+import type { CSSProperties } from 'vue';
 
 import { useDebounceFn } from '@vueuse/shared';
 import Cropper from 'cropperjs';
+import { computed, onMounted, onUnmounted, ref, unref, useAttrs } from 'vue';
 
 import 'cropperjs/dist/cropper.css';
 

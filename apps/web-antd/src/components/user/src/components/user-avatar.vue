@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-
 import { Avatar } from 'ant-design-vue';
+import { computed } from 'vue';
 
 interface Props {
   alt?: string;

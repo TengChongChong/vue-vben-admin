@@ -28,6 +28,14 @@ const formOptions: VbenFormProps = {
   collapsed: true,
   schema: [
     {
+      fieldName: 'category',
+      label: '分类',
+      component: 'DictSelect',
+      componentProps: {
+        dictType: 'sysFileUploadRuleCategory',
+      },
+    },
+    {
       fieldName: 'name',
       label: '名称',
       component: 'Input',

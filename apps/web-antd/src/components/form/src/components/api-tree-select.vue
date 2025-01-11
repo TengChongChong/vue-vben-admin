@@ -3,14 +3,11 @@ import type { TreeSelectProps } from 'ant-design-vue';
 
 import type { ApiTreeSelectProps } from '../props';
 
-import { onMounted, ref, unref, watch } from 'vue';
-
+import { HighlightText } from '#/components/highlight-text';
 import { cn, findPath, isFunction, isNumber, isString } from '@vben/utils';
-
 import { get } from '@vueuse/shared';
 import { TreeSelect } from 'ant-design-vue';
-
-import { HighlightText } from '#/components/highlight-text';
+import { onMounted, ref, unref, watch } from 'vue';
 
 defineOptions({
   inheritAttrs: false,

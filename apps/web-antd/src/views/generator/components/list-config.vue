@@ -5,11 +5,16 @@ import type {
   TableCellConfig,
 } from '#/api/generator/model/generatorModel';
 
-import { nextTick, onMounted, ref, unref, watch } from 'vue';
-
+import { DictTag } from '#/components/dict';
+import {
+  LucideArrowLeft,
+  LucideArrowRight,
+  LucideSettings,
+  LucideTrash,
+} from '#/components/icons';
+import { isNullOrUnDef } from '#/util/is';
 import { useVbenModal } from '@vben/common-ui';
 import { useSortable } from '@vben/hooks';
-
 import {
   Button,
   Card,
@@ -19,15 +24,7 @@ import {
   Tooltip,
   TypographyText,
 } from 'ant-design-vue';
-
-import { DictTag } from '#/components/dict';
-import {
-  LucideArrowLeft,
-  LucideArrowRight,
-  LucideSettings,
-  LucideTrash,
-} from '#/components/icons';
-import { isNullOrUnDef } from '#/util/is';
+import { nextTick, onMounted, ref, unref, watch } from 'vue';
 
 import QueryConfigModal from './modal/query-config-modal.vue';
 import TableConfigModal from './modal/table-config-modal.vue';

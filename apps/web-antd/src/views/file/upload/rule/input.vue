@@ -1,10 +1,10 @@
 <script lang="ts" setup>
 import type { FileUploadRuleVO } from '#/api/file/model/file-upload-rule-model';
 
-import { useVbenForm } from '#/adapter/form';
-import { addApi, saveApi } from '#/api/file/file-upload-rule';
-import { ButtonClose, ButtonSave } from '#/components/button';
+import { ref, unref } from 'vue';
+
 import { useVbenDrawer, z } from '@vben/common-ui';
+
 import {
   FormItemRest,
   Input,
@@ -13,7 +13,10 @@ import {
   message,
   Space,
 } from 'ant-design-vue';
-import { ref, unref } from 'vue';
+
+import { useVbenForm } from '#/adapter/form';
+import { addApi, saveApi } from '#/api/file/file-upload-rule';
+import { ButtonClose, ButtonSave } from '#/components/button';
 
 const emit = defineEmits(['success']);
 

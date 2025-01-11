@@ -42,9 +42,9 @@ const [BaseForm, baseFormApi] = useVbenForm({
           });
           return result;
         },
-      },
-      onChange: (value) => {
-        handleTableChange(value);
+        onChange: (value) => {
+          handleTableChange(value);
+        },
       },
       rules: 'selectRequired',
       description: '需要导入数据的表',

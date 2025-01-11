@@ -9,7 +9,7 @@ import { message, Space } from 'ant-design-vue';
 import { isArray } from 'lodash-es';
 
 import { useVbenForm } from '#/adapter/form';
-import { saveApi } from '#/api/sys/sys-dict';
+import { addApi, saveApi } from '#/api/sys/sys-dict';
 import { selectAllApi } from '#/api/sys/sys-dict-type';
 import { ButtonClose, ButtonSave } from '#/components/button';
 
@@ -54,9 +54,9 @@ const [BaseForm, baseFormApi] = useVbenForm({
       component: 'ApiSelect',
       componentProps: {
         api: selectAllApi,
-      },
-      onChange(value) {
-        changeDictType(value);
+        onChange(value) {
+          changeDictType(value);
+        },
       },
       rules: 'required',
     },
@@ -167,8 +167,9 @@ async function handleSave() {
 async function handleSaveAndAdd() {
   await handleSubmit((res) => {
     baseFormApi.resetForm();
-    const { category, type, sys } = res;
-    baseFormApi.setValues({ category, type, sys });
+    addApi(res.parentId, res.dictType).then((res) => {
+      baseFormApi.setValues(res);
+    });
   });
 }
 

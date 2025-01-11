@@ -1,17 +1,14 @@
 <script lang="ts" setup>
 import type { DictSelectProps } from '../../props';
 
-import { computed, onMounted, ref, unref, watch } from 'vue';
-
-import { cn } from '@vben/utils';
-
-import { Select } from 'ant-design-vue';
-
 import {
   convertArrayValue,
   convertSingleValue,
   getSelectModelArray,
 } from '#/components/form/src/helper';
+import { cn } from '@vben/utils';
+import { Select } from 'ant-design-vue';
+import { computed, onMounted, ref, unref, watch } from 'vue';
 
 defineOptions({
   inheritAttrs: false,

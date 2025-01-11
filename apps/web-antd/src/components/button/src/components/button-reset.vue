@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import type { BaseButtonProps } from '../props';
 
-import { cn } from '@vben/utils';
-
-import { Button } from 'ant-design-vue';
-
 import { LucideRotateCcw } from '#/components/icons';
+import { cn } from '@vben/utils';
+import { Button } from 'ant-design-vue';
 
 defineOptions({
   inheritAttrs: false,

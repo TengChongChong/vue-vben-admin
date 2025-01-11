@@ -2,10 +2,9 @@
 import type { VbenFormSchema } from '@vben/common-ui';
 import type { Recordable } from '@vben/types';
 
-import { computed, ref } from 'vue';
-
 import { AuthenticationCodeLogin, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
+import { computed, ref } from 'vue';
 
 defineOptions({ name: 'CodeLogin' });
 

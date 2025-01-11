@@ -6,13 +6,6 @@ import type {
   UploadFileModel,
 } from '#/components/upload/src/type';
 
-import { onMounted, ref, watch } from 'vue';
-
-import { useAccessStore } from '@vben/stores';
-
-import { Button, message, Tag, Upload } from 'ant-design-vue';
-import { isArray, isString } from 'lodash-es';
-
 import { getByKeyApi } from '#/api/file/file-upload-rule';
 import { LucideHardDriveUpload } from '#/components/icons';
 import {
@@ -20,6 +13,10 @@ import {
   convertToUploadFileModelArray,
 } from '#/components/upload/src/helper';
 import { useUploadType } from '#/components/upload/src/useUpload';
+import { useAccessStore } from '@vben/stores';
+import { Button, message, Tag, Upload } from 'ant-design-vue';
+import { isArray, isString } from 'lodash-es';
+import { onMounted, ref, watch } from 'vue';
 
 const props = withDefaults(defineProps<RuleUploadProps>(), {
   listType: 'text',

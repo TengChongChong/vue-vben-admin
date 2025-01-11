@@ -32,8 +32,8 @@ const formOptions: VbenFormProps = {
       component: 'DictSelect',
       componentProps: {
         dictType: 'configCategory',
+        onChange: () => handleSearch(),
       },
-      onChange: () => handleSearch(),
     },
     {
       fieldName: 'sysKey',
@@ -51,9 +51,9 @@ const formOptions: VbenFormProps = {
       component: 'DictSelect',
       componentProps: {
         dictType: 'whether',
+        onChange: () => handleSearch(),
       },
       ifShow: hasAccessByRoles([RoleEnum.SYS_ADMIN]),
-      onChange: () => handleSearch(),
     },
     {
       fieldName: 'type',
@@ -61,8 +61,8 @@ const formOptions: VbenFormProps = {
       component: 'DictSelect',
       componentProps: {
         dictType: 'dataType',
+        onChange: () => handleSearch(),
       },
-      onChange: () => handleSearch(),
     },
     {
       fieldName: 'remarks',
@@ -85,7 +85,7 @@ const gridOptions: VxeGridProps<SysConfig> = {
 };
 
 const [Grid, gridApi] = useVbenVxeGrid({
-  tableTitle: '定时任务',
+  tableTitle: '系统参数',
   formOptions,
   gridOptions,
 });

@@ -1,17 +1,14 @@
 <script lang="ts" setup>
-import type { DragVerifyActionType, MoveData } from '../typing';
-
 import type { CaptchaVO } from '#/api/sys/model/sys-captcha-model';
 
-import { reactive, ref, unref, watch } from 'vue';
-
-import { SliderCaptcha } from '@vben/common-ui';
-import { EncryptionFactory } from '@vben/utils';
-
-import { Button, Spin } from 'ant-design-vue';
+import type { DragVerifyActionType, MoveData } from '../typing';
 
 import { checkCaptchaApi, getCaptchaApi } from '#/api/sys/sys-captcha';
 import { LucideRotateCcw } from '#/components/icons';
+import { SliderCaptcha } from '@vben/common-ui';
+import { EncryptionFactory } from '@vben/utils';
+import { Button, Spin } from 'ant-design-vue';
+import { reactive, ref, unref, watch } from 'vue';
 
 const emit = defineEmits(['success', 'change', 'update:value']);
 // 拖动条

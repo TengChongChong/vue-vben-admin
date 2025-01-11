@@ -2,18 +2,15 @@
 import type { SysRole } from '#/api/auth/model/sys-role-model';
 import type { RoleSelectProps } from '#/components/role/src/props';
 
-import { onMounted, ref, watch } from 'vue';
-
-import { useUserStore } from '@vben/stores';
-import { cn } from '@vben/utils';
-
-import { Select, SelectOption } from 'ant-design-vue';
-
 import { selectAllApi, selectRoleByDeptApi } from '#/api/auth/sys-role';
 import {
   convertArrayValue,
   convertSingleValue,
 } from '#/components/form/src/helper';
+import { useUserStore } from '@vben/stores';
+import { cn } from '@vben/utils';
+import { Select, SelectOption } from 'ant-design-vue';
+import { onMounted, ref, watch } from 'vue';
 
 defineOptions({
   inheritAttrs: false,

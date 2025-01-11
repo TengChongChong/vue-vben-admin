@@ -1,14 +1,11 @@
 <script setup lang="ts">
 import type { ButtonRemoveProps } from '../props';
 
-import { createVNode, ref } from 'vue';
-
+import { LucideTrash } from '#/components/icons';
 import { AccessControl } from '@vben/access';
 import { cn, isFunction } from '@vben/utils';
-
 import { Button, message, Modal } from 'ant-design-vue';
-
-import { LucideTrash } from '#/components/icons';
+import { createVNode, ref } from 'vue';
 
 defineOptions({
   inheritAttrs: false,

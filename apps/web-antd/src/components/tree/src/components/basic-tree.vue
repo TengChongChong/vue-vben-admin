@@ -1,25 +1,22 @@
 <script setup lang="ts">
+import type {
+  BasicTreeProps,
+  TreeActionType,
+  TreeItem,
+  TreeState,
+} from '#/components/tree/src/types';
+import type { MenuProps } from 'ant-design-vue';
 import type { TreeProps } from 'ant-design-vue/es/tree/Tree';
 import type { FieldNames } from 'ant-design-vue/es/vc-cascader';
+import type { VNode } from 'vue';
 
-import {
-  computed,
-  h,
-  onMounted,
-  reactive,
-  ref,
-  toRaw,
-  unref,
-  useAttrs,
-  type VNode,
-  watch,
-  watchEffect,
-} from 'vue';
-
+import { HighlightText } from '#/components/highlight-text';
+import { LucideEllipsisVertical } from '#/components/icons';
+import { useTree } from '#/components/tree/src/hooks/useTree';
+import { ToolbarEnum } from '#/components/tree/src/types';
 import { VbenScrollbar } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
 import { cn, filter, treeToList } from '@vben/utils';
-
 import { useDebounceFn } from '@vueuse/shared';
 import {
   Button,
@@ -30,22 +27,22 @@ import {
   Menu,
   MenuDivider,
   MenuItem,
-  type MenuProps,
   Space,
   Tree,
 } from 'ant-design-vue';
 import { difference, isArray, isString, omit } from 'lodash-es';
-
-import { HighlightText } from '#/components/highlight-text';
-import { LucideEllipsisVertical } from '#/components/icons';
-import { useTree } from '#/components/tree/src/hooks/useTree';
 import {
-  type BasicTreeProps,
-  ToolbarEnum,
-  type TreeActionType,
-  type TreeItem,
-  type TreeState,
-} from '#/components/tree/src/types';
+  computed,
+  h,
+  onMounted,
+  reactive,
+  ref,
+  toRaw,
+  unref,
+  useAttrs,
+  watch,
+  watchEffect,
+} from 'vue';
 
 defineOptions({
   inheritAttrs: false,

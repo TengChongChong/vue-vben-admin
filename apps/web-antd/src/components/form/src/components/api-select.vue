@@ -1,14 +1,11 @@
 <script lang="ts" setup>
 import type { ApiSelectProps, OptionsItem } from '../props';
 
-import { onMounted, ref, unref, watch } from 'vue';
-
+import { HighlightText } from '#/components/highlight-text';
 import { cn, isFunction } from '@vben/utils';
-
 import { get } from '@vueuse/shared';
 import { Select } from 'ant-design-vue';
-
-import { HighlightText } from '#/components/highlight-text';
+import { onMounted, ref, unref, watch } from 'vue';
 
 defineOptions({
   inheritAttrs: false,

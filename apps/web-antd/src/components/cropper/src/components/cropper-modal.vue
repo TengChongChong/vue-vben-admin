@@ -1,13 +1,7 @@
 <script lang="ts" setup>
-import type { Cropper, CropperEndResult } from '../typing';
-
 import type { CropperModalProps } from '#/components/cropper/src/props';
 
-import { computed, ref, unref } from 'vue';
-
-import { useVbenModal } from '@vben/common-ui';
-
-import { Avatar, Button, Space, Tooltip, Upload } from 'ant-design-vue';
+import type { Cropper, CropperEndResult } from '../typing';
 
 import { fileUpload } from '#/api/file/file-upload';
 import {
@@ -20,6 +14,9 @@ import {
   ZoomIn,
   ZoomOut,
 } from '#/components/icons';
+import { useVbenModal } from '@vben/common-ui';
+import { Avatar, Button, Space, Tooltip, Upload } from 'ant-design-vue';
+import { computed, ref, unref } from 'vue';
 
 import CropperImage from './cropper-image.vue';
 

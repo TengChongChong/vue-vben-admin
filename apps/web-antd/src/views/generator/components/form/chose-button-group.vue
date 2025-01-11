@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
-
 import { Tooltip } from 'ant-design-vue';
+import { onMounted, ref, watch } from 'vue';
 
 type OptionsItem = {
   label: string;

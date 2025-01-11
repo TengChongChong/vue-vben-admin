@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
-
+import { useVbenForm } from '#/adapter/form';
+import { DeptSelect, DeptTree } from '#/components/dept';
 import { Page } from '@vben/common-ui';
-
 import {
   Card,
   Col,
@@ -11,9 +10,7 @@ import {
   Row,
   Tag,
 } from 'ant-design-vue';
-
-import { useVbenForm } from '#/adapter/form';
-import { DeptSelect, DeptTree } from '#/components/dept';
+import { defineComponent, onMounted, ref } from 'vue';
 
 defineComponent({
   name: 'SampleCompDeptSelectIndex',

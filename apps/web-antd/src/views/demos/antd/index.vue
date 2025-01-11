@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { Page } from '@vben/common-ui';
-
 import { Button, Card, message, notification, Space } from 'ant-design-vue';
 
 type NotificationType = 'error' | 'info' | 'success' | 'warning';

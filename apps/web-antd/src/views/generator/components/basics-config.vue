@@ -6,13 +6,6 @@ import type {
   TableInfo,
 } from '#/api/generator/model/generatorModel';
 
-import { onMounted, ref, unref } from 'vue';
-
-import { useUserStore } from '@vben/stores';
-import { listToTree } from '@vben/utils';
-
-import { Affix, Button, Divider, Input, Select } from 'ant-design-vue';
-
 import { useVbenForm } from '#/adapter/form';
 import { selectAllApi } from '#/api/auth/sys-permission';
 import {
@@ -23,6 +16,10 @@ import {
 import { selectOptionsApi } from '#/api/sys/sys-data-source';
 import { LucideArrowRight } from '#/components/icons';
 import { isArray, isBlank } from '#/util/is';
+import { useUserStore } from '@vben/stores';
+import { listToTree } from '@vben/utils';
+import { Affix, Button, Divider, Input, Select } from 'ant-design-vue';
+import { onMounted, ref, unref } from 'vue';
 
 import {
   FormGeneratorTemplate,
@@ -57,7 +54,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
     {
       fieldName: 'generatorTemplate',
       label: '模版',
-      component: 'InputGroup',
+      component: 'Input',
       componentProps: {
         options: [
           {
@@ -71,6 +68,9 @@ const [BaseForm, baseFormApi] = useVbenForm({
             value: 'sub-table',
           },
         ],
+        onChange: (value) => {
+          handleGeneratorTemplateChange(value);
+        },
       },
       // dependencies: {
       //   triggerFields: ['generatorTemplate'],
@@ -78,9 +78,6 @@ const [BaseForm, baseFormApi] = useVbenForm({
       //     handleGeneratorTemplateChange(values.generatorTemplate);
       //   },
       // },
-      onChange: (value) => {
-        handleGeneratorTemplateChange(value);
-      },
       rules: 'selectRequired',
       formItemClass: 'xl:col-span-2 2xl:col-span-4',
     },
@@ -109,7 +106,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
     {
       fieldName: 'listGeneratorTemplate',
       label: '列表模板',
-      component: 'InputGroup',
+      component: 'Input',
       componentProps: {
         options: [
           { name: '表格 - Table', label: '展示行列数据', value: 'table' },
@@ -134,7 +131,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
     {
       fieldName: 'formGeneratorTemplate',
       label: '表单模板',
-      component: 'InputGroup',
+      component: 'Input',
       componentProps: {
         options: [
           {
@@ -171,9 +168,9 @@ const [BaseForm, baseFormApi] = useVbenForm({
       component: 'ApiSelect',
       componentProps: {
         api: selectOptionsApi,
-      },
-      onChange: (value) => {
-        handleDataSourceChange(value);
+        onChange: (value) => {
+          handleDataSourceChange(value);
+        },
       },
       rules: 'selectRequired',
     },
@@ -182,6 +179,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
       label: '表',
       component: 'ApiSelect',
       componentProps: {
+        showSearch: true,
         api: selectTableApi,
         afterFetch: (result) => {
           result.forEach((item) => {
@@ -189,9 +187,9 @@ const [BaseForm, baseFormApi] = useVbenForm({
           });
           return result;
         },
-      },
-      onChange: (value) => {
-        handleTableChange(value);
+        onChange: (value) => {
+          handleTableChange(value);
+        },
       },
       rules: 'selectRequired',
     },

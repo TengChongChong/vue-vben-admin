@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-
-import { Page, useVbenModal } from '@vben/common-ui';
-
-import { Alert, Button, Card, Tag } from 'ant-design-vue';
-
 import { SlideVerifyModal } from '#/components/verify';
+import { Page, useVbenModal } from '@vben/common-ui';
+import { Alert, Button, Card, Tag } from 'ant-design-vue';
+import { ref } from 'vue';
 
 const captchaVerification = ref<string>();
 

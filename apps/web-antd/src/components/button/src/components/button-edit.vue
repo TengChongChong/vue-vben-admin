@@ -1,14 +1,11 @@
 <script setup lang="ts">
 import type { ButtonEditProps } from '../props';
 
-import { useRouter } from 'vue-router';
-
+import { LucideSquarePen } from '#/components/icons';
 import { AccessControl } from '@vben/access';
 import { cn } from '@vben/utils';
-
 import { Button } from 'ant-design-vue';
-
-import { LucideSquarePen } from '#/components/icons';
+import { useRouter } from 'vue-router';
 
 defineOptions({
   inheritAttrs: false,

@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import type { BaseButtonProps } from '../props';
 
+import { LucideX } from '#/components/icons';
 import { AccessControl } from '@vben/access';
 import { cn } from '@vben/utils';
-
 import { Button } from 'ant-design-vue';
-
-import { LucideX } from '#/components/icons';
 
 defineOptions({
   inheritAttrs: false,

@@ -1,11 +1,9 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-
 import { Page } from '@vben/common-ui';
 import { useTabs } from '@vben/hooks';
-
 import { Button, Card, Input } from 'ant-design-vue';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const router = useRouter();
 const newTabTitle = ref('');

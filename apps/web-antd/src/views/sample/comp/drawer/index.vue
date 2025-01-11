@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { Page, useVbenDrawer } from '@vben/common-ui';
-
 import { Button, Card } from 'ant-design-vue';
 
 import AutoHeightDemo from './auto-height-demo.vue';

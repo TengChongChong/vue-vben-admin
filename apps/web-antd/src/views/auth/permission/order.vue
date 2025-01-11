@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import type { TreeProps } from 'ant-design-vue';
 import type { AntTreeNodeDropEvent } from 'ant-design-vue/lib/tree';
 
 import type { SysPermission } from '#/api/auth/model/sys-permission-model';
@@ -8,8 +9,7 @@ import { ref } from 'vue';
 import { useVbenDrawer } from '@vben/common-ui';
 import { listToTree, treeToList } from '@vben/utils';
 
-import { Alert, Tree } from 'ant-design-vue';
-import { Space, type TreeProps } from 'ant-design-vue';
+import { Alert, Space, Tree } from 'ant-design-vue';
 
 import { saveOrderApi, selectAllApi } from '#/api/auth/sys-permission';
 import { ButtonClose, ButtonSave } from '#/components/button';

@@ -82,7 +82,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
     {
       fieldName: 'icon',
       label: '图标',
-      component: 'IconPicker',
+      component: 'Input',
       dependencies: {
         triggerFields: ['type'],
         show(values) {

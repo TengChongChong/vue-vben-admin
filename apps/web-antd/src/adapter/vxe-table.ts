@@ -1,12 +1,9 @@
-import { h } from 'vue';
-
-import { setupVbenVxeTable, useVbenVxeGrid } from '@vben/plugins/vxe-table';
-
-import { Button, Image } from 'ant-design-vue';
-import dayjs from 'dayjs';
-
 import { DictTag } from '#/components/dict';
 import { formatToDuration } from '#/util/date';
+import { setupVbenVxeTable, useVbenVxeGrid } from '@vben/plugins/vxe-table';
+import { Button, Image } from 'ant-design-vue';
+import dayjs from 'dayjs';
+import { h } from 'vue';
 
 import { useVbenForm } from './form';
 

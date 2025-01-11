@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import type { SmsVerificationCodeProps } from '../type';
 
-import { computed, onBeforeUnmount, ref, useId, watch } from 'vue';
-
+import { SlideVerifyModal } from '#/components/verify';
 import {
   PinInput,
   PinInputGroup,
@@ -10,8 +9,7 @@ import {
   useVbenModal,
   VbenButton,
 } from '@vben/common-ui';
-
-import { SlideVerifyModal } from '#/components/verify';
+import { computed, onBeforeUnmount, ref, useId, watch } from 'vue';
 
 defineOptions({
   inheritAttrs: false,

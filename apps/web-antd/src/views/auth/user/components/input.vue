@@ -19,6 +19,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
   showDefaultActions: false,
   schema: [
     { fieldName: 'id', component: 'Input', formItemClass: 'hidden' },
+    { fieldName: 'deptId', component: 'Input', formItemClass: 'hidden' },
     { fieldName: 'version', component: 'Input', formItemClass: 'hidden' },
     {
       fieldName: 'nickname',

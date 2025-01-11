@@ -1,12 +1,9 @@
 <script setup lang="ts">
+import type { WorkbenchProjectItem, WorkbenchTodoItem } from '@vben/common-ui';
+
 import { ref } from 'vue';
 
-import {
-  WorkbenchProject,
-  type WorkbenchProjectItem,
-  WorkbenchTodo,
-  type WorkbenchTodoItem,
-} from '@vben/common-ui';
+import { WorkbenchProject, WorkbenchTodo } from '@vben/common-ui';
 
 const projectItems: WorkbenchProjectItem[] = [
   {

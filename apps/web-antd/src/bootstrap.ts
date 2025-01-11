@@ -1,18 +1,16 @@
-import { createApp, watchEffect } from 'vue';
-
+import { $t, setupI18n } from '#/locales';
 import { registerAccessDirective } from '@vben/access';
 import { preferences } from '@vben/preferences';
 import { initStores } from '@vben/stores';
-import '@vben/styles';
-import '@vben/styles/antd';
-
 import { useTitle } from '@vueuse/core';
-
-import { $t, setupI18n } from '#/locales';
+import { createApp, watchEffect } from 'vue';
 
 import { initComponentAdapter } from './adapter/component';
 import App from './app.vue';
 import { router } from './router';
+
+import '@vben/styles';
+import '@vben/styles/antd';
 
 async function bootstrap(namespace: string) {
   // 初始化组件适配器

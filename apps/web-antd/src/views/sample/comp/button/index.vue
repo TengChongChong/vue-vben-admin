@@ -1,10 +1,4 @@
 <script setup lang="ts">
-import { defineComponent } from 'vue';
-
-import { Page } from '@vben/common-ui';
-
-import { Button, Card, Col, Divider, Row, Space } from 'ant-design-vue';
-
 import { removeApi } from '#/api/sys/sys-dict';
 import {
   ButtonAdd,
@@ -18,6 +12,9 @@ import {
   ButtonSave,
   ButtonSubmit,
 } from '#/components/button';
+import { Page } from '@vben/common-ui';
+import { Button, Card, Col, Divider, Row, Space } from 'ant-design-vue';
+import { defineComponent } from 'vue';
 
 defineComponent({
   name: 'SampleCompButtonIndex',

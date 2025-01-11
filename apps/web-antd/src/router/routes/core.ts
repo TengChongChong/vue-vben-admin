@@ -1,9 +1,8 @@
 import type { RouteRecordRaw } from 'vue-router';
 
-import { DEFAULT_HOME_PATH, LOGIN_PATH } from '@vben/constants';
-
 import { AuthPageLayout } from '#/layouts';
 import { $t } from '#/locales';
+import { DEFAULT_HOME_PATH, LOGIN_PATH } from '@vben/constants';
 
 /** 全局404页面 */
 const fallbackNotFoundRoute: RouteRecordRaw = {

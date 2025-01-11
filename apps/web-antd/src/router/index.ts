@@ -1,10 +1,9 @@
+import { resetStaticRoutes } from '@vben/utils';
 import {
   createRouter,
   createWebHashHistory,
   createWebHistory,
 } from 'vue-router';
-
-import { resetStaticRoutes } from '@vben/utils';
 
 import { createRouterGuard } from './guard';
 import { routes } from './routes';

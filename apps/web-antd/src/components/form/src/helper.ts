@@ -1,9 +1,8 @@
 import type { SelectModel } from '#/api/base/model/select-model';
 import type { SysDict } from '#/api/sys/model/sys-dict-model';
 
-import { isString } from '@vben/utils';
-
 import { useDictStore } from '#/store';
+import { isString } from '@vben/utils';
 
 /**
  * 根据字典类别获取 SelectModel[]

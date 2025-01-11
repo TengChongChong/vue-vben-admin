@@ -1,10 +1,11 @@
 <script lang="ts" setup>
+import type { VbenFormSchema } from '@vben/common-ui';
+
 import type { LoginAccountParams } from '#/api/auth/model/auth-model';
 
 import { computed } from 'vue';
 
-import { useVbenModal, type VbenFormSchema } from '@vben/common-ui';
-import { AuthenticationLogin, z } from '@vben/common-ui';
+import { AuthenticationLogin, useVbenModal, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 
 import { getByKeyApi } from '#/api/sys/sys-config';

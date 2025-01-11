@@ -5,11 +5,9 @@ import type {
 } from '#/api/base/model/select-model';
 import type { SysDict, SysDictTree } from '#/api/sys/model/sys-dict-model';
 
-import { listToTree } from '@vben/utils';
-
-import { defineStore } from 'pinia';
-
 import { selectAllApi } from '#/api/sys/sys-dict';
+import { listToTree } from '@vben/utils';
+import { defineStore } from 'pinia';
 
 interface DictState {
   isLoading: boolean;

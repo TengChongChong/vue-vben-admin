@@ -1,16 +1,13 @@
 <script setup lang="ts">
 import type { FileInfo } from '#/api/file/model/file-info-model';
 
-import { onMounted, ref } from 'vue';
-
-import { Page } from '@vben/common-ui';
-
-import { Card, Col, Row } from 'ant-design-vue';
-
 import { useVbenForm } from '#/adapter/form';
 import { currentUserApi } from '#/api/auth/sys-user-personal';
 import { JsonPreview } from '#/components/code-editor';
 import { RuleUpload } from '#/components/upload';
+import { Page } from '@vben/common-ui';
+import { Card, Col, Row } from 'ant-design-vue';
+import { onMounted, ref } from 'vue';
 
 const avatar = ref<FileInfo>();
 const avatarCircledCustomSize = ref<FileInfo>();

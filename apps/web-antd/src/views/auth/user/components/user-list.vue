@@ -84,7 +84,7 @@ const [BaseInputDrawer, baseInputDrawerApi] = useVbenDrawer({
 });
 
 async function handleCreate() {
-  addApi().then((res) => {
+  addApi(props.deptId).then((res) => {
     baseInputDrawerApi.setData(res);
     baseInputDrawerApi.open();
   });

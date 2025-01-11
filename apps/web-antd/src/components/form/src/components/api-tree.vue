@@ -3,12 +3,10 @@ import type { TreeProps } from 'ant-design-vue';
 
 import type { ApiTreeProps } from '../props';
 
-import { onMounted, ref, unref, watch } from 'vue';
-
 import { isFunction } from '@vben/utils';
-
 import { get } from '@vueuse/shared';
 import { Tree } from 'ant-design-vue';
+import { onMounted, ref, unref, watch } from 'vue';
 
 defineOptions({
   inheritAttrs: false,

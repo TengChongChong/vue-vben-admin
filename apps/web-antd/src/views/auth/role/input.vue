@@ -153,7 +153,10 @@ async function handleSubmit(callback: (res: SysRoleVO) => any) {
       const { checked, halfCheckedKeys } = values.permissionIds;
       values.permissionIds = [...checked, ...halfCheckedKeys];
     }
-    if (!isArray(values.dataPermissionDeptIds)) {
+    if (
+      values.dataPermissionDeptIds &&
+      !isArray(values.dataPermissionDeptIds)
+    ) {
       const { checked, halfCheckedKeys } = values.dataPermissionDeptIds;
       values.dataPermissionDeptIds = [...checked, ...halfCheckedKeys];
     }

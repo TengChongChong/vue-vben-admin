@@ -1,9 +1,7 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
-
 import { Page, VbenCountToAnimator } from '@vben/common-ui';
-
 import { Card } from 'ant-design-vue';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   components: {

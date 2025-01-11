@@ -5,10 +5,10 @@ import type {
   TableField,
 } from '#/api/generator/model/generatorModel';
 
-import { onMounted, ref, unref } from 'vue';
-
+import { selectAllApi } from '#/api/sys/sys-dict-type';
+import { ButtonClose, ButtonSave } from '#/components/button';
+import { DictSelect } from '#/components/dict';
 import { useVbenModal } from '@vben/common-ui';
-
 import {
   Checkbox,
   Input,
@@ -19,10 +19,7 @@ import {
   TypographyLink,
 } from 'ant-design-vue';
 import { cloneDeep } from 'lodash-es';
-
-import { selectAllApi } from '#/api/sys/sys-dict-type';
-import { ButtonClose, ButtonSave } from '#/components/button';
-import { DictSelect } from '#/components/dict';
+import { onMounted, ref, unref } from 'vue';
 
 import ComponentSelect from '../form/component-select.vue';
 

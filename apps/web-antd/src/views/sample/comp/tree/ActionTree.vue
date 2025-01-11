@@ -1,13 +1,10 @@
 <script lang="ts">
 import type { TreeItem } from '#/components/tree/src/types';
 
-import { defineComponent, ref, unref } from 'vue';
-
-import { Page } from '@vben/common-ui';
-
-import { Button, message } from 'ant-design-vue';
-
 import { BasicTree } from '#/components/tree';
+import { Page } from '@vben/common-ui';
+import { Button, message } from 'ant-design-vue';
+import { defineComponent, ref, unref } from 'vue';
 
 export default defineComponent({
   name: 'SampleCompTreeActionTree',

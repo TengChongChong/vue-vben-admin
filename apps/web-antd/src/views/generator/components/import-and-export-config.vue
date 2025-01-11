@@ -6,11 +6,15 @@ import type {
   TableCellConfig,
 } from '#/api/generator/model/generatorModel';
 
-import { computed, nextTick, onMounted, ref, unref, watch } from 'vue';
-
+import {
+  LucideArrowLeft,
+  LucideArrowRight,
+  LucideSettings,
+  LucideTrash,
+} from '#/components/icons';
+import { isNullOrUnDef } from '#/util/is';
 import { useVbenModal } from '@vben/common-ui';
 import { useSortable } from '@vben/hooks';
-
 import {
   Button,
   Card,
@@ -20,14 +24,7 @@ import {
   Tooltip,
   TypographyText,
 } from 'ant-design-vue';
-
-import {
-  LucideArrowLeft,
-  LucideArrowRight,
-  LucideSettings,
-  LucideTrash,
-} from '#/components/icons';
-import { isNullOrUnDef } from '#/util/is';
+import { computed, nextTick, onMounted, ref, unref, watch } from 'vue';
 
 import { needGeneratorExport, needGeneratorImport } from '../util/util';
 import ExportConfigModal from './modal/export-config-modal.vue';

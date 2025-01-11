@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { Page } from '@vben/common-ui';
 import { useWatermark } from '@vben/hooks';
-
 import { Button, Card } from 'ant-design-vue';
 
 const { destroyWatermark, updateWatermark } = useWatermark();

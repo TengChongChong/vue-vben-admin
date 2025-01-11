@@ -1,14 +1,12 @@
 <script lang="ts" setup>
 import type { DictRadioProps } from '../../props';
 
-import { computed, onMounted, ref, unref, watch } from 'vue';
-
-import { Segmented } from 'ant-design-vue';
-
 import {
   convertSingleValue,
   getSelectModelArray,
 } from '#/components/form/src/helper';
+import { Segmented } from 'ant-design-vue';
+import { computed, onMounted, ref, unref, watch } from 'vue';
 
 defineOptions({
   inheritAttrs: false,

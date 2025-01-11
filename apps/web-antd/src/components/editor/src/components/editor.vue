@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import type { EditorProps } from '#/components/editor/src/props';
 
+import { toolbarKeys } from '#/components/editor/src/components/config';
+import { isNumber } from '#/util/is';
+import { useAccessStore } from '@vben/stores';
+import { AiEditor } from 'aieditor';
+import { message } from 'ant-design-vue';
 import {
   computed,
   nextTick,
@@ -10,14 +15,6 @@ import {
   ref,
   unref,
 } from 'vue';
-
-import { useAccessStore } from '@vben/stores';
-
-import { AiEditor } from 'aieditor';
-import { message } from 'ant-design-vue';
-
-import { toolbarKeys } from '#/components/editor/src/components/config';
-import { isNumber } from '#/util/is';
 
 import 'aieditor/dist/style.css';
 

@@ -1,6 +1,5 @@
-import type { SessionUser } from '@vben/types';
-
 import type { SysUser } from '#/api/auth/model/sys-user-model';
+import type { SessionUser } from '@vben/types';
 
 import { requestClient } from '#/api/request';
 

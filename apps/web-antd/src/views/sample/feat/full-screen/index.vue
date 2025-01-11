@@ -1,10 +1,8 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
-
 import { Page } from '@vben/common-ui';
-
 import { useFullscreen } from '@vueuse/core';
 import { Button, Card } from 'ant-design-vue';
+import { ref } from 'vue';
 
 const domRef = ref<HTMLElement>();
 

@@ -56,9 +56,9 @@ const formOptions: VbenFormProps = {
       component: 'DictSelect',
       componentProps: {
         dictType: 'whether',
+        onChange: () => handleSearch(),
       },
       ifShow: hasAccessByRoles([RoleEnum.SYS_ADMIN]),
-      onChange: () => handleSearch(),
     },
   ],
 };

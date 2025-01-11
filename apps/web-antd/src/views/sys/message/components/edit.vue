@@ -54,11 +54,6 @@ const [BaseForm, baseFormApi] = useVbenForm({
       component: 'Editor',
       fieldName: 'content',
       label: '内容',
-      rules: z
-        .string()
-        .max(40_000, { message: '最多输入4000个字符' })
-        .nullable()
-        .optional(),
     },
   ],
 });

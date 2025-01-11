@@ -8,11 +8,12 @@ import type {
   TableInfo,
 } from '#/api/generator/model/generatorModel';
 
+import type { FormType } from '../types/generator.data';
+
 import { useDictStore } from '#/store';
 
 import {
   FORM_TYPE,
-  type FormType,
   GenFile,
   GenMethod,
   MatchingMode,

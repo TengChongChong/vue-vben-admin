@@ -15,7 +15,6 @@ import {
   SvgCardIcon,
   SvgDownloadIcon,
 } from '@vben/icons';
-
 import { Card } from 'ant-design-vue';
 </script>
 

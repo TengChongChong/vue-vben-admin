@@ -2,13 +2,10 @@
 import type { SysDict } from '#/api/sys/model/sys-dict-model';
 import type { DictTagProps } from '#/components/dict/src/props';
 
-import { computed } from 'vue';
-
-import { isNumber, isString } from '@vben/utils';
-
-import { Tag } from 'ant-design-vue';
-
 import { useDictStore } from '#/store';
+import { isNumber, isString } from '@vben/utils';
+import { Tag } from 'ant-design-vue';
+import { computed } from 'vue';
 
 const props = withDefaults(defineProps<DictTagProps>(), {
   useTag: true,

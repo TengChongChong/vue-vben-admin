@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-
 import { Page } from '@vben/common-ui';
-
 import { useClipboard } from '@vueuse/core';
 import { Button, Card, Input } from 'ant-design-vue';
+import { ref } from 'vue';
 
 const source = ref('Hello');
 const { copy, text } = useClipboard({ legacy: true, source });

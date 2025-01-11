@@ -1,11 +1,10 @@
-import type { RouteRecordStringComponent, UserInfo } from '@vben/types';
-
 import type {
   LoginAccountParams,
   LoginQrCodeParams,
   LoginResult,
   LoginSmsParams,
 } from '#/api/auth/model/auth-model.ts';
+import type { RouteRecordStringComponent, UserInfo } from '@vben/types';
 
 import { requestClient } from '#/api/request';
 

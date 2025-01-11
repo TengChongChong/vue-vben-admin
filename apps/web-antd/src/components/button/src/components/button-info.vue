@@ -1,14 +1,11 @@
 <script setup lang="ts">
 import type { ButtonInfoProps } from '../props';
 
-import { useRouter } from 'vue-router';
-
+import { LucideSearch } from '#/components/icons';
 import { AccessControl } from '@vben/access';
 import { cn } from '@vben/utils';
-
 import { Button } from 'ant-design-vue';
-
-import { LucideSearch } from '#/components/icons';
+import { useRouter } from 'vue-router';
 
 defineOptions({
   inheritAttrs: false,

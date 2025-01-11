@@ -1,13 +1,16 @@
 <script lang="ts" setup>
+import type { VbenFormProps } from '@vben/common-ui';
+
+import type { VxeGridProps } from '#/adapter/vxe-table';
 import type { FileUploadRule } from '#/api/file/model/file-upload-rule-model';
 
 import { ref, unref } from 'vue';
 
-import { useVbenDrawer, type VbenFormProps } from '@vben/common-ui';
+import { useVbenDrawer } from '@vben/common-ui';
 
 import { Space } from 'ant-design-vue';
 
-import { useVbenVxeGrid, type VxeGridProps } from '#/adapter/vxe-table';
+import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { selectMessageReceiverUserDetailApi } from '#/api/sys/sys-message-detail';
 import { ButtonClose } from '#/components/button';
 
@@ -115,7 +118,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
 <style lang="scss" scoped>
 :deep(.vxe-grid) {
   .bg-background-deep {
-    display: none;
+    height: 1px;
   }
   .vxe-tools--operate {
     display: none;

@@ -1,14 +1,11 @@
 <script lang="ts" setup>
 import type { DictTreeSelectProps } from '../../props';
 
-import { computed, onMounted, ref, unref, watch } from 'vue';
-
-import { cn } from '@vben/utils';
-
-import { TreeSelect } from 'ant-design-vue';
-
 import { HighlightText } from '#/components/highlight-text';
 import { useDictStore } from '#/store';
+import { cn } from '@vben/utils';
+import { TreeSelect } from 'ant-design-vue';
+import { computed, onMounted, ref, unref, watch } from 'vue';
 
 defineOptions({
   inheritAttrs: false,

@@ -1,14 +1,11 @@
 <script setup lang="ts">
 import type { ButtonImportProps } from '../props';
 
-import { useRouter } from 'vue-router';
-
+import { LucideHardDriveUpload } from '#/components/icons';
 import { AccessControl } from '@vben/access';
 import { cn } from '@vben/utils';
-
 import { Button } from 'ant-design-vue';
-
-import { LucideHardDriveUpload } from '#/components/icons';
+import { useRouter } from 'vue-router';
 
 defineOptions({
   inheritAttrs: false,

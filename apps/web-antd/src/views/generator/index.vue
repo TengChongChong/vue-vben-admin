@@ -9,20 +9,19 @@ import type {
   TableInfo,
 } from '#/api/generator/model/generatorModel';
 
-import { onMounted, ref, unref } from 'vue';
-
-import { Page } from '@vben/common-ui';
-
-import { Card, Step, Steps } from 'ant-design-vue';
+import type { FormType } from './types/generator.data';
 
 import { selectAllApi } from '#/api/sys/sys-dict-type';
+import { Page } from '@vben/common-ui';
+import { Card, Step, Steps } from 'ant-design-vue';
+import { onMounted, ref, unref } from 'vue';
 
 import BasicsConfig from './components/basics-config.vue';
 import Finish from './components/finish.vue';
 import ImportAndExportConfig from './components/import-and-export-config.vue';
 import InputConfig from './components/input-config.vue';
 import ListConfig from './components/list-config.vue';
-import { FORM_TYPE, type FormType } from './types/generator.data';
+import { FORM_TYPE } from './types/generator.data';
 // 字典类型
 import {
   getDefaultExport,

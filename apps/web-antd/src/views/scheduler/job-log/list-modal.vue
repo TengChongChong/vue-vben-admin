@@ -1,7 +1,6 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
-
 import { useVbenModal } from '@vben/common-ui';
+import { ref } from 'vue';
 
 import List from './list.vue';
 

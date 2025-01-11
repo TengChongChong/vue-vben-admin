@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
-
-import { Page } from '@vben/common-ui';
-
-import { Card, Col, Descriptions, DescriptionsItem, Row } from 'ant-design-vue';
-
 import { useVbenForm } from '#/adapter/form';
 import { UserSelect } from '#/components/user';
+import { Page } from '@vben/common-ui';
+import { Card, Col, Descriptions, DescriptionsItem, Row } from 'ant-design-vue';
+import { defineComponent, onMounted, ref } from 'vue';
 
 defineComponent({
   name: 'SampleCompUserSelectIndex',

@@ -40,9 +40,9 @@ const [BaseForm, baseFormApi] = useVbenForm({
       component: 'DictRadio',
       componentProps: {
         dictType: 'dataType',
-      },
-      onChange: (value) => {
-        setInputComponent(value);
+        onChange: (value) => {
+          setInputComponent(value);
+        },
       },
       rules: 'required',
     },
