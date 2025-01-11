@@ -1,8 +1,10 @@
-import type { VbenButtonProps } from '@vben-core/shadcn-ui';
-import type { ClassType } from '@vben-core/typings';
 import type { FieldOptions, FormContext, GenericObject } from 'vee-validate';
-import type { Component, HtmlHTMLAttributes, Ref } from 'vue';
 import type { ZodTypeAny } from 'zod';
+
+import type { Component, HtmlHTMLAttributes, Ref } from 'vue';
+
+import type { VbenButtonProps } from '@vben-core/shadcn-ui';
+import type { ClassType, MaybeComputedRef, Nullable } from '@vben-core/typings';
 
 import type { FormApi } from './form-api';
 
@@ -18,7 +20,7 @@ export type BaseFormComponentType =
   | 'VbenSelect'
   | (Record<never, never> & string);
 
-type Breakpoints = '' | '2xl:' | '3xl:' | 'lg:' | 'md:' | 'sm:' | 'xl:';
+type Breakpoints = '2xl:' | '3xl:' | '' | 'lg:' | 'md:' | 'sm:' | 'xl:';
 
 type GridCols = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13;
 
@@ -34,12 +36,12 @@ export type FormItemClassType =
   | WrapperClassType;
 
 export type FormFieldOptions = Partial<
-  {
+  FieldOptions & {
     validateOnBlur?: boolean;
     validateOnChange?: boolean;
     validateOnInput?: boolean;
     validateOnModelUpdate?: boolean;
-  } & FieldOptions
+  }
 >;
 
 export interface FormShape {
@@ -134,10 +136,6 @@ type ComponentProps =
     ) => MaybeComponentProps)
   | MaybeComponentProps;
 
-interface showFunc {
-  (): boolean;
-}
-
 export interface FormCommonConfig {
   /**
    * 在Label后显示一个冒号
@@ -191,10 +189,6 @@ export interface FormCommonConfig {
    */
   hideRequiredMark?: boolean;
   /**
-   * 是否显示（通过v-if控制）
-   */
-  ifShow?: boolean | showFunc;
-  /**
    * 所有表单项的label样式
    * @default ""
    */
@@ -204,9 +198,10 @@ export interface FormCommonConfig {
    */
   labelWidth?: number;
   /**
-   * 是否显示（通过css控制）
+   * 所有表单项的model属性名
+   * @default "modelValue"
    */
-  show?: boolean | showFunc;
+  modelPropName?: string;
   /**
    * 所有表单项的wrapper样式
    */
@@ -229,7 +224,7 @@ export type HandleResetFn = (
 export type FieldMappingTime = [
   string,
   [string, string],
-  ([string, string] | string)?,
+  ([string, string] | Nullable<string>)?,
 ][];
 
 export interface FormSchema<
@@ -321,7 +316,7 @@ export interface FormRenderProps<
 
 export interface ActionButtonOptions extends VbenButtonProps {
   [key: string]: any;
-  content?: string;
+  content?: MaybeComputedRef<string>;
   show?: boolean;
 }
 
@@ -340,7 +335,7 @@ export interface VbenFormProps<
    */
   actionWrapperClass?: ClassType;
   /**
-   * 表单字段映射成时间格式
+   * 表单字段映射
    */
   fieldMappingTime?: FieldMappingTime;
   /**
@@ -383,11 +378,11 @@ export interface VbenFormProps<
   submitOnEnter?: boolean;
 }
 
-export type ExtendedFormApi = {
+export type ExtendedFormApi = FormApi & {
   useStore: <T = NoInfer<VbenFormProps>>(
     selector?: (state: NoInfer<VbenFormProps>) => T,
   ) => Readonly<Ref<T>>;
-} & FormApi;
+};
 
 export interface VbenFormAdapterOptions<
   T extends BaseFormComponentType = BaseFormComponentType,

@@ -151,6 +151,7 @@ export class ModalApi {
 
   setData<T>(payload: T) {
     this.sharedData.payload = payload;
+    return this;
   }
 
   setLoading(loading: boolean) {
@@ -167,5 +168,6 @@ export class ModalApi {
     } else {
       this.store.setState((prev) => ({ ...prev, ...stateOrFn }));
     }
+    return this;
   }
 }

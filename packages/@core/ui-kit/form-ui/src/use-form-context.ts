@@ -1,7 +1,7 @@
 import type { ComputedRef } from 'vue';
 import type { ZodRawShape } from 'zod';
 
-import type { FormActions, VbenFormProps } from './types';
+import type { ExtendedFormApi, FormActions, VbenFormProps } from './types';
 
 import { createContext } from '@vben-core/shadcn-ui';
 import { isString } from '@vben-core/shared/utils';
@@ -10,8 +10,10 @@ import { computed, unref, useSlots } from 'vue';
 import { object } from 'zod';
 import { getDefaultsForSchema } from 'zod-defaults';
 
+type ExtendFormProps = VbenFormProps & { formApi: ExtendedFormApi };
+
 export const [injectFormProps, provideFormProps] =
-  createContext<[ComputedRef<VbenFormProps> | VbenFormProps, FormActions]>(
+  createContext<[ComputedRef<ExtendFormProps> | ExtendFormProps, FormActions]>(
     'VbenFormProps',
   );
 

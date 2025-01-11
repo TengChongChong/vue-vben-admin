@@ -102,6 +102,7 @@ const computedSchema = computed(
       hideRequiredMark = false,
       labelClass = '',
       labelWidth = 100,
+      modelPropName = '',
       wrapperClass = '',
     } = mergeWithArrayOverride(props.commonConfig, props.globalCommonConfig);
     // 显示的表单数量
@@ -131,6 +132,7 @@ const computedSchema = computed(
         hideLabel,
         hideRequiredMark,
         labelWidth,
+        modelPropName,
         wrapperClass,
         ...schema,
         commonComponentProps: componentProps,

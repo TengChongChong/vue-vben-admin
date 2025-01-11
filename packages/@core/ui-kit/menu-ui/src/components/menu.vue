@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { UseResizeObserverReturn } from '@vueuse/core';
-import type { VNodeArrayChildren } from 'vue';
+
+import type { SetupContext, VNodeArrayChildren } from 'vue';
 
 import type {
   MenuItemClicked,
@@ -9,10 +10,6 @@ import type {
   MenuProvider,
 } from '../types';
 
-import { useNamespace } from '@vben-core/composables';
-import { Ellipsis } from '@vben-core/icons';
-import { isHttpUrl } from '@vben-core/shared/utils';
-import { useResizeObserver } from '@vueuse/core';
 import {
   computed,
   nextTick,
@@ -23,6 +20,12 @@ import {
   watch,
   watchEffect,
 } from 'vue';
+
+import { useNamespace } from '@vben-core/composables';
+import { Ellipsis } from '@vben-core/icons';
+import { isHttpUrl } from '@vben-core/shared/utils';
+
+import { useResizeObserver } from '@vueuse/core';
 
 import {
   createMenuContext,
@@ -52,7 +55,7 @@ const emit = defineEmits<{
 
 const { b, is } = useNamespace('menu');
 const menuStyle = useMenuStyle();
-const slots = useSlots();
+const slots: SetupContext['slots'] = useSlots();
 const menu = ref<HTMLUListElement>();
 const sliceIndex = ref(-1);
 const openedMenus = ref<MenuProvider['openedMenus']>(
@@ -547,15 +550,6 @@ $namespace: vben;
       }
 
       & > .#{$namespace}-sub-menu {
-        // .#{$namespace}-menu {
-        //   background: var(--menu-submenu-opened-background-color);
-
-        //   .#{$namespace}-sub-menu,
-        //   .#{$namespace}-menu-item:not(.is-active),
-        //   .#{$namespace}-sub-menu-content:not(.is-active) {
-        //     background: var(--menu-submenu-opened-background-color);
-        //   }
-        // }
         & > .#{$namespace}-menu {
           & > .#{$namespace}-menu-item {
             padding-left: calc(
@@ -718,13 +712,11 @@ $namespace: vben;
 
 .#{$namespace}-menu-item {
   fill: var(--menu-item-color);
-  stroke: var(--menu-item-color);
 
   @include menu-item;
 
   &.is-active {
     fill: var(--menu-item-active-color);
-    stroke: var(--menu-item-active-color);
 
     @include menu-item-active;
   }
@@ -792,7 +784,6 @@ $namespace: vben;
   list-style: none;
   background: var(--menu-submenu-background-color);
   fill: var(--menu-item-color);
-  stroke: var(--menu-item-color);
 
   &.is-active {
     div[data-state='open'] > .#{$namespace}-sub-menu-content,
@@ -803,7 +794,6 @@ $namespace: vben;
       cursor: pointer;
       background: var(--menu-submenu-active-background-color);
       fill: var(--menu-submenu-active-color);
-      stroke: var(--menu-submenu-active-color);
     }
   }
 }
