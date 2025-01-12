@@ -19,10 +19,13 @@ import {
   isDate,
   isDayjsObject,
   isFunction,
+  isNumber,
   isObject,
   mergeWithArrayOverride,
   StateHandler,
 } from '@vben-core/shared/utils';
+
+import dayjs from 'dayjs';
 
 function getDefaultState(): VbenFormProps {
   return {
