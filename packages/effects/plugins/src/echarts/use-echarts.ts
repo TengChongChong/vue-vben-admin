@@ -1,6 +1,8 @@
 import type { EChartsOption } from 'echarts';
 import type { Ref } from 'vue';
 
+import type { Nullable } from '@vben/types';
+
 import type EchartsUI from './echarts-ui.vue';
 
 import { usePreferences } from '@vben/preferences';
@@ -47,7 +49,10 @@ function useEcharts(chartRef: Ref<EchartsUIType>) {
     return chartInstance;
   };
 
-  const renderEcharts = (options: EChartsOption, clear = true) => {
+  const renderEcharts = (
+    options: EChartsOption,
+    clear = true,
+  ): Promise<Nullable<echarts.ECharts>> => {
     cacheOptions = options;
     const currentOptions = {
       ...options,
@@ -55,9 +60,8 @@ function useEcharts(chartRef: Ref<EchartsUIType>) {
     };
     return new Promise((resolve) => {
       if (chartRef.value?.offsetHeight === 0) {
-        useTimeoutFn(() => {
-          renderEcharts(currentOptions);
-          resolve(null);
+        useTimeoutFn(async () => {
+          resolve(await renderEcharts(currentOptions));
         }, 30);
         return;
       }
@@ -69,7 +73,7 @@ function useEcharts(chartRef: Ref<EchartsUIType>) {
           }
           clear && chartInstance?.clear();
           chartInstance?.setOption(currentOptions);
-          resolve(null);
+          resolve(chartInstance);
         }, 30);
       });
     });
@@ -106,7 +110,7 @@ function useEcharts(chartRef: Ref<EchartsUIType>) {
   return {
     renderEcharts,
     resize,
-    chartInstance,
+    getChartInstance: () => chartInstance,
   };
 }
 

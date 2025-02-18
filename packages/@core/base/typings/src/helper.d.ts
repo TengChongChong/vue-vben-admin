@@ -107,20 +107,26 @@ type MergeAll<
   ? MergeAll<Rest, Merge<R, F>>
   : R;
 
-export {
-  type AnyFunction,
-  type AnyNormalFunction,
-  type AnyPromiseFunction,
-  type DeepPartial,
-  type DeepReadonly,
-  type IntervalHandle,
-  type MaybeComputedRef,
-  type MaybeReadonlyRef,
-  type Merge,
-  type MergeAll,
-  type NonNullable,
-  type Nullable,
-  type ReadonlyRecordable,
-  type Recordable,
-  type TimeoutHandle,
+type EmitType = (name: Name, ...args: any[]) => void;
+
+type MaybePromise<T> = Promise<T> | T;
+
+export type {
+  AnyFunction,
+  AnyNormalFunction,
+  AnyPromiseFunction,
+  DeepPartial,
+  DeepReadonly,
+  EmitType,
+  IntervalHandle,
+  MaybeComputedRef,
+  MaybePromise,
+  MaybeReadonlyRef,
+  Merge,
+  MergeAll,
+  NonNullable,
+  Nullable,
+  ReadonlyRecordable,
+  Recordable,
+  TimeoutHandle,
 };

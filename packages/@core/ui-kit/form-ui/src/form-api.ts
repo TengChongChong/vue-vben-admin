@@ -385,6 +385,9 @@ export class FormApi {
         if (format === null) {
           values[startTimeKey] = startTime;
           values[endTimeKey] = endTime;
+        } else if (isFunction(format)) {
+          values[startTimeKey] = format(startTime, startTimeKey);
+          values[endTimeKey] = format(endTime, endTimeKey);
         } else {
           const [startTimeFormat, endTimeFormat] = Array.isArray(format)
             ? format
@@ -415,9 +418,8 @@ export class FormApi {
       const deletedSchema = prevSchema.filter(
         (item) => !currentFields.has(item.fieldName),
       );
-
       for (const schema of deletedSchema) {
-        this.form?.setFieldValue(schema.fieldName, undefined);
+        this.form?.setFieldValue?.(schema.fieldName, undefined);
       }
     }
   }

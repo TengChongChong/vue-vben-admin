@@ -67,6 +67,7 @@ const {
   loading: showLoading,
   modal,
   openAutoFocus,
+  overlayBlur,
   placement,
   showCancelButton,
   showConfirmButton,
@@ -139,6 +140,7 @@ const getAppendTo = computed(() => {
       :open="state?.isOpen"
       :side="placement"
       :z-index="zIndex"
+      :overlay-blur="overlayBlur"
       @close-auto-focus="handleFocusOutside"
       @closed="() => drawerApi?.onClosed()"
       @escape-key-down="escapeKeyDown"
