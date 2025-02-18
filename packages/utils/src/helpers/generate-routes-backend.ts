@@ -1,11 +1,12 @@
+import type { RouteRecordRaw } from 'vue-router';
+
 import type {
   ComponentRecordType,
   GenerateMenuAndRoutesOptions,
   RouteRecordStringComponent,
 } from '@vben-core/typings';
-import type { RouteRecordRaw } from 'vue-router';
 
-import { cloneDeep, listToTree, mapTree } from '@vben-core/shared/utils';
+import { listToTree, mapTree } from '@vben-core/shared/utils';
 
 /**
  * 动态生成路由 - 后端方式
@@ -29,18 +30,10 @@ async function generateRoutesByBackend(
 
     // 后端响应的路由为list，且外层无 BasicLayout
     const treeRoutes = listToTree(menuRoutes);
-    // 加一级父路由，使用 BasicLayout布局，且不在面包屑中显示，生成菜单时也将忽略此层
-    treeRoutes.forEach((route) => {
-      route.children = [cloneDeep(route)];
-      route.component = 'BasicLayout';
-      route.name = `${route.name}Parent`;
-      route.path = `${route.path}`;
-      route.meta = {
-        // 不在面包屑中显示
-        hideInBreadcrumb: true,
-      };
-    });
-    return convertRoutes(treeRoutes, layoutMap, normalizePageMap);
+
+    const routes = convertRoutes(treeRoutes, layoutMap, normalizePageMap);
+
+    return routes;
   } catch (error) {
     console.error(error);
     return [];

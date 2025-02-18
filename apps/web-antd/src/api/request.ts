@@ -3,7 +3,6 @@
  */
 import type { RequestClientOptions } from '@vben/request';
 
-import { useAuthStore } from '#/store';
 import { useAppConfig } from '@vben/hooks';
 import { preferences } from '@vben/preferences';
 import {
@@ -13,7 +12,10 @@ import {
   RequestClient,
 } from '@vben/request';
 import { useAccessStore } from '@vben/stores';
+
 import { message } from 'ant-design-vue';
+
+import { useAuthStore } from '#/store';
 
 import { refreshTokenApi } from './core';
 
@@ -72,24 +74,11 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
   // 处理返回的响应数据格式
   client.addResponseInterceptor(
     defaultResponseInterceptor({
-      codeField: 'code',
+      codeField: 'success',
       dataField: 'data',
-      successCode: 0,
+      successCode: true,
     }),
   );
-  // todo: response数据解构
-  // client.addResponseInterceptor<HttpResponse>({
-  //   fulfilled: (response) => {
-  //     const { data: responseData } = response;
-  //
-  //     const { success, data } = responseData;
-  //     if (success) {
-  //       return data;
-  //     }
-  //
-  //     throw Object.assign({}, response, { response });
-  //   },
-  // });
 
   // token过期的处理
   client.addResponseInterceptor(
@@ -102,52 +91,36 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
     }),
   );
 
-  // 通用的错误处理,如果没有进入上面的错误处理逻辑，就会进入这里
   client.addResponseInterceptor(
-    errorMessageResponseInterceptor((msg: string, error) => {
+    errorMessageResponseInterceptor((_msg: string, error) => {
       // 这里可以根据业务进行定制,你可以拿到 error 内的信息进行定制化处理，根据不同的 code 做不同的提示，而不是直接使用 message.error 提示 msg
-      // 当前mock接口返回的错误字段是 error 或者 message
-      const responseData = error?.response?.data ?? {};
-      const errorMessage = responseData?.error ?? responseData?.message ?? '';
-      // 如果没有错误信息，则会根据状态码进行提示
-      message.error(errorMessage || msg);
+      // message.error(msg);
+      if (error.config.errorMessageMode === 'silent') {
+        return Promise.reject(error);
+      }
+      // eslint-disable-next-line no-unsafe-optional-chaining
+      const { errorMessage, showType } = error?.response?.data;
+      if (errorMessage) {
+        // 如果后端有响应错误消息
+        message.open({
+          type: showType || 'error',
+          content: errorMessage,
+        });
+        return Promise.reject(error);
+      }
+
+      // 使用通用错误消息提示
+      return errorMessageResponseInterceptor((msg: string) =>
+        message.error(msg),
+      );
     }),
   );
-
-  // todo: 通用的错误处理,如果没有进入上面的错误处理逻辑，就会进入这里
-  // client.addResponseInterceptor(
-  //   errorMessageResponseInterceptor((_msg: string, error) => {
-  //     // 这里可以根据业务进行定制,你可以拿到 error 内的信息进行定制化处理，根据不同的 code 做不同的提示，而不是直接使用 message.error 提示 msg
-  //     // message.error(msg);
-  //     if (error.config.errorMessageMode === 'silent') {
-  //       return Promise.reject(error);
-  //     }
-  //     // eslint-disable-next-line no-unsafe-optional-chaining
-  //     const { errorMessage, showType } = error?.response?.data;
-  //     if (errorMessage) {
-  //       // 如果后端有响应错误消息
-  //       message.open({
-  //         type: showType || 'error',
-  //         content: errorMessage,
-  //       });
-  //       return Promise.reject(error);
-  //     }
-  //
-  //     // 使用通用错误消息提示
-  //     return errorMessageResponseInterceptor((msg: string) =>
-  //       message.error(msg),
-  //     );
-  //   }),
-  // );
 
   return client;
 }
 
 export const requestClient = createRequestClient(apiURL, {
-  // responseReturn: 'data',
-  codeField: 'success',
-  dataField: 'data',
-  successCode: true,
+  responseReturn: 'data',
 });
 
 export const baseRequestClient = new RequestClient({ baseURL: apiURL });

@@ -1,6 +1,5 @@
 import type { RouteRecordRaw } from 'vue-router';
 
-import { AuthPageLayout } from '#/layouts';
 import { DEFAULT_HOME_PATH, LOGIN_PATH } from '@vben/constants';
 
 import { AuthPageLayout, BasicLayout } from '#/layouts';
