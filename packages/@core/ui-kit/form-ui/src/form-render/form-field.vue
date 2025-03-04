@@ -3,6 +3,8 @@ import type { ZodType } from 'zod';
 
 import type { FormSchema, MaybeComponentProps } from '../types';
 
+import { computed, nextTick, useTemplateRef, watch } from 'vue';
+
 import {
   FormControl,
   FormDescription,
@@ -12,9 +14,9 @@ import {
   VbenRenderContent,
 } from '@vben-core/shadcn-ui';
 import { cn, isFunction, isObject, isString } from '@vben-core/shared/utils';
+
 import { toTypedSchema } from '@vee-validate/zod';
 import { useFieldError, useFormValues } from 'vee-validate';
-import { computed, nextTick, useTemplateRef, watch } from 'vue';
 
 import { injectRenderFormProps, useFormContext } from './context';
 import useDependencies from './dependencies';
@@ -43,9 +45,9 @@ const {
   renderComponentContent,
   rules,
 } = defineProps<
-  {
+  Props & {
     commonComponentProps: MaybeComponentProps;
-  } & Props
+  }
 >();
 
 const { componentBindEventMap, componentMap, isVertical } = useFormContext();
@@ -191,7 +193,7 @@ const fieldProps = computed(() => {
   const rules = fieldRules.value;
   return {
     keepValue: true,
-    label,
+    label: isString(label) ? label : '',
     ...(rules ? { rules } : {}),
     ...(formFieldProps as Record<string, any>),
   };
@@ -283,7 +285,7 @@ function autofocus() {
         'pb-6': !compact,
         'pb-2': compact,
       }"
-      class="flex"
+      class="relative flex"
       v-bind="$attrs"
     >
       <FormLabel
@@ -299,59 +301,64 @@ function autofocus() {
           )
         "
         :help="help"
+        :colon="colon"
+        :label="label"
         :required="shouldRequired && !hideRequiredMark"
         :style="labelStyle"
       >
         <template v-if="label">
-          <span>{{ label }}</span>
-          <span v-if="colon" class="ml-[2px]">:</span>
+          <VbenRenderContent :content="label" />
         </template>
       </FormLabel>
-      <div :class="cn('relative w-full', wrapperClass)">
-        <FormControl :class="cn(controlClass)">
-          <slot
-            v-bind="{
-              ...slotProps,
-              ...createComponentProps(slotProps),
-              disabled: shouldDisabled,
-              isInValid,
-            }"
-          >
-            <component
-              :is="FieldComponent"
-              ref="fieldComponentRef"
-              :class="{
-                'border-destructive focus:border-destructive hover:border-destructive/80 focus:shadow-[0_0_0_2px_rgba(255,38,5,0.06)]':
+      <div class="w-full overflow-hidden">
+        <div :class="cn('relative flex w-full items-center', wrapperClass)">
+          <div class="flex-auto overflow-hidden p-[2px]">
+            <FormControl :class="cn(controlClass)">
+              <slot
+                v-bind="{
+                  ...slotProps,
+                  ...createComponentProps(slotProps),
+                  disabled: shouldDisabled,
                   isInValid,
-              }"
-              v-bind="createComponentProps(slotProps)"
-              :disabled="shouldDisabled"
-            >
-              <template
-                v-for="name in renderContentKey"
-                :key="name"
-                #[name]="renderSlotProps"
+                }"
               >
-                <VbenRenderContent
-                  :content="customContentRender[name]"
-                  v-bind="{ ...renderSlotProps, formContext: slotProps }"
-                />
-              </template>
-              <!-- <slot></slot> -->
-            </component>
-          </slot>
-        </FormControl>
-        <!-- 自定义后缀 -->
-        <div v-if="suffix" class="ml-1">
-          <VbenRenderContent :content="suffix" />
+                <component
+                  :is="FieldComponent"
+                  ref="fieldComponentRef"
+                  :class="{
+                    'border-destructive focus:border-destructive hover:border-destructive/80 focus:shadow-[0_0_0_2px_rgba(255,38,5,0.06)]':
+                      isInValid,
+                  }"
+                  v-bind="createComponentProps(slotProps)"
+                  :disabled="shouldDisabled"
+                >
+                  <template
+                    v-for="name in renderContentKey"
+                    :key="name"
+                    #[name]="renderSlotProps"
+                  >
+                    <VbenRenderContent
+                      :content="customContentRender[name]"
+                      v-bind="{ ...renderSlotProps, formContext: slotProps }"
+                    />
+                  </template>
+                  <!-- <slot></slot> -->
+                </component>
+              </slot>
+            </FormControl>
+          </div>
+
+          <!-- 自定义后缀 -->
+          <div v-if="suffix" class="ml-1">
+            <VbenRenderContent :content="suffix" />
+          </div>
+          <FormDescription v-if="description" class="ml-1">
+            <VbenRenderContent :content="description" />
+          </FormDescription>
         </div>
 
-        <FormDescription v-if="description" class="mt-1">
-          <VbenRenderContent :content="description" />
-        </FormDescription>
-
         <Transition name="slide-up">
-          <FormMessage class="absolute -bottom-[22px]" />
+          <FormMessage class="absolute bottom-1" />
         </Transition>
       </div>
     </FormItem>

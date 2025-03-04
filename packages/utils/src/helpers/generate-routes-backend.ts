@@ -57,22 +57,19 @@ function convertRoutes(
       return route;
     }
     // layout转换
-    if (layoutMap[component]) {
+    if (component && layoutMap[component]) {
       route.component = layoutMap[component];
       // 页面组件转换
-    } else {
+    } else if (component) {
       const normalizePath = normalizeViewPath(component);
-      let componentPage =
-        pageMap[
-          normalizePath.endsWith('.vue')
-            ? normalizePath
-            : `${normalizePath}.vue`
-        ];
-      if (!componentPage) {
-        // 如果未找到对应的页面，视为尚未开发
-        componentPage = pageMap['/_core/fallback/coming-soon.vue'];
+      const pageKey = normalizePath.endsWith('.vue')
+        ? normalizePath
+        : `${normalizePath}.vue`;
+      if (pageMap[pageKey]) {
+        route.component = pageMap[pageKey];
+      } else {
+        console.error(`route component is invalid: ${pageKey}`, route);
       }
-      route.component = componentPage;
     }
     return route;
   });

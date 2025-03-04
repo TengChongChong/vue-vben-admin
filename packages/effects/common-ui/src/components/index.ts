@@ -5,6 +5,7 @@ export * from './count-to';
 export * from './ellipsis-text';
 export * from './icon-picker';
 export * from './json-viewer';
+export * from './loading';
 export * from './page';
 export * from './resize';
 export * from './tippy';
@@ -17,6 +18,8 @@ export {
   PinInputGroup,
   PinInputInput,
   VbenButton,
+  VbenButtonGroup,
+  VbenCheckButtonGroup,
   VbenCountToAnimator,
   VbenInputPassword,
   VbenLoading,
