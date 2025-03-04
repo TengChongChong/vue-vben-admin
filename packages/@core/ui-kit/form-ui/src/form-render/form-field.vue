@@ -311,7 +311,7 @@ function autofocus() {
         </template>
       </FormLabel>
       <div class="w-full overflow-hidden">
-        <div :class="cn('relative flex w-full items-center', wrapperClass)">
+        <div :class="cn('relative w-full', wrapperClass)">
           <div class="flex-auto overflow-hidden p-[2px]">
             <FormControl :class="cn(controlClass)">
               <slot

@@ -68,7 +68,7 @@ function convertRoutes(
       if (pageMap[pageKey]) {
         route.component = pageMap[pageKey];
       } else {
-        console.error(`route component is invalid: ${pageKey}`, route);
+        console.warn(`route component is invalid: ${pageKey}`, route);
       }
     }
     return route;
