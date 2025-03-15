@@ -2,28 +2,16 @@
  * 通用组件共同的使用的基础组件，原先放在 adapter/form 内部，限制了使用范围，这里提取出来，方便其他地方使用
  * 可用于 vben-form、vben-modal、vben-drawer 等组件使用,
  */
-
 import type { Component } from 'vue';
 
-import { ApiComponent, globalShareState, IconPicker, BaseFormComponentType } from '@vben/common-ui';
+import type { BaseFormComponentType } from '@vben/common-ui';
 import type { Recordable } from '@vben/types';
 
 import { defineComponent, getCurrentInstance, h, ref } from 'vue';
 
-import { Cropper } from '#/components/cropper';
-import { DeptSelect } from '#/components/dept';
-import {
-  DictCascader,
-  DictCheckbox,
-  DictRadio,
-  DictSelect,
-  DictTreeSelect,
-} from '#/components/dict';
-import { Divider } from '#/components/divider';
-import { Editor } from '#/components/editor';
-import { SmsVerificationCode } from '#/components/sms-verification-code';
-
+import { globalShareState, IconPicker } from '@vben/common-ui';
 import { $t } from '@vben/locales';
+
 import {
   AutoComplete,
   Button,
@@ -47,9 +35,22 @@ import {
   TreeSelect,
   Upload,
 } from 'ant-design-vue';
-// import { ApiSelect, ApiTreeSelect } from '#/components/form';
-import { ApiTreeSelect } from '#/components/form';
+
+import { Cropper } from '#/components/cropper';
+import { DeptSelect } from '#/components/dept';
+import {
+  DictCascader,
+  DictCheckbox,
+  DictRadio,
+  DictSelect,
+  DictTreeSelect,
+} from '#/components/dict';
+import { Divider } from '#/components/divider';
+import { Editor } from '#/components/editor';
+import { ApiSelect, ApiTreeSelect } from '#/components/form';
+// import { ApiTreeSelect } from '#/components/form';
 import { RoleSelect } from '#/components/role';
+import { SmsVerificationCode } from '#/components/sms-verification-code';
 import { UserSelect } from '#/components/user';
 
 const withDefaultPlaceholder = <T extends Component>(
@@ -128,21 +129,21 @@ async function initComponentAdapter() {
     // 如果你的组件体积比较大，可以使用异步加载
     // Button: () =>
     // import('xxx').then((res) => res.Button),
-    ApiSelect: (props, { attrs, slots }) => {
-      return h(
-        ApiComponent,
-        {
-          placeholder: $t('ui.placeholder.select'),
-          ...props,
-          ...attrs,
-          component: Select,
-          loadingSlot: 'suffixIcon',
-          visibleEvent: 'onDropdownVisibleChange',
-          modelPropName: 'value',
-        },
-        slots,
-      );
-    },
+    // ApiSelect: (props, { attrs, slots }) => {
+    //   return h(
+    //     ApiComponent,
+    //     {
+    //       placeholder: $t('ui.placeholder.select'),
+    //       ...props,
+    //       ...attrs,
+    //       component: Select,
+    //       loadingSlot: 'suffixIcon',
+    //       visibleEvent: 'onDropdownVisibleChange',
+    //       modelPropName: 'value',
+    //     },
+    //     slots,
+    //   );
+    // },
     // ApiTreeSelect: (props, { attrs, slots }) => {
     //   return h(
     //     ApiComponent,
@@ -206,7 +207,7 @@ async function initComponentAdapter() {
     Upload,
     //
     ApiTreeSelect: withDefaultPlaceholder(ApiTreeSelect, 'select'),
-    // ApiSelect: withDefaultPlaceholder(ApiSelect, 'select'),
+    ApiSelect: withDefaultPlaceholder(ApiSelect, 'select'),
     DictCascader: withDefaultPlaceholder(DictCascader, 'select'),
     DictCheckbox,
     DictRadio,
