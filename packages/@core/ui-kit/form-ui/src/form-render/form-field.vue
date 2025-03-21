@@ -290,6 +290,7 @@ onUnmounted(() => {
       v-show="isShow"
       :class="{
         'form-valid-error': isInValid,
+        'form-is-required': shouldRequired,
         'flex-col': isVertical,
         'flex-row': !isVertical,
         'pb-6': !compact,
