@@ -49,7 +49,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  prefix: 'ant-design',
+  prefix: 'lucide',
   pageSize: 36,
   icons: () => [],
   iconSlot: 'default',

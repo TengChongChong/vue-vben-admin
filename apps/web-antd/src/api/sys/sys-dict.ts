@@ -53,7 +53,7 @@ export function getApi(id: string) {
  * @param dictType 字典类型
  */
 export function addApi(id: string | undefined, dictType: string | undefined) {
-  return requestClient.get<SysDict>(`${BASE_URL}/add/${id || ''}`, {
+  return requestClient.get<SysDict>(`${BASE_URL}/add${id ? `/${id}` : ''}`, {
     params: {
       dictType,
     },

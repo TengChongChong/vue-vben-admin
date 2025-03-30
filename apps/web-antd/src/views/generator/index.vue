@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { FormType } from './types/generator.data';
+
 import type { SelectModel } from '#/api/base/model/select-model';
 import type {
   BasicsConfigModel,
@@ -9,12 +11,13 @@ import type {
   TableInfo,
 } from '#/api/generator/model/generatorModel';
 
-import type { FormType } from './types/generator.data';
+import { onMounted, ref, unref } from 'vue';
+
+import { Page } from '@vben/common-ui';
+
+import { Card, Step, Steps } from 'ant-design-vue';
 
 import { selectAllApi } from '#/api/sys/sys-dict-type';
-import { Page } from '@vben/common-ui';
-import { Card, Step, Steps } from 'ant-design-vue';
-import { onMounted, ref, unref } from 'vue';
 
 import BasicsConfig from './components/basics-config.vue';
 import Finish from './components/finish.vue';

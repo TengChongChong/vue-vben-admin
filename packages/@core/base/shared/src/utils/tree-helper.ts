@@ -1,14 +1,14 @@
 interface TreeHelperConfig {
-  id: string;
   children: string;
+  id: string;
   pid: string;
 }
 
 // 默认配置
 const DEFAULT_CONFIG: TreeHelperConfig = {
   id: 'id',
-  children: 'children',
   pid: 'parentId',
+  children: 'children',
 };
 
 // 获取配置。  Object.assign 从一个或多个源对象复制到目标对象
@@ -24,7 +24,7 @@ export function listToTree<T = any>(
   const conf = getConfig(config) as TreeHelperConfig;
   const nodeMap = new Map();
   const result: T[] = [];
-  const { id, children, pid } = conf;
+  const { id, pid, children } = conf;
 
   for (const node of list) {
     node[children] = node[children] || [];
@@ -210,7 +210,7 @@ export function treeMap<T = any>(
  */
 export function treeMapEach(
   data: any,
-  { children = 'children', conversion }: { children?: string; conversion: any },
+  { conversion, children = 'children' }: { children?: string; conversion: any },
 ) {
   const haveChildren =
     Array.isArray(data[children]) && data[children].length > 0;
@@ -242,10 +242,10 @@ export function convertCheckedKeys(treeData: any[], checkedKeys: string[]) {
   }
   const checked: {
     checked: string[];
-    halfCheckedKeys: string[];
+    halfChecked: string[];
   } = {
-    halfCheckedKeys: [],
     checked: [],
+    halfChecked: [],
   };
 
   checkedKeys.forEach((key) => {
@@ -263,7 +263,7 @@ export function convertCheckedKeys(treeData: any[], checkedKeys: string[]) {
         if (hav) {
           checked.checked.push(key);
         } else {
-          checked.halfCheckedKeys.push(key);
+          checked.halfChecked.push(key);
         }
       } else {
         // 没有子节点，全选状态

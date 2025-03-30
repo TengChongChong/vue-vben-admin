@@ -1,9 +1,12 @@
-import { DictTag } from '#/components/dict';
-import { formatToDuration } from '#/util/date';
+import { h } from 'vue';
+
 import { setupVbenVxeTable, useVbenVxeGrid } from '@vben/plugins/vxe-table';
+
 import { Button, Image } from 'ant-design-vue';
 import dayjs from 'dayjs';
-import { h } from 'vue';
+
+import { DictTag } from '#/components/dict';
+import { formatToDuration } from '#/util/date';
 
 import { useVbenForm } from './form';
 
@@ -111,13 +114,13 @@ setupVbenVxeTable({
           enabled: false,
         },
         // 序号配置项
-        seqConfig: {
-          // 自定义序号的方法，返回处理后的值
-          seqMethod({ $grid, rowIndex }) {
-            const { pageSize, currentPage } = $grid.reactData.tablePage;
-            return (currentPage - 1) * pageSize + rowIndex + 1;
-          },
-        },
+        // seqConfig: {
+        //   // 自定义序号的方法，返回处理后的值
+        //   seqMethod({ $grid, rowIndex }) {
+        //     const { pageSize, currentPage } = $grid.reactData.tablePage;
+        //     return (currentPage - 1) * pageSize + rowIndex + 1;
+        //   },
+        // },
         proxyConfig: {
           // 是否自动加载查询数据
           autoLoad: true,

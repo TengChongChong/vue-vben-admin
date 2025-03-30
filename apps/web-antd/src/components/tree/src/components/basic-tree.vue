@@ -1,22 +1,34 @@
 <script setup lang="ts">
+import type { MenuProps } from 'ant-design-vue';
+import type { TreeProps } from 'ant-design-vue/es/tree/Tree';
+import type { FieldNames } from 'ant-design-vue/es/vc-cascader';
+
+import type { VNode } from 'vue';
+
 import type {
   BasicTreeProps,
   TreeActionType,
   TreeItem,
   TreeState,
 } from '#/components/tree/src/types';
-import type { MenuProps } from 'ant-design-vue';
-import type { TreeProps } from 'ant-design-vue/es/tree/Tree';
-import type { FieldNames } from 'ant-design-vue/es/vc-cascader';
-import type { VNode } from 'vue';
 
-import { HighlightText } from '#/components/highlight-text';
-import { LucideEllipsisVertical } from '#/components/icons';
-import { useTree } from '#/components/tree/src/hooks/useTree';
-import { ToolbarEnum } from '#/components/tree/src/types';
+import {
+  computed,
+  h,
+  onMounted,
+  reactive,
+  ref,
+  toRaw,
+  unref,
+  useAttrs,
+  watch,
+  watchEffect,
+} from 'vue';
+
 import { VbenScrollbar } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
 import { cn, filter, treeToList } from '@vben/utils';
+
 import { useDebounceFn } from '@vueuse/shared';
 import {
   Button,
@@ -31,18 +43,11 @@ import {
   Tree,
 } from 'ant-design-vue';
 import { difference, isArray, isString, omit } from 'lodash-es';
-import {
-  computed,
-  h,
-  onMounted,
-  reactive,
-  ref,
-  toRaw,
-  unref,
-  useAttrs,
-  watch,
-  watchEffect,
-} from 'vue';
+
+import { HighlightText } from '#/components/highlight-text';
+import { LucideEllipsisVertical } from '#/components/icons';
+import { useTree } from '#/components/tree/src/hooks/useTree';
+import { ToolbarEnum } from '#/components/tree/src/types';
 
 defineOptions({
   inheritAttrs: false,
@@ -131,12 +136,11 @@ const getBindValues = computed(() => {
       } else {
         state.checkedKeys = v;
       }
-
       const rawVal = state.checkStrictly
         ? toRaw(state.checkedKeys)
         : {
             checked: toRaw(state.checkedKeys),
-            halfCheckedKeys: e.halfCheckedKeys,
+            halfChecked: e.halfCheckedKeys,
           };
       emit('update:value', rawVal);
       emit('check', rawVal, e);

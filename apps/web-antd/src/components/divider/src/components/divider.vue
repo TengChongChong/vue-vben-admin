@@ -2,14 +2,21 @@
 defineOptions({
   inheritAttrs: false,
 });
-defineProps<{
-  text?: string;
-}>();
+withDefaults(
+  defineProps<{
+    showHr?: boolean;
+    text?: string;
+  }>(),
+  {
+    showHr: true,
+    text: '',
+  },
+);
 </script>
 
 <template>
   <div class="divider">
-    <hr />
+    <hr v-if="showHr" />
     <div class="divider-title">
       <template v-if="text">{{ text }}</template>
       <template v-else>

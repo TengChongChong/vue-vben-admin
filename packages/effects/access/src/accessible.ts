@@ -72,7 +72,6 @@ async function generateRoutes(
   switch (mode) {
     case 'backend': {
       resultRoutes = await generateRoutesByBackend(options);
-      console.log('resultRoutes', resultRoutes);
       break;
     }
     case 'frontend': {
@@ -81,7 +80,6 @@ async function generateRoutes(
         roles || [],
         forbiddenComponent,
       );
-      console.log('resultRoutes', resultRoutes);
       break;
     }
   }

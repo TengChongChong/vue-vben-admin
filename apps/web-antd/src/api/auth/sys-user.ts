@@ -67,7 +67,9 @@ export function getApi(id: string) {
  * @param deptId 部门id
  */
 export function addApi(deptId: string) {
-  return requestClient.get<SysUserVO>(`${BASE_URL}/add/${deptId}`);
+  return requestClient.get<SysUserVO>(
+    `${BASE_URL}/add${deptId ? `/${deptId}` : ''}`,
+  );
 }
 
 /**

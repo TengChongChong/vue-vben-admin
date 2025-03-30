@@ -40,7 +40,9 @@ export function getApi(id: string) {
  * @param id 父id
  */
 export function addApi(id: string | undefined) {
-  return requestClient.get<SysDeptTypeVO>(`${BASE_URL}/add/${id || ''}`);
+  return requestClient.get<SysDeptTypeVO>(
+    `${BASE_URL}/add${id ? `/${id}` : ''}`,
+  );
 }
 
 /**

@@ -38,7 +38,7 @@ export function getApi(id: string) {
  * @param typeCode 部门类型代码
  */
 export function addApi(id: string | undefined, typeCode: string | undefined) {
-  return requestClient.get<SysDept>(`${BASE_URL}/add/${id || ''}`, {
+  return requestClient.get<SysDept>(`${BASE_URL}/add${id ? `/${id}` : ''}`, {
     params: { typeCode },
   });
 }

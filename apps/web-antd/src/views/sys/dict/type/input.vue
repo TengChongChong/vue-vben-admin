@@ -94,8 +94,8 @@ async function handleSave() {
 async function handleSaveAndAdd() {
   await handleSubmit((res) => {
     baseFormApi.resetForm();
-    const { category, type, sys } = res;
-    baseFormApi.setValues({ category, type, sys });
+    const { sys, status } = res;
+    baseFormApi.setValues({ sys, status });
   });
 }
 

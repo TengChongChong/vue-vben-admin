@@ -2,10 +2,13 @@
 import type { SysDict } from '#/api/sys/model/sys-dict-model';
 import type { DictTagProps } from '#/components/dict/src/props';
 
-import { useDictStore } from '#/store';
-import { isNumber, isString } from '@vben/utils';
-import { Tag } from 'ant-design-vue';
 import { computed } from 'vue';
+
+import { isNumber, isString } from '@vben/utils';
+
+import { Tag } from 'ant-design-vue';
+
+import { useDictStore } from '#/store';
 
 const props = withDefaults(defineProps<DictTagProps>(), {
   useTag: true,
@@ -64,8 +67,5 @@ function convertDictCode() {
       <span v-else>{{ dict.name }}</span>
       {{ index < dictArray.length - 1 ? props.separator : '' }}
     </template>
-  </template>
-  <template v-else>
-    {{ `无效字典（${props.dictType}-${props.code}）` }}
   </template>
 </template>
