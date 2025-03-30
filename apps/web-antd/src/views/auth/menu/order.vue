@@ -2,16 +2,17 @@
 import type { TreeProps } from 'ant-design-vue';
 import type { AntTreeNodeDropEvent } from 'ant-design-vue/lib/tree';
 
-import type { SysPermission } from '#/api/auth/model/sys-permission-model';
+import type { SysMenu } from '#/api/sys/model/sys-menu-model';
 
 import { ref } from 'vue';
 
 import { useVbenDrawer } from '@vben/common-ui';
 import { listToTree, treeToList } from '@vben/utils';
 
-import { Alert, Space, Tree } from 'ant-design-vue';
+import { Alert, Tree } from 'ant-design-vue';
+import { Space } from 'ant-design-vue';
 
-import { saveOrderApi, selectAllApi } from '#/api/auth/sys-permission';
+import { saveOrderApi, selectAllApi } from '#/api/auth/sys-menu';
 import { ButtonClose, ButtonSave } from '#/components/button';
 
 const emit = defineEmits(['success']);
@@ -26,7 +27,7 @@ async function handleSave() {
 
     setProps(treeData.value, undefined);
 
-    const params: SysPermission[] = [];
+    const params: SysMenu[] = [];
     treeToList(treeData.value).forEach((item) => {
       const { id, parentId, orderNo } = item;
       params.push({

@@ -1,67 +1,69 @@
 // 表格列数据
 import type { VxeGridPropTypes } from '@vben/plugins/vxe-table';
 
-import { createVNode, h } from 'vue';
+import { h } from 'vue';
 
 import { message, Switch } from 'ant-design-vue';
 
-import { setStatusApi } from '#/api/auth/sys-permission';
-import { Icon } from '#/components/icons';
+import { setStatusApi } from '#/api/auth/sys-menu';
 
-export enum MenuTypeEnum {
-  BUTTON = 'button',
-  CATALOGUE = 'catalogue',
-  MENU = 'menu',
-}
-
+// 表格列数据
 export const initColumns = (): VxeGridPropTypes.Columns[] => {
   return [
     { type: 'checkbox', width: 50, fixed: 'left' },
-    { title: '序号', type: 'seq', width: 90, fixed: 'left' },
+    { title: '序号', type: 'seq', width: 100, fixed: 'left' },
     {
-      title: '名称',
+      title: '标题',
       field: 'title',
       fixed: 'left',
       align: 'left',
       headerAlign: 'center',
       minWidth: 240,
       treeNode: true,
-    },
-    {
-      title: '图标',
-      field: 'icon',
-      width: 60,
-      className: 'vxe-cell-icon-center',
-      slots: {
-        default: ({ row }) => {
-          if (row.icon) {
-            return createVNode(Icon, { icon: row.icon });
-          }
-          return '';
-        },
-      },
+      slots: { default: 'title' },
     },
     {
       title: '类型',
       field: 'type',
       width: 100,
-      cellRender: { name: 'DictTag', props: { dictType: 'permissionType' } },
+      cellRender: {
+        name: 'DictTag',
+        props: { dictType: 'menuType' },
+      },
+    },
+    {
+      title: '路由地址',
+      field: 'path',
+      width: 200,
+    },
+    {
+      title: '页面组件',
+      field: 'component',
+      width: 200,
     },
     {
       title: '权限标识',
-      field: 'code',
-      minWidth: 240,
+      field: 'authCode',
+      width: 150,
     },
-    {
-      title: 'Path',
-      field: 'path',
-      minWidth: 240,
-    },
-    {
-      title: '排序值',
-      field: 'orderNo',
-      width: 80,
-    },
+    // {
+    //   title: '缓存标签页',
+    //   field: 'keepAlive',
+    //   width: 100,
+    //   cellRender: { name: 'DictTag', props: { dictType: 'whether' } },
+    // },
+    // {
+    //   title: '固定在标签栏',
+    //   field: 'affixTab',
+    //   width: 120,
+    //   cellRender: { name: 'DictTag', props: { dictType: 'whether' } },
+    // },
+    // {
+    //   title: '隐藏菜单',
+    //   field: 'hideInMenu',
+    //   width: 100,
+    //   cellRender: { name: 'DictTag', props: { dictType: 'whether' } },
+    // },
     {
       title: '状态',
       field: 'status',
@@ -101,10 +103,15 @@ export const initColumns = (): VxeGridPropTypes.Columns[] => {
       },
     },
     {
-      title: '显示',
-      field: 'showInMenu',
-      width: 100,
-      cellRender: { name: 'DictTag', props: { dictType: 'whether' } },
+      title: '编辑人',
+      field: 'editUser',
+      width: 120,
+    },
+    {
+      title: '编辑时间',
+      field: 'editDate',
+      width: 160,
+      formatter: 'dateTime',
     },
     {
       title: '操作',

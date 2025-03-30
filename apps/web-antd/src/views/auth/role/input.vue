@@ -1,23 +1,23 @@
 <script lang="ts" setup>
 import type { TreeDataItem } from 'ant-design-vue/es/tree/Tree';
 
+import type { Recordable } from '@vben/types';
+
 import type { SysRoleVO } from '#/api/auth/model/sys-role-model';
 
-import { ref, unref } from 'vue';
+import { ref } from 'vue';
 
 import { useAccess } from '@vben/access';
-import { useVbenDrawer, z } from '@vben/common-ui';
-import { convertCheckedKeys, listToTree } from '@vben/utils';
+import { useVbenDrawer, VbenScrollbar, VbenTree, z } from '@vben/common-ui';
+import { clearTreeEmptyChildren, listToTree } from '@vben/utils';
 
 import { message, Space } from 'ant-design-vue';
-import { isArray } from 'lodash-es';
 
 import { useVbenForm } from '#/adapter/form';
 import { selectAllApi as selectAllDeptApi } from '#/api/auth/sys-dept';
-import { selectAllApi as selectAllPermissionApi } from '#/api/auth/sys-permission';
+import { selectAllApi as selectAllMenuApi } from '#/api/auth/sys-menu';
 import { addApi, saveApi } from '#/api/auth/sys-role';
 import { ButtonClose, ButtonSave } from '#/components/button';
-import { BasicTree } from '#/components/tree';
 import { RoleEnum } from '#/enums/roleEnum';
 
 const emit = defineEmits(['success']);
@@ -26,16 +26,16 @@ const saveBtnLoading = ref(false);
 
 const { hasAccessByRoles } = useAccess();
 
-const permissionTreeData = ref<TreeDataItem[]>([]);
+const menuTreeData = ref<TreeDataItem[]>([]);
 const deptTreeData = ref<TreeDataItem[]>([]);
 
 function initData() {
-  selectAllPermissionApi().then((res) => {
-    permissionTreeData.value = listToTree(res);
+  selectAllMenuApi().then((res) => {
+    menuTreeData.value = clearTreeEmptyChildren(listToTree(res), 'children');
   });
 
   selectAllDeptApi().then((res) => {
-    deptTreeData.value = listToTree(res);
+    deptTreeData.value = clearTreeEmptyChildren(listToTree(res), 'children');
   });
 }
 
@@ -43,6 +43,9 @@ initData();
 
 const [BaseForm, baseFormApi] = useVbenForm({
   showDefaultActions: false,
+  commonConfig: {
+    labelWidth: 120,
+  },
   schema: [
     { fieldName: 'id', component: 'Input', formItemClass: 'hidden' },
     { fieldName: 'version', component: 'Input', formItemClass: 'hidden' },
@@ -78,7 +81,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
     },
     {
       label: '菜单',
-      fieldName: 'permissionIds',
+      fieldName: 'menuIds',
       component: 'Input',
     },
     {
@@ -149,17 +152,6 @@ async function handleSubmit(callback: (res: SysRoleVO) => any) {
       return;
     }
     const values: SysRoleVO = { ...(await baseFormApi.getValues()) };
-    if (!isArray(values.permissionIds)) {
-      const { checked, halfCheckedKeys } = values.permissionIds;
-      values.permissionIds = [...checked, ...halfCheckedKeys];
-    }
-    if (
-      values.dataPermissionDeptIds &&
-      !isArray(values.dataPermissionDeptIds)
-    ) {
-      const { checked, halfCheckedKeys } = values.dataPermissionDeptIds;
-      values.dataPermissionDeptIds = [...checked, ...halfCheckedKeys];
-    }
     const res = await saveApi(values);
     message.success('保存成功');
     emit('success');
@@ -186,6 +178,18 @@ async function handleSaveAndAdd() {
   });
 }
 
+function getNodeClass(node: Recordable<any>) {
+  const classes: string[] = [];
+  if (node.value?.type === 'button') {
+    classes.push('inline-flex');
+    if (node.index % 3 >= 1) {
+      classes.push('!pl-0');
+    }
+  }
+
+  return classes.join(' ');
+}
+
 const [Drawer, drawerApi] = useVbenDrawer({
   onOpenChange: async (isOpen: boolean) => {
     if (isOpen) {
@@ -193,14 +197,6 @@ const [Drawer, drawerApi] = useVbenDrawer({
       const data = drawerApi.getData<Record<string, any>>();
       await baseFormApi.setValues({
         ...data,
-        permissionIds: convertCheckedKeys(
-          unref(permissionTreeData),
-          data.permissionIds,
-        ),
-        dataPermissionDeptIds: convertCheckedKeys(
-          unref(deptTreeData),
-          data.dataPermissionDeptIds,
-        ),
       });
     }
   },
@@ -209,29 +205,37 @@ const [Drawer, drawerApi] = useVbenDrawer({
 <template>
   <Drawer class="w-[600px]" title="角色信息">
     <BaseForm>
-      <template #permissionIds="slotProps">
-        <BasicTree
-          :show-search="true"
-          :show-toolbar="true"
-          :tree-data="permissionTreeData"
-          checkable
-          size="small"
-          title="请勾选菜单"
-          v-bind="slotProps"
-        />
+      <template #menuIds="slotProps">
+        <div class="relative max-h-[320px] flex-1 overflow-y-auto">
+          <VbenScrollbar shadow shadow-border>
+            <VbenTree
+              :tree-data="menuTreeData"
+              multiple
+              bordered
+              v-bind="slotProps"
+              :get-node-class="getNodeClass"
+              value-field="id"
+              label-field="title"
+              icon-field="icon"
+            />
+          </VbenScrollbar>
+        </div>
       </template>
 
       <template #dataPermissionDeptIds="slotProps">
-        <BasicTree
-          :default-expand-level="1"
-          :show-search="true"
-          :show-toolbar="true"
-          :tree-data="deptTreeData"
-          checkable
-          size="small"
-          title="请勾选部门"
-          v-bind="slotProps"
-        />
+        <div class="relative max-h-[320px] flex-1 overflow-y-auto">
+          <VbenScrollbar shadow shadow-border>
+            <VbenTree
+              :tree-data="deptTreeData"
+              multiple
+              bordered
+              v-bind="slotProps"
+              value-field="id"
+              label-field="title"
+              icon-field="icon"
+            />
+          </VbenScrollbar>
+        </div>
       </template>
     </BaseForm>
 

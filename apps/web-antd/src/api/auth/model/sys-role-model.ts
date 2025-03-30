@@ -15,8 +15,8 @@ export interface SysRole extends BasicModel {
 }
 
 export interface SysRoleVO extends SysRole {
-  // 权限ids
-  permissionIds: string[];
+  // 菜单ids
+  menuIds: string[];
   // 部门ids - 数据权限
   dataPermissionDeptIds: string[];
 }

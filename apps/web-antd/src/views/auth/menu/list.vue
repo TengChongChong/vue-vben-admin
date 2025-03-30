@@ -1,30 +1,32 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { SysPermission } from '#/api/auth/model/sys-permission-model';
+import type { SysMenu } from '#/api/sys/model/sys-menu-model';
 
 import { ref, unref } from 'vue';
 
 import { Page, useVbenDrawer } from '@vben/common-ui';
+import { $t } from '@vben/locales';
+
+import { MenuBadge } from '@vben-core/menu-ui';
 
 import { Button, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import {
-  addApi,
-  getApi,
-  removeApi,
-  selectApi,
-} from '#/api/auth/sys-permission';
+import { addApi, getApi, removeApi, selectApi } from '#/api/auth/sys-menu';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
-import { LucideListOrdered, LucideMinus, LucidePlus } from '#/components/icons';
+import {
+  IconifyIcon,
+  LucideListOrdered,
+  LucideMinus,
+  LucidePlus,
+} from '#/components/icons';
 
 import { initColumns } from './data';
 import InputDrawer from './input.vue';
 import OrderDrawer from './order.vue';
 
 const expandIds = ref<string[]>([]);
-
 function handleSearch() {
   gridApi.search();
 }
@@ -34,24 +36,37 @@ const formOptions: VbenFormProps = {
   schema: [
     {
       fieldName: 'title',
-      label: '名称',
+      label: '标题',
       component: 'Input',
     },
     {
-      fieldName: 'code',
+      fieldName: 'authCode',
       label: '权限标识',
       component: 'Input',
     },
     {
       fieldName: 'path',
-      label: 'Path',
+      label: '路由地址',
       component: 'Input',
+    },
+    {
+      fieldName: 'linkSrc',
+      label: '链接地址',
+      component: 'Input',
+    },
+    {
+      fieldName: 'status',
+      label: '状态',
+      component: 'DictSelect',
+      componentProps: {
+        dictType: 'commonStatus',
+      },
     },
   ],
 };
 
-const gridOptions: VxeGridProps<SysPermission> = {
-  id: 'auth-permission',
+const gridOptions: VxeGridProps<SysMenu> = {
+  id: 'sys-menu',
   columns: initColumns(),
   pagerConfig: {
     enabled: false,
@@ -68,10 +83,10 @@ const gridOptions: VxeGridProps<SysPermission> = {
   },
   proxyConfig: {
     ajax: {
-      query: async (_, formValues) => {
+      query: async ({ page }, formValues) => {
         // 保持展开状态
         await gridApi.grid.setTreeExpand(unref(expandIds), true);
-        return await selectApi({ ...formValues });
+        return await selectApi({ ...formValues }, page);
       },
     },
   },
@@ -87,23 +102,20 @@ const [Grid, gridApi] = useVbenVxeGrid({
     },
   },
 });
-
 const [BaseInputDrawer, baseInputDrawerApi] = useVbenDrawer({
   connectedComponent: InputDrawer,
 });
 const [BaseOrderDrawer, baseOrderDrawerApi] = useVbenDrawer({
   connectedComponent: OrderDrawer,
 });
-
-function handleEdit(id: string) {
-  getApi(id).then((res) => {
+async function handleCreate(id: string) {
+  addApi(id).then((res) => {
     baseInputDrawerApi.setData(res);
     baseInputDrawerApi.open();
   });
 }
-
-function handleCreate(id: string) {
-  addApi(id).then((res) => {
+function handleEdit(id: string) {
+  getApi(id).then((res) => {
     baseInputDrawerApi.setData(res);
     baseInputDrawerApi.open();
   });
@@ -126,10 +138,7 @@ function handleCollapseAll() {
     <Grid>
       <template #toolbar-tools>
         <Space>
-          <ButtonAdd
-            :auth-codes="['sys:permission:save']"
-            @click="handleCreate"
-          />
+          <ButtonAdd :auth-codes="['sys:menu:save']" @click="handleCreate" />
           <Button @click="handleOrder">
             <template #icon>
               <LucideListOrdered />
@@ -148,34 +157,56 @@ function handleCollapseAll() {
             </template>
             折叠全部
           </Button>
-
           <ButtonRemove
             :api="removeApi"
-            :auth-codes="['sys:permission:remove']"
+            :auth-codes="['sys:menu:remove']"
             :grid-api="gridApi"
             @success="handleSearch"
           />
         </Space>
       </template>
+      <template #title="{ row }">
+        <div class="flex w-full items-center gap-1">
+          <div class="size-4 flex-shrink-0">
+            <IconifyIcon
+              v-if="row.type === 'button'"
+              icon="lucide:shield-check"
+              class="size-full"
+            />
+            <IconifyIcon
+              v-else-if="row.icon"
+              :icon="row.icon"
+              class="size-full"
+            />
+          </div>
+          <span class="flex-auto">{{ $t(row.title) }}</span>
+          <div class="items-center justify-end"></div>
+        </div>
+        <MenuBadge
+          v-if="row.badgeType"
+          class="menu-badge"
+          :badge="row.meta.badge"
+          :badge-type="row.meta.badgeType"
+          :badge-variants="row.meta.badgeVariants"
+        />
+      </template>
       <template #action="{ row }">
         <ButtonAdd
-          :auth-codes="['sys:permission:save']"
+          :auth-codes="['sys:menu:save']"
           size="small"
           text="新增下级"
           type="link"
           @click="handleCreate(row.id)"
         />
-
         <ButtonEdit
-          :auth-codes="['sys:permission:save']"
+          :auth-codes="['sys:menu:save']"
           size="small"
           type="link"
           @click="handleEdit(row.id)"
         />
-
         <ButtonRemove
           :api="removeApi"
-          :auth-codes="['sys:permission:remove']"
+          :auth-codes="['sys:menu:remove']"
           :ids="[row.id]"
           size="small"
           type="link"
@@ -183,18 +214,10 @@ function handleCollapseAll() {
         />
       </template>
     </Grid>
+
     <!--  编辑  -->
     <BaseInputDrawer @success="handleSearch" />
     <!--  排序  -->
     <BaseOrderDrawer @success="handleSearch" />
   </Page>
 </template>
-<style lang="scss" scoped>
-:deep(.vxe-grid) {
-  .vxe-cell-icon-center {
-    .iconify {
-      margin: 0 auto;
-    }
-  }
-}
-</style>
