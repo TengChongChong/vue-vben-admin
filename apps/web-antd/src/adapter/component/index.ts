@@ -2,6 +2,7 @@
  * 通用组件共同的使用的基础组件，原先放在 adapter/form 内部，限制了使用范围，这里提取出来，方便其他地方使用
  * 可用于 vben-form、vben-modal、vben-drawer 等组件使用,
  */
+
 import type { Component } from 'vue';
 
 import type { BaseFormComponentType } from '@vben/common-ui';
@@ -9,7 +10,7 @@ import type { Recordable } from '@vben/types';
 
 import { defineComponent, getCurrentInstance, h, ref } from 'vue';
 
-import { globalShareState, IconPicker } from '@vben/common-ui';
+import { ApiComponent, globalShareState, IconPicker } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 
 import {
@@ -56,6 +57,7 @@ import { UserSelect } from '#/components/user';
 const withDefaultPlaceholder = <T extends Component>(
   component: T,
   type: 'input' | 'select',
+  componentProps: Recordable<any> = {},
 ) => {
   return defineComponent({
     inheritAttrs: false,
@@ -78,7 +80,11 @@ const withDefaultPlaceholder = <T extends Component>(
         }
       });
       return () =>
-        h(component, { ...props, ...attrs, placeholder, ref: innerRef }, slots);
+        h(
+          component,
+          { ...componentProps, placeholder, ...props, ...attrs, ref: innerRef },
+          slots,
+        );
     },
   });
 };
@@ -129,38 +135,20 @@ async function initComponentAdapter() {
     // 如果你的组件体积比较大，可以使用异步加载
     // Button: () =>
     // import('xxx').then((res) => res.Button),
-    // ApiSelect: (props, { attrs, slots }) => {
-    //   return h(
-    //     ApiComponent,
-    //     {
-    //       placeholder: $t('ui.placeholder.select'),
-    //       ...props,
-    //       ...attrs,
-    //       component: Select,
-    //       loadingSlot: 'suffixIcon',
-    //       visibleEvent: 'onDropdownVisibleChange',
-    //       modelPropName: 'value',
-    //     },
-    //     slots,
-    //   );
-    // },
-    // ApiTreeSelect: (props, { attrs, slots }) => {
-    //   return h(
-    //     ApiComponent,
-    //     {
-    //       placeholder: $t('ui.placeholder.select'),
-    //       ...props,
-    //       ...attrs,
-    //       component: TreeSelect,
-    //       fieldNames: { label: 'label', value: 'value', children: 'children' },
-    //       loadingSlot: 'suffixIcon',
-    //       modelPropName: 'value',
-    //       optionsPropName: 'treeData',
-    //       visibleEvent: 'onVisibleChange',
-    //     },
-    //     slots,
-    //   );
-    // },
+    // ApiSelect: withDefaultPlaceholder(ApiComponent, 'select', {
+    //   component: Select,
+    //   loadingSlot: 'suffixIcon',
+    //   visibleEvent: 'onDropdownVisibleChange',
+    //   modelPropName: 'value',
+    // }),
+    // ApiTreeSelect: withDefaultPlaceholder(ApiComponent, 'select', {
+    //   component: TreeSelect,
+    //   fieldNames: { label: 'label', value: 'value', children: 'children' },
+    //   loadingSlot: 'suffixIcon',
+    //   modelPropName: 'value',
+    //   optionsPropName: 'treeData',
+    //   visibleEvent: 'onVisibleChange',
+    // }),
     AutoComplete,
     Cropper,
     Checkbox,
@@ -171,20 +159,11 @@ async function initComponentAdapter() {
       return h(Button, { ...props, attrs, type: 'default' }, slots);
     },
     Divider,
-    IconPicker: (props, { attrs, slots }) => {
-      return h(
-        IconPicker,
-        {
-          iconSlot: 'addonAfter',
-          inputComponent: Input,
-          modelValueProp: 'value',
-          ...props,
-          ...attrs,
-        },
-        slots,
-      );
-    },
-    Editor,
+    IconPicker: withDefaultPlaceholder(IconPicker, 'select', {
+      iconSlot: 'addonAfter',
+      inputComponent: Input,
+      modelValueProp: 'value',
+    }),
     Input: withDefaultPlaceholder(Input, 'input'),
     InputNumber: withDefaultPlaceholder(InputNumber, 'input'),
     InputPassword: withDefaultPlaceholder(InputPassword, 'input'),
