@@ -27,7 +27,7 @@ async function generateRoutesByBackend(
     for (const [key, value] of Object.entries(pageMap)) {
       normalizePageMap[normalizeViewPath(key)] = value;
     }
-
+    debugger;
     // 后端响应的路由为list，且外层无 BasicLayout
     const treeRoutes = listToTree(menuRoutes);
 
@@ -36,7 +36,7 @@ async function generateRoutesByBackend(
     return routes;
   } catch (error) {
     console.error(error);
-    return [];
+    throw error;
   }
 }
 
@@ -68,7 +68,8 @@ function convertRoutes(
       if (pageMap[pageKey]) {
         route.component = pageMap[pageKey];
       } else {
-        console.warn(`route component is invalid: ${pageKey}`, route);
+        console.error(`route component is invalid: ${pageKey}`, route);
+        route.component = pageMap['/_core/fallback/not-found.vue'];
       }
     }
     return route;
