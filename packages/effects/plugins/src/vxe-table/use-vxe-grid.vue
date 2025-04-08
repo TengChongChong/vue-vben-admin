@@ -445,7 +445,7 @@ onUnmounted(() => {
             :style="{
               ...(separatorBg ? { backgroundColor: separatorBg } : undefined),
             }"
-            class="bg-background-deep z-100 absolute -left-2 bottom-1 h-2 w-[calc(100%+1rem)] overflow-hidden md:bottom-2 md:h-3"
+            class="bg-background-deep z-100 absolute -left-4 bottom-1 h-2 w-[calc(100%+2rem)] overflow-hidden md:bottom-2 md:h-3"
           ></div>
         </div>
       </template>
