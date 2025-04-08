@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import type { FileInfo } from '#/api/file/model/file-info-model';
 
+import { onMounted, ref } from 'vue';
+
+import { JsonViewer, Page } from '@vben/common-ui';
+
+import { Card, Col, Row } from 'ant-design-vue';
+
 import { useVbenForm } from '#/adapter/form';
 import { currentUserApi } from '#/api/auth/sys-user-personal';
-import { JsonPreview } from '#/components/code-editor';
 import { Cropper } from '#/components/cropper';
-import { Page } from '@vben/common-ui';
-import { Card, Col, Row } from 'ant-design-vue';
-import { onMounted, ref } from 'vue';
 
 const avatar = ref<FileInfo>();
 const avatarCircled = ref<FileInfo>();
@@ -42,13 +44,13 @@ onMounted(() => {
         <Card :bordered="false" class="mb-4" title="头像剪裁 - 方形">
           <Cropper v-model:value="avatar" :circled="false" alt="头像" />
           <div v-if="avatar" class="mb-2">
-            <JsonPreview :data="avatar" />
+            <JsonViewer :value="avatar" copyable :sort="false" boxed />
           </div>
         </Card>
         <Card :bordered="false" class="mb-4" title="头像剪裁 - 圆形">
           <Cropper v-model:value="avatarCircled" alt="头像" />
           <div v-if="avatarCircled" class="mb-2">
-            <JsonPreview :data="avatarCircled" />
+            <JsonViewer :value="avatarCircled" copyable :sort="false" boxed />
           </div>
         </Card>
 
@@ -59,7 +61,12 @@ onMounted(() => {
             alt="头像"
           />
           <div v-if="avatarCircledCustomSize" class="mb-2">
-            <JsonPreview :data="avatarCircledCustomSize" />
+            <JsonViewer
+              :value="avatarCircledCustomSize"
+              copyable
+              :sort="false"
+              boxed
+            />
           </div>
         </Card>
       </Col>

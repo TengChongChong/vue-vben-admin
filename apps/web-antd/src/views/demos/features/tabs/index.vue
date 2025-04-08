@@ -24,7 +24,7 @@ const {
 
 function openTab() {
   // 这里就是路由跳转，也可以用path
-  router.push({ name: 'VbenAbout' });
+  router.push({ path: '/vben-admin/about' });
 }
 
 function openTabWithParams(id: number) {

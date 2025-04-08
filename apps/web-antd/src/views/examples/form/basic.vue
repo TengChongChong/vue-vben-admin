@@ -1,14 +1,18 @@
 <script lang="ts" setup>
+import type { TreeNode } from '#/api/base/model/tree-model';
+
 import { h, ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
+import { listToTree } from '@vben/utils';
 
 import { useDebounceFn } from '@vueuse/core';
 import { Button, Card, message, Spin, Tag } from 'ant-design-vue';
 import dayjs from 'dayjs';
 
 import { useVbenForm, z } from '#/adapter/form';
-import { getAllMenusApi } from '#/api';
+import { selectAllApi } from '#/api/auth/sys-menu';
+import { selectAllApi as selectAllDictTypeApi } from '#/api/sys/sys-dict-type';
 
 import DocButton from '../doc-button.vue';
 
@@ -65,15 +69,8 @@ const [BaseForm, baseFormApi] = useVbenForm({
       component: 'ApiSelect',
       // 对应组件的参数
       componentProps: {
-        // 菜单接口转options格式
-        afterFetch: (data: { name: string; path: string }[]) => {
-          return data.map((item: any) => ({
-            label: item.name,
-            value: item.path,
-          }));
-        },
         // 菜单接口
-        api: getAllMenusApi,
+        api: selectAllDictTypeApi,
       },
       // 字段名
       fieldName: 'api',
@@ -113,20 +110,26 @@ const [BaseForm, baseFormApi] = useVbenForm({
       rules: 'selectRequired',
     },
     {
-      component: 'ApiTreeSelect',
-      // 对应组件的参数
-      componentProps: {
-        // 菜单接口
-        api: getAllMenusApi,
-        // 菜单接口转options格式
-        labelField: 'name',
-        valueField: 'path',
-        childrenField: 'children',
-      },
-      // 字段名
-      fieldName: 'apiTree',
-      // 界面显示的label
+      fieldName: 'apiTreeSelect',
       label: 'ApiTreeSelect',
+      component: 'ApiTreeSelect',
+      componentProps: {
+        api: selectAllApi,
+        afterFetch: (res) => {
+          const treeNodes: TreeNode[] = [] as TreeNode[];
+          res.forEach((item) => {
+            const { id, parentId, title } = item;
+            treeNodes.push({
+              id,
+              parentId,
+              label: title,
+              value: id,
+              key: id,
+            });
+          });
+          return listToTree(treeNodes);
+        },
+      },
     },
     {
       component: 'InputPassword',

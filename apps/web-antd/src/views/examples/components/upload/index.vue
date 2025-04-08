@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import type { FileInfo } from '#/api/file/model/file-info-model';
 
+import { onMounted, ref } from 'vue';
+
+import { JsonViewer, Page } from '@vben/common-ui';
+
+import { Card, Col, Row } from 'ant-design-vue';
+
 import { useVbenForm } from '#/adapter/form';
 import { currentUserApi } from '#/api/auth/sys-user-personal';
-import { JsonPreview } from '#/components/code-editor';
 import { RuleUpload } from '#/components/upload';
-import { Page } from '@vben/common-ui';
-import { Card, Col, Row } from 'ant-design-vue';
-import { onMounted, ref } from 'vue';
 
 const avatar = ref<FileInfo>();
 const avatarCircledCustomSize = ref<FileInfo>();
@@ -15,8 +17,10 @@ const avatarCircledCustomSize = ref<FileInfo>();
 const [BaseForm, baseFormApi] = useVbenForm({
   schema: [
     {
-      component: 'Cropper',
-      componentProps: { alt: '头像' },
+      component: 'RuleUpload',
+      componentProps: {
+        ruleKey: 'default-image',
+      },
       fieldName: 'avatar',
       label: '头像',
     },
@@ -38,45 +42,62 @@ onMounted(() => {
   >
     <Row :gutter="16">
       <Col :xl="24" :xxl="12">
-        <Card :bordered="false" class="mb-4" title="根据文件上传策略上传文件">
-          <RuleUpload
-            v-model:value="avatar"
-            :show-help-text="true"
-            help-text="请上传100px*100px图片"
-            rule-key="default-image"
-          />
+        <Card
+          :bordered="false"
+          class="mb-4"
+          title="根据文件上传策略上传文件 - Text"
+        >
+          <RuleUpload v-model:value="avatar" rule-key="default-image" />
           <div v-if="avatar" class="mb-2">
-            <JsonPreview :data="avatar" />
+            <JsonViewer :value="avatar" copyable :sort="false" boxed />
           </div>
         </Card>
 
-        <Card :bordered="false" class="mb-4" title="根据文件上传策略上传文件">
+        <Card
+          :bordered="false"
+          class="mb-4"
+          title="根据文件上传策略上传文件 - Picture"
+        >
           <RuleUpload
             v-model:value="avatar"
             :show-help-text="true"
-            help-text="请上传100px*100px图片"
             list-type="picture"
             rule-key="default-image"
           />
           <div v-if="avatar" class="mb-2">
-            <JsonPreview :data="avatar" />
+            <JsonViewer :value="avatar" copyable :sort="false" boxed />
           </div>
         </Card>
 
-        <Card :bordered="false" class="mb-4" title="根据文件上传策略上传文件">
+        <Card
+          :bordered="false"
+          class="mb-4"
+          title="根据文件上传策略上传文件 - Picture Card"
+        >
           <RuleUpload
             v-model:value="avatar"
             :show-help-text="true"
-            help-text="请上传100px*100px图片"
             list-type="picture-card"
             rule-key="default-image"
           />
           <div v-if="avatar" class="mb-2">
-            <JsonPreview :data="avatar" />
+            <JsonViewer :value="avatar" copyable :sort="false" boxed />
           </div>
         </Card>
       </Col>
       <Col :xl="24" :xxl="12">
+        <Card :bordered="false" class="mb-4" title="根据文件上传策略上传文件">
+          <RuleUpload
+            use-dragger
+            v-model:value="avatar"
+            :show-help-text="true"
+            list-type="picture-card"
+            rule-key="default-image"
+          />
+          <div v-if="avatar" class="mb-2">
+            <JsonViewer :value="avatar" copyable :sort="false" boxed />
+          </div>
+        </Card>
         <Card :bordered="false" title="在表单中使用">
           <BaseForm />
         </Card>

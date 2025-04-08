@@ -1,80 +1,198 @@
 <script lang="ts" setup>
+import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
+import type { SampleGeneral } from '#/api/sample/model/sample-general-model';
+
+import { ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
-import { Button } from 'ant-design-vue';
+import { Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { getExampleTableApi } from '#/api';
+import {
+  exportDataApi,
+  removeApi,
+  selectApi,
+} from '#/api/sample/sample-general';
+import { ButtonExport, ButtonImport, ButtonRemove } from '#/components/button';
+import { downloadFileById } from '#/util/download';
 
-interface RowType {
-  category: string;
-  color: string;
-  id: string;
-  price: string;
-  productName: string;
-  releaseDate: string;
+// 导出按钮状态
+const exportBtnLoading = ref<boolean>(false);
+function handleSearch() {
+  gridApi.search();
 }
 
-const gridOptions: VxeGridProps<RowType> = {
-  checkboxConfig: {
-    highlight: true,
-    labelField: 'name',
-  },
-  columns: [
-    { title: '序号', type: 'seq', width: 50 },
-    { align: 'left', title: 'Name', type: 'checkbox', width: 100 },
-    { field: 'category', sortable: true, title: 'Category' },
-    { field: 'color', sortable: true, title: 'Color' },
-    { field: 'productName', sortable: true, title: 'Product Name' },
-    { field: 'price', sortable: true, title: 'Price' },
-    { field: 'releaseDate', formatter: 'formatDateTime', title: 'DateTime' },
-  ],
-  exportConfig: {},
-  height: 'auto',
-  keepSource: true,
-  proxyConfig: {
-    ajax: {
-      query: async ({ page, sort }) => {
-        return await getExampleTableApi({
-          page: page.currentPage,
-          pageSize: page.pageSize,
-          sortBy: sort.field,
-          sortOrder: sort.order,
-        });
+const formOptions: VbenFormProps = {
+  collapsed: true,
+  schema: [
+    {
+      fieldName: 'name',
+      label: '姓名',
+      component: 'Input',
+    },
+    {
+      fieldName: 'sex',
+      label: '性别',
+      component: 'DictSelect',
+      componentProps: {
+        dictType: 'sex',
       },
     },
-    sort: true,
-  },
-  sortConfig: {
-    defaultSort: { field: 'category', order: 'desc' },
-    remote: true,
-  },
-  toolbarConfig: {
-    custom: true,
-    export: true,
-    // import: true,
-    refresh: { code: 'query' },
-    zoom: true,
+    {
+      fieldName: 'phone',
+      label: '手机号码',
+      component: 'Input',
+    },
+    {
+      fieldName: 'status',
+      label: '状态',
+      component: 'DictSelect',
+      componentProps: {
+        dictType: 'commonStatus',
+      },
+    },
+    {
+      fieldName: 'address',
+      label: '地址',
+      component: 'Input',
+    },
+  ],
+};
+
+const gridOptions: VxeGridProps<SampleGeneral> = {
+  id: 'sample-general',
+  columns: [
+    { type: 'checkbox', minWidth: 50, fixed: 'left' },
+    { title: '序号', type: 'seq', minWidth: 50, fixed: 'left' },
+    {
+      title: '姓名',
+      field: 'name',
+      sortable: true,
+      minWidth: 160,
+    },
+    {
+      title: '性别',
+      field: 'sex',
+      sortable: true,
+      minWidth: 150,
+      cellRender: {
+        name: 'DictTag',
+        props: { dictType: 'sex' },
+      },
+    },
+    {
+      title: '年龄',
+      field: 'age',
+      sortable: true,
+      minWidth: 160,
+    },
+    {
+      title: '手机号码',
+      field: 'phone',
+      sortable: true,
+      minWidth: 160,
+    },
+    {
+      title: '状态',
+      field: 'status',
+      sortable: true,
+      minWidth: 150,
+      cellRender: {
+        name: 'DictTag',
+        props: { dictType: 'commonStatus' },
+      },
+    },
+    {
+      title: '排序值',
+      field: 'orderNo',
+      sortable: true,
+      minWidth: 160,
+    },
+    {
+      title: '部门Id',
+      field: 'deptId',
+      sortable: true,
+      minWidth: 160,
+    },
+    {
+      title: '编辑人',
+      field: 'editUser',
+      sortable: true,
+      minWidth: 160,
+    },
+    {
+      title: '编辑时间',
+      field: 'editDate',
+      sortable: true,
+      minWidth: 160,
+      formatter: 'dateTime',
+    },
+    {
+      title: '操作',
+      field: 'action',
+      minWidth: 160,
+      fixed: 'right',
+      slots: { default: 'action' },
+    },
+  ],
+  proxyConfig: {
+    ajax: {
+      query: async ({ page }, formValues) => {
+        return await selectApi({ ...formValues }, page);
+      },
+    },
   },
 };
 
 const [Grid, gridApi] = useVbenVxeGrid({
+  tableTitle: '远程加载',
+  formOptions,
   gridOptions,
 });
+
+const handelExportData = async () => {
+  exportBtnLoading.value = true;
+  try {
+    await exportDataApi(await gridApi.formApi.getValues()).then((id) => {
+      downloadFileById(id);
+    });
+  } catch (error) {
+    console.error('导出数据错误', error);
+  } finally {
+    exportBtnLoading.value = false;
+  }
+};
 </script>
 
 <template>
   <Page auto-content-height>
-    <Grid table-title="数据列表" table-title-help="提示">
+    <Grid>
       <template #toolbar-tools>
-        <Button class="mr-2" type="primary" @click="() => gridApi.query()">
-          刷新当前页面
-        </Button>
-        <Button type="primary" @click="() => gridApi.reload()">
-          刷新并返回第一页
-        </Button>
+        <Space>
+          <ButtonRemove
+            :api="removeApi"
+            :auth-codes="['sample:general:remove']"
+            :grid-api="gridApi"
+            @success="handleSearch"
+          />
+          <ButtonImport
+            import-code="sample:general"
+            :auth-codes="['sample:general:import:data']"
+          />
+          <ButtonExport :loading="exportBtnLoading" @click="handelExportData" />
+        </Space>
+      </template>
+      <template #action="{ row }">
+        <ButtonRemove
+          :api="removeApi"
+          :auth-codes="['sample:general:remove']"
+          :ids="[row.id]"
+          size="small"
+          type="link"
+          @success="handleSearch"
+        />
       </template>
     </Grid>
   </Page>
