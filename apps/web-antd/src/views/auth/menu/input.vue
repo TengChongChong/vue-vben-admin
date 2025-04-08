@@ -257,7 +257,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
       componentProps: { text: '徽标设置' },
       dependencies: {
         show: (values) => {
-          return !['button', 'link'].includes(values.type);
+          return values.type !== 'button';
         },
         triggerFields: ['type'],
       },
@@ -432,7 +432,16 @@ async function handleSubmit(callback: (res: SysMenu) => any) {
     if (!valid) {
       return;
     }
-    const res = await saveApi(await baseFormApi.getValues());
+    const values: SysMenu = await baseFormApi.getValues();
+    const res = await saveApi({
+      ...values,
+      keepAlive: values.keepAlive ? '1' : '0',
+      affixTab: values.affixTab ? '1' : '0',
+      hideInMenu: values.hideInMenu ? '1' : '0',
+      hideChildrenInMenu: values.hideChildrenInMenu ? '1' : '0',
+      hideInBreadcrumb: values.hideInBreadcrumb ? '1' : '0',
+      hideInTab: values.hideInTab ? '1' : '0',
+    });
     emit('success');
     callback(res);
   } catch (error) {
@@ -461,7 +470,15 @@ const [Drawer, drawerApi] = useVbenDrawer({
   onOpenChange: async (isOpen: boolean) => {
     if (isOpen) {
       const data = drawerApi.getData<Record<string, any>>();
-      await baseFormApi.setValues(data);
+      await baseFormApi.setValues({
+        ...data,
+        keepAlive: data.keepAlive === '1',
+        affixTab: data.affixTab === '1',
+        hideInMenu: data.hideInMenu === '1',
+        hideChildrenInMenu: data.hideChildrenInMenu === '1',
+        hideInBreadcrumb: data.hideInBreadcrumb === '1',
+        hideInTab: data.hideInTab === '1',
+      });
     }
   },
 });

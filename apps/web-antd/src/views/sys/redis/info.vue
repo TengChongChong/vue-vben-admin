@@ -3,7 +3,7 @@ import type { SysRedisVO } from '#/api/sys/model/sys-redis-model';
 
 import { ref } from 'vue';
 
-import { useVbenModal, VbenScrollbar } from '@vben/common-ui';
+import { JsonViewer, useVbenModal, VbenScrollbar } from '@vben/common-ui';
 
 import {
   Button,
@@ -15,7 +15,6 @@ import {
 
 import { removeApi } from '#/api/sys/sys-redis';
 import { ButtonClose } from '#/components/button';
-import { JsonPreview } from '#/components/code-editor';
 import { LucideTrash } from '#/components/icons';
 
 const emit = defineEmits(['success']);
@@ -64,7 +63,7 @@ const [Modal, modalApi] = useVbenModal({
       <DescriptionsItem label="Value">
         <VbenScrollbar shadow>
           <div class="h-full max-h-[450px]">
-            <JsonPreview :data="sysRedis?.value" />
+            <JsonViewer :value="sysRedis?.value" copyable :sort="false" boxed />
           </div>
         </VbenScrollbar>
       </DescriptionsItem>

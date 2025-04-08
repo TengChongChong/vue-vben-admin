@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { SysMenu } from '#/api/sys/model/sys-menu-model';
+import type { SysMenu } from '#/api/auth/model/sys-menu-model';
 
 import { ref, unref } from 'vue';
 
 import { Page, useVbenDrawer } from '@vben/common-ui';
-import { $t } from '@vben/locales';
 
 import { MenuBadge } from '@vben-core/menu-ui';
 
@@ -166,7 +165,11 @@ function handleCollapseAll() {
         </Space>
       </template>
       <template #title="{ row }">
-        <div class="flex w-full items-center gap-1">
+        <!-- 隐藏菜单使用opacity: 50% -->
+        <div
+          class="flex w-full items-center gap-1"
+          :class="[row.hideInMenu === '1' ? 'opacity-50' : '']"
+        >
           <div class="size-4 flex-shrink-0">
             <IconifyIcon
               v-if="row.type === 'button'"
@@ -179,15 +182,17 @@ function handleCollapseAll() {
               class="size-full"
             />
           </div>
-          <span class="flex-auto">{{ $t(row.title) }}</span>
+          <span class="flex-auto">
+            {{ row.title }}
+          </span>
           <div class="items-center justify-end"></div>
         </div>
         <MenuBadge
           v-if="row.badgeType"
           class="menu-badge"
-          :badge="row.meta.badge"
-          :badge-type="row.meta.badgeType"
-          :badge-variants="row.meta.badgeVariants"
+          :badge="row.badge"
+          :badge-type="row.badgeType"
+          :badge-variants="row.badgeVariants"
         />
       </template>
       <template #action="{ row }">
@@ -221,3 +226,15 @@ function handleCollapseAll() {
     <BaseOrderDrawer @success="handleSearch" />
   </Page>
 </template>
+<style lang="scss" scoped>
+.menu-badge {
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+
+  & > :deep(div) {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+</style>

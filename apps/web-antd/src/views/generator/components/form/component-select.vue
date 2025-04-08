@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { SelectModel } from '#/api/base/model/select-model';
 
-import { Select } from 'ant-design-vue';
 import { onMounted, ref, watch } from 'vue';
+
+import { Select } from 'ant-design-vue';
 
 const props = defineProps<{
   value: string;

@@ -27,10 +27,9 @@ async function generateRoutesByBackend(
     for (const [key, value] of Object.entries(pageMap)) {
       normalizePageMap[normalizeViewPath(key)] = value;
     }
-    debugger;
-    // 后端响应的路由为list，且外层无 BasicLayout
-    const treeRoutes = listToTree(menuRoutes);
 
+    // 后端响应的路由为list
+    const treeRoutes = listToTree(menuRoutes);
     const routes = convertRoutes(treeRoutes, layoutMap, normalizePageMap);
 
     return routes;

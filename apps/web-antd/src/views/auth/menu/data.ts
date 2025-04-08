@@ -44,7 +44,7 @@ export const initColumns = (): VxeGridPropTypes.Columns[] => {
     {
       title: '权限标识',
       field: 'authCode',
-      width: 150,
+      width: 200,
     },
     // {
     //   title: '缓存标签页',
