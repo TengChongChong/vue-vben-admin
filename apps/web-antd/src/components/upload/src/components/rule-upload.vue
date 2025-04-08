@@ -6,23 +6,27 @@ import type {
   UploadFileModel,
 } from '#/components/upload/src/type';
 
+import { computed, onMounted, ref, watch } from 'vue';
+
+import { useAccessStore } from '@vben/stores';
+
+import { Button, message, Tag, Upload, UploadDragger } from 'ant-design-vue';
+import { isArray, isString } from 'lodash-es';
+
 import { getByKeyApi } from '#/api/file/file-upload-rule';
-import { LucideHardDriveUpload } from '#/components/icons';
+import { LucideHardDriveUpload, LucideUpload } from '#/components/icons';
 import {
   convertToFileInfo,
   convertToUploadFileModelArray,
 } from '#/components/upload/src/helper';
 import { useUploadType } from '#/components/upload/src/useUpload';
-import { useAccessStore } from '@vben/stores';
-import { Button, message, Tag, Upload } from 'ant-design-vue';
-import { isArray, isString } from 'lodash-es';
-import { onMounted, ref, watch } from 'vue';
 
 const props = withDefaults(defineProps<RuleUploadProps>(), {
   listType: 'text',
   maxNumber: 1,
   multiple: false,
   showHelpText: false,
+  useDragger: false,
 });
 
 const emit = defineEmits(['change', 'update:value']);
@@ -43,7 +47,7 @@ const displayFileList = ref<UploadFileModel[]>([]);
 const url = ref();
 
 onMounted(async () => {
-  initUpload();
+  await initUpload();
 });
 
 async function initUpload() {
@@ -73,11 +77,19 @@ watch(
 
 setValue();
 
+const suffixArray = computed(() => {
+  return uploadRule?.suffixArray;
+});
+
+const upperLimit = computed(() => {
+  return uploadRule?.upperLimit;
+});
+
 const { getStringAccept, getHelpText } = useUploadType({
-  acceptRef: uploadRule?.suffixArray,
+  acceptRef: suffixArray,
   helpTextRef: props.helpText,
   maxNumberRef: props?.maxNumber,
-  maxSizeRef: uploadRule?.upperLimit,
+  maxSizeRef: upperLimit,
 });
 
 function setValue() {
@@ -193,7 +205,8 @@ function refreshDisplayFileList() {
 
 <template>
   <template v-if="loaded">
-    <Upload
+    <component
+      :is="useDragger ? UploadDragger : Upload"
       v-if="uploadRule"
       :accept="getStringAccept"
       :action="url"
@@ -204,25 +217,36 @@ function refreshDisplayFileList() {
       :multiple="multiple"
       @change="handleChange"
     >
-      <template v-if="props.listType === 'picture-card'">
-        <div class="ant-upload-select-picture-card">
-          <LucideHardDriveUpload />
-          <div class="ant-upload-text">选择文件</div>
-        </div>
+      <template v-if="props.useDragger">
+        <p class="ant-upload-drag-icon">
+          <LucideUpload class="mx-auto text-5xl" />
+        </p>
+        <p class="ant-upload-text">单击或拖动文件到此区域进行上传</p>
+        <p class="ant-upload-hint">
+          {{ getHelpText }}
+        </p>
       </template>
-
-      <template
-        v-if="props.listType === 'text' || props.listType === 'picture'"
-      >
-        <Button>
-          <template #icon>
+      <template v-else>
+        <template v-if="props.listType === 'picture-card'">
+          <div class="ant-upload-select-picture-card">
             <LucideHardDriveUpload />
-          </template>
+            <div class="ant-upload-text">选择文件</div>
+          </div>
+        </template>
 
-          选择文件
-        </Button>
+        <template
+          v-if="props.listType === 'text' || props.listType === 'picture'"
+        >
+          <Button>
+            <template #icon>
+              <LucideHardDriveUpload />
+            </template>
+
+            选择文件
+          </Button>
+        </template>
       </template>
-    </Upload>
+    </component>
     <Tag v-else color="red">获取上传策略失败</Tag>
 
     <div v-if="props.showHelpText" class="upload-help-text py-1">

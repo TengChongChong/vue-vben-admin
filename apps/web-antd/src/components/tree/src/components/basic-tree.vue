@@ -400,7 +400,7 @@ defineExpose(instance);
     :title="props.title"
   >
     <template #extra>
-      <Space>
+      <Space class="pl-2">
         <InputSearch
           v-if="props.showSearch"
           v-model:value="searchState.searchText"

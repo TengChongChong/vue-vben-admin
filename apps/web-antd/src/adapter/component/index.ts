@@ -10,7 +10,7 @@ import type { Recordable } from '@vben/types';
 
 import { defineComponent, getCurrentInstance, h, ref } from 'vue';
 
-import { ApiComponent, globalShareState, IconPicker } from '@vben/common-ui';
+import { globalShareState, IconPicker } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 
 import {
@@ -47,11 +47,11 @@ import {
   DictTreeSelect,
 } from '#/components/dict';
 import { Divider } from '#/components/divider';
-import { Editor } from '#/components/editor';
 import { ApiSelect, ApiTreeSelect } from '#/components/form';
 // import { ApiTreeSelect } from '#/components/form';
 import { RoleSelect } from '#/components/role';
 import { SmsVerificationCode } from '#/components/sms-verification-code';
+import { RuleUpload } from '#/components/upload';
 import { UserSelect } from '#/components/user';
 
 const withDefaultPlaceholder = <T extends Component>(
@@ -172,6 +172,7 @@ async function initComponentAdapter() {
     PrimaryButton: (props, { attrs, slots }) => {
       return h(Button, { ...props, attrs, type: 'primary' }, slots);
     },
+    RuleUpload,
     Radio,
     RadioGroup,
     RangePicker,

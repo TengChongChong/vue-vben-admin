@@ -9,7 +9,7 @@ interface BaseDictProps {
  */
 export interface DictTagProps extends BaseDictProps {
   // 字典编码
-  code: Array<number> | Array<string> | number | string;
+  code: Array<number> | Array<string> | number | string | undefined;
   // 使用tag样式
   useTag?: boolean;
   // 当有多个字典时，字典与字典之间的分隔符

@@ -1,5 +1,6 @@
-import type { FileInfo } from '#/api/file/model/file-info-model';
 import type { UploadFile } from 'ant-design-vue';
+
+import type { FileInfo } from '#/api/file/model/file-info-model';
 
 /**
  * 根据文件上传策略上传 Props
@@ -14,12 +15,14 @@ export interface RuleUploadProps {
   showHelpText?: boolean;
   maxNumber?: number;
   multiple?: boolean;
+  // 是否使用拖拽上传
+  useDragger?: boolean;
 }
 
 /**
  * 用于 Ant Design of Vue 文件上传数据回显
  */
-export interface UploadFileModel extends UploadFile, FileInfo {
+export interface UploadFileModel extends FileInfo, UploadFile {
   // 两个对象不一致的在下方声明，避免错误提示
 
   // 文件访问地址

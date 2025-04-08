@@ -1,14 +1,19 @@
 <script setup lang="ts">
-import type { FileInfo } from '#/api/file/model/file-info-model';
-import type { CropperProps } from '#/components/cropper/src/props';
-import type { FileUploadResponse } from '@vben/request';
 import type { CSSProperties } from 'vue';
 
-import CropperModal from '#/components/cropper/src/components/cropper-modal.vue';
-import { Upload } from '#/components/icons';
-import { useVbenModal } from '@vben/common-ui';
-import { Avatar } from 'ant-design-vue';
+import type { FileUploadResponse } from '@vben/request';
+
+import type { FileInfo } from '#/api/file/model/file-info-model';
+import type { CropperProps } from '#/components/cropper/src/props';
+
 import { computed, ref, unref, watch } from 'vue';
+
+import { useVbenModal } from '@vben/common-ui';
+
+import { Avatar } from 'ant-design-vue';
+
+import CropperModal from '#/components/cropper/src/components/cropper-modal.vue';
+import { LucideUpload } from '#/components/icons';
 
 const props = withDefaults(defineProps<CropperProps>(), {
   width: 100,
@@ -80,7 +85,7 @@ function handleOpenCropperModal() {
         </template>
       </div>
       <div :style="getImageWrapperStyle" class="vben-cropper-image-mask">
-        <Upload />
+        <LucideUpload />
       </div>
     </div>
 

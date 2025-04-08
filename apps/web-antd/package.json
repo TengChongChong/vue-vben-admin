@@ -26,6 +26,7 @@
     "#/*": "./src/*"
   },
   "dependencies": {
+    "@tanstack/vue-query": "catalog:",
     "@vben-core/menu-ui": "workspace:*",
     "@vben/access": "workspace:*",
     "@vben/common-ui": "workspace:*",
@@ -51,9 +52,7 @@
     "lodash-es": "catalog:",
     "pinia": "catalog:",
     "vue": "catalog:",
-    "vue-json-pretty": "catalog:",
-    "vue-router": "catalog:",
-    "tinymce": "catalog:"
+    "vue-router": "catalog:"
   },
   "devDependencies": {
     "@types/lodash-es": "catalog:"

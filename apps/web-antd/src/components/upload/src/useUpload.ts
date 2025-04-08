@@ -1,5 +1,7 @@
 import { computed, ref, unref } from 'vue';
 
+import { formatSize } from '#/util/format';
+
 export function useUploadType({
   acceptRef,
   helpTextRef,
@@ -43,18 +45,18 @@ export function useUploadType({
     const helpTexts: string[] = [];
 
     const accept = unref(acceptRef);
-    if (accept.length > 0) {
-      helpTexts.push(`只能上传${accept.join(',')}格式文件`);
+    if (accept?.length > 0) {
+      helpTexts.push(`支持上传${accept.join('、')}格式文件`);
     }
 
     const maxSize = unref(maxSizeRef);
     if (maxSize) {
-      helpTexts.push(`单个文件不超过${maxSize}MB`);
+      helpTexts.push(`单个文件不超过${formatSize(maxSize * 1024, 1)}`);
     }
 
     const maxNumber = unref(maxNumberRef);
     if (maxNumber && maxNumber !== Infinity) {
-      helpTexts.push(`最多只能上传${maxNumber}个文件`);
+      helpTexts.push(`最多支持上传${maxNumber}个文件`);
     }
     return helpTexts.join('，');
   });
