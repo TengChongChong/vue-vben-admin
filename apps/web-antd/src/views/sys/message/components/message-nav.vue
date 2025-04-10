@@ -3,7 +3,12 @@ import { ref, unref, watch } from 'vue';
 
 import { Menu, MenuItem } from 'ant-design-vue';
 
-import { FilePen, LucideMailCheck, Mailbox, Mails } from '#/components/icons';
+import {
+  LucideFilePen,
+  LucideMailbox,
+  LucideMailCheck,
+  LucideMails,
+} from '#/components/icons';
 
 const prop = defineProps({
   selectedKeys: {
@@ -38,19 +43,19 @@ function handleSelect() {
     >
       <MenuItem key="edit">
         <template #icon>
-          <FilePen />
+          <LucideFilePen />
         </template>
         写消息
       </MenuItem>
       <MenuItem key="receive">
         <template #icon>
-          <Mailbox />
+          <LucideMailbox />
         </template>
         收信箱
       </MenuItem>
       <MenuItem key="draft">
         <template #icon>
-          <Mails />
+          <LucideMails />
         </template>
         草稿箱
       </MenuItem>

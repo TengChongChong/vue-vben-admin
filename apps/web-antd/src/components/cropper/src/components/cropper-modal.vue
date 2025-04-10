@@ -11,14 +11,14 @@ import { Avatar, Button, Space, Tooltip, Upload } from 'ant-design-vue';
 
 import { fileUpload } from '#/api/file/file-upload';
 import {
+  LucideMoveHorizontal,
+  LucideMoveVertical,
+  LucideRotateCcwSquare,
+  LucideRotateCw,
+  LucideRotateCwSquare,
   LucideUpload,
-  MoveHorizontal,
-  MoveVertical,
-  RotateCcwSquare,
-  RotateCw,
-  RotateCwSquare,
-  ZoomIn,
-  ZoomOut,
+  LucideZoomIn,
+  LucideZoomOut,
 } from '#/components/icons';
 
 import CropperImage from './cropper-image.vue';
@@ -146,7 +146,7 @@ async function handleOk() {
                 @click="handlerToolbar('reset')"
               >
                 <template #icon>
-                  <RotateCw />
+                  <LucideRotateCw />
                 </template>
               </Button>
             </Tooltip>
@@ -158,7 +158,7 @@ async function handleOk() {
                 @click="handlerToolbar('rotate', -45)"
               >
                 <template #icon>
-                  <RotateCcwSquare />
+                  <LucideRotateCcwSquare />
                 </template>
               </Button>
             </Tooltip>
@@ -170,7 +170,7 @@ async function handleOk() {
                 @click="handlerToolbar('rotate', 45)"
               >
                 <template #icon>
-                  <RotateCwSquare />
+                  <LucideRotateCwSquare />
                 </template>
               </Button>
             </Tooltip>
@@ -182,7 +182,7 @@ async function handleOk() {
                 @click="handlerToolbar('scaleX')"
               >
                 <template #icon>
-                  <MoveHorizontal />
+                  <LucideMoveHorizontal />
                 </template>
               </Button>
             </Tooltip>
@@ -194,7 +194,7 @@ async function handleOk() {
                 @click="handlerToolbar('scaleY')"
               >
                 <template #icon>
-                  <MoveVertical />
+                  <LucideMoveVertical />
                 </template>
               </Button>
             </Tooltip>
@@ -206,7 +206,7 @@ async function handleOk() {
                 @click="handlerToolbar('zoom', 0.1)"
               >
                 <template #icon>
-                  <ZoomIn />
+                  <LucideZoomIn />
                 </template>
               </Button>
             </Tooltip>
@@ -218,7 +218,7 @@ async function handleOk() {
                 @click="handlerToolbar('zoom', -0.1)"
               >
                 <template #icon>
-                  <ZoomOut />
+                  <LucideZoomOut />
                 </template>
               </Button>
             </Tooltip>

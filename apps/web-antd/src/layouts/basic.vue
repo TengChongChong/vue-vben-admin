@@ -1,24 +1,11 @@
 <script lang="ts" setup>
-import type { SysMessage } from '#/api/sys/model/sys-message-model';
 import type { NotificationItem } from '@vben/layouts';
 import type { TimeoutHandle } from '@vben/types';
 
-import { getByKeyApi } from '#/api/sys/sys-config';
-import { infoApi, selectReceiveApi } from '#/api/sys/sys-message';
-import { setReadApi } from '#/api/sys/sys-message-detail';
-import {
-  BookOpenText,
-  CircleHelp,
-  MdiGithub,
-  UserRound,
-} from '#/components/icons';
-import { $t } from '#/locales';
-import { router } from '#/router';
-import { useAuthStore, useDictStore } from '#/store';
-import { formatToNow } from '#/util/date';
-import LoginForm from '#/views/_core/authentication/login.vue';
-import { SysMessageDetailsStatus } from '#/views/sys/message/components/data';
-import MessageInfoModal from '#/views/sys/message/components/info-modal.vue';
+import type { SysMessage } from '#/api/sys/model/sys-message-model';
+
+import { computed, onMounted, ref, watch } from 'vue';
+
 import { AuthenticationLoginExpiredModal, useVbenModal } from '@vben/common-ui';
 import { VBEN_DOC_URL, VBEN_GITHUB_URL } from '@vben/constants';
 import { useWatermark } from '@vben/hooks';
@@ -31,7 +18,23 @@ import {
 import { preferences } from '@vben/preferences';
 import { useAccessStore, useUserStore } from '@vben/stores';
 import { openWindow } from '@vben/utils';
-import { computed, onMounted, ref, watch } from 'vue';
+
+import { getByKeyApi } from '#/api/sys/sys-config';
+import { infoApi, selectReceiveApi } from '#/api/sys/sys-message';
+import { setReadApi } from '#/api/sys/sys-message-detail';
+import {
+  BookOpenText,
+  CircleHelp,
+  LucideUserRound,
+  MdiGithub,
+} from '#/components/icons';
+import { $t } from '#/locales';
+import { router } from '#/router';
+import { useAuthStore, useDictStore } from '#/store';
+import { formatToNow } from '#/util/date';
+import LoginForm from '#/views/_core/authentication/login.vue';
+import { SysMessageDetailsStatus } from '#/views/sys/message/components/data';
+import MessageInfoModal from '#/views/sys/message/components/info-modal.vue';
 
 const notifications = ref<NotificationItem[]>([]);
 
@@ -89,7 +92,7 @@ const menus = computed(() => [
     handler: () => {
       router.push('/auth/personal/index');
     },
-    icon: UserRound,
+    icon: LucideUserRound,
     text: '个人中心',
   },
 ]);

@@ -1,23 +1,27 @@
 import { createIconifyIcon } from '@vben/icons';
 
-export const Layers = createIconifyIcon('lucide:layers');
-export const ShieldCheck = createIconifyIcon('lucide:shield-check');
-export const UserRound = createIconifyIcon('lucide:user-round');
+export const LucideLayers = createIconifyIcon('lucide:layers');
+export const LucideShieldCheck = createIconifyIcon('lucide:shield-check');
+export const LucideUserRound = createIconifyIcon('lucide:user-round');
 export const LucideUpload = createIconifyIcon('lucide:upload');
-// export const RotateCw = createIconifyIcon('lucide:rotate-cw');
-export const RotateCcwSquare = createIconifyIcon('lucide:rotate-ccw-square');
-export const RotateCwSquare = createIconifyIcon('lucide:rotate-cw-square');
-export const MoveVertical = createIconifyIcon('lucide:move-vertical');
-export const MoveHorizontal = createIconifyIcon('lucide:move-horizontal');
-export const ZoomIn = createIconifyIcon('lucide:zoom-in');
-export const ZoomOut = createIconifyIcon('lucide:zoom-out');
+export const LucideRotateCw = createIconifyIcon('lucide:rotate-cw');
+export const LucideRotateCcwSquare = createIconifyIcon(
+  'lucide:rotate-ccw-square',
+);
+export const LucideRotateCwSquare = createIconifyIcon(
+  'lucide:rotate-cw-square',
+);
+export const LucideMoveVertical = createIconifyIcon('lucide:move-vertical');
+export const LucideMoveHorizontal = createIconifyIcon('lucide:move-horizontal');
+export const LucideZoomIn = createIconifyIcon('lucide:zoom-in');
+export const LucideZoomOut = createIconifyIcon('lucide:zoom-out');
 
-export const FilePen = createIconifyIcon('lucide:file-pen');
+export const LucideFilePen = createIconifyIcon('lucide:file-pen');
 export const LucideFileX = createIconifyIcon('lucide:file-x');
 
-export const Mail = createIconifyIcon('lucide:mail');
-export const Mails = createIconifyIcon('lucide:mails');
-export const Mailbox = createIconifyIcon('lucide:mailbox');
+export const LucideMail = createIconifyIcon('lucide:mail');
+export const LucideMails = createIconifyIcon('lucide:mails');
+export const LucideMailbox = createIconifyIcon('lucide:mailbox');
 
 export const LucidePlus = createIconifyIcon('lucide:plus');
 export const LucideTrash = createIconifyIcon('lucide:trash-2');
@@ -44,7 +48,6 @@ export const LucideEllipsisVertical = createIconifyIcon(
 export const LucideInfo = createIconifyIcon('lucide:info');
 
 export const LucideSmartphone = createIconifyIcon('lucide:smartphone');
-export const LucideMail = createIconifyIcon('lucide:mail');
 export const LucideLink = createIconifyIcon('lucide:link');
 
 export const LucideChevronDown = createIconifyIcon('lucide:chevron-down');

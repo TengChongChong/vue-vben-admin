@@ -4,10 +4,10 @@ import { ref, unref, watch } from 'vue';
 import { Menu, MenuItem } from 'ant-design-vue';
 
 import {
-  Layers,
   LockKeyhole,
-  ShieldCheck,
-  UserRound,
+  LucideLayers,
+  LucideShieldCheck,
+  LucideUserRound,
 } from '#/components/icons';
 
 const prop = defineProps({
@@ -43,19 +43,19 @@ function handleSelect() {
     >
       <MenuItem key="profile-overview">
         <template #icon>
-          <Layers />
+          <LucideLayers />
         </template>
         概览
       </MenuItem>
       <MenuItem key="personal-information">
         <template #icon>
-          <UserRound />
+          <LucideUserRound />
         </template>
         我的资料
       </MenuItem>
       <MenuItem key="account-security">
         <template #icon>
-          <ShieldCheck />
+          <LucideShieldCheck />
         </template>
         安全设置
       </MenuItem>

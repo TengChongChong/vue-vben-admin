@@ -1,8 +1,11 @@
 import type { SetupVxeTable } from './types';
 
-import { usePreferences } from '@vben/preferences';
-import { useVbenForm } from '@vben-core/form-ui';
 import { defineComponent, watch } from 'vue';
+
+import { usePreferences } from '@vben/preferences';
+
+import { useVbenForm } from '@vben-core/form-ui';
+
 import {
   VxeButton,
   VxeCheckbox,
