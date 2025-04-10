@@ -21,6 +21,22 @@ import { $t } from '@vben/locales';
 
 import { notification } from 'ant-design-vue';
 
+import { Cropper } from '#/components/cropper';
+import { DeptSelect } from '#/components/dept';
+import {
+  DictCascader,
+  DictCheckbox,
+  DictRadio,
+  DictSelect,
+  DictTreeSelect,
+} from '#/components/dict';
+import { Divider } from '#/components/divider';
+import { ApiSelect, ApiTreeSelect } from '#/components/form';
+import { RoleSelect } from '#/components/role';
+import { SmsVerificationCode } from '#/components/sms-verification-code';
+import { RuleUpload } from '#/components/upload';
+import { UserSelect } from '#/components/user';
+
 const AutoComplete = defineAsyncComponent(
   () => import('ant-design-vue/es/auto-complete'),
 );
@@ -34,7 +50,7 @@ const CheckboxGroup = defineAsyncComponent(() =>
 const DatePicker = defineAsyncComponent(
   () => import('ant-design-vue/es/date-picker'),
 );
-const Divider = defineAsyncComponent(() => import('ant-design-vue/es/divider'));
+// const Divider = defineAsyncComponent(() => import('ant-design-vue/es/divider'));
 const Input = defineAsyncComponent(() => import('ant-design-vue/es/input'));
 const InputNumber = defineAsyncComponent(
   () => import('ant-design-vue/es/input-number'),
@@ -66,23 +82,6 @@ const TreeSelect = defineAsyncComponent(
   () => import('ant-design-vue/es/tree-select'),
 );
 const Upload = defineAsyncComponent(() => import('ant-design-vue/es/upload'));
-
-import { Cropper } from '#/components/cropper';
-import { DeptSelect } from '#/components/dept';
-import {
-  DictCascader,
-  DictCheckbox,
-  DictRadio,
-  DictSelect,
-  DictTreeSelect,
-} from '#/components/dict';
-import { Divider } from '#/components/divider';
-import { ApiSelect, ApiTreeSelect } from '#/components/form';
-// import { ApiTreeSelect } from '#/components/form';
-import { RoleSelect } from '#/components/role';
-import { SmsVerificationCode } from '#/components/sms-verification-code';
-import { RuleUpload } from '#/components/upload';
-import { UserSelect } from '#/components/user';
 
 const withDefaultPlaceholder = <T extends Component>(
   component: T,
