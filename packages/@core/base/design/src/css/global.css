@@ -146,7 +146,7 @@
   }
 
   .card-box {
-    @apply bg-card text-card-foreground border-border rounded border;
+    @apply bg-card text-card-foreground rounded;
   }
 }
 
