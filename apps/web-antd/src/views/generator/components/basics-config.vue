@@ -6,8 +6,15 @@ import type {
   TableInfo,
 } from '#/api/generator/model/generatorModel';
 
+import { onMounted, ref, unref } from 'vue';
+
+import { useUserStore } from '@vben/stores';
+import { listToTree } from '@vben/utils';
+
+import { Affix, Button, Divider, Input, Select } from 'ant-design-vue';
+
 import { useVbenForm } from '#/adapter/form';
-import { selectAllApi } from '#/api/auth/sys-permission';
+import { selectAllApi } from '#/api/auth/sys-menu';
 import {
   getTableInfoApi,
   selectModulesApi,
@@ -16,10 +23,6 @@ import {
 import { selectOptionsApi } from '#/api/sys/sys-data-source';
 import { LucideArrowRight } from '#/components/icons';
 import { isArray, isBlank } from '#/util/is';
-import { useUserStore } from '@vben/stores';
-import { listToTree } from '@vben/utils';
-import { Affix, Button, Divider, Input, Select } from 'ant-design-vue';
-import { onMounted, ref, unref } from 'vue';
 
 import {
   FormGeneratorTemplate,
