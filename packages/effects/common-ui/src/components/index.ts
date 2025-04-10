@@ -27,6 +27,7 @@ export {
   VbenLoading,
   VbenLogo,
   VbenPinInput,
+  VbenScrollbar,
   VbenSpinner,
   VbenTree,
 } from '@vben-core/shadcn-ui';
