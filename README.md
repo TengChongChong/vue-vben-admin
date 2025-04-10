@@ -24,7 +24,14 @@
 测试账号: sysadmin/admin123
 
 <p align="center">
-    ![输入图片说明](apps/web-antd/public/preview/preview-7.png)
+<img alt="VbenAdmin Logo" width="100%" src="https://gitee.com/tcc/vue-vben-admin/raw/main/apps/web-antd/public/preview/preview-7.png">
+<img alt="VbenAdmin Logo" width="100%" src="https://gitee.com/tcc/vue-vben-admin/raw/main/apps/web-antd/public/preview/preview-6.png">
+<img alt="VbenAdmin Logo" width="100%" src="https://gitee.com/tcc/vue-vben-admin/raw/main/apps/web-antd/public/preview/preview-5.png">
+<img alt="VbenAdmin Logo" width="100%" src="https://gitee.com/tcc/vue-vben-admin/raw/main/apps/web-antd/public/preview/preview-4.png">
+<img alt="VbenAdmin Logo" width="100%" src="https://gitee.com/tcc/vue-vben-admin/raw/main/apps/web-antd/public/preview/preview-3.png">
+<img alt="VbenAdmin Logo" width="100%" src="https://gitee.com/tcc/vue-vben-admin/raw/main/apps/web-antd/public/preview/preview-2.png">
+<img alt="VbenAdmin Logo" width="100%" src="https://gitee.com/tcc/vue-vben-admin/raw/main/apps/web-antd/public/preview/preview-1.png">
+
 </p>
 
 ## 文档
