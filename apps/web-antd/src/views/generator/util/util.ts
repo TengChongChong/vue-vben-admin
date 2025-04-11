@@ -1,3 +1,5 @@
+import type { FormType } from '../types/generator.data';
+
 import type { SelectModel } from '#/api/base/model/select-model';
 import type {
   BasicsConfigModel,
@@ -7,8 +9,6 @@ import type {
   TableField,
   TableInfo,
 } from '#/api/generator/model/generatorModel';
-
-import type { FormType } from '../types/generator.data';
 
 import { useDictStore } from '#/store';
 
@@ -340,7 +340,7 @@ function getFieldConfig(
             const length = field.metaInfo.length;
             config.componentType =
               length && length > PREFERENCE_SETTING.input.inputMaxLength
-                ? 'InputTextArea'
+                ? 'Textarea'
                 : 'Input';
           }
         }

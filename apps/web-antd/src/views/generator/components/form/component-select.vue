@@ -16,7 +16,7 @@ const COMPONENT_TYPE = [
   'InputGroup',
   'InputPassword',
   'InputSearch',
-  'InputTextArea',
+  'Textarea',
   'InputNumber',
   'InputCountDown',
   'Select',

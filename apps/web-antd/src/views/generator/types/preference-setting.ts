@@ -97,7 +97,7 @@ export const PREFERENCE_SETTING = {
   ],
   // 详情页面
   input: {
-    // 输入框最大字段长度，如果超出将默认使用InputTextArea
+    // 输入框最大字段长度，如果超出将默认使用Textarea
     inputMaxLength: 255,
     // 一般不填写以下字段
     exclude: [
