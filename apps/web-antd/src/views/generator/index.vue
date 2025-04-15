@@ -210,5 +210,5 @@ function handleStepNext() {
 </template>
 
 <style lang="scss">
-@import './style/generator';
+@use './style/generator' as *;
 </style>
