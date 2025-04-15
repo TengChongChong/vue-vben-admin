@@ -4,6 +4,12 @@ import { Store } from '@vben-core/shared/store';
 import { bindMethods, isFunction } from '@vben-core/shared/utils';
 
 export class ModalApi {
+  // 共享数据
+  public sharedData: Record<'payload', any> = {
+    payload: {},
+  };
+  public store: Store<ModalState>;
+
   private api: Pick<
     ModalApiOptions,
     | 'onBeforeClose'
@@ -13,15 +19,9 @@ export class ModalApi {
     | 'onOpenChange'
     | 'onOpened'
   >;
+
   // private prevState!: ModalState;
   private state!: ModalState;
-
-  // 共享数据
-  public sharedData: Record<'payload', any> = {
-    payload: {},
-  };
-
-  public store: Store<ModalState>;
 
   constructor(options: ModalApiOptions = {}) {
     const {
@@ -44,6 +44,7 @@ export class ModalApi {
       confirmDisabled: false,
       confirmLoading: false,
       contentClass: '',
+      destroyOnClose: true,
       draggable: true,
       footer: true,
       footerClass: '',
