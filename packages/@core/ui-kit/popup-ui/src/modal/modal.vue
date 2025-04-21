@@ -103,7 +103,7 @@ const { dragging, transform } = useModalDraggable(
 );
 
 const firstOpened = ref(false);
-const isClosed = ref(false);
+const isClosed = ref(true);
 
 watch(
   () => state?.value?.isOpen,
@@ -186,7 +186,7 @@ const getAppendTo = computed(() => {
 });
 
 const getForceMount = computed(() => {
-  return !unref(destroyOnClose);
+  return !unref(destroyOnClose) && unref(firstOpened);
 });
 
 function handleClosed() {
