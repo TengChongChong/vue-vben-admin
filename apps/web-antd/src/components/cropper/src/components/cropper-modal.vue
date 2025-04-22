@@ -98,7 +98,7 @@ async function handleOk() {
     const result = await fileUpload(cropperModalProps.value?.uploadRuleKey, {
       name: 'file',
       file: unref(imageBlob),
-      filename,
+      filename: `${filename}.jpg`,
     });
     emit('uploadSuccess', result);
     modalApi.close();

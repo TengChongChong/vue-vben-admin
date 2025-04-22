@@ -13,6 +13,8 @@ export interface CropperProps {
   circled?: boolean;
   // 未上传图片时的提示信息
   alt?: string;
+  // 文件上传策略
+  ruleKey?: string;
 }
 
 /**

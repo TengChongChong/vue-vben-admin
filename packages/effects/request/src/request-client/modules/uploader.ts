@@ -14,16 +14,7 @@ class FileUploader {
     config?: RequestClientConfig,
   ): Promise<T> {
     const formData = new FormData();
-
-    Object.entries(data).forEach(([key, value]) => {
-      if (Array.isArray(value)) {
-        value.forEach((item, index) => {
-          formData.append(`${key}[${index}]`, item);
-        });
-      } else {
-        formData.append(key, value);
-      }
-    });
+    formData.append(data.name || 'file', data.file, data.filename);
 
     const finalConfig: RequestClientConfig = {
       ...config,

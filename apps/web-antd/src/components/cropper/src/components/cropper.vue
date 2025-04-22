@@ -23,6 +23,7 @@ const props = withDefaults(defineProps<CropperProps>(), {
   circled: true,
   // image alt
   alt: '图片',
+  ruleKey: 'default-image',
 });
 
 const emit = defineEmits(['update:value', 'change']);
@@ -39,7 +40,7 @@ watch(
 const getImageWrapperStyle = computed((): CSSProperties => {
   return {
     width: `${props.width}px`,
-    height: `${props.width * props.aspectRatio}px`,
+    height: `${props.width / props.aspectRatio}px`,
     borderRadius: props.circled ? '50%' : '4px',
   };
 });
@@ -54,14 +55,14 @@ function handleUploadSuccess(data: FileUploadResponse) {
 }
 
 function handleOpenCropperModal() {
-  const { alt, aspectRatio, circled } = props;
+  const { alt, aspectRatio, circled, ruleKey } = props;
   dragModalApi.setState({ title: `上传${props.alt}` });
   dragModalApi.setData({
     alt,
     aspectRatio,
     circled,
     value: unref(currentValue),
-    uploadRuleKey: 'default-image',
+    uploadRuleKey: ruleKey,
   });
   // dragModalApi.setState({ title: '外部动态标题' });
   dragModalApi.open();
@@ -78,7 +79,8 @@ function handleOpenCropperModal() {
         <template v-else>
           <Avatar
             :shape="props.circled ? 'circle' : 'square'"
-            :size="props.width"
+            :size="props.width / props.aspectRatio"
+            :style="getImageWrapperStyle"
           >
             {{ props.alt }}
           </Avatar>
@@ -88,7 +90,6 @@ function handleOpenCropperModal() {
         <LucideUpload />
       </div>
     </div>
-
     <CropperModalComp @upload-success="handleUploadSuccess" />
   </div>
 </template>

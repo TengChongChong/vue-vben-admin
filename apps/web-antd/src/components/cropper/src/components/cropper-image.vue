@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import type { CropperImageProps } from '#/components/cropper/src/props';
 import type { CSSProperties } from 'vue';
+
+import type { CropperImageProps } from '#/components/cropper/src/props';
+
+import { computed, onMounted, onUnmounted, ref, unref, useAttrs } from 'vue';
 
 import { useDebounceFn } from '@vueuse/shared';
 import Cropper from 'cropperjs';
-import { computed, onMounted, onUnmounted, ref, unref, useAttrs } from 'vue';
 
 import 'cropperjs/dist/cropper.css';
 
@@ -69,7 +71,7 @@ function croppered() {
     fileReader.onerror = () => {
       emit('cropperEndError');
     };
-  }, 'image/png');
+  }, 'image/jpg');
 }
 // Real-time display preview
 function realTimeCropper() {
