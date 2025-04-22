@@ -15,6 +15,9 @@ export function formatToDateTime(
   date?: dayjs.ConfigType,
   format = DATE_TIME_FORMAT,
 ): string {
+  if (!date) {
+    return null;
+  }
   return dayjs(date).format(format);
 }
 
@@ -22,6 +25,9 @@ export function formatToDate(
   date?: dayjs.ConfigType,
   format = DATE_FORMAT,
 ): string {
+  if (!date) {
+    return null;
+  }
   return dayjs(date).format(format);
 }
 
