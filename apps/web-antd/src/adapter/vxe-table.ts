@@ -3,10 +3,9 @@ import { h } from 'vue';
 import { setupVbenVxeTable, useVbenVxeGrid } from '@vben/plugins/vxe-table';
 
 import { Button, Image } from 'ant-design-vue';
-import dayjs from 'dayjs';
 
 import { DictTag } from '#/components/dict';
-import { formatToDuration } from '#/util/date';
+import { formatToDate, formatToDuration } from '#/util/date';
 
 import { useVbenForm } from './form';
 
@@ -175,13 +174,13 @@ setupVbenVxeTable({
     // 这里可以自行扩展 vxe-table 的全局配置，比如自定义格式化
     vxeUI.formats.add('date', {
       tableCellFormatMethod({ cellValue }) {
-        return dayjs(cellValue).format('YYYY-MM-DD');
+        return formatToDate(cellValue);
       },
     });
 
     vxeUI.formats.add('dateTime', {
       tableCellFormatMethod({ cellValue }) {
-        return dayjs(cellValue).format('YYYY-MM-DD HH:mm');
+        return formatToDate(cellValue, 'YYYY-MM-DD HH:mm');
       },
     });
 

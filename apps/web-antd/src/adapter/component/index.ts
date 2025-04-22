@@ -21,6 +21,7 @@ import { $t } from '@vben/locales';
 
 import { notification } from 'ant-design-vue';
 
+import { AreaCascader } from '#/components/area-cascader';
 import { Cropper } from '#/components/cropper';
 import { DeptSelect } from '#/components/dept';
 import {
@@ -31,6 +32,7 @@ import {
   DictTreeSelect,
 } from '#/components/dict';
 import { Divider } from '#/components/divider';
+import { Editor } from '#/components/editor';
 import { ApiSelect, ApiTreeSelect } from '#/components/form';
 import { RoleSelect } from '#/components/role';
 import { SmsVerificationCode } from '#/components/sms-verification-code';
@@ -122,6 +124,7 @@ const withDefaultPlaceholder = <T extends Component>(
 export type ComponentType =
   | 'ApiSelect'
   | 'ApiTreeSelect'
+  | 'AreaCascader'
   | 'AutoComplete'
   | 'Checkbox'
   | 'CheckboxGroup'
@@ -220,7 +223,9 @@ async function initComponentAdapter() {
     DictCascader: withDefaultPlaceholder(DictCascader, 'select'),
     DictCheckbox,
     DictRadio,
+    Editor,
     DictSelect: withDefaultPlaceholder(DictSelect, 'select'),
+    AreaCascader: withDefaultPlaceholder(AreaCascader, 'select'),
     DictTreeSelect: withDefaultPlaceholder(DictTreeSelect, 'select'),
     DeptSelect: withDefaultPlaceholder(DeptSelect, 'select'),
     RoleSelect: withDefaultPlaceholder(RoleSelect, 'select'),
