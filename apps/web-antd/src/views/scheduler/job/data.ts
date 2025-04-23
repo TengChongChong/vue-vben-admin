@@ -1,15 +1,18 @@
 // 表格列数据
 import type { VxeGridPropTypes } from '@vben/plugins/vxe-table';
 
+import { h } from 'vue';
+
+import { useAccess } from '@vben/access';
+
+import { message, Switch } from 'ant-design-vue';
+
 import { pauseApi, startApi } from '#/api/scheduler/scheduler-job';
 import { RoleEnum } from '#/enums/roleEnum';
-import { useAccess } from '@vben/access';
-import { message, Switch } from 'ant-design-vue';
-import { h } from 'vue';
 
 const { hasAccessByRoles } = useAccess();
 
-export const initColumns = (): VxeGridPropTypes.Columns[] => {
+export const initColumns = (): VxeGridPropTypes.Columns => {
   return [
     { type: 'checkbox', width: 50, fixed: 'left' },
     { title: '序号', type: 'seq', width: 50, fixed: 'left' },

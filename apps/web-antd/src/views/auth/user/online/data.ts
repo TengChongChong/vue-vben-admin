@@ -1,7 +1,7 @@
 // 表格列数据
 import type { VxeGridPropTypes } from '@vben/plugins/vxe-table';
 
-export const initColumns = (): VxeGridPropTypes.Columns[] => {
+export const initColumns = (): VxeGridPropTypes.Columns => {
   return [
     { title: '序号', type: 'seq', width: 50, fixed: 'left' },
     {

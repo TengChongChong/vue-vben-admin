@@ -12,7 +12,7 @@ import { RoleEnum } from '#/enums/roleEnum';
 
 const { hasAccessByRoles } = useAccess();
 
-export const initColumns = (): VxeGridPropTypes.Columns[] => {
+export const initColumns = (): VxeGridPropTypes.Columns => {
   return [
     { type: 'checkbox', width: 50, fixed: 'left' },
     { title: '序号', type: 'seq', width: 50, fixed: 'left' },

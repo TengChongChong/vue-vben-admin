@@ -8,7 +8,7 @@ import { message, Switch } from 'ant-design-vue';
 import { setStatusApi } from '#/api/auth/sys-menu';
 
 // 表格列数据
-export const initColumns = (): VxeGridPropTypes.Columns[] => {
+export const initColumns = (): VxeGridPropTypes.Columns => {
   return [
     { type: 'checkbox', width: 50, fixed: 'left' },
     { title: '序号', type: 'seq', width: 100, fixed: 'left' },
