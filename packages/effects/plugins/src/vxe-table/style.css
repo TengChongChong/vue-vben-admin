@@ -32,7 +32,7 @@
   /* table */
   --vxe-ui-table-header-background-color: hsl(var(--accent));
   --vxe-ui-table-border-color: hsl(var(--border));
-  --vxe-ui-table-row-hover-background-color: hsl(var(--accent-hover));
+  /*--vxe-ui-table-row-hover-background-color: hsl(var(--accent-hover));*/
   --vxe-ui-table-row-striped-background-color: hsl(var(--accent) / 60%);
   --vxe-ui-table-row-hover-striped-background-color: hsl(var(--accent));
   --vxe-ui-table-row-radio-checked-background-color: hsl(var(--accent));
