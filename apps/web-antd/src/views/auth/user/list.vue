@@ -5,7 +5,7 @@ import type { TreeNode } from '#/api/base/model/tree-model';
 
 import { ref } from 'vue';
 
-import { Page } from '@vben/common-ui';
+import { ColPage } from '@vben/common-ui';
 import { useUserStore } from '@vben/stores';
 import { listToTree } from '@vben/utils';
 
@@ -40,22 +40,30 @@ initData();
 </script>
 
 <template>
-  <Page auto-content-height>
-    <div class="flex flex-wrap">
-      <div class="w-[520px]">
-        <BasicTree
-          v-if="deptTreeData.length > 0"
-          v-model:selected-keys="selectedKeys"
-          :default-expand-level="1"
-          :tree-data="deptTreeData"
-          title="部门"
-        />
-      </div>
-      <div class="flex-1" style="min-width: 500px">
-        <UserList :dept-id="selectedKeys[0]" />
-      </div>
+  <ColPage
+    :resizable="true"
+    :split-line="true"
+    :split-handle="true"
+    :left-collapsible="false"
+    :left-min-width="20"
+    :left-width="20"
+    auto-content-height
+  >
+    <template #left>
+      <BasicTree
+        class="mr-2"
+        v-if="deptTreeData.length > 0"
+        v-model:selected-keys="selectedKeys"
+        :default-expand-level="1"
+        :tree-data="deptTreeData"
+        :show-search="true"
+        title="部门"
+      />
+    </template>
+    <div class="ml-2 h-full">
+      <UserList :dept-id="selectedKeys[0]" />
     </div>
-  </Page>
+  </ColPage>
 </template>
 
 <style scoped></style>

@@ -6,7 +6,7 @@ import type { SysConfig } from '#/api/sys/model/sys-config-model';
 import { watch } from 'vue';
 
 import { AccessControl } from '@vben/access';
-import { Page, useVbenDrawer } from '@vben/common-ui';
+import { useVbenDrawer } from '@vben/common-ui';
 
 import { Button, Drawer, Popconfirm, Space } from 'ant-design-vue';
 
@@ -108,57 +108,55 @@ const handleResetPassword = (id: string) => {
 </script>
 
 <template>
-  <Page auto-content-height content-class="!pt-0 !pr-0 !pb-8">
-    <Grid>
-      <template #toolbar-tools>
-        <Space>
-          <ButtonAdd :auth-codes="['sys:user:save']" @click="handleCreate" />
-
-          <ButtonRemove
-            :api="removeApi"
-            :auth-codes="['sys:user:remove']"
-            :grid-api="gridApi"
-            @success="handleSearch"
-          />
-        </Space>
-      </template>
-      <template #avatar="{ row }">
-        <UserAvatar :alt="row.nickname" :size="32" :src="row.avatarUrl" />
-      </template>
-      <template #action="{ row }">
-        <AccessControl :codes="['sys:user:save']">
-          <Popconfirm
-            cancel-text="否"
-            ok-text="是"
-            title="确定要重置为默认密码吗？"
-            @confirm="handleResetPassword(row.id)"
-          >
-            <Button size="small" type="link">
-              <template #icon> <LucideRotateCcw /> </template>
-              重置密码
-            </Button>
-          </Popconfirm>
-        </AccessControl>
-
-        <ButtonEdit
-          :auth-codes="['sys:user:save']"
-          size="small"
-          type="link"
-          @click="handleEdit(row.id)"
-        />
+  <Grid>
+    <template #toolbar-tools>
+      <Space>
+        <ButtonAdd :auth-codes="['sys:user:save']" @click="handleCreate" />
 
         <ButtonRemove
           :api="removeApi"
           :auth-codes="['sys:user:remove']"
-          :ids="[row.id]"
-          size="small"
-          type="link"
+          :grid-api="gridApi"
           @success="handleSearch"
         />
-      </template>
-    </Grid>
-    <!--  编辑  -->
-    <BaseInputDrawer @success="handleSearch" />
-  </Page>
+      </Space>
+    </template>
+    <template #avatar="{ row }">
+      <UserAvatar :alt="row.nickname" :size="32" :src="row.avatarUrl" />
+    </template>
+    <template #action="{ row }">
+      <AccessControl :codes="['sys:user:save']">
+        <Popconfirm
+          cancel-text="否"
+          ok-text="是"
+          title="确定要重置为默认密码吗？"
+          @confirm="handleResetPassword(row.id)"
+        >
+          <Button size="small" type="link">
+            <template #icon> <LucideRotateCcw /> </template>
+            重置密码
+          </Button>
+        </Popconfirm>
+      </AccessControl>
+
+      <ButtonEdit
+        :auth-codes="['sys:user:save']"
+        size="small"
+        type="link"
+        @click="handleEdit(row.id)"
+      />
+
+      <ButtonRemove
+        :api="removeApi"
+        :auth-codes="['sys:user:remove']"
+        :ids="[row.id]"
+        size="small"
+        type="link"
+        @success="handleSearch"
+      />
+    </template>
+  </Grid>
+  <!--  编辑  -->
+  <BaseInputDrawer @success="handleSearch" />
 </template>
 <style lang="scss" scoped></style>

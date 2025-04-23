@@ -5,7 +5,7 @@ import type { SysDict } from '#/api/sys/model/sys-dict-model';
 
 import { ref, unref } from 'vue';
 
-import { Page, useVbenModal } from '@vben/common-ui';
+import { ColPage, useVbenModal } from '@vben/common-ui';
 
 import { Button, message, Space } from 'ant-design-vue';
 
@@ -135,60 +135,62 @@ const handelExportData = async () => {
 </script>
 
 <template>
-  <Page auto-content-height>
-    <div class="flex flex-wrap">
-      <div class="w-[600px]">
-        <SysDictTypeList @change="handleDictTypeChange" />
-      </div>
-      <div class="flex-1" style="min-width: 500px">
-        <Grid>
-          <template #toolbar-tools>
-            <Space>
-              <ButtonAdd
-                :auth-codes="['sys:dict:save']"
-                @click="handleCreate"
-              />
-
-              <ButtonRemove
-                :api="removeApi"
-                :auth-codes="['sys:dict:remove']"
-                :grid-api="gridApi"
-                @success="handleSearch"
-              />
-
-              <ButtonExport
-                :loading="exportBtnLoading"
-                @click="handelExportData"
-              />
-
-              <Button @click="handleReloadCache">
-                <template #icon> <LucideRefreshCw /> </template>
-                刷新缓存
-              </Button>
-            </Space>
-          </template>
-          <template #action="{ row }">
-            <ButtonEdit
-              :auth-codes="['sys:dict:save']"
-              size="small"
-              type="link"
-              @click="handleEdit(row.id)"
-            />
+  <ColPage
+    :resizable="true"
+    :split-line="true"
+    :split-handle="true"
+    :left-collapsible="false"
+    :left-min-width="30"
+    :left-width="30"
+    auto-content-height
+  >
+    <template #left>
+      <SysDictTypeList @change="handleDictTypeChange" />
+    </template>
+    <div class="ml-2 h-full">
+      <Grid>
+        <template #toolbar-tools>
+          <Space>
+            <ButtonAdd :auth-codes="['sys:dict:save']" @click="handleCreate" />
 
             <ButtonRemove
               :api="removeApi"
               :auth-codes="['sys:dict:remove']"
-              :ids="[row.id]"
-              size="small"
-              type="link"
+              :grid-api="gridApi"
               @success="handleSearch"
             />
-          </template>
-        </Grid>
-      </div>
-    </div>
 
+            <ButtonExport
+              :loading="exportBtnLoading"
+              @click="handelExportData"
+            />
+
+            <Button @click="handleReloadCache">
+              <template #icon> <LucideRefreshCw /> </template>
+              刷新缓存
+            </Button>
+          </Space>
+        </template>
+        <template #action="{ row }">
+          <ButtonEdit
+            :auth-codes="['sys:dict:save']"
+            size="small"
+            type="link"
+            @click="handleEdit(row.id)"
+          />
+
+          <ButtonRemove
+            :api="removeApi"
+            :auth-codes="['sys:dict:remove']"
+            :ids="[row.id]"
+            size="small"
+            type="link"
+            @success="handleSearch"
+          />
+        </template>
+      </Grid>
+    </div>
     <!--  编辑  -->
     <BaseInputModal @success="handleSearch" />
-  </Page>
+  </ColPage>
 </template>

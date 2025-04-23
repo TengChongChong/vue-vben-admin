@@ -101,7 +101,7 @@ const handelExportData = async () => {
 </script>
 
 <template>
-  <div class="dict-type-page bg-card mr-3 rounded-md">
+  <div class="dict-type-page bg-card mr-2 rounded-md">
     <div class="dict-type-search w-full">
       <InputSearch
         v-model:value="searchValue"
