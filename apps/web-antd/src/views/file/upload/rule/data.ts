@@ -34,6 +34,22 @@ export const initColumns = (): VxeGridPropTypes.Columns => {
       minWidth: 180,
     },
     {
+      title: '存储平台',
+      field: 'platform',
+      sortable: true,
+      minWidth: 160,
+    },
+    {
+      title: '访问控制',
+      field: 'accessControl',
+      sortable: true,
+      minWidth: 150,
+      cellRender: {
+        name: 'DictTag',
+        props: { dictType: 'accessControl' },
+      },
+    },
+    {
       title: '存储目录',
       field: 'directory',
       sortable: true,

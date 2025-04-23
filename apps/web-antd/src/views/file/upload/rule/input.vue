@@ -63,6 +63,26 @@ const [BaseForm, baseFormApi] = useVbenForm({
       description: '上传规则标识，不可重复，例如：user-avatar',
     },
     {
+      fieldName: 'platform',
+      label: '存储平台',
+      component: 'Input',
+      rules: z
+        .string()
+        .min(1, { message: '请输入存储平台' })
+        .max(64, { message: '存储平台最多输入64个字符' }),
+      description: '填写dromara.x-file-storage中设置的存储平台',
+    },
+    {
+      fieldName: 'accessControl',
+      label: '访问控制',
+      component: 'DictRadio',
+      componentProps: {
+        dictType: 'accessControl',
+      },
+      rules: 'selectRequired',
+      description: '使用对象存储时，访问控制请与桶设置保持一致',
+    },
+    {
       fieldName: 'directory',
       label: '存储目录',
       component: 'Input',
