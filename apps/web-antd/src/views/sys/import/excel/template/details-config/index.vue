@@ -204,10 +204,10 @@ function handleOrderField() {
 }
 
 function handleChangeReplaceTable(record) {
-  if (record.replaceTable === 'sys_dict') {
+  if (record.replaceTable?.toLowerCase() === 'sys_dict') {
     record.replaceTableFieldName = 'name';
     record.replaceTableFieldValue = 'code';
-  } else if (record.replaceTable === 'sys_dept') {
+  } else if (record.replaceTable?.toLowerCase() === 'sys_dept') {
     record.replaceTableFieldName = 'name';
     record.replaceTableFieldValue = 'id';
   } else {
@@ -315,7 +315,10 @@ const [Drawer, drawerApi] = useVbenDrawer({
           <Select
             v-model:value="record.replaceTableDictType"
             :allow-clear="true"
-            :disabled="!record.needImport || record.replaceTable !== 'sys_dict'"
+            :disabled="
+              !record.needImport ||
+              record.replaceTable?.toLowerCase() !== 'sys_dict'
+            "
             :options="dictTypeArray"
             option-filter-prop="label"
             show-search
