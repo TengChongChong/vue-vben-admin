@@ -206,6 +206,9 @@ const [BaseForm, baseFormApi] = useVbenForm({
       fieldName: 'mainTableField',
       label: '与主表关联字段',
       component: 'Input',
+      componentProps: {
+        onChange: (value) => handleMainTableFieldChange(value),
+      },
       rules: 'selectRequired',
       dependencies: {
         triggerFields: ['generatorTemplate', 'table'],
@@ -213,7 +216,6 @@ const [BaseForm, baseFormApi] = useVbenForm({
           return values.generatorTemplate === 'sub-table' && values.table;
         },
       },
-      onChange: (value) => handleMainTableFieldChange(value),
     },
     {
       fieldName: 'modelName',
