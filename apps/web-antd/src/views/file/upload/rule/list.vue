@@ -11,6 +11,7 @@ import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
   addApi,
   getApi,
+  getFileStorageListApi,
   removeApi,
   selectApi,
 } from '#/api/file/file-upload-rule';
@@ -29,26 +30,48 @@ const formOptions: VbenFormProps = {
   schema: [
     {
       fieldName: 'category',
-      label: '分类',
+      label: '策略分类',
       component: 'DictSelect',
       componentProps: {
         dictType: 'sysFileUploadRuleCategory',
+        onChange: () => {
+          handleSearch();
+        },
       },
     },
     {
       fieldName: 'name',
-      label: '名称',
+      label: '策略名称',
       component: 'Input',
     },
     {
       fieldName: 'ruleKey',
-      label: 'Key',
+      label: '策略Key',
       component: 'Input',
     },
     {
-      fieldName: 'directory',
-      label: '存储目录',
-      component: 'Input',
+      fieldName: 'platform',
+      label: '存储平台',
+      component: 'ApiSelect',
+      componentProps: {
+        api: getFileStorageListApi,
+        afterFetch: (data) => {
+          return data.map((item) => {
+            return {
+              label: item.platform,
+              value: item.platform,
+            };
+          });
+        },
+      },
+    },
+    {
+      fieldName: 'accessControl',
+      label: '访问控制',
+      component: 'DictSelect',
+      componentProps: {
+        dictType: 'accessControl',
+      },
     },
     {
       fieldName: 'suffix',
@@ -81,8 +104,12 @@ const [BaseInputDrawer, baseInputDrawerApi] = useVbenDrawer({
 });
 
 async function handleCreate() {
-  addApi().then((res) => {
-    baseInputDrawerApi.setData(res);
+  addApi().then(async (res) => {
+    const formValues = await gridApi.formApi.getValues();
+    baseInputDrawerApi.setData({
+      ...res,
+      category: formValues.category,
+    });
     baseInputDrawerApi.open();
   });
 }

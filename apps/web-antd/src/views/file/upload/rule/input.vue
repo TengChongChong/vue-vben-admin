@@ -15,7 +15,11 @@ import {
 } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { addApi, saveApi } from '#/api/file/file-upload-rule';
+import {
+  addApi,
+  getFileStorageListApi,
+  saveApi,
+} from '#/api/file/file-upload-rule';
 import { ButtonClose, ButtonSave } from '#/components/button';
 
 const emit = defineEmits(['success']);
@@ -35,17 +39,17 @@ const [BaseForm, baseFormApi] = useVbenForm({
     { fieldName: 'version', component: 'Input', formItemClass: 'hidden' },
     {
       fieldName: 'category',
-      label: '分类',
+      label: '策略分类',
       component: 'DictSelect',
       componentProps: {
         dictType: 'sysFileUploadRuleCategory',
       },
       rules: 'selectRequired',
-      description: '建议根据业务分类，方便管理',
+      description: '建议按业务类型对规则进行分类，以便统一管理与维护',
     },
     {
       fieldName: 'name',
-      label: '名称',
+      label: '策略名称',
       component: 'Input',
       rules: z
         .string()
@@ -54,23 +58,33 @@ const [BaseForm, baseFormApi] = useVbenForm({
     },
     {
       fieldName: 'ruleKey',
-      label: 'Key',
+      label: '策略Key',
       component: 'Input',
       rules: z
         .string()
         .min(1, { message: '请输入Key' })
         .max(32, { message: 'Key最多输入32个字符' }),
-      description: '上传规则标识，不可重复，例如：user-avatar',
+      description:
+        '上传规则标识用于前端调用规则，需保持唯一性（不可重复），例如：user-avatar',
     },
     {
       fieldName: 'platform',
       label: '存储平台',
-      component: 'Input',
-      rules: z
-        .string()
-        .min(1, { message: '请输入存储平台' })
-        .max(64, { message: '存储平台最多输入64个字符' }),
-      description: '填写dromara.x-file-storage中设置的存储平台',
+      component: 'ApiSelect',
+      componentProps: {
+        api: getFileStorageListApi,
+        afterFetch: (data) => {
+          return data.map((item) => {
+            return {
+              label: item.platform,
+              value: item.platform,
+            };
+          });
+        },
+      },
+      rules: 'selectRequired',
+      description:
+        '存储平台的相关配置需在SpringBoot配置文件中dromara.x-file-storage进行设置',
     },
     {
       fieldName: 'accessControl',
@@ -80,7 +94,8 @@ const [BaseForm, baseFormApi] = useVbenForm({
         dictType: 'accessControl',
       },
       rules: 'selectRequired',
-      description: '使用对象存储时，访问控制请与桶设置保持一致',
+      description:
+        '使用对象存储时，访问控制需与桶设置一致，文件会继承桶的访问控制规则',
     },
     {
       fieldName: 'directory',
@@ -90,14 +105,16 @@ const [BaseForm, baseFormApi] = useVbenForm({
         .string()
         .min(1, { message: '请输入存储目录' })
         .max(64, { message: '存储目录最多输入64个字符' }),
-      description: '文件存放目录，例如：easy-doc、easy-images',
+      description:
+        '文件的存放目录通常与 Key 保持一致，比如当存储目录为 “user-avatar” 时，文件会存放于名为 “user-avatar” 的目录下',
     },
     {
       fieldName: 'fileSizeLimit',
       label: '文件大小',
       component: 'InputNumber',
       slot: 'fileSizeLimit',
-      description: '允许上传的文件大小，单位 KB',
+      description:
+        '请依据实际业务场景，合理设置允许上传的文件大小上限，单位为 KB',
       rules: z.number().refine(
         () => {
           return lowerLimit.value !== null && upperLimit.value !== null;
@@ -122,7 +139,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
         .min(1, { message: '请输入文件拓展名' })
         .max(255, { message: '文件拓展名最多输入255个字符' }),
       description:
-        '允许上传的文件后缀（忽略大小写），多个使用 , 隔开，例如：jpg,png,gif',
+        '允许上传的文件后缀名（不区分大小写），多个后缀间以英文逗号 “,” 分隔，如：jpg,png,gif',
     },
     {
       fieldName: 'enableImageCompression',

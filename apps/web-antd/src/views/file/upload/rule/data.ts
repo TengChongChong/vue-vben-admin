@@ -12,7 +12,7 @@ export const initColumns = (): VxeGridPropTypes.Columns => {
     { type: 'checkbox', width: 50, fixed: 'left' },
     { title: '序号', type: 'seq', width: 50, fixed: 'left' },
     {
-      title: '分类',
+      title: '策略分类',
       field: 'category',
       sortable: true,
       width: 120,
@@ -22,13 +22,13 @@ export const initColumns = (): VxeGridPropTypes.Columns => {
       },
     },
     {
-      title: '名称',
+      title: '策略名称',
       field: 'name',
       sortable: true,
       minWidth: 160,
     },
     {
-      title: 'Key',
+      title: '策略Key',
       field: 'ruleKey',
       sortable: true,
       minWidth: 180,
