@@ -48,7 +48,7 @@ const gridOptions: VxeGridProps<SysDictType> = {
   radioConfig: {
     highlight: true,
   },
-  height: false,
+  // height: false,
   proxyConfig: {
     ajax: {
       query: async ({ page }) => {

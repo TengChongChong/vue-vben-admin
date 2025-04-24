@@ -1,5 +1,8 @@
 import type { Page } from '#/api/base/model/page-model';
-import type { FileUploadRule } from '#/api/file/model/file-upload-rule-model';
+import type {
+  FileStorage,
+  FileUploadRule,
+} from '#/api/file/model/file-upload-rule-model';
 
 import { requestClient } from '#/api/request';
 
@@ -33,6 +36,15 @@ export function getByKeyApi(key: string) {
  */
 export function getApi(id: string) {
   return requestClient.get<FileUploadRule>(`${BASE_URL}/${id}`);
+}
+
+/**
+ * 获取文件存储列表
+ *
+ * @return CopyOnWriteArrayList<FileStorage>
+ */
+export function getFileStorageListApi() {
+  return requestClient.get<FileStorage>(`${BASE_URL}/file/storage`);
 }
 
 /**

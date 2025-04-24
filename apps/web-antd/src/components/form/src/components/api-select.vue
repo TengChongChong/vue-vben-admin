@@ -1,11 +1,14 @@
 <script lang="ts" setup>
 import type { ApiSelectProps, OptionsItem } from '../props';
 
-import { HighlightText } from '#/components/highlight-text';
+import { onMounted, ref, unref, watch } from 'vue';
+
 import { cn, isFunction } from '@vben/utils';
+
 import { get } from '@vueuse/shared';
 import { Select } from 'ant-design-vue';
-import { onMounted, ref, unref, watch } from 'vue';
+
+import { HighlightText } from '#/components/highlight-text';
 
 defineOptions({
   inheritAttrs: false,
@@ -54,7 +57,7 @@ async function fetch() {
 }
 
 function emitChange() {
-  emit('optionsChange', options);
+  emit('optionsChange', options.value);
 }
 watch(
   () => props.params,

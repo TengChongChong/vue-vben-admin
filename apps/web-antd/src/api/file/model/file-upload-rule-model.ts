@@ -30,3 +30,8 @@ export interface FileUploadRuleVO extends FileUploadRule {
   // 文件后缀
   suffixArray: string[];
 }
+
+export interface FileStorage {
+  platform: string;
+  [key: string]: any;
+}

@@ -59,7 +59,7 @@ const formOptions: VbenFormProps = {
 const gridOptions: VxeGridProps<SysDict> = {
   id: 'sys-dict',
   columns: initColumns(),
-  height: false,
+  // height: false,
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
@@ -141,7 +141,7 @@ const handelExportData = async () => {
     :split-handle="true"
     :left-collapsible="false"
     :left-min-width="30"
-    :left-width="30"
+    :left-width="40"
     auto-content-height
   >
     <template #left>

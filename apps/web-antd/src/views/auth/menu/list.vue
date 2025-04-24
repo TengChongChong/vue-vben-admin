@@ -126,9 +126,11 @@ function handleOrder() {
 
 function handleExpandAll() {
   gridApi.grid?.setAllTreeExpand(true);
+  expandIds.value = gridApi.grid.getTreeExpandRecords();
 }
 function handleCollapseAll() {
   gridApi.grid?.clearTreeExpand();
+  expandIds.value = gridApi.grid.getTreeExpandRecords();
 }
 </script>
 
