@@ -19,7 +19,7 @@
 
 ## 预览
 
-- [Vben Admin](https://ev.easy-frame.top/)
+- [Vben Admin](http://ev.easy-frame.top/)
 
 测试账号: sysadmin/admin123
 
@@ -36,7 +36,7 @@
 
 ## 文档
 
-[文档地址](https://doc.vben.pro/)
+[文档地址](http://doc.vben.pro/)
 
 ## 安装使用
 
