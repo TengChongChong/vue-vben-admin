@@ -23,4 +23,8 @@ export const overridesPreferences = defineOverridesPreferences({
     /** 应用名 */
     name: import.meta.env.VITE_APP_TITLE,
   },
+  widget: {
+    /** 是否启用语言切换部件 */
+    languageToggle: false,
+  },
 });
