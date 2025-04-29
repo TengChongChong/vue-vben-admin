@@ -3,6 +3,20 @@ import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
 import type { SchedulerJob } from '#/api/scheduler/model/scheduler-job-model';
 
+import { AccessControl } from '@vben/access';
+import { Page, useVbenDrawer, useVbenModal } from '@vben/common-ui';
+
+import {
+  Button,
+  Divider,
+  Dropdown,
+  Menu,
+  MenuItem,
+  message,
+  Popconfirm,
+  Space,
+} from 'ant-design-vue';
+
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
   addApi,
@@ -21,17 +35,6 @@ import {
   LucideLogs,
 } from '#/components/icons';
 import LogListModal from '#/views/scheduler/job-log/list-modal.vue';
-import { AccessControl } from '@vben/access';
-import { Page, useVbenDrawer, useVbenModal } from '@vben/common-ui';
-import {
-  Button,
-  Dropdown,
-  Menu,
-  MenuItem,
-  message,
-  Popconfirm,
-  Space,
-} from 'ant-design-vue';
 
 import { initColumns } from './data';
 import InputDrawer from './input.vue';
@@ -176,6 +179,8 @@ async function handleOpenRunLogModal(id: string) {
               全部暂停
             </Button>
           </Popconfirm>
+
+          <Divider class="h-5" type="vertical" />
         </Space>
       </template>
       <template #action="{ row }">

@@ -6,7 +6,7 @@ import type { SysConfig } from '#/api/sys/model/sys-config-model';
 import { useAccess } from '@vben/access';
 import { Page, useVbenModal } from '@vben/common-ui';
 
-import { Button, message, Space } from 'ant-design-vue';
+import { Button, Divider, message, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { getApi, refreshApi, removeApi, selectApi } from '#/api/sys/sys-config';
@@ -137,6 +137,8 @@ function handleReloadCache() {
             <template #icon> <LucideRefreshCw /> </template>
             刷新缓存
           </Button>
+
+          <Divider class="h-5" type="vertical" />
         </Space>
       </template>
       <template #action="{ row }">

@@ -7,7 +7,7 @@ import { ref, unref } from 'vue';
 
 import { ColPage, useVbenModal } from '@vben/common-ui';
 
-import { Button, message, Space } from 'ant-design-vue';
+import { Button, Divider, message, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
@@ -145,7 +145,9 @@ const handelExportData = async () => {
     auto-content-height
   >
     <template #left>
-      <SysDictTypeList @change="handleDictTypeChange" />
+      <div class="h-full">
+        <SysDictTypeList @change="handleDictTypeChange" />
+      </div>
     </template>
     <div class="ml-2 h-full">
       <Grid>
@@ -169,6 +171,8 @@ const handelExportData = async () => {
               <template #icon> <LucideRefreshCw /> </template>
               刷新缓存
             </Button>
+
+            <Divider class="h-5" type="vertical" />
           </Space>
         </template>
         <template #action="{ row }">

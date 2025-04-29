@@ -7,7 +7,7 @@ import { ref } from 'vue';
 
 import { Page, useVbenDrawer } from '@vben/common-ui';
 
-import { Space } from 'ant-design-vue';
+import { Divider, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
@@ -137,6 +137,8 @@ const handelExportData = async () => {
             :auth-codes="['sample:general:import:data']"
           />
           <ButtonExport :loading="exportBtnLoading" @click="handelExportData" />
+
+          <Divider class="h-5" type="vertical" />
         </Space>
       </template>
       <template #action="{ row }">

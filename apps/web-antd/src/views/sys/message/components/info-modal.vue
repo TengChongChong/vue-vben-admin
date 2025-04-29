@@ -3,12 +3,12 @@ import type { SysMessage } from '#/api/sys/model/sys-message-model';
 
 import { ref } from 'vue';
 
-import { useVbenModal } from '@vben/common-ui';
+import { useVbenModal, VbenAvatar } from '@vben/common-ui';
+import { preferences } from '@vben/preferences';
 
 import { Divider, Space } from 'ant-design-vue';
 
 import { ButtonClose } from '#/components/button';
-import { UserAvatar } from '#/components/user';
 import { formatToDateTime } from '#/util/date';
 
 const messageInfo = ref<SysMessage>();
@@ -29,10 +29,10 @@ const [Modal, modalApi] = useVbenModal({
         <h3>{{ messageInfo?.title }}</h3>
       </div>
       <div class="message__property">
-        <UserAvatar
+        <VbenAvatar
           :alt="messageInfo?.nickname"
           :size="40"
-          :src="messageInfo?.avatar"
+          :src="messageInfo?.avatar || preferences.app.defaultAvatar"
         />
         {{ messageInfo?.nickname }}
 

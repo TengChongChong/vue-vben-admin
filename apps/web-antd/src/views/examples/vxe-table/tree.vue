@@ -9,7 +9,7 @@ import { Page } from '@vben/common-ui';
 
 import { MenuBadge } from '@vben-core/menu-ui';
 
-import { Button, message, Space, Switch } from 'ant-design-vue';
+import { Button, Divider, message, Space, Switch } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { selectApi, setStatusApi } from '#/api/auth/sys-menu';
@@ -202,6 +202,8 @@ function handleCollapseAll() {
             </template>
             折叠全部
           </Button>
+
+          <Divider class="h-5" type="vertical" />
         </Space>
       </template>
       <template #title="{ row }">

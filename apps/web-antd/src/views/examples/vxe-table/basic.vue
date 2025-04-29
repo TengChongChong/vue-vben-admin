@@ -3,7 +3,7 @@ import type { VxeGridListeners, VxeGridProps } from '#/adapter/vxe-table';
 
 import { Page } from '@vben/common-ui';
 
-import { Button, message } from 'ant-design-vue';
+import { Button, Divider, message } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 
@@ -90,6 +90,8 @@ function changeLoading() {
         <Button type="primary" @click="changeStripe">
           {{ showStripe ? '隐藏' : '显示' }}斑马纹
         </Button>
+
+        <Divider class="h-5" type="vertical" />
       </template>
     </Grid>
   </Page>

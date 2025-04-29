@@ -4,14 +4,13 @@ import type { VxeGridProps } from '#/adapter/vxe-table';
 import type { SysUserOnline } from '#/api/auth/model/sys-user-online-model';
 
 import { AccessControl } from '@vben/access';
-import { Page } from '@vben/common-ui';
+import { Page, VbenAvatar } from '@vben/common-ui';
 
 import { Button, Popconfirm } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { forceLoginApi, selectApi } from '#/api/auth/sys-user-online';
 import { LucideLogOut } from '#/components/icons';
-import { UserAvatar } from '#/components/user';
 
 import { initColumns } from './data';
 
@@ -74,7 +73,12 @@ function handleForceLogin(token: string) {
   <Page auto-content-height>
     <Grid>
       <template #avatar="{ row }">
-        <UserAvatar :alt="row.nickname" :size="32" :src="row.avatarUrl" />
+        <VbenAvatar
+          :alt="row.nickname"
+          :size="32"
+          :src="row.avatarUrl"
+          class="mx-auto"
+        />
       </template>
       <template #action="{ row }">
         <AccessControl :codes="['sys:online:force']">

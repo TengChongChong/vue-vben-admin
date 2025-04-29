@@ -9,7 +9,7 @@ import { Page, useVbenDrawer } from '@vben/common-ui';
 
 import { MenuBadge } from '@vben-core/menu-ui';
 
-import { Button, Space } from 'ant-design-vue';
+import { Button, Divider, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { addApi, getApi, removeApi, selectApi } from '#/api/auth/sys-menu';
@@ -164,6 +164,8 @@ function handleCollapseAll() {
             :grid-api="gridApi"
             @success="handleSearch"
           />
+
+          <Divider class="h-5" type="vertical" />
         </Space>
       </template>
       <template #title="{ row }">

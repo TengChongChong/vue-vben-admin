@@ -5,7 +5,7 @@ import type { FileUploadRule } from '#/api/file/model/file-upload-rule-model';
 
 import { Page, useVbenDrawer } from '@vben/common-ui';
 
-import { Space } from 'ant-design-vue';
+import { Divider, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
@@ -138,6 +138,8 @@ function handleEdit(id: string) {
             :grid-api="gridApi"
             @success="handleSearch"
           />
+
+          <Divider class="h-5" type="vertical" />
         </Space>
       </template>
       <template #upperLimit="{ row }">

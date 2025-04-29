@@ -7,7 +7,7 @@ import { ref } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
 
-import { Button, Space } from 'ant-design-vue';
+import { Button, Divider, Space } from 'ant-design-vue';
 import dayjs from 'dayjs';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
@@ -185,6 +185,8 @@ function handleOpenInfoModel(id: string, messageId: string) {
             :grid-api="gridApi"
             @success="handleSearch"
           />
+
+          <Divider class="h-5" type="vertical" />
         </Space>
       </template>
 

@@ -5,7 +5,7 @@ import type { FileUploadRule } from '#/api/file/model/file-upload-rule-model';
 
 import { useVbenDrawer, useVbenModal } from '@vben/common-ui';
 
-import { Button, message, Popconfirm, Space } from 'ant-design-vue';
+import { Button, Divider, message, Popconfirm, Space } from 'ant-design-vue';
 import dayjs from 'dayjs';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
@@ -169,6 +169,8 @@ function handleOpenInfoModel(id: string) {
             :grid-api="gridApi"
             @success="handleSearch"
           />
+
+          <Divider class="h-5" type="vertical" />
         </Space>
       </template>
 

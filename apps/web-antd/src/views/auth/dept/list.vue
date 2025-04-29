@@ -8,7 +8,7 @@ import { ref, unref } from 'vue';
 import { AccessControl } from '@vben/access';
 import { Page, useVbenDrawer } from '@vben/common-ui';
 
-import { Button, Space } from 'ant-design-vue';
+import { Button, Divider, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { addApi, getApi, removeApi, selectApi } from '#/api/auth/sys-dept';
@@ -170,6 +170,8 @@ function handleCollapseAll() {
             :grid-api="gridApi"
             @success="handleSearch"
           />
+
+          <Divider class="h-5" type="vertical" />
         </Space>
       </template>
       <template #action="{ row }">

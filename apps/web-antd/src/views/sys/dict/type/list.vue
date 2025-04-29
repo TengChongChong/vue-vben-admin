@@ -48,7 +48,10 @@ const gridOptions: VxeGridProps<SysDictType> = {
   radioConfig: {
     highlight: true,
   },
-  // height: false,
+  pagerConfig: {
+    // 每页大小
+    pageSize: 200,
+  },
   proxyConfig: {
     ajax: {
       query: async ({ page }) => {
@@ -101,7 +104,7 @@ const handelExportData = async () => {
 </script>
 
 <template>
-  <div class="dict-type-page bg-card mr-2 rounded-md">
+  <div class="dict-type-page bg-card mr-2 h-full rounded-md">
     <div class="dict-type-search w-full">
       <InputSearch
         v-model:value="searchValue"
@@ -109,7 +112,7 @@ const handelExportData = async () => {
         @search="handleSearch"
       />
     </div>
-    <div class="w-full">
+    <div class="h-full" style="height: calc(100% - 48px)">
       <Grid>
         <template #toolbar-tools>
           <Space>

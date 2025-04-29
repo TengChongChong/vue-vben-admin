@@ -5,7 +5,7 @@ import type { SysException } from '#/api/sys/model/sys-exception-model';
 
 import { Page, useVbenDrawer } from '@vben/common-ui';
 
-import { Space } from 'ant-design-vue';
+import { Divider, Space } from 'ant-design-vue';
 import dayjs from 'dayjs';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
@@ -130,6 +130,8 @@ async function handleInfo(id: string) {
             :grid-api="gridApi"
             @success="handleSearch"
           />
+
+          <Divider class="h-5" type="vertical" />
         </Space>
       </template>
       <template #action="{ row }">

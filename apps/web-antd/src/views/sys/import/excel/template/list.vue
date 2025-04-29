@@ -5,7 +5,7 @@ import type { SysImportExcelTemplate } from '#/api/sys/model/sys-import-excel-te
 
 import { Page, useVbenDrawer } from '@vben/common-ui';
 
-import { Button, Space } from 'ant-design-vue';
+import { Button, Divider, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
@@ -104,6 +104,8 @@ function handleDetailsConfig(row) {
             :grid-api="gridApi"
             @success="handleSearch"
           />
+
+          <Divider class="h-5" type="vertical" />
         </Space>
       </template>
       <template #action="{ row }">

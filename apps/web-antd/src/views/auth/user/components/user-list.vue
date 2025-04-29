@@ -6,9 +6,9 @@ import type { SysConfig } from '#/api/sys/model/sys-config-model';
 import { watch } from 'vue';
 
 import { AccessControl } from '@vben/access';
-import { useVbenDrawer } from '@vben/common-ui';
+import { useVbenDrawer, VbenAvatar } from '@vben/common-ui';
 
-import { Button, Drawer, Popconfirm, Space } from 'ant-design-vue';
+import { Button, Divider, Drawer, Popconfirm, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
@@ -20,7 +20,6 @@ import {
 } from '#/api/auth/sys-user';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
 import { LucideRotateCcw } from '#/components/icons';
-import { UserAvatar } from '#/components/user';
 
 import { initColumns } from './data';
 import InputDrawer from './input.vue';
@@ -119,10 +118,12 @@ const handleResetPassword = (id: string) => {
           :grid-api="gridApi"
           @success="handleSearch"
         />
+
+        <Divider class="h-5" type="vertical" />
       </Space>
     </template>
     <template #avatar="{ row }">
-      <UserAvatar :alt="row.nickname" :size="32" :src="row.avatarUrl" />
+      <VbenAvatar :alt="row.nickname" :size="32" :src="row.avatarUrl" />
     </template>
     <template #action="{ row }">
       <AccessControl :codes="['sys:user:save']">

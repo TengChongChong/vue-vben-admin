@@ -52,7 +52,7 @@ export const initColumns = (): VxeGridPropTypes.Columns => {
     {
       title: '操作',
       field: 'action',
-      width: 200,
+      width: 150,
       fixed: 'right',
       slots: { default: 'action' },
     },

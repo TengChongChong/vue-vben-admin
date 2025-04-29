@@ -12,6 +12,7 @@ import { computed, onMounted, ref, watch } from 'vue';
 
 import {
   Button,
+  Divider,
   Popconfirm,
   Space,
   Tooltip,
@@ -306,6 +307,8 @@ async function handleStepNext() {
               :grid-api="gridApi"
               @success="removeCallback"
             />
+
+            <Divider class="h-5" type="vertical" />
           </Space>
         </template>
         <template #verificationResults="{ row }">

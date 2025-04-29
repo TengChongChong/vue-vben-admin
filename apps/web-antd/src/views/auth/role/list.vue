@@ -6,7 +6,7 @@ import type { SysRole } from '#/api/auth/model/sys-role-model';
 import { useAccess } from '@vben/access';
 import { Page, useVbenDrawer } from '@vben/common-ui';
 
-import { Button, message, Space } from 'ant-design-vue';
+import { Button, Divider, message, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
@@ -124,6 +124,8 @@ function handleReloadCache() {
             <template #icon> <LucideRefreshCw /> </template>
             刷新缓存
           </Button>
+
+          <Divider class="h-5" type="vertical" />
         </Space>
       </template>
       <template #action="{ row }">
