@@ -3,6 +3,7 @@ import { VbenAvatar } from '@vben-core/shadcn-ui';
 
 interface Props {
   avatar?: string;
+  nickname?: string;
 }
 
 defineOptions({
@@ -11,11 +12,12 @@ defineOptions({
 
 withDefaults(defineProps<Props>(), {
   avatar: '',
+  nickname: '',
 });
 </script>
 <template>
   <div class="card-box p-4 py-6 lg:flex">
-    <VbenAvatar :src="avatar" class="size-20" />
+    <VbenAvatar :src="avatar" :alt="nickname" class="size-20" />
     <div
       v-if="$slots.title || $slots.description"
       class="flex flex-col justify-center md:ml-6 md:mt-0"

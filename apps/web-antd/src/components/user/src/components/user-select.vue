@@ -2,16 +2,19 @@
 import type { SysUser } from '#/api/auth/model/sys-user-model';
 import type { UserSelect } from '#/components/user/src/type';
 
+import { onMounted, ref, unref, watch } from 'vue';
+
+import { cn } from '@vben/utils';
+
+import { useDebounceFn } from '@vueuse/shared';
+import { Select, SelectOption, Spin } from 'ant-design-vue';
+
 import { searchApi, selectUsersByIdsApi } from '#/api/auth/sys-user';
 import {
   convertArrayValue,
   convertSingleValue,
 } from '#/components/form/src/helper';
 import { HighlightText } from '#/components/highlight-text';
-import { cn } from '@vben/utils';
-import { useDebounceFn } from '@vueuse/shared';
-import { Select, SelectOption, Spin } from 'ant-design-vue';
-import { onMounted, ref, unref, watch } from 'vue';
 
 defineOptions({
   inheritAttrs: false,
@@ -50,7 +53,7 @@ watch(
 );
 
 const initSelectValue = () => {
-  if (props.value) {
+  if (props.value && props.value.length > 0) {
     lastFetchId += 1;
     const fetchId = lastFetchId;
     options.value = [];

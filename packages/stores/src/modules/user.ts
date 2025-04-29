@@ -4,17 +4,17 @@ import { acceptHMRUpdate, defineStore } from 'pinia';
 
 interface AccessState {
   /**
-   * 用户信息
+   * 用户权限标识
    */
-  userInfo: BasicUserInfo | null;
+  permissionCodeList: string[];
   /**
    * 用户角色标识
    */
   roleCodeList: string[];
   /**
-   * 用户权限标识
+   * 用户信息
    */
-  permissionCodeList: string[];
+  userInfo: BasicUserInfo | null;
 }
 
 /**
@@ -22,6 +22,12 @@ interface AccessState {
  */
 export const useUserStore = defineStore('core-user', {
   actions: {
+    setPermissionCodeList(roles: string[]) {
+      this.permissionCodeList = roles;
+    },
+    setRoleCodeList(roles: string[]) {
+      this.roleCodeList = roles;
+    },
     setUserInfo(userInfo: BasicUserInfo | null) {
       // 设置用户信息
       this.userInfo = userInfo;
@@ -31,17 +37,11 @@ export const useUserStore = defineStore('core-user', {
       this.setRoleCodeList(roleCodeList);
       this.setPermissionCodeList(permissionCodeList);
     },
-    setRoleCodeList(roles: string[]) {
-      this.roleCodeList = roles;
-    },
-    setPermissionCodeList(roles: string[]) {
-      this.permissionCodeList = roles;
-    },
   },
   state: (): AccessState => ({
-    userInfo: null,
-    roleCodeList: [],
     permissionCodeList: [],
+    roleCodeList: [],
+    userInfo: null,
   }),
 });
 // 解决热更新问题

@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import type { SessionUser } from '@vben/types';
 
-import {
-  Avatar,
-  Descriptions,
-  DescriptionsItem,
-  Flex,
-  Tag,
-} from 'ant-design-vue';
+import { VbenAvatar } from '@vben/common-ui';
+import { preferences } from '@vben/preferences';
+
+import { Descriptions, DescriptionsItem, Flex, Tag } from 'ant-design-vue';
 
 import { DictTag } from '#/components/dict';
 
@@ -18,14 +15,12 @@ const props = defineProps<{ currentUser: SessionUser }>();
   <!-- 用户头像 -->
   <Flex v-if="props.currentUser" class="mb-8">
     <div class="user-avatar">
-      <Avatar
-        v-if="props.currentUser.avatar"
+      <VbenAvatar
         :size="100"
-        :src="props.currentUser.avatar"
+        :src="props.currentUser.avatar || preferences.app.defaultAvatar"
+        :alt="props.currentUser.nickname"
+        class="size-20"
       />
-      <Avatar v-else :size="100">
-        {{ props.currentUser.nickname.substring(0, 2) }}
-      </Avatar>
     </div>
     <div class="user-info p-2 pl-6">
       <div class="mb-1 text-lg font-medium">
