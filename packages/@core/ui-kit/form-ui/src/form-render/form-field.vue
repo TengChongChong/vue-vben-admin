@@ -294,7 +294,6 @@ onUnmounted(() => {
         'form-valid-error': isInValid,
         'form-is-required': shouldRequired,
         'flex-col': isVertical,
-        'flex-row items-center': !isVertical,
         'pb-6': !compact,
         'pb-2': compact,
       }"
@@ -305,7 +304,7 @@ onUnmounted(() => {
         v-if="!hideLabel"
         :class="
           cn(
-            'flex leading-6',
+            'flex h-[32px] leading-6',
             {
               'mr-2 flex-shrink-0 justify-end': !isVertical,
               'mb-1 flex-row': isVertical,
@@ -380,10 +379,11 @@ onUnmounted(() => {
           <div v-if="suffix" class="ml-1">
             <VbenRenderContent :content="suffix" />
           </div>
-          <FormDescription v-if="description" class="ml-1">
-            <VbenRenderContent :content="description" />
-          </FormDescription>
         </div>
+
+        <FormDescription v-if="description" class="ml-1">
+          <VbenRenderContent :content="description" />
+        </FormDescription>
 
         <Transition name="slide-up" v-if="!compact">
           <FormMessage class="absolute bottom-1" />
