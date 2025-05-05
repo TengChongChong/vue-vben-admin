@@ -22,6 +22,8 @@ export const overridesPreferences = defineOverridesPreferences({
     enableRefreshToken: false,
     /** 应用名 */
     name: import.meta.env.VITE_APP_TITLE,
+    /** 默认首页地址 */
+    defaultHomePath: '/dashboard/workspace',
   },
   widget: {
     /** 是否启用语言切换部件 */
