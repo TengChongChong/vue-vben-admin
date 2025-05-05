@@ -11,8 +11,8 @@ import { Button, Divider, Space } from 'ant-design-vue';
 import dayjs from 'dayjs';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { infoApi, removeApi, selectReceiveApi } from '#/api/sys/sys-message';
-import { setReadApi } from '#/api/sys/sys-message-detail';
+import { infoApi, selectReceiveApi } from '#/api/sys/sys-message';
+import { removeByIdsApi, setReadApi } from '#/api/sys/sys-message-detail';
 import { ButtonRemove } from '#/components/button';
 import { LucideMailCheck } from '#/components/icons';
 
@@ -181,7 +181,7 @@ function handleOpenInfoModel(id: string, messageId: string) {
           </Button>
 
           <ButtonRemove
-            :api="removeApi"
+            :api="removeByIdsApi"
             :grid-api="gridApi"
             @success="handleSearch"
           />
@@ -202,7 +202,7 @@ function handleOpenInfoModel(id: string, messageId: string) {
 
       <template #action="{ row }">
         <ButtonRemove
-          :api="removeApi"
+          :api="removeByIdsApi"
           :ids="[row.id]"
           size="small"
           type="link"
