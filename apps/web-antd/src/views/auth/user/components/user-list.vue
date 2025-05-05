@@ -8,7 +8,7 @@ import { watch } from 'vue';
 import { AccessControl } from '@vben/access';
 import { useVbenDrawer, VbenAvatar } from '@vben/common-ui';
 
-import { Button, Divider, Drawer, Popconfirm, Space } from 'ant-design-vue';
+import { Button, Divider, Modal, Popconfirm, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
@@ -98,7 +98,7 @@ function handleEdit(id: string) {
 
 const handleResetPassword = (id: string) => {
   resetPasswordApi(id).then((password) => {
-    Drawer.success({
+    Modal.success({
       title: '重置成功',
       content: `密码已重置为 ${password}，请告知用户使用新密码登录`,
     });
