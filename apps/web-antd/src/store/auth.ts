@@ -3,7 +3,9 @@ import type { UserInfo } from '@vben/types';
 
 import { getUserInfoApi, loginAccountApi, logoutApi } from '#/api/auth/auth';
 import { $t } from '#/locales';
-import { DEFAULT_HOME_PATH, LOGIN_PATH } from '@vben/constants';
+
+import { LOGIN_PATH } from '@vben/constants';
+import { preferences } from '@vben/preferences';
 import { resetAllStores, useAccessStore, useUserStore } from '@vben/stores';
 import { HashingFactory } from '@vben/utils';
 import { notification } from 'ant-design-vue';
@@ -49,7 +51,9 @@ export const useAuthStore = defineStore('auth', () => {
         } else {
           onSuccess
             ? await onSuccess?.()
-            : await router.push(userInfo.homePath || DEFAULT_HOME_PATH);
+            : await router.push(
+                userInfo.homePath || preferences.app.defaultHomePath,
+              );
         }
 
         if (userInfo?.nickname) {

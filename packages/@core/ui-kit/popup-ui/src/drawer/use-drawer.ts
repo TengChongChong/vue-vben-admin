@@ -63,9 +63,10 @@ export function useVbenDrawer<
             slots,
           );
       },
+      // eslint-disable-next-line vue/one-component-per-file
       {
-        inheritAttrs: false,
         name: 'VbenParentDrawer',
+        inheritAttrs: false,
       },
     );
     return [Drawer, extendedApi as ExtendedDrawerApi] as const;
@@ -104,9 +105,10 @@ export function useVbenDrawer<
       return () =>
         h(VbenDrawer, { ...props, ...attrs, drawerApi: extendedApi }, slots);
     },
+    // eslint-disable-next-line vue/one-component-per-file
     {
-      inheritAttrs: false,
       name: 'VbenDrawer',
+      inheritAttrs: false,
     },
   );
   injectData.extendApi?.(extendedApi);

@@ -12,7 +12,6 @@ interface Props extends TabsProps {}
 
 defineOptions({
   name: 'VbenTabsChrome',
-
   inheritAttrs: false,
 });
 
