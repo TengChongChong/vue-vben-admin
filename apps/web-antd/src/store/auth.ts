@@ -1,17 +1,20 @@
-import type { LoginAccountParams } from '#/api/auth/model/auth-model';
 import type { UserInfo } from '@vben/types';
 
-import { getUserInfoApi, loginAccountApi, logoutApi } from '#/api/auth/auth';
-import { $t } from '#/locales';
+import type { LoginAccountParams } from '#/api/auth/model/auth-model';
+
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 import { LOGIN_PATH } from '@vben/constants';
 import { preferences } from '@vben/preferences';
 import { resetAllStores, useAccessStore, useUserStore } from '@vben/stores';
 import { HashingFactory } from '@vben/utils';
+
 import { notification } from 'ant-design-vue';
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+
+import { getUserInfoApi, loginAccountApi, logoutApi } from '#/api/auth/auth';
+import { $t } from '#/locales';
 
 export const useAuthStore = defineStore('auth', () => {
   const accessStore = useAccessStore();

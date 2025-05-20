@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { StyleValue } from 'vue';
-
 import type { VxeGridProps } from '#/adapter/vxe-table';
 import type { FileInfo } from '#/api/file/model/file-info-model';
 import type { SysConfig } from '#/api/sys/model/sys-config-model';
@@ -8,7 +6,7 @@ import type { SysImportExcelTemplateDetail } from '#/api/sys/model/sys-import-ex
 import type { SysImportExcelTemplateVO } from '#/api/sys/model/sys-import-excel-template-model';
 import type { SysImportSummary } from '#/api/sys/sys-import-excel-data';
 
-import { computed, onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 
 import {
   Button,
@@ -168,12 +166,6 @@ const [Grid, gridApi] = useVbenVxeGrid({
   tableTitle: '导入数据',
   formOptions: {},
   gridOptions,
-});
-
-const tableStyle = computed<StyleValue>(() => {
-  return {
-    height: `calc(var(--vben-content-height) - 230px)`,
-  };
 });
 
 /**
