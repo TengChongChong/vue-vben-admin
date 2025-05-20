@@ -1,4 +1,5 @@
 import type { UploadFile } from 'ant-design-vue';
+import type { UploadListType } from 'ant-design-vue/lib/upload/interface';
 
 import type { FileInfo } from '#/api/file/model/file-info-model';
 
@@ -10,10 +11,10 @@ export interface RuleUploadProps {
   ruleKey: string;
   value: any;
   // 上传列表的内建样式，支持三种基本样式 text, picture 和 picture-card
-  listType?: string;
+  listType?: UploadListType;
   helpText?: string;
   showHelpText?: boolean;
-  maxNumber?: number;
+  maxCount?: number;
   multiple?: boolean;
   // 是否使用拖拽上传
   useDragger?: boolean;
@@ -24,7 +25,7 @@ export interface RuleUploadProps {
  */
 export interface UploadFileModel extends FileInfo, UploadFile {
   // 两个对象不一致的在下方声明，避免错误提示
-
+  name: string;
   // 文件访问地址
   url: string;
   // 文件大小，单位字节

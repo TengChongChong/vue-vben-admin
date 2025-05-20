@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import type { UploadChangeParam } from 'ant-design-vue';
+
 import type { FileInfo } from '#/api/file/model/file-info-model';
-import type { FileUploadRule } from '#/api/file/model/file-upload-rule-model';
+import type { FileUploadRuleVO } from '#/api/file/model/file-upload-rule-model';
 import type {
   RuleUploadProps,
   UploadFileModel,
@@ -20,21 +22,20 @@ import {
   convertToUploadFileModelArray,
 } from '#/components/upload/src/helper';
 import { useUploadType } from '#/components/upload/src/useUpload';
+import { formatSize } from '#/util/format';
 
 const props = withDefaults(defineProps<RuleUploadProps>(), {
   listType: 'text',
-  maxNumber: 1,
+  maxCount: 1,
   multiple: false,
   showHelpText: false,
   useDragger: false,
 });
-
 const emit = defineEmits(['change', 'update:value']);
-
 const accessStore = useAccessStore();
 
 const loaded = ref(false);
-let uploadRule: FileUploadRule = null;
+let uploadRule: FileUploadRuleVO | null = null;
 
 // 已上传文件
 let uploadedFileList: FileInfo[] = [];
@@ -88,7 +89,7 @@ const upperLimit = computed(() => {
 const { getStringAccept, getHelpText } = useUploadType({
   acceptRef: suffixArray,
   helpTextRef: props.helpText,
-  maxNumberRef: props?.maxNumber,
+  maxCountRef: props?.maxCount,
   maxSizeRef: upperLimit,
 });
 
@@ -125,17 +126,19 @@ function initValue(value: FileInfo[]): FileInfo[] {
  * @param file 文件
  */
 const beforeUpload = (file: File) => {
-  const { maxNumber, maxSize } = props;
+  const { maxCount } = props;
 
   // 上传数量是否超出，此时当前选择的文件尚未添加到上传中数组，所以使用 >=
-  if (uploadedFileList.length + uploadingFileList?.length >= maxNumber) {
-    message.warning(t('component.upload.maxNumber', [maxNumber]));
+  if (uploadedFileList.length + uploadingFileList?.length >= maxCount) {
+    message.warning(`最多支持上传${maxCount}个文件`);
     return false;
   }
 
   // 单文件大小是否超出
-  if (maxSize && file.size / 1024 / 1024 >= maxSize) {
-    message.error(t('component.upload.maxSizeMultiple', [maxSize]));
+  if (uploadRule?.upperLimit && file.size / 1024 >= uploadRule?.upperLimit) {
+    message.error(
+      `上传失败[文件大小超过限制，单个文件不超过${formatSize(uploadRule?.upperLimit * 1024)}]`,
+    );
     return false;
   }
   return true;
@@ -210,6 +213,7 @@ function refreshDisplayFileList() {
       v-if="uploadRule"
       :accept="getStringAccept"
       :action="url"
+      :max-count="maxCount"
       :before-upload="beforeUpload"
       :file-list="displayFileList"
       :headers="{ Authorization: accessStore.accessToken }"

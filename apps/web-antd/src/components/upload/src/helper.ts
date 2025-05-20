@@ -19,10 +19,12 @@ export function convertToFileInfoArray(
 }
 
 export function convertToFileInfo(uploadFileModel: UploadFileModel): FileInfo {
-  return {
-    ...uploadFileModel.response.data,
-    status: uploadFileModel.status,
-  } as FileInfo;
+  return uploadFileModel.platform
+    ? uploadFileModel
+    : ({
+        ...uploadFileModel.response.data,
+        status: uploadFileModel.status,
+      } as FileInfo);
 }
 
 /**

@@ -1,17 +1,12 @@
-import { computed, ref, unref } from 'vue';
+import { computed, unref } from 'vue';
 
 import { formatSize } from '#/util/format';
 
 export function useUploadType({
   acceptRef,
   helpTextRef,
-  maxNumberRef,
+  maxCountRef,
   maxSizeRef,
-}: {
-  acceptRef: ref<string[]>;
-  helpTextRef: null | ref<string>;
-  maxNumberRef: ref<number>;
-  maxSizeRef: ref<number>;
 }) {
   /**
    * 文件类型限制
@@ -26,7 +21,7 @@ export function useUploadType({
 
   const getStringAccept = computed(() => {
     return unref(getAccept)
-      .map((item) => {
+      .map((item: string) => {
         return item.indexOf('/') > 0 || item.startsWith('.')
           ? item
           : `.${item}`;
@@ -54,9 +49,9 @@ export function useUploadType({
       helpTexts.push(`单个文件不超过${formatSize(maxSize * 1024, 1)}`);
     }
 
-    const maxNumber = unref(maxNumberRef);
-    if (maxNumber && maxNumber !== Infinity) {
-      helpTexts.push(`最多支持上传${maxNumber}个文件`);
+    const maxCount = unref(maxCountRef);
+    if (maxCount && maxCount !== Infinity) {
+      helpTexts.push(`最多支持上传${maxCount}个文件`);
     }
     return helpTexts.join('，');
   });
