@@ -181,5 +181,5 @@ export interface DrawerApiOptions extends DrawerState {
    *
    * @param loading
    */
-  setLoading: (loading: boolean) => void;
+  setLoading?: (loading: boolean) => void;
 }
