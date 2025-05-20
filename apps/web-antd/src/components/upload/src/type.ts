@@ -23,6 +23,8 @@ export interface RuleUploadProps {
 /**
  * 用于 Ant Design of Vue 文件上传数据回显
  */
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 export interface UploadFileModel extends FileInfo, UploadFile {
   // 两个对象不一致的在下方声明，避免错误提示
   name: string;

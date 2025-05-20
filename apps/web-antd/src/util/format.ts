@@ -24,5 +24,7 @@ export function formatSize(size: number, pointLength = 2): string {
     size = size / 1024;
   }
 
-  return (unit === 'B' ? size : size.toFixed(pointLength || 2)) + unit;
+  return (
+    (unit === 'B' ? size : size.toFixed(pointLength || 2)) + (unit as string)
+  );
 }
