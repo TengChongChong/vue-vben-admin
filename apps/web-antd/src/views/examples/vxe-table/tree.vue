@@ -15,7 +15,7 @@ import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { selectApi, setStatusApi } from '#/api/auth/sys-menu';
 import { IconifyIcon, LucideMinus, LucidePlus } from '#/components/icons';
 
-const expandIds = ref<string[]>([]);
+const expandRecords = ref([]);
 
 const formOptions: VbenFormProps = {
   collapsed: true,
@@ -157,7 +157,7 @@ const gridOptions: VxeGridProps<SysMenu> = {
     ajax: {
       query: async ({ page }, formValues) => {
         // 保持展开状态
-        await gridApi.grid.setTreeExpand(unref(expandIds), true);
+        await gridApi.grid.setTreeExpand(unref(expandRecords), true);
         return await selectApi({ ...formValues }, page);
       },
     },
@@ -170,18 +170,18 @@ const [Grid, gridApi] = useVbenVxeGrid({
   gridOptions,
   gridEvents: {
     toggleTreeExpand: () => {
-      expandIds.value = gridApi.grid.getTreeExpandRecords();
+      expandRecords.value = gridApi.grid.getTreeExpandRecords();
     },
   },
 });
 
 function handleExpandAll() {
   gridApi.grid?.setAllTreeExpand(true);
-  expandIds.value = gridApi.grid.getTreeExpandRecords();
+  expandRecords.value = gridApi.grid.getTreeExpandRecords();
 }
 function handleCollapseAll() {
   gridApi.grid?.clearTreeExpand();
-  expandIds.value = gridApi.grid.getTreeExpandRecords();
+  expandRecords.value = gridApi.grid.getTreeExpandRecords();
 }
 </script>
 

@@ -25,7 +25,7 @@ import { initColumns } from './data';
 import InputDrawer from './input.vue';
 import OrderDrawer from './order.vue';
 
-const expandIds = ref<string[]>([]);
+const expandRecords = ref([]);
 function handleSearch() {
   gridApi.search();
 }
@@ -84,7 +84,7 @@ const gridOptions: VxeGridProps<SysMenu> = {
     ajax: {
       query: async ({ page }, formValues) => {
         // 保持展开状态
-        await gridApi.grid.setTreeExpand(unref(expandIds), true);
+        await gridApi.grid.setTreeExpand(unref(expandRecords), true);
         return await selectApi({ ...formValues }, page);
       },
     },
@@ -97,7 +97,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
   gridOptions,
   gridEvents: {
     toggleTreeExpand: () => {
-      expandIds.value = gridApi.grid.getTreeExpandRecords();
+      expandRecords.value = gridApi.grid.getTreeExpandRecords();
     },
   },
 });
@@ -126,11 +126,11 @@ function handleOrder() {
 
 function handleExpandAll() {
   gridApi.grid?.setAllTreeExpand(true);
-  expandIds.value = gridApi.grid.getTreeExpandRecords();
+  expandRecords.value = gridApi.grid.getTreeExpandRecords();
 }
 function handleCollapseAll() {
   gridApi.grid?.clearTreeExpand();
-  expandIds.value = gridApi.grid.getTreeExpandRecords();
+  expandRecords.value = gridApi.grid.getTreeExpandRecords();
 }
 </script>
 
