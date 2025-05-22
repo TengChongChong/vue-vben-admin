@@ -116,8 +116,8 @@ function handleOpenCropperModal() {
     border: inherit;
     border-radius: inherit;
     opacity: 0;
-    transition: opacity 0.4s;
     transform: translate(-50%, -50%);
+    transition: opacity 0.4s;
 
     &:hover {
       opacity: 40;
