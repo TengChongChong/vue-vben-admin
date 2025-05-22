@@ -1,12 +1,4 @@
 /**
- * 代码生成版本
- */
-export enum GeneratorVersion {
-  VBEN2 = 'vben2',
-  VBEN5 = 'vben5',
-}
-
-/**
  * 生成文件
  */
 export enum GenFile {

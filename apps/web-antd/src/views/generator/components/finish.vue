@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { GeneratorConfig } from '#/api/generator/model/generatorModel';
 
-import { generateApi } from '#/api/generator/generator';
-import { LucideArrowLeft, LucideCheck } from '#/components/icons';
+import { ref, watch } from 'vue';
+
 import {
   Button,
   Checkbox,
@@ -14,7 +14,9 @@ import {
   TypographyText,
 } from 'ant-design-vue';
 import { cloneDeep } from 'lodash-es';
-import { ref, watch } from 'vue';
+
+import { generateApi } from '#/api/generator/generator';
+import { LucideArrowLeft, LucideCheck } from '#/components/icons';
 
 import { GenFile } from '../types/generator.data';
 import { getApiFileName, getFrontEndPath } from '../util/util';

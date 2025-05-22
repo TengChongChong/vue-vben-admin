@@ -45,7 +45,7 @@ async function handleSuccess() {
               <template #icon>
                 <LucideLink />
               </template>
-              绑定
+              {{ props.phoneNumber ? '修改' : '绑定' }}
             </Button>
           </template>
           <ListItemMeta
@@ -67,7 +67,7 @@ async function handleSuccess() {
               <template #icon>
                 <LucideLink />
               </template>
-              绑定
+              {{ props.email ? '修改' : '绑定' }}
             </Button>
           </template>
           <ListItemMeta

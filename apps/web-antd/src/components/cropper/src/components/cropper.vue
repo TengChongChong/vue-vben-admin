@@ -10,8 +10,6 @@ import { computed, ref, unref, watch } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
 
-import { Avatar } from 'ant-design-vue';
-
 import CropperModal from '#/components/cropper/src/components/cropper-modal.vue';
 import { LucideUpload } from '#/components/icons';
 
@@ -76,17 +74,11 @@ function handleOpenCropperModal() {
         <template v-if="currentValue">
           <img :src="currentValue.url" alt="" />
         </template>
-        <template v-else>
-          <Avatar
-            :shape="props.circled ? 'circle' : 'square'"
-            :size="props.width / props.aspectRatio"
-            :style="getImageWrapperStyle"
-          >
-            {{ props.alt }}
-          </Avatar>
-        </template>
       </div>
-      <div :style="getImageWrapperStyle" class="vben-cropper-image-mask">
+      <div
+        :style="getImageWrapperStyle"
+        :class="`vben-cropper-image-mask ${currentValue?.url ? '' : 'vben-cropper-image-mask--show'}`"
+      >
         <LucideUpload />
       </div>
     </div>
@@ -128,6 +120,10 @@ function handleOpenCropperModal() {
     transform: translate(-50%, -50%);
 
     &:hover {
+      opacity: 40;
+    }
+
+    &--show {
       opacity: 40;
     }
 

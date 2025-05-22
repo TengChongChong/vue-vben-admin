@@ -4,7 +4,7 @@
 export interface TreeNode {
   id?: string;
   parentId?: string;
-  title: string;
+  label: string;
   value: string;
   key: string;
   children?: TreeNode[];
@@ -19,7 +19,7 @@ export interface TreeNodeModel {
   // 父id
   parentId?: string;
   // 标题
-  title: string;
+  label: string;
   // 节点的 class
   clazz?: string;
   // 节点的 style

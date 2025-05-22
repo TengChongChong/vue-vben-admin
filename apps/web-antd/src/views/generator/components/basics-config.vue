@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { SelectModel } from '#/api/base/model/select-model';
-import type { TreeNode } from '#/api/base/model/tree-model';
+import type { TreeNode, TreeNodeModel } from '#/api/base/model/tree-model';
 import type {
   BasicsConfigModel,
   TableInfo,
@@ -27,7 +27,6 @@ import { isArray, isBlank } from '#/util/is';
 import {
   FormGeneratorTemplate,
   GeneratorTemplate,
-  GeneratorVersion,
   GenFile,
   ListGeneratorTemplate,
   TEMPLATE,
@@ -71,7 +70,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
             value: 'sub-table',
           },
         ],
-        onChange: (value) => {
+        onChange: (value: string) => {
           handleGeneratorTemplateChange(value);
         },
       },
@@ -171,7 +170,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
       component: 'ApiSelect',
       componentProps: {
         api: selectOptionsApi,
-        onChange: (value) => {
+        onChange: (value: string) => {
           handleDataSourceChange(value);
         },
       },
@@ -184,30 +183,31 @@ const [BaseForm, baseFormApi] = useVbenForm({
       componentProps: {
         showSearch: true,
         api: selectTableApi,
-        afterFetch: (result) => {
+        afterFetch: (result: SelectModel[]) => {
           result.forEach((item) => {
             item.label = `${item.value} - ${item.label}`;
           });
           return result;
         },
-        onChange: (value) => {
+        onChange: (value: string) => {
           handleTableChange(value);
         },
       },
+      description: '数据库表',
       rules: 'selectRequired',
     },
     {
       fieldName: 'mainTableProperty',
       label: '与主表关联Property',
       component: 'Input',
-      ifShow: false,
+      formItemClass: 'hidden',
     },
     {
       fieldName: 'mainTableField',
       label: '与主表关联字段',
       component: 'Input',
       componentProps: {
-        onChange: (value) => handleMainTableFieldChange(value),
+        onChange: (value: string) => handleMainTableFieldChange(value),
       },
       rules: 'selectRequired',
       dependencies: {
@@ -312,8 +312,8 @@ const [BaseForm, baseFormApi] = useVbenForm({
       component: 'ApiTreeSelect',
       componentProps: {
         api: selectAllApi,
-        afterFetch: (res) => {
-          const treeNodes: TreeNode[] = [] as TreeNode[];
+        afterFetch: (res: TreeNodeModel[]) => {
+          const treeNodes: TreeNode[] = [];
           res.forEach((item) => {
             const { id, parentId, title } = item;
             treeNodes.push({
@@ -456,8 +456,6 @@ const defaultConfig: BasicsConfigModel = {
   genFile: [],
   overwrite: false,
 };
-// 代码生成版本
-const generatorVersion = GeneratorVersion.VBEN5;
 
 // 后端模块列表
 const modules = ref<SelectModel[]>([]);
@@ -508,6 +506,9 @@ async function handleTableChange(table: string) {
 }
 
 function setModules(table: string) {
+  if (!modules.value || modules.value.length === 0) {
+    return;
+  }
   let prefix = table.toLowerCase();
   if (table.toLowerCase().includes('_')) {
     prefix = table.toLowerCase().slice(0, Math.max(0, table.indexOf('_')));
@@ -516,8 +517,8 @@ function setModules(table: string) {
   //   backEndPath: '/Users/tengchong/Desktop/generator/test/back-end',
   // });
   for (let i = 0; i < modules.value.length; i++) {
-    if (modules.value[i].label.includes(prefix)) {
-      moduleValue.value = modules.value[i].value;
+    if (modules.value[i]?.label.includes(prefix)) {
+      moduleValue.value = modules.value[i]?.value;
       baseFormApi.setValues({
         backEndPath: moduleValue.value,
       });
@@ -555,7 +556,7 @@ function handleListGeneratorTemplateChange(generatorTemplate: string) {
   }
 }
 
-function handleDataSourceChange(dataSource) {
+function handleDataSourceChange(dataSource: string) {
   baseFormApi.updateSchema([
     {
       fieldName: 'table',
@@ -574,7 +575,7 @@ function handleDataSourceChange(dataSource) {
  *
  * @param path 模块路径
  */
-function handleModuleChange(path) {
+function handleModuleChange(path: string) {
   baseFormApi.setValues({
     backEndPath: path,
   });
@@ -610,9 +611,9 @@ function handleMainTableFieldChange(columnName: string) {
     baseFormApi.setValues({ mainTableProperty: '' });
   }
   for (let i = 0; i < tableInfo.value.fields.length; i++) {
-    if (columnName === tableInfo.value.fields[i].columnName) {
+    if (columnName === tableInfo.value.fields[i]?.columnName) {
       baseFormApi.setValues({
-        mainTableProperty: tableInfo.value.fields[i].propertyName,
+        mainTableProperty: tableInfo.value.fields[i]?.propertyName,
       });
     }
   }
@@ -627,7 +628,7 @@ async function handleStepNext() {
 
     const values = (await baseFormApi.getValues()) as BasicsConfigModel;
     emit('updateConfig', 'tableInfo', unref(tableInfo));
-    emit('updateConfig', 'basicsConfig', { ...values, generatorVersion });
+    emit('updateConfig', 'basicsConfig', { ...values });
     emit('next');
   } catch (error) {
     console.error(error);

@@ -4,15 +4,11 @@ import type {
   GeneratorConfig,
 } from '#/api/generator/model/generatorModel';
 
-import {
-  LucideArrowLeft,
-  LucideArrowRight,
-  LucideSettings,
-  LucideTrash,
-} from '#/components/icons';
-import { isNullOrUnDef } from '#/util/is';
+import { nextTick, onMounted, ref, unref, watch } from 'vue';
+
 import { useVbenModal } from '@vben/common-ui';
 import { useSortable } from '@vben/hooks';
+
 import {
   Button,
   Card,
@@ -22,7 +18,14 @@ import {
   Tooltip,
   TypographyText,
 } from 'ant-design-vue';
-import { nextTick, onMounted, ref, unref, watch } from 'vue';
+
+import {
+  LucideArrowLeft,
+  LucideArrowRight,
+  LucideSettings,
+  LucideTrash,
+} from '#/components/icons';
+import { isNullOrUnDef } from '#/util/is';
 
 import InputConfigModal from './modal/input-config-modal.vue';
 

@@ -30,7 +30,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
     },
     {
       component: 'Cropper',
-      componentProps: { alt: '头像', ruleKey: 'sys-user-avatar' },
+      componentProps: { ruleKey: 'sys-user-avatar' },
       fieldName: 'avatar',
       label: '头像',
     },

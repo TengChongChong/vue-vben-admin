@@ -99,7 +99,7 @@ function handleSave() {
       cursor: pointer;
       background-color: #fff;
       border: 1px dashed hsl(var(--primary));
-      border-radius: 6px;
+      border-radius: var(--radius);
     }
   }
 }

@@ -6,7 +6,7 @@ import type {
   WorkbenchTrendItem,
 } from '@vben/common-ui';
 
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import {
@@ -88,40 +88,40 @@ const projectItems: WorkbenchProjectItem[] = [
 // 同样，这里的 url 也可以使用以 http 开头的外部链接
 const quickNavItems: WorkbenchQuickNavItem[] = [
   {
-    color: '#1fdaca',
-    icon: 'ion:home-outline',
+    color: '#13c2c2',
+    icon: 'lucide:house',
     title: '首页',
-    url: '/',
+    url: '/dashboard/workspace',
   },
   {
-    color: '#bf0c2c',
-    icon: 'ion:grid-outline',
-    title: '仪表盘',
-    url: '/dashboard',
+    color: '#f5222d',
+    icon: 'lucide:square-dashed-bottom-code',
+    title: '代码生成',
+    url: '/generator',
   },
   {
-    color: '#e18525',
-    icon: 'ion:layers-outline',
-    title: '组件',
-    url: '/demos/features/icons',
+    color: '#fa541c',
+    icon: 'lucide:list-collapse',
+    title: '菜单管理',
+    url: '/sys/menu/list',
   },
   {
-    color: '#3fb27f',
-    icon: 'ion:settings-outline',
-    title: '系统管理',
-    url: '/demos/features/login-expired', // 这里的 URL 是示例，实际项目中需要根据实际情况进行调整
+    color: '#52c41a',
+    icon: 'lucide:file-sliders',
+    title: '文件上传策略',
+    url: '/file/upload/rule/list',
   },
   {
-    color: '#4daf1bc9',
-    icon: 'ion:key-outline',
-    title: '权限管理',
-    url: '/demos/access/page-control',
+    color: '#a0d911',
+    icon: 'lucide:users',
+    title: '角色管理',
+    url: '/auth/role/list',
   },
   {
-    color: '#00d8ff',
-    icon: 'ion:bar-chart-outline',
-    title: '图表',
-    url: '/analytics',
+    color: '#1677ff',
+    icon: 'lucide:book-a',
+    title: '字典管理',
+    url: '/sys/dict/list',
   },
 ];
 
@@ -231,6 +231,23 @@ function navTo(nav: WorkbenchProjectItem | WorkbenchQuickNavItem) {
     console.warn(`Unknown URL for navigation item: ${nav.title} -> ${nav.url}`);
   }
 }
+
+const greeting = computed(() => {
+  const hour = new Date().getHours();
+  if (hour >= 5 && hour < 9) {
+    return '早上好';
+  } else if (hour >= 9 && hour < 12) {
+    return '上午好';
+  } else if (hour >= 12 && hour < 14) {
+    return '中午好';
+  } else if (hour >= 14 && hour < 18) {
+    return '下午好';
+  } else if (hour >= 18 && hour < 22) {
+    return '晚上好';
+  } else {
+    return '夜深了，注意休息';
+  }
+});
 </script>
 
 <template>
@@ -240,7 +257,7 @@ function navTo(nav: WorkbenchProjectItem | WorkbenchQuickNavItem) {
       :avatar="userStore.userInfo?.avatar || preferences.app.defaultAvatar"
     >
       <template #title>
-        早安, {{ userStore.userInfo?.nickname }}, 开始您一天的工作吧！
+        {{ greeting }}, {{ userStore.userInfo?.nickname }}
       </template>
       <template #description> 今日晴，20℃ - 32℃！ </template>
     </WorkbenchHeader>

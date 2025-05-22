@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import type { EditorProps } from '#/components/editor/src/props';
 
-import { toolbarKeys } from '#/components/editor/src/components/config';
-import { isNumber } from '#/util/is';
-import { useAccessStore } from '@vben/stores';
-import { AiEditor } from 'aieditor';
-import { message } from 'ant-design-vue';
 import {
   computed,
   nextTick,
@@ -14,7 +9,16 @@ import {
   onMounted,
   ref,
   unref,
+  watch,
 } from 'vue';
+
+import { useAccessStore } from '@vben/stores';
+
+import { AiEditor } from 'aieditor';
+import { message } from 'ant-design-vue';
+
+import { toolbarKeys } from '#/components/editor/src/components/config';
+import { isNumber } from '#/util/is';
 
 import 'aieditor/dist/style.css';
 
@@ -172,6 +176,15 @@ function handleUploadError(file, error) {
 onMounted(() => {
   init();
 });
+
+watch(
+  () => props.value,
+  () => {
+    if (props.value !== aiEditor?.getHtml()) {
+      aiEditor?.setContent(props.value);
+    }
+  },
+);
 
 function init() {
   nextTick(() => {

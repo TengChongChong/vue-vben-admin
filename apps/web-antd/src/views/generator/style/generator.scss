@@ -51,7 +51,7 @@
           padding: 0.5rem 1rem;
           background-color: #fff;
           border: 1px dashed hsl(var(--primary));
-          border-radius: 2px;
+          border-radius: var(--radius);
 
           .config-item-body-label {
             display: inline-block;
