@@ -67,3 +67,8 @@ export const LucideSettings = createIconifyIcon('lucide:settings');
 export const LucideSend = createIconifyIcon('lucide:send');
 
 export const LucideMailCheck = createIconifyIcon('lucide:mail-check');
+export const LucideCopy = createIconifyIcon('lucide:copy');
+
+export const LucideSquareDashedBottomCode = createIconifyIcon(
+  'lucide:square-dashed-bottom-code',
+);

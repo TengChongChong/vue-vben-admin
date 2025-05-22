@@ -5,11 +5,13 @@ import type { SysDict } from '#/api/sys/model/sys-dict-model';
 
 import { ref, unref } from 'vue';
 
+import { AccessControl } from '@vben/access';
 import { ColPage, useVbenModal } from '@vben/common-ui';
 
 import { Button, Divider, message, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
+import { generateDictEnumApi } from '#/api/generator/generator';
 import {
   addApi,
   exportDataApi,
@@ -24,10 +26,14 @@ import {
   ButtonExport,
   ButtonRemove,
 } from '#/components/button';
-import { LucideRefreshCw } from '#/components/icons';
+import {
+  LucideRefreshCw,
+  LucideSquareDashedBottomCode,
+} from '#/components/icons';
 import { downloadFileById } from '#/util/download';
 
 import { initColumns } from './data';
+import EnumModal from './enum-modal.vue';
 import InputModal from './input.vue';
 import SysDictTypeList from './type/list.vue';
 
@@ -82,6 +88,10 @@ const [BaseInputModal, baseInputModalApi] = useVbenModal({
   connectedComponent: InputModal,
 });
 
+const [BaseEnumModal, baseEnumModalApi] = useVbenModal({
+  connectedComponent: EnumModal,
+});
+
 /**
  * 新增
  *
@@ -117,12 +127,19 @@ function handleDictTypeChange(value: string) {
   handleSearch();
 }
 
+function handleGeneratorEnum() {
+  generateDictEnumApi(dictType.value).then((code) => {
+    baseEnumModalApi.setData({ ...code });
+    baseEnumModalApi.open();
+  });
+}
+
 const handelExportData = async () => {
   exportBtnLoading.value = true;
   try {
     await exportDataApi({
-      dictType: unref(dictType),
       ...(await gridApi.formApi.getValues()),
+      dictType: unref(dictType),
     }).then((id) => {
       downloadFileById(id);
     });
@@ -154,6 +171,17 @@ const handelExportData = async () => {
         <template #toolbar-tools>
           <Space>
             <ButtonAdd :auth-codes="['sys:dict:save']" @click="handleCreate" />
+
+            <AccessControl :codes="['sys:admin']" type="role">
+              <Button
+                type="primary"
+                @click="handleGeneratorEnum"
+                v-if="dictType"
+              >
+                <template #icon> <LucideSquareDashedBottomCode /> </template>
+                生成 Enum
+              </Button>
+            </AccessControl>
 
             <ButtonRemove
               :api="removeApi"
@@ -196,5 +224,7 @@ const handelExportData = async () => {
     </div>
     <!--  编辑  -->
     <BaseInputModal @success="handleSearch" />
+
+    <BaseEnumModal />
   </ColPage>
 </template>

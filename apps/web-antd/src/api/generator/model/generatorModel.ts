@@ -1,38 +1,3 @@
-import type { GeneratorVersion } from '#/views/generator/types/generator.data';
-
-/**
- * 表信息
- */
-export interface TableInfo {
-  // 表名
-  name: string;
-  // 注释
-  comment: string;
-  // 实体类名称
-  entityName: string;
-  // 是否有主键
-  havePrimaryKey: boolean;
-  //
-  fields: TableField[];
-}
-
-export interface TableField {
-  // 数据库字段
-  name: string;
-  // 注释
-  comment: string;
-  // 类型
-  type: string;
-  // 属性名
-  propertyName: string;
-  // 属性类型
-  propertyType: string;
-  // 是否是主键
-  keyFlag: boolean;
-  // metaInfo
-  metaInfo: MetaInfo;
-}
-
 export interface MetaInfo {
   // 默认值
   defaultValue: any;
@@ -49,22 +14,38 @@ export interface MetaInfo {
   scale: number;
 }
 
-// 代码生成全局配置
-export interface GeneratorConfig {
-  // 表信息
-  tableInfo: TableInfo;
-  // 基础
-  basicsConfig: BasicsConfigModel;
-  // 查询条件
-  queryConfig?: FieldConfig[];
-  // 列表
-  tableConfig?: TableCellConfig[];
-  // 表单
-  inputConfig?: FieldConfig[];
-  // 导入
-  importConfig?: ImportCellConfig[];
-  // 导出
-  exportConfig?: TableCellConfig[];
+export interface TableField {
+  // 数据库字段
+  name: string;
+  // 注释
+  comment: string;
+  // 类型
+  type: string;
+  columnName: string;
+  // 属性名
+  propertyName: string;
+  // 属性类型
+  propertyType: string;
+  // 是否是主键
+  keyFlag: boolean;
+  // metaInfo
+  metaInfo: MetaInfo;
+}
+
+/**
+ * 表信息
+ */
+export interface TableInfo {
+  // 表名
+  name: string;
+  // 注释
+  comment: string;
+  // 实体类名称
+  entityName: string;
+  // 是否有主键
+  havePrimaryKey: boolean;
+  //
+  fields: TableField[];
 }
 
 // 表格
@@ -140,5 +121,33 @@ export interface BasicsConfigModel {
   viewPath?: string;
   apiPath?: string;
   overwrite: boolean;
-  generatorVersion: GeneratorVersion;
+}
+
+export interface QueryDataTableParams {
+  dataSource: string;
+}
+
+export interface GenerateDictEnumResponse {
+  javaFileName: string;
+  jsFileName: string;
+  javaCode: string;
+  jsCode: string;
+}
+
+// 代码生成全局配置
+export interface GeneratorConfig {
+  // 表信息
+  tableInfo: TableInfo;
+  // 基础
+  basicsConfig: BasicsConfigModel;
+  // 查询条件
+  queryConfig?: FieldConfig[];
+  // 列表
+  tableConfig?: TableCellConfig[];
+  // 表单
+  inputConfig?: FieldConfig[];
+  // 导入
+  importConfig?: ImportCellConfig[];
+  // 导出
+  exportConfig?: TableCellConfig[];
 }

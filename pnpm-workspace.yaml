@@ -198,3 +198,7 @@ catalog:
   crypto-js: ^4.2.0
   cropperjs: ^1.6.2
   lodash-es: ^4.17.21
+  prismjs: ^1.30.0
+  vue-prism-component: ^2.0.0
+
+

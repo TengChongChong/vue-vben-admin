@@ -1,6 +1,8 @@
 import type { SelectModel } from '#/api/base/model/select-model';
 import type {
+  GenerateDictEnumResponse,
   GeneratorConfig,
+  QueryDataTableParams,
   TableInfo,
 } from '#/api/generator/model/generatorModel';
 
@@ -11,7 +13,7 @@ const BASE_URL = '/auth/generator';
 /**
  * 获取表
  */
-export function selectTableApi(params) {
+export function selectTableApi(params: QueryDataTableParams) {
   return requestClient.get<SelectModel[]>(`${BASE_URL}/table`, {
     params,
   });
@@ -46,4 +48,19 @@ export function selectModulesApi() {
  */
 export function generateApi(generatorConfig: GeneratorConfig) {
   return requestClient.post<boolean>(BASE_URL, generatorConfig);
+}
+
+/**
+ * 根据字典生辰 Enum
+ *
+ * @param dictType 字典类型
+ * @return Enum
+ */
+export function generateDictEnumApi(dictType: string) {
+  return requestClient.get<GenerateDictEnumResponse>(
+    `${BASE_URL}/generate/dict/enum`,
+    {
+      params: { dictType },
+    },
+  );
 }

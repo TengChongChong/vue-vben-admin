@@ -52,7 +52,9 @@
     "lodash-es": "catalog:",
     "pinia": "catalog:",
     "vue": "catalog:",
-    "vue-router": "catalog:"
+    "vue-router": "catalog:",
+    "prismjs": "catalog:",
+    "vue-prism-component": "catalog:"
   },
   "devDependencies": {
     "@types/lodash-es": "catalog:"

@@ -76,7 +76,8 @@ const [BaseForm, baseFormApi] = useVbenForm({
         .string()
         .min(1, { message: '请输入字典编码' })
         .max(64, { message: '字典编码最多输入64个字符' }),
-      description: '建议使用字母 / 数字，同一字典类型下字典编码不可重复',
+      description:
+        '使用字母 / 数字，同一字典类型下字典编码不可重复，如需生成Enum，建议使用单词作为字典（如：user_status、user-status、userStatus）',
     },
     {
       fieldName: 'name',
