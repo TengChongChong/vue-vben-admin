@@ -82,7 +82,11 @@ const [Modal, modalApi] = useVbenModal({
 
     <template #footer>
       <Space>
-        <Alert message="如字典编码使用数字，请自行调整枚举内容" banner />
+        <Alert
+          type="info"
+          message="如字典编码使用数字，请自行调整枚举内容"
+          banner
+        />
 
         <ButtonClose @click="modalApi.close()" />
       </Space>
