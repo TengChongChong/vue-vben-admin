@@ -7,11 +7,12 @@ import { ref } from 'vue';
 import { useVbenDrawer, z } from '@vben/common-ui';
 import { listToTree } from '@vben/utils';
 
-import { Space } from 'ant-design-vue';
+import { Space, TypographyText } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
 import { addApi, saveApi, selectAllApi } from '#/api/auth/sys-menu';
 import { ButtonClose, ButtonSave } from '#/components/button';
+import { Divider } from '#/components/divider';
 import { componentKeys } from '#/router/routes';
 
 const emit = defineEmits(['success']);
@@ -242,6 +243,20 @@ const [BaseForm, baseFormApi] = useVbenForm({
         .max(64, { message: '权限标识最多输入64个字符' })
         .optional(),
       formItemClass: 'col-span-3',
+    },
+    {
+      fieldName: 'query',
+      label: '路由参数',
+      component: 'Input',
+      dependencies: {
+        show: (values) => {
+          return ['menu'].includes(values.type);
+        },
+        triggerFields: ['type'],
+      },
+      formItemClass: 'col-span-6',
+      description:
+        'JSON 格式，将用于 route.meta.query，如：{ "name": "张三", "sex": 1 }',
     },
     {
       fieldName: 'status',
@@ -486,6 +501,29 @@ const [Drawer, drawerApi] = useVbenDrawer({
 <template>
   <Drawer class="w-[1000px]" title="菜单信息">
     <BaseForm />
+
+    <Divider>说明</Divider>
+    <div class="mt-4">
+      <TypographyText>
+        <strong>1、缓存机制说明：</strong>
+        当前会话菜单与角色菜单均存储于缓存中，因此修改菜单后不会立即生效。
+        <br />
+      </TypographyText>
+      <TypographyText> <strong>2、生效操作指引</strong><br /> </TypographyText>
+      <div class="pl-6">
+        <TypographyText>
+          <strong>方法一：</strong>
+          前往<router-link to="/auth/role/list">“角色管理”</router-link>
+          页面，找到需要更新授权/菜单的角色，进入编辑页面后直接点击保存，随后刷新当前页面。
+          <br />
+        </TypographyText>
+        <TypographyText>
+          <strong>方法二：</strong>
+          前往<router-link to="/auth/role/list">“角色管理”</router-link>
+          页面点击 “刷新缓存”按钮，操作完成后重新登录用户账号。
+        </TypographyText>
+      </div>
+    </div>
 
     <template #footer>
       <Space>
