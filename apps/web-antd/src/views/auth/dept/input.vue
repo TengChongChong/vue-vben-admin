@@ -170,6 +170,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
   onOpenChange: async (isOpen: boolean) => {
     if (isOpen) {
       const data = drawerApi.getData<Record<string, any>>();
+      await baseFormApi.resetForm();
       await baseFormApi.setValues(data);
     }
   },

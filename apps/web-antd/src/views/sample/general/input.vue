@@ -124,6 +124,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
     if (isOpen) {
       // 打开时根据id获取详情
       const data = drawerApi.getData<Record<string, any>>();
+      await baseFormApi.resetForm();
       await baseFormApi.setValues(data);
     }
   },

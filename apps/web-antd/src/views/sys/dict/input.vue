@@ -179,6 +179,7 @@ const [Modal, modalApi] = useVbenModal({
     if (isOpen) {
       // 打开时根据id获取详情
       const data = modalApi.getData<Record<string, any>>();
+      await baseFormApi.resetForm();
       await baseFormApi.setValues(data);
       if (data.dictType) {
         await changeDictType(data.dictType, false);
