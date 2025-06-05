@@ -129,7 +129,10 @@ const beforeUpload = (file: File) => {
   const { maxCount } = props;
 
   // 上传数量是否超出，此时当前选择的文件尚未添加到上传中数组，所以使用 >=
-  if (uploadedFileList.length + uploadingFileList?.length >= maxCount) {
+  if (
+    maxCount !== 1 &&
+    uploadedFileList.length + uploadingFileList?.length >= maxCount
+  ) {
     message.warning(`最多支持上传${maxCount}个文件`);
     return false;
   }
