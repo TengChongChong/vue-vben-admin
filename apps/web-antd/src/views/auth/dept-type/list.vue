@@ -3,8 +3,6 @@ import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
 import type { SysDeptType } from '#/api/auth/model/sys-dept-type-model';
 
-import { ref, unref } from 'vue';
-
 import { Page, useVbenDrawer } from '@vben/common-ui';
 
 import { Button, Divider, Space } from 'ant-design-vue';
@@ -23,10 +21,8 @@ import { initColumns } from './data';
 import InputDrawer from './input.vue';
 import OrderDrawer from './order.vue';
 
-const expandRecords = ref([]);
-
 function handleSearch() {
-  gridApi.search();
+  gridApi.query();
 }
 
 const formOptions: VbenFormProps = {
@@ -55,6 +51,9 @@ const gridOptions: VxeGridProps<SysDeptType> = {
     range: false,
   },
   treeConfig: {
+    // 是否保留展开状态，对于某些场景可能会用到，比如数据被刷新之后还保留之前展开的状态（需要有 row-config.keyField）
+    reserve: true,
+    // 自动将列表转为树结构（支持虚拟滚动）
     transform: true,
     // 用于 tree-config.transform，树节点的字段名
     rowField: 'id',
@@ -64,8 +63,6 @@ const gridOptions: VxeGridProps<SysDeptType> = {
   proxyConfig: {
     ajax: {
       query: async (_, formValues) => {
-        // 保持展开状态
-        await gridApi.grid.setTreeExpand(unref(expandRecords), true);
         return await selectApi({ ...formValues });
       },
     },
@@ -76,11 +73,6 @@ const [Grid, gridApi] = useVbenVxeGrid({
   tableTitle: '部门类型管理',
   formOptions,
   gridOptions,
-  gridEvents: {
-    toggleTreeExpand: () => {
-      expandRecords.value = gridApi.grid.getTreeExpandRecords();
-    },
-  },
 });
 
 const [BaseInputDrawer, baseInputDrawerApi] = useVbenDrawer({
@@ -111,11 +103,9 @@ function handleOrder() {
 
 function handleExpandAll() {
   gridApi.grid?.setAllTreeExpand(true);
-  expandRecords.value = gridApi.grid.getTreeExpandRecords();
 }
 function handleCollapseAll() {
   gridApi.grid?.clearTreeExpand();
-  expandRecords.value = gridApi.grid.getTreeExpandRecords();
 }
 </script>
 

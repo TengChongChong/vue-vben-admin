@@ -75,7 +75,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
         mode: 'multiple',
       },
       rules: 'selectRequired',
-      description: '新增此部门类型用户时可选择的角色',
+      description: '管理此部门类型用户时可选择的角色',
     },
     {
       fieldName: 'orderNo',
