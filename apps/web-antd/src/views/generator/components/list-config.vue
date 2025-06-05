@@ -13,7 +13,6 @@ import { useSortable } from '@vben/hooks';
 import {
   Button,
   Card,
-  Divider,
   Popover,
   Space,
   Tooltip,
@@ -21,6 +20,7 @@ import {
 } from 'ant-design-vue';
 
 import { DictTag } from '#/components/dict';
+import { Divider } from '#/components/divider';
 import {
   LucideArrowLeft,
   LucideArrowRight,
@@ -326,8 +326,8 @@ function handleStepNext() {
         </div>
       </Card>
 
-      <Divider orientation="left">说明</Divider>
-      <div class="mb-6">
+      <Divider>说明</Divider>
+      <div class="my-4">
         <p>1、点击"字段设置"按钮配置字段；2、拖动"虚线框"进行排序</p>
       </div>
 

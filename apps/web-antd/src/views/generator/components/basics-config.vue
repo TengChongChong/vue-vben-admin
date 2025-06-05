@@ -11,7 +11,7 @@ import { onMounted, ref, unref } from 'vue';
 import { useUserStore } from '@vben/stores';
 import { listToTree } from '@vben/utils';
 
-import { Affix, Button, Divider, Input, Select } from 'ant-design-vue';
+import { Affix, Button, Input, Select } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
 import { selectAllApi } from '#/api/auth/sys-menu';
@@ -21,6 +21,7 @@ import {
   selectTableApi,
 } from '#/api/generator/generator';
 import { selectOptionsApi } from '#/api/sys/sys-data-source';
+import { Divider } from '#/components/divider';
 import { LucideArrowRight } from '#/components/icons';
 import { isArray, isBlank } from '#/util/is';
 
@@ -676,8 +677,8 @@ async function handleStepNext() {
       </template>
     </BaseForm>
 
-    <Divider orientation="left">说明</Divider>
-    <div class="mb-6">
+    <Divider>说明</Divider>
+    <div class="my-4">
       <p>
         1、建议在 字典管理 中设置好业务表的字典类型，便于后续生成代码时使用。
       </p>

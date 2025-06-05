@@ -6,7 +6,6 @@ import { ref, watch } from 'vue';
 import {
   Button,
   Checkbox,
-  Divider,
   List,
   ListItem,
   message,
@@ -16,6 +15,7 @@ import {
 import { cloneDeep } from 'lodash-es';
 
 import { generateApi } from '#/api/generator/generator';
+import { Divider } from '#/components/divider';
 import { LucideArrowLeft, LucideCheck } from '#/components/icons';
 
 import { GenFile } from '../types/generator.data';
@@ -152,8 +152,8 @@ function generateCode() {
       </template>
     </List>
 
-    <Divider orientation="left">说明</Divider>
-    <div class="mb-6">
+    <Divider>说明</Divider>
+    <div class="my-4">
       <TypographyText type="danger">
         警告：如勾选"覆盖已有文件"将会覆盖项目中已有文件，请谨慎操作
       </TypographyText>
