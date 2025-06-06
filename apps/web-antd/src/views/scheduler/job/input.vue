@@ -1,13 +1,11 @@
 <script lang="ts" setup>
 import type { SchedulerJob } from '#/api/scheduler/model/scheduler-job-model';
 
-import { useVbenForm } from '#/adapter/form';
-import { addApi, saveApi } from '#/api/scheduler/scheduler-job';
-import { ButtonClose, ButtonSave } from '#/components/button';
-import { LucideChevronDown } from '#/components/icons';
-import { RoleEnum } from '#/enums/roleEnum';
+import { ref } from 'vue';
+
 import { useAccess } from '@vben/access';
 import { useVbenDrawer, z } from '@vben/common-ui';
+
 import {
   Button,
   Dropdown,
@@ -18,7 +16,12 @@ import {
   message,
   Space,
 } from 'ant-design-vue';
-import { ref } from 'vue';
+
+import { useVbenForm } from '#/adapter/form';
+import { addApi, saveApi } from '#/api/scheduler/scheduler-job';
+import { ButtonClose, ButtonSave } from '#/components/button';
+import { LucideChevronDown } from '#/components/icons';
+import { RoleEnum } from '#/enums/roleEnum';
 
 const emit = defineEmits(['success']);
 
@@ -157,6 +160,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
     if (isOpen) {
       // 打开时根据id获取详情
       const data = drawerApi.getData<Record<string, any>>();
+      await baseFormApi.resetForm();
       await baseFormApi.setValues({
         ...data,
       });
