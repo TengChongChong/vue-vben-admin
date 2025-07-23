@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { FileUploadRule } from '#/api/file/model/file-upload-rule-model';
+import type { SysMessage } from '#/api/sys/model/sys-message-model';
 
 import { ref } from 'vue';
 
@@ -17,6 +17,19 @@ import { ButtonRemove } from '#/components/button';
 import { LucideMailCheck } from '#/components/icons';
 
 import InfoModal from './info-modal.vue';
+
+const props = withDefaults(
+  defineProps<{
+    params?: SysMessage;
+    showQuery?: boolean;
+    title?: string;
+  }>(),
+  {
+    params: {},
+    title: '消息',
+    showQuery: true,
+  },
+);
 
 const setReadBtnLoading = ref(false);
 
@@ -68,7 +81,7 @@ const formOptions: VbenFormProps = {
   ],
 };
 
-const gridOptions: VxeGridProps<FileUploadRule> = {
+const gridOptions: VxeGridProps<SysMessage> = {
   id: 'message-receive-list',
   columns: [
     { type: 'checkbox', width: 50, fixed: 'left' },
@@ -124,15 +137,15 @@ const gridOptions: VxeGridProps<FileUploadRule> = {
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
-        return await selectReceiveApi({ ...formValues }, page);
+        return await selectReceiveApi({ ...props.params, ...formValues }, page);
       },
     },
   },
 };
 
 const [Grid, gridApi] = useVbenVxeGrid({
-  tableTitle: '消息',
-  formOptions,
+  tableTitle: props.title,
+  formOptions: props.showQuery ? formOptions : undefined,
   gridOptions,
 });
 

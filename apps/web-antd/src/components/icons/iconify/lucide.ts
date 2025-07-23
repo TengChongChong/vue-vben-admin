@@ -72,3 +72,7 @@ export const LucideCopy = createIconifyIcon('lucide:copy');
 export const LucideSquareDashedBottomCode = createIconifyIcon(
   'lucide:square-dashed-bottom-code',
 );
+
+export const LucideCircleStop = createIconifyIcon('lucide:circle-stop');
+
+export const LucideWaypoints = createIconifyIcon('lucide:waypoints');

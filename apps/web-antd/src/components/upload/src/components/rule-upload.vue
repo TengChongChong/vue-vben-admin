@@ -211,63 +211,60 @@ function refreshDisplayFileList() {
 
 <template>
   <template v-if="loaded">
-    <component
-      :is="useDragger ? UploadDragger : Upload"
-      v-if="uploadRule"
-      :accept="getStringAccept"
-      :action="url"
-      :max-count="maxCount"
-      :before-upload="beforeUpload"
-      :file-list="displayFileList"
-      :headers="{ Authorization: accessStore.accessToken }"
-      :list-type="props.listType"
-      :multiple="multiple"
-      @change="handleChange"
-    >
-      <template v-if="props.useDragger">
-        <p class="ant-upload-drag-icon">
-          <LucideUpload class="mx-auto text-5xl" />
-        </p>
-        <p class="ant-upload-text">单击或拖动文件到此区域进行上传</p>
-        <p class="ant-upload-hint">
-          {{ getHelpText }}
-        </p>
-      </template>
-      <template v-else>
-        <template v-if="props.listType === 'picture-card'">
-          <div class="ant-upload-select-picture-card">
-            <LucideHardDriveUpload />
-            <div class="ant-upload-text">选择文件</div>
-          </div>
+    <div>
+      <component
+        :is="useDragger ? UploadDragger : Upload"
+        v-if="uploadRule"
+        :accept="getStringAccept"
+        :action="url"
+        :max-count="maxCount"
+        :before-upload="beforeUpload"
+        :file-list="displayFileList"
+        :headers="{ Authorization: accessStore.accessToken }"
+        :list-type="props.listType"
+        :multiple="multiple"
+        @change="handleChange"
+      >
+        <template v-if="props.useDragger">
+          <p class="ant-upload-drag-icon">
+            <LucideUpload class="mx-auto text-5xl" />
+          </p>
+          <p class="ant-upload-text">单击或拖动文件到此区域进行上传</p>
+          <p class="ant-upload-hint">
+            {{ getHelpText }}
+          </p>
         </template>
-
-        <template
-          v-if="props.listType === 'text' || props.listType === 'picture'"
-        >
-          <Button>
-            <template #icon>
+        <template v-else>
+          <template v-if="props.listType === 'picture-card'">
+            <div class="ant-upload-select-picture-card">
               <LucideHardDriveUpload />
-            </template>
+              <div class="ant-upload-text">选择文件</div>
+            </div>
+          </template>
 
-            选择文件
-          </Button>
+          <template
+            v-if="props.listType === 'text' || props.listType === 'picture'"
+          >
+            <Button>
+              <template #icon>
+                <LucideHardDriveUpload />
+              </template>
+
+              选择文件
+            </Button>
+          </template>
         </template>
-      </template>
-    </component>
-    <Tag v-else color="red">获取上传策略失败</Tag>
+      </component>
+      <Tag v-else color="red">获取上传策略失败</Tag>
 
-    <div v-if="props.showHelpText" class="upload-help-text py-1">
-      {{ getHelpText }}
+      <div v-if="props.showHelpText" class="py-1 text-sm text-gray-500">
+        {{ getHelpText }}
+      </div>
     </div>
   </template>
 </template>
 
 <style lang="scss" scoped>
-.upload-help-text {
-  font-size: 14px;
-  color: hsl(var(--secondary-foreground));
-}
-
 .ant-upload-select-picture-card {
   text-align: center;
 
