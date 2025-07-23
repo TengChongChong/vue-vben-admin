@@ -9,6 +9,8 @@ import type {
   FormShape,
 } from '../types';
 
+import { computed } from 'vue';
+
 import { Form } from '@vben-core/shadcn-ui';
 import {
   cn,
@@ -16,7 +18,6 @@ import {
   isString,
   mergeWithArrayOverride,
 } from '@vben-core/shared/utils';
-import { computed } from 'vue';
 
 import { provideFormRenderProps } from './context';
 import { useExpandable } from './expandable';
@@ -26,7 +27,7 @@ import { getBaseRules, getDefaultValueInZodStack } from './helper';
 interface Props extends FormRenderProps {}
 
 const props = withDefaults(
-  defineProps<{ globalCommonConfig?: FormCommonConfig } & Props>(),
+  defineProps<Props & { globalCommonConfig?: FormCommonConfig }>(),
   {
     collapsedRows: 1,
     commonConfig: () => ({}),
@@ -84,12 +85,12 @@ const formCollapsed = computed(() => {
 });
 
 const computedSchema = computed(
-  (): ({
+  (): (Omit<FormSchema, 'formFieldProps'> & {
     commonComponentProps: Record<string, any>;
     formFieldProps: Record<string, any>;
-  } & Omit<FormSchema, 'formFieldProps'>)[] => {
+  })[] => {
     const {
-      colon = true,
+      colon = false,
       componentProps = {},
       controlClass = '',
       disabled,
@@ -105,22 +106,24 @@ const computedSchema = computed(
       modelPropName = '',
       wrapperClass = '',
     } = mergeWithArrayOverride(props.commonConfig, props.globalCommonConfig);
-    // 显示的表单数量
-    let displayCount = 0;
-    return (props.schema || []).map((schema) => {
+    return (props.schema || []).map((schema, index) => {
       const keepIndex = keepFormItemIndex.value;
-      if (schema.ifShow === false) {
-        return schema;
-      }
-      // 折叠状态 & 显示折叠按钮 & 当前索引大于保留索引
+
       const hidden =
+        // 折叠状态 & 显示折叠按钮 & 当前索引大于保留索引
         props.showCollapseButton && !!formCollapsed.value && keepIndex
-          ? keepIndex <= displayCount
+          ? keepIndex <= index
           : false;
 
-      if (!hidden) {
-        // 不隐藏，计数
-        displayCount++;
+      // 处理函数形式的formItemClass
+      let resolvedSchemaFormItemClass = schema.formItemClass;
+      if (isFunction(schema.formItemClass)) {
+        try {
+          resolvedSchemaFormItemClass = schema.formItemClass();
+        } catch (error) {
+          console.error('Error calling formItemClass function:', error);
+          resolvedSchemaFormItemClass = '';
+        }
       }
 
       return {
@@ -146,12 +149,8 @@ const computedSchema = computed(
           'flex-shrink-0',
           { hidden },
           formItemClass,
-          schema.formItemClass,
-          schema.show === false && 'hidden',
+          resolvedSchemaFormItemClass,
         ),
-        ifShow: isFunction(schema.ifShow)
-          ? schema.ifShow()
-          : schema.ifShow !== false,
         labelClass: cn(labelClass, schema.labelClass),
       };
     });
@@ -167,7 +166,6 @@ const computedSchema = computed(
           <slot :definition="cSchema" :name="cSchema.fieldName"> </slot>
         </div> -->
         <FormField
-          v-if="cSchema.ifShow !== false"
           v-bind="cSchema"
           :class="cSchema.formItemClass"
           :rules="cSchema.rules"

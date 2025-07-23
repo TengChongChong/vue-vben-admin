@@ -1,3 +1,5 @@
+import type { VxeTableGridOptions } from '@vben/plugins/vxe-table';
+
 import { h } from 'vue';
 
 import { setupVbenVxeTable, useVbenVxeGrid } from '@vben/plugins/vxe-table';
@@ -138,8 +140,8 @@ setupVbenVxeTable({
           },
           // showActiveMsg: true,
           // showResponseMsg: false,
-        },
-      },
+          },
+        } as VxeTableGridOptions,
     });
 
     // 表格配置项可以用 cellRender: { name: 'CellImage' },
