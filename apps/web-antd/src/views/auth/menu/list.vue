@@ -3,21 +3,38 @@ import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
 import type { SysMenu } from '#/api/auth/model/sys-menu-model';
 
-import { Page, useVbenDrawer } from '@vben/common-ui';
+import { AccessControl } from '@vben/access';
+import { Page, useVbenDrawer, useVbenModal } from '@vben/common-ui';
 
 import { MenuBadge } from '@vben-core/menu-ui';
 
-import { Button, Divider, Space } from 'ant-design-vue';
+import {
+  Button,
+  Divider,
+  Dropdown,
+  Menu,
+  MenuItem,
+  Space,
+} from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { addApi, getApi, removeApi, selectApi } from '#/api/auth/sys-menu';
+import {
+  addApi as addMenuApi,
+  getApi,
+  removeApi,
+  selectApi,
+} from '#/api/auth/sys-menu';
+import { addApi as addQuickNavigationApi } from '#/api/sys/sys-quick-navigation';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
 import {
   IconifyIcon,
+  LucideChevronDown,
   LucideListOrdered,
   LucideMinus,
   LucidePlus,
+  TablerDirections,
 } from '#/components/icons';
+import QuickNavigationModal from '#/views/sys/quick/navigation/input.vue';
 
 import { initColumns } from './data';
 import InputDrawer from './input.vue';
@@ -100,8 +117,11 @@ const [BaseInputDrawer, baseInputDrawerApi] = useVbenDrawer({
 const [BaseOrderDrawer, baseOrderDrawerApi] = useVbenDrawer({
   connectedComponent: OrderDrawer,
 });
+const [BaseQuickNavigationModal, baseQuickNavigationModalApi] = useVbenModal({
+  connectedComponent: QuickNavigationModal,
+});
 async function handleCreate(id: string) {
-  addApi(id).then((res) => {
+  addMenuApi(id).then((res) => {
     baseInputDrawerApi.setData(res);
     baseInputDrawerApi.open();
   });
@@ -110,6 +130,19 @@ function handleEdit(id: string) {
   getApi(id).then((res) => {
     baseInputDrawerApi.setData(res);
     baseInputDrawerApi.open();
+  });
+}
+
+function handleConvertQuickNavigation(sysMenu: SysMenu) {
+  const { title, path, icon } = sysMenu;
+  addQuickNavigationApi().then((res) => {
+    baseQuickNavigationModalApi.setData({
+      ...res,
+      name: title,
+      url: path,
+      icon,
+    });
+    baseQuickNavigationModalApi.open();
   });
 }
 
@@ -191,13 +224,6 @@ function handleCollapseAll() {
         />
       </template>
       <template #action="{ row }">
-        <ButtonAdd
-          :auth-codes="['sys:menu:save']"
-          size="small"
-          text="新增下级"
-          type="link"
-          @click="handleCreate(row.id)"
-        />
         <ButtonEdit
           :auth-codes="['sys:menu:save']"
           size="small"
@@ -212,13 +238,42 @@ function handleCollapseAll() {
           type="link"
           @success="handleSearch"
         />
+        <Dropdown>
+          <Button size="small" type="link" @click.prevent>
+            更多
+            <LucideChevronDown />
+          </Button>
+          <template #overlay>
+            <Menu>
+              <AccessControl :codes="['sys:menu:save']">
+                <MenuItem @click="handleCreate(row.id)">
+                  <template #icon>
+                    <LucidePlus />
+                  </template>
+                  新增下级
+                </MenuItem>
+              </AccessControl>
+
+              <MenuItem @click="handleConvertQuickNavigation(row)">
+                <template #icon>
+                  <TablerDirections />
+                </template>
+                生成快捷菜单
+              </MenuItem>
+            </Menu>
+          </template>
+        </Dropdown>
       </template>
     </Grid>
 
     <!--  编辑  -->
     <BaseInputDrawer @success="handleSearch" />
+
     <!--  排序  -->
     <BaseOrderDrawer @success="handleSearch" />
+
+    <!--  快捷菜单  -->
+    <BaseQuickNavigationModal @success="handleSearch" />
   </Page>
 </template>
 <style lang="scss" scoped>

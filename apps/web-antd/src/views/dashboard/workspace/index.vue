@@ -3,25 +3,20 @@ import type {
   WorkbenchProjectItem,
   WorkbenchQuickNavItem,
   WorkbenchTodoItem,
-  WorkbenchTrendItem,
 } from '@vben/common-ui';
 
 import { computed, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-import {
-  AnalysisChartCard,
-  WorkbenchHeader,
-  WorkbenchProject,
-  WorkbenchQuickNav,
-  WorkbenchTodo,
-  WorkbenchTrends,
-} from '@vben/common-ui';
+import { WorkbenchProject, WorkbenchTodo } from '@vben/common-ui';
 import { preferences } from '@vben/preferences';
 import { useUserStore } from '@vben/stores';
 import { openWindow } from '@vben/utils';
 
-import AnalyticsVisitsSource from '../analytics/analytics-visits-source.vue';
+import QuickNav from '#/views/dashboard/workspace/components/quick-nav.vue';
+import ReceiveList from '#/views/sys/message/components/receive-list.vue';
+
+import WorkbenchHeader from './components/workbench-header.vue';
 
 const userStore = useUserStore();
 
@@ -85,46 +80,6 @@ const projectItems: WorkbenchProjectItem[] = [
   },
 ];
 
-// 同样，这里的 url 也可以使用以 http 开头的外部链接
-const quickNavItems: WorkbenchQuickNavItem[] = [
-  {
-    color: '#13c2c2',
-    icon: 'lucide:house',
-    title: '首页',
-    url: '/dashboard/workspace',
-  },
-  {
-    color: '#f5222d',
-    icon: 'lucide:square-dashed-bottom-code',
-    title: '代码生成',
-    url: '/generator',
-  },
-  {
-    color: '#fa541c',
-    icon: 'lucide:list-collapse',
-    title: '菜单管理',
-    url: '/sys/menu/list',
-  },
-  {
-    color: '#52c41a',
-    icon: 'lucide:file-sliders',
-    title: '文件上传策略',
-    url: '/file/upload/rule/list',
-  },
-  {
-    color: '#a0d911',
-    icon: 'lucide:users',
-    title: '角色管理',
-    url: '/auth/role/list',
-  },
-  {
-    color: '#1677ff',
-    icon: 'lucide:book-a',
-    title: '字典管理',
-    url: '/sys/dict/list',
-  },
-];
-
 const todoItems = ref<WorkbenchTodoItem[]>([
   {
     completed: false,
@@ -157,62 +112,6 @@ const todoItems = ref<WorkbenchTodoItem[]>([
     title: '修复UI显示问题',
   },
 ]);
-const trendItems: WorkbenchTrendItem[] = [
-  {
-    avatar: 'svg:avatar-1',
-    content: `在 <a>开源组</a> 创建了项目 <a>Vue</a>`,
-    date: '刚刚',
-    title: '威廉',
-  },
-  {
-    avatar: 'svg:avatar-2',
-    content: `关注了 <a>威廉</a> `,
-    date: '1个小时前',
-    title: '艾文',
-  },
-  {
-    avatar: 'svg:avatar-3',
-    content: `发布了 <a>个人动态</a> `,
-    date: '1天前',
-    title: '克里斯',
-  },
-  {
-    avatar: 'svg:avatar-4',
-    content: `发表文章 <a>如何编写一个Vite插件</a> `,
-    date: '2天前',
-    title: 'Vben',
-  },
-  {
-    avatar: 'svg:avatar-1',
-    content: `回复了 <a>杰克</a> 的问题 <a>如何进行项目优化？</a>`,
-    date: '3天前',
-    title: '皮特',
-  },
-  {
-    avatar: 'svg:avatar-2',
-    content: `关闭了问题 <a>如何运行项目</a> `,
-    date: '1周前',
-    title: '杰克',
-  },
-  {
-    avatar: 'svg:avatar-3',
-    content: `发布了 <a>个人动态</a> `,
-    date: '1周前',
-    title: '威廉',
-  },
-  {
-    avatar: 'svg:avatar-4',
-    content: `推送了代码到 <a>Github</a>`,
-    date: '2021-04-01 20:00',
-    title: '威廉',
-  },
-  {
-    avatar: 'svg:avatar-4',
-    content: `发表文章 <a>如何编写使用 Admin Vben</a> `,
-    date: '2021-03-01 20:00',
-    title: 'Vben',
-  },
-];
 
 const router = useRouter();
 
@@ -259,25 +158,24 @@ const greeting = computed(() => {
       <template #title>
         {{ greeting }}, {{ userStore.userInfo?.nickname }}
       </template>
-      <template #description> 今日晴，20℃ - 32℃！ </template>
+      <template #description> {{ userStore.userInfo?.dept?.name }} </template>
     </WorkbenchHeader>
 
     <div class="mt-5 flex flex-col lg:flex-row">
-      <div class="mr-4 w-full lg:w-3/5">
-        <WorkbenchProject :items="projectItems" title="项目" @click="navTo" />
-        <WorkbenchTrends :items="trendItems" class="mt-5" title="最新动态" />
-      </div>
       <div class="w-full lg:w-2/5">
-        <WorkbenchQuickNav
-          :items="quickNavItems"
-          class="mt-5 lg:mt-0"
-          title="快捷导航"
-          @click="navTo"
-        />
+        <QuickNav class="mb-4" />
         <WorkbenchTodo :items="todoItems" class="mt-5" title="待办事项" />
-        <AnalysisChartCard class="mt-5" title="访问来源">
-          <AnalyticsVisitsSource />
-        </AnalysisChartCard>
+      </div>
+      <div class="ml-4 w-full lg:w-3/5">
+        <WorkbenchProject :items="projectItems" title="项目" @click="navTo" />
+        <div class="mt-4" style="height: 500px">
+          <!-- 收信箱 -->
+          <ReceiveList
+            :show-query="false"
+            title="未读消息"
+            :params="{ detailsStatus: '0' }"
+          />
+        </div>
       </div>
     </div>
   </div>
