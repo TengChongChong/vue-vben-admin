@@ -1,10 +1,12 @@
+import type { RouteRecordStringComponent, UserInfo } from '@vben/types';
+
 import type {
   LoginAccountParams,
   LoginQrCodeParams,
   LoginResult,
   LoginSmsParams,
 } from '#/api/auth/model/auth-model.ts';
-import type { RouteRecordStringComponent, UserInfo } from '@vben/types';
+import type { SysQuickNavigationVO } from '#/api/sys/model/sys-quick-navigation-model';
 
 import { requestClient } from '#/api/request';
 
@@ -55,6 +57,17 @@ export async function getUserInfoApi() {
 export async function getCurrentUserRouteApi() {
   return requestClient.get<RouteRecordStringComponent[]>(
     '/auth/current/user/route',
+  );
+}
+
+/**
+ * 获取当前登录用户快捷菜单
+ *
+ * @return SysQuickNavigationVO[]
+ */
+export async function getCurrentUserQuickNavigationApi() {
+  return requestClient.get<SysQuickNavigationVO[]>(
+    '/auth/current/user/quick/navigation',
   );
 }
 
