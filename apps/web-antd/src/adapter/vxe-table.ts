@@ -140,8 +140,8 @@ setupVbenVxeTable({
           },
           // showActiveMsg: true,
           // showResponseMsg: false,
-          },
-        } as VxeTableGridOptions,
+        },
+      } as VxeTableGridOptions,
     });
 
     // 表格配置项可以用 cellRender: { name: 'CellImage' },
