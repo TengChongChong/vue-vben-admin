@@ -110,9 +110,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
       componentProps: {
         dictType: 'whether',
       },
-      ifShow: () => {
-        return hasAccessByRoles([RoleEnum.SYS_ADMIN]);
-      },
+      formItemClass: hasAccessByRoles([RoleEnum.SYS_ADMIN]) ? '' : 'hidden',
     },
     {
       fieldName: 'status',

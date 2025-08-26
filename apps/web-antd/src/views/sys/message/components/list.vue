@@ -57,7 +57,8 @@ const formOptions: VbenFormProps = {
           },
         ],
       },
-      ifShow: () => SysMessageStatus.HAS_BEEN_SENT === props.pageType,
+      formItemClass:
+        SysMessageStatus.HAS_BEEN_SENT === props.pageType ? '' : 'hidden',
     },
   ],
 };

@@ -149,7 +149,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
       const data = drawerApi.getData<Record<string, any>>();
       await baseFormApi.resetForm();
       await baseFormApi.setValues(data);
-      await baseFormApi.updateSchema([
+      baseFormApi.updateSchema([
         {
           fieldName: 'roleIdList',
           componentProps: {
@@ -159,7 +159,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
         {
           fieldName: 'password',
           // 密码只允许在新增时设置
-          ifShow: !data.id,
+          formItemClass: data.id ? 'hidden' : '',
         },
       ]);
     }

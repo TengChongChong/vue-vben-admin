@@ -73,9 +73,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
       componentProps: {
         dictType: 'whether',
       },
-      ifShow: () => {
-        return hasAccessByRoles([RoleEnum.SYS_ADMIN]);
-      },
+      formItemClass: hasAccessByRoles([RoleEnum.SYS_ADMIN]) ? '' : 'hidden',
     },
     {
       fieldName: 'remarks',
@@ -184,7 +182,7 @@ const [Modal, modalApi] = useVbenModal({
 });
 </script>
 <template>
-  <Modal class="w-[600px]" title="定时任务信息">
+  <Modal class="w-[600px]" title="系统参数信息">
     <BaseForm />
 
     <template #footer>
