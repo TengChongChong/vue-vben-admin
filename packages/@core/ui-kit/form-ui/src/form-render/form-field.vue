@@ -59,7 +59,7 @@ const values = useFormValues();
 const errors = useFieldError(fieldName);
 const fieldComponentRef = useTemplateRef<HTMLInputElement>('fieldComponentRef');
 const formApi = formRenderProps.form;
-const compact = formRenderProps.compact;
+const compact = computed(() => formRenderProps.compact);
 const isInValid = computed(() => errors.value?.length > 0);
 
 const FieldComponent = computed(() => {
@@ -294,7 +294,7 @@ onUnmounted(() => {
         'form-valid-error': isInValid,
         'form-is-required': shouldRequired,
         'flex-col': isVertical,
-        'pb-6': !compact,
+        'pb-4': !compact,
         'pb-2': compact,
       }"
       class="relative flex"
@@ -386,7 +386,7 @@ onUnmounted(() => {
         </FormDescription>
 
         <Transition name="slide-up" v-if="!compact">
-          <FormMessage class="absolute bottom-1" />
+          <FormMessage class="absolute" />
         </Transition>
       </div>
     </FormItem>
