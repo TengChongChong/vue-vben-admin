@@ -1,14 +1,17 @@
 <script lang="ts" setup>
+import type { DragVerifyActionType, MoveData } from '../typing';
+
 import type { CaptchaVO } from '#/api/sys/model/sys-captcha-model';
 
-import type { DragVerifyActionType, MoveData } from '../typing';
+import { reactive, ref, unref, watch } from 'vue';
+
+import { SliderCaptcha } from '@vben/common-ui';
+import { EncryptionFactory } from '@vben/utils';
+
+import { Button, Spin } from 'ant-design-vue';
 
 import { checkCaptchaApi, getCaptchaApi } from '#/api/sys/sys-captcha';
 import { LucideRotateCcw } from '#/components/icons';
-import { SliderCaptcha } from '@vben/common-ui';
-import { EncryptionFactory } from '@vben/utils';
-import { Button, Spin } from 'ant-design-vue';
-import { reactive, ref, unref, watch } from 'vue';
 
 const emit = defineEmits(['success', 'change', 'update:value']);
 // 拖动条
@@ -39,7 +42,7 @@ watch(
   () => state.isPassing,
   (isPassing) => {
     emit('change', isPassing);
-    emit('update:value', captchaVO.value.captchaVerification);
+    emit('update:value', captchaVO.value?.captchaVerification);
     if (isPassing) {
       const { startTime, endTime } = state;
       state.time = (endTime - startTime) / 1000;
@@ -103,25 +106,29 @@ function handleDragBarMove(data: MoveData) {
  * 拖动结束
  */
 async function handleDragEnd() {
-  let pointJson = JSON.stringify({ x: state.left, y: 5 });
-  if (captchaVO.value.secretKey) {
-    // 坐标加密
-    const encryption = EncryptionFactory.createAesEncryption({
-      key: captchaVO.value.secretKey,
-    });
-    pointJson = encryption.encrypt(pointJson);
+  if (!captchaVO.value) {
+    return;
   }
+  const { secretKey, token } = captchaVO.value;
+
+  const pointJson = JSON.stringify({ x: state.left, y: 5 });
+  // 坐标加密
+  const encryption = EncryptionFactory.createAesEncryption({
+    key: secretKey,
+  });
+
+  const encryptionPointJson: string = secretKey
+    ? encryption.encrypt(pointJson)
+    : pointJson;
 
   try {
-    await checkCaptchaApi(
-      {
-        token: captchaVO.value.token,
-        pointJson,
-      },
-      'none',
-    ).then((res) => {
+    await checkCaptchaApi({
+      token,
+      pointJson: encryptionPointJson,
+    }).then(() => {
       if (captchaVO.value) {
-        captchaVO.value.captchaVerification = res.captchaVerification;
+        const detail = [token, pointJson].join('---');
+        captchaVO.value.captchaVerification = encryption.encrypt(detail);
       }
     });
 
