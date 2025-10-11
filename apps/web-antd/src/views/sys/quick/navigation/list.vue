@@ -56,6 +56,9 @@ const gridOptions: VxeGridProps<SysQuickNavigation> = {
   cellConfig: {
     height: 76,
   },
+  headerCellConfig: {
+    height: 44,
+  },
   rowConfig: {
     drag: true,
   },
