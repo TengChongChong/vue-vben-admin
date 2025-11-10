@@ -1,9 +1,7 @@
 export {
   ArrowDown,
   ArrowLeft,
-  ArrowLeftFromLine as MdiMenuOpen,
   ArrowLeftToLine,
-  ArrowRightFromLine as MdiMenuClose,
   ArrowRightLeft,
   ArrowRightToLine,
   ArrowUp,
@@ -43,7 +41,6 @@ export {
   LogOut,
   MailCheck,
   Maximize,
-  Menu as IconDefault,
   Menu,
   Minimize,
   Minimize2,
