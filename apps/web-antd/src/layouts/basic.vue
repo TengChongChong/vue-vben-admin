@@ -9,6 +9,7 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { AuthenticationLoginExpiredModal, useVbenModal } from '@vben/common-ui';
 import { VBEN_DOC_URL, VBEN_GITHUB_URL } from '@vben/constants';
 import { useWatermark } from '@vben/hooks';
+import { BookOpenText, CircleHelp, SvgGithubIcon } from '@vben/icons';
 import {
   BasicLayout,
   LockScreen,
@@ -76,7 +77,7 @@ const menus = computed(() => [
         target: '_blank',
       });
     },
-    icon: MdiGithub,
+    icon: SvgGithubIcon,
     text: 'GitHub',
   },
   {
@@ -188,10 +189,16 @@ function handleReadNotification(notification: NotificationItem) {
 }
 
 watch(
-  () => preferences.app.watermark,
-  async (enable) => {
+  () => ({
+    enable: preferences.app.watermark,
+    content: preferences.app.watermarkContent,
+  }),
+  async ({ enable, content }) => {
     if (enable) {
       await updateWatermark({
+        content:
+          content ||
+          `${userStore.userInfo?.username} - ${userStore.userInfo?.nickname}`,
         content: `${userStore.userInfo?.username} - ${userStore.userInfo?.nickname}`,
       });
     } else {

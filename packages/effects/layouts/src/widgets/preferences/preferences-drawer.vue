@@ -11,9 +11,12 @@ import type {
   PreferencesButtonPositionType,
   ThemeModeType,
 } from '@vben/types';
+
 import type { SegmentedItem } from '@vben-core/shadcn-ui';
 
-import { Copy, RotateCw } from '@vben/icons';
+import { computed, ref } from 'vue';
+
+import { Copy, Pin, PinOff, RotateCw } from '@vben/icons';
 import { $t, loadLocaleMessages } from '@vben/locales';
 import {
   clearPreferencesCache,
@@ -21,6 +24,7 @@ import {
   resetPreferences,
   usePreferences,
 } from '@vben/preferences';
+
 import { useVbenDrawer } from '@vben-core/popup-ui';
 import {
   VbenButton,
@@ -28,8 +32,8 @@ import {
   VbenSegmented,
 } from '@vben-core/shadcn-ui';
 import { globalShareState } from '@vben-core/shared/global-state';
+
 import { useClipboard } from '@vueuse/core';
-import { computed, ref } from 'vue';
 
 import {
   Animation,
@@ -63,7 +67,11 @@ const appColorGrayMode = defineModel<boolean>('appColorGrayMode');
 const appColorWeakMode = defineModel<boolean>('appColorWeakMode');
 const appContentCompact = defineModel<ContentCompactType>('appContentCompact');
 const appWatermark = defineModel<boolean>('appWatermark');
+const appWatermarkContent = defineModel<string>('appWatermarkContent');
 const appEnableCheckUpdates = defineModel<boolean>('appEnableCheckUpdates');
+const appEnableStickyPreferencesNavigationBar = defineModel<boolean>(
+  'appEnableStickyPreferencesNavigationBar',
+);
 const appPreferencesButtonPosition = defineModel<PreferencesButtonPositionType>(
   'appPreferencesButtonPosition',
 );
@@ -236,7 +244,7 @@ async function handleReset() {
     <Drawer
       :description="$t('preferences.subtitle')"
       :title="$t('preferences.title')"
-      class="sm:max-w-sm"
+      class="!border-0 sm:max-w-sm"
     >
       <template #extra>
         <div class="flex items-center">
@@ -244,18 +252,44 @@ async function handleReset() {
             :disabled="!diffPreference"
             :tooltip="$t('preferences.resetTip')"
             class="relative"
+            @click="handleReset"
           >
             <span
               v-if="diffPreference"
               class="bg-primary absolute right-0.5 top-0.5 h-2 w-2 rounded"
             ></span>
-            <RotateCw class="size-4" @click="handleReset" />
+            <RotateCw class="size-4" />
+          </VbenIconButton>
+          <VbenIconButton
+            :tooltip="
+              appEnableStickyPreferencesNavigationBar
+                ? $t('preferences.disableStickyPreferencesNavigationBar')
+                : $t('preferences.enableStickyPreferencesNavigationBar')
+            "
+            class="relative"
+            @click="
+              () =>
+                (appEnableStickyPreferencesNavigationBar =
+                  !appEnableStickyPreferencesNavigationBar)
+            "
+          >
+            <PinOff
+              v-if="appEnableStickyPreferencesNavigationBar"
+              class="size-4"
+            />
+            <Pin v-else class="size-4" />
           </VbenIconButton>
         </div>
       </template>
 
-      <div class="p-1">
-        <VbenSegmented v-model="activeTab" :tabs="tabs">
+      <div>
+        <VbenSegmented
+          v-model="activeTab"
+          :tabs="tabs"
+          :class="{
+            'sticky-tabs-header': appEnableStickyPreferencesNavigationBar,
+          }"
+        >
           <template #general>
             <Block :title="$t('preferences.general')">
               <General
@@ -263,6 +297,7 @@ async function handleReset() {
                 v-model:app-enable-check-updates="appEnableCheckUpdates"
                 v-model:app-locale="appLocale"
                 v-model:app-watermark="appWatermark"
+                v-model:app-watermark-content="appWatermarkContent"
               />
             </Block>
 
@@ -443,3 +478,11 @@ async function handleReset() {
     </Drawer>
   </div>
 </template>
+
+<style scoped>
+:deep(.sticky-tabs-header [role='tablist']) {
+  position: sticky;
+  top: -12px;
+  z-index: 10;
+}
+</style>
