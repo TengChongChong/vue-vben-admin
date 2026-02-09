@@ -27,14 +27,8 @@ import {
   watch,
 } from 'vue';
 
-import {
-  ApiComponent,
-  globalShareState,
-  IconPicker,
-  VCropper,
-} from '@vben/common-ui';
+import { globalShareState, IconPicker, VCropper } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
-import { globalShareState, IconPicker } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 import { isEmpty } from '@vben/utils';
 
@@ -551,27 +545,27 @@ async function initComponentAdapter() {
     // Button: () =>
     // import('xxx').then((res) => res.Button),
 
-    ApiCascader: withDefaultPlaceholder(ApiComponent, 'select', {
-      component: Cascader,
-      fieldNames: { label: 'label', value: 'value', children: 'children' },
-      loadingSlot: 'suffixIcon',
-      modelPropName: 'value',
-      visibleEvent: 'onVisibleChange',
-    }),
-    ApiSelect: withDefaultPlaceholder(ApiComponent, 'select', {
-      component: Select,
-      loadingSlot: 'suffixIcon',
-      modelPropName: 'value',
-      visibleEvent: 'onVisibleChange',
-    }),
-    ApiTreeSelect: withDefaultPlaceholder(ApiComponent, 'select', {
-      component: TreeSelect,
-      fieldNames: { label: 'label', value: 'value', children: 'children' },
-      loadingSlot: 'suffixIcon',
-      modelPropName: 'value',
-      optionsPropName: 'treeData',
-      visibleEvent: 'onVisibleChange',
-    }),
+    // ApiCascader: withDefaultPlaceholder(ApiComponent, 'select', {
+    //   component: Cascader,
+    //   fieldNames: { label: 'label', value: 'value', children: 'children' },
+    //   loadingSlot: 'suffixIcon',
+    //   modelPropName: 'value',
+    //   visibleEvent: 'onVisibleChange',
+    // }),
+    // ApiSelect: withDefaultPlaceholder(ApiComponent, 'select', {
+    //   component: Select,
+    //   loadingSlot: 'suffixIcon',
+    //   modelPropName: 'value',
+    //   visibleEvent: 'onVisibleChange',
+    // }),
+    // ApiTreeSelect: withDefaultPlaceholder(ApiComponent, 'select', {
+    //   component: TreeSelect,
+    //   fieldNames: { label: 'label', value: 'value', children: 'children' },
+    //   loadingSlot: 'suffixIcon',
+    //   modelPropName: 'value',
+    //   optionsPropName: 'treeData',
+    //   visibleEvent: 'onVisibleChange',
+    // }),
     // ApiSelect: withDefaultPlaceholder(
     //   {
     //     ...ApiComponent,

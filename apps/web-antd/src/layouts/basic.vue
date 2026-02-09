@@ -3,10 +3,9 @@ import type { NotificationItem } from '@vben/layouts';
 import type { TimeoutHandle } from '@vben/types';
 
 import type { SysMessage } from '#/api/sys/model/sys-message-model';
-import { computed, ref, watch } from 'vue';
-import { useRouter } from 'vue-router';
 
 import { computed, onMounted, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 
 import { AuthenticationLoginExpiredModal, useVbenModal } from '@vben/common-ui';
 import { VBEN_DOC_URL, VBEN_GITHUB_URL } from '@vben/constants';
@@ -31,7 +30,6 @@ import {
   SvgGithubIcon,
 } from '#/components/icons';
 import { $t } from '#/locales';
-import { router } from '#/router';
 import { useAuthStore, useDictStore } from '#/store';
 import { formatToNow } from '#/util/date';
 import LoginForm from '#/views/_core/authentication/login.vue';
