@@ -19,7 +19,7 @@ import { computed, ref } from 'vue';
 import { Copy, Pin, PinOff, RotateCw } from '@vben/icons';
 import { $t, loadLocaleMessages } from '@vben/locales';
 import {
-  clearPreferencesCache,
+  clearCache,
   preferences,
   resetPreferences,
   usePreferences,
@@ -43,6 +43,7 @@ import {
   ColorMode,
   Content,
   Copyright,
+  FontSize,
   Footer,
   General,
   GlobalShortcutKeys,
@@ -85,6 +86,7 @@ const themeColorPrimary = defineModel<string>('themeColorPrimary');
 const themeBuiltinType = defineModel<BuiltinThemeType>('themeBuiltinType');
 const themeMode = defineModel<ThemeModeType>('themeMode');
 const themeRadius = defineModel<string>('themeRadius');
+const themeFontSize = defineModel<number>('themeFontSize');
 const themeSemiDarkSidebar = defineModel<boolean>('themeSemiDarkSidebar');
 const themeSemiDarkHeader = defineModel<boolean>('themeSemiDarkHeader');
 
@@ -118,6 +120,7 @@ const tabbarShowIcon = defineModel<boolean>('tabbarShowIcon');
 const tabbarShowMore = defineModel<boolean>('tabbarShowMore');
 const tabbarShowMaximize = defineModel<boolean>('tabbarShowMaximize');
 const tabbarPersist = defineModel<boolean>('tabbarPersist');
+const tabbarVisitHistory = defineModel<boolean>('tabbarVisitHistory');
 const tabbarDraggable = defineModel<boolean>('tabbarDraggable');
 const tabbarWheelable = defineModel<boolean>('tabbarWheelable');
 const tabbarStyleType = defineModel<string>('tabbarStyleType');
@@ -226,7 +229,7 @@ async function handleCopy() {
 
 async function handleClearCache() {
   resetPreferences();
-  clearPreferencesCache();
+  clearCache();
   emit('clearPreferencesAndLogout');
 }
 
@@ -328,6 +331,9 @@ async function handleReset() {
             <Block :title="$t('preferences.theme.radius')">
               <Radius v-model="themeRadius" />
             </Block>
+            <Block :title="$t('preferences.theme.fontSize')">
+              <FontSize v-model="themeFontSize" />
+            </Block>
             <Block :title="$t('preferences.other')">
               <ColorMode
                 v-model:app-color-gray-mode="appColorGrayMode"
@@ -395,6 +401,7 @@ async function handleReset() {
                 v-model:tabbar-draggable="tabbarDraggable"
                 v-model:tabbar-enable="tabbarEnable"
                 v-model:tabbar-persist="tabbarPersist"
+                v-model:tabbar-visit-history="tabbarVisitHistory"
                 v-model:tabbar-show-icon="tabbarShowIcon"
                 v-model:tabbar-show-maximize="tabbarShowMaximize"
                 v-model:tabbar-show-more="tabbarShowMore"
@@ -483,6 +490,6 @@ async function handleReset() {
 :deep(.sticky-tabs-header [role='tablist']) {
   position: sticky;
   top: -12px;
-  z-index: 10;
+  z-index: 9999;
 }
 </style>

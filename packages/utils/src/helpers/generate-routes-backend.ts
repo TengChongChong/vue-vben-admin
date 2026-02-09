@@ -9,12 +9,25 @@ import type {
 import { listToTree, mapTree } from '@vben-core/shared/utils';
 
 /**
+ * 判断路由是否在菜单中显示但访问时展示 403（让用户知悉功能并申请权限）
+ */
+function menuHasVisibleWithForbidden(route: RouteRecordRaw): boolean {
+  return !!route.meta?.menuVisibleWithForbidden;
+}
+
+/**
  * 动态生成路由 - 后端方式
+ * 对 meta.menuVisibleWithForbidden 为 true 的项直接替换为 403 组件，让用户知悉功能并申请权限。
  */
 async function generateRoutesByBackend(
   options: GenerateMenuAndRoutesOptions,
 ): Promise<RouteRecordRaw[]> {
-  const { fetchMenuListAsync, layoutMap = {}, pageMap = {} } = options;
+  const {
+    fetchMenuListAsync,
+    layoutMap = {},
+    pageMap = {},
+    forbiddenComponent,
+  } = options;
 
   try {
     const menuRoutes = await fetchMenuListAsync?.();
@@ -27,10 +40,18 @@ async function generateRoutesByBackend(
     for (const [key, value] of Object.entries(pageMap)) {
       normalizePageMap[normalizeViewPath(key)] = value;
     }
-
     // 后端响应的路由为list
     const treeRoutes = listToTree(menuRoutes);
-    const routes = convertRoutes(treeRoutes, layoutMap, normalizePageMap);
+    let routes = convertRoutes(treeRoutes, layoutMap, normalizePageMap);
+
+    if (forbiddenComponent) {
+      routes = mapTree(routes, (route) => {
+        if (menuHasVisibleWithForbidden(route)) {
+          route.component = forbiddenComponent;
+        }
+        return route;
+      });
+    }
 
     return routes;
   } catch (error) {

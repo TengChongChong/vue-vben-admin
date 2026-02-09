@@ -7,6 +7,7 @@
     "forgetPassword": "忘记密码",
     "sendingCode": "正在发送验证码",
     "codeSentTo": "验证码已发送至{0}"
+    "profile": "个人中心"
   },
   "dashboard": {
     "title": "概览",

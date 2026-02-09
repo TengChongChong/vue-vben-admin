@@ -338,7 +338,7 @@ onUnmounted(() => {
                 :is="FieldComponent"
                 ref="fieldComponentRef"
                 :class="{
-                  'border-destructive focus:border-destructive hover:border-destructive/80 focus:shadow-[0_0_0_2px_rgba(255,38,5,0.06)]':
+                  'border-destructive hover:border-destructive/80 focus:border-destructive focus:shadow-[0_0_0_2px_rgba(255,38,5,0.06)]':
                     isInValid,
                 }"
                 v-bind="createComponentProps(slotProps)"
@@ -366,7 +366,7 @@ onUnmounted(() => {
                     <CircleAlert
                       :class="
                         cn(
-                          'text-foreground/80 hover:text-foreground inline-flex size-5 cursor-pointer',
+                          'inline-flex size-5 cursor-pointer text-foreground/80 hover:text-foreground',
                         )
                       "
                     />

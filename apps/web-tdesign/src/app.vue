@@ -1,23 +1,24 @@
 <script lang="ts" setup>
 import type { GlobalConfigProvider } from 'tdesign-vue-next';
 
-import { onMounted } from 'vue';
+import { watch } from 'vue';
 
 import { usePreferences } from '@vben/preferences';
 
-import { merge } from 'lodash-es';
+import { merge } from 'es-toolkit/compat';
 import { ConfigProvider } from 'tdesign-vue-next';
 import zhConfig from 'tdesign-vue-next/es/locale/zh_CN';
 
 defineOptions({ name: 'App' });
 const { isDark } = usePreferences();
 
-onMounted(() => {
-  document.documentElement.setAttribute(
-    'theme-mode',
-    isDark.value ? 'dark' : '',
-  );
-});
+watch(
+  () => isDark.value,
+  (dark) => {
+    document.documentElement.setAttribute('theme-mode', dark ? 'dark' : '');
+  },
+  { immediate: true },
+);
 
 const customConfig: GlobalConfigProvider = {
   // 可以在此处定义更多自定义配置，具体可配置内容参看 API 文档

@@ -3,6 +3,8 @@ import type { NotificationItem } from '@vben/layouts';
 import type { TimeoutHandle } from '@vben/types';
 
 import type { SysMessage } from '#/api/sys/model/sys-message-model';
+import { computed, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 
 import { computed, onMounted, ref, watch } from 'vue';
 
@@ -38,6 +40,7 @@ import MessageInfoModal from '#/views/sys/message/components/info-modal.vue';
 
 const notifications = ref<NotificationItem[]>([]);
 
+const router = useRouter();
 const userStore = useUserStore();
 const authStore = useAuthStore();
 const accessStore = useAccessStore();
@@ -61,6 +64,13 @@ const showDot = computed(() =>
 dictStore.initDict(true);
 
 const menus = computed(() => [
+  {
+    handler: () => {
+      router.push({ name: 'Profile' });
+    },
+    icon: 'lucide:user',
+    text: $t('page.auth.profile'),
+  },
   {
     handler: () => {
       openWindow(VBEN_DOC_URL, {
