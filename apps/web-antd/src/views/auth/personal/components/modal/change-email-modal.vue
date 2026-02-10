@@ -6,7 +6,7 @@ import { useVbenModal, z } from '@vben/common-ui';
 import { message, Space } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { applicationBindingEmailApi } from '#/api/auth/sys-user-personal';
+import { applicationBindingEmailApi } from '#/api';
 import { ButtonClose, ButtonSave } from '#/components/button';
 
 const emit = defineEmits(['success']);

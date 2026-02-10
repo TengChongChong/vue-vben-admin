@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { SysMessage } from '#/api/sys/model/sys-message-model';
+import type { SysMessage } from '#/api';
 
 import { ref } from 'vue';
 
@@ -11,8 +11,7 @@ import { Button, Divider, Space } from 'ant-design-vue';
 import dayjs from 'dayjs';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { infoApi, selectReceiveApi } from '#/api/sys/sys-message';
-import { removeByIdsApi, setReadApi } from '#/api/sys/sys-message-detail';
+import { infoApi, removeByIdsApi, selectReceiveApi, setReadApi } from '#/api';
 import { ButtonRemove } from '#/components/button';
 import { LucideMailCheck } from '#/components/icons';
 

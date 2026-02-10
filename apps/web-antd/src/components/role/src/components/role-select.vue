@@ -1,16 +1,19 @@
 <script setup lang="ts">
-import type { SysRole } from '#/api/auth/model/sys-role-model';
+import type { SysRole } from '#/api';
 import type { RoleSelectProps } from '#/components/role/src/props';
 
-import { selectAllApi, selectRoleByDeptApi } from '#/api/auth/sys-role';
+import { onMounted, ref, watch } from 'vue';
+
+import { useUserStore } from '@vben/stores';
+import { cn } from '@vben/utils';
+
+import { Select, SelectOption } from 'ant-design-vue';
+
+import { selectAllSysRoleApi, selectRoleByDeptApi } from '#/api';
 import {
   convertArrayValue,
   convertSingleValue,
 } from '#/components/form/src/helper';
-import { useUserStore } from '@vben/stores';
-import { cn } from '@vben/utils';
-import { Select, SelectOption } from 'ant-design-vue';
-import { onMounted, ref, watch } from 'vue';
 
 defineOptions({
   inheritAttrs: false,
@@ -47,7 +50,7 @@ watch(
 
 function loadOptions() {
   if (props.type === 'all') {
-    selectAllApi().then((res) => {
+    selectAllSysRoleApi().then((res) => {
       roleList.value = res;
     });
   } else if (props.type === 'current') {

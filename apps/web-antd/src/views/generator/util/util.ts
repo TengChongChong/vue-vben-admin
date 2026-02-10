@@ -1,14 +1,14 @@
 import type { FormType } from '../types/generator.data';
 
-import type { SelectModel } from '#/api/base/model/select-model';
 import type {
   BasicsConfigModel,
   FieldConfig,
   ImportCellConfig,
+  SelectModel,
   TableCellConfig,
   TableField,
   TableInfo,
-} from '#/api/generator/model/generatorModel';
+} from '#/api';
 
 import { useDictStore } from '#/store';
 

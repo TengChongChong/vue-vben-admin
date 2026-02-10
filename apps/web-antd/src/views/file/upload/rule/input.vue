@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { FileUploadRuleVO } from '#/api/file/model/file-upload-rule-model';
+import type { FileUploadRuleVO } from '#/api';
 
 import { ref, unref } from 'vue';
 
@@ -16,10 +16,10 @@ import {
 
 import { useVbenForm } from '#/adapter/form';
 import {
-  addApi,
+  addFileUploadRuleApi,
   getFileStorageListApi,
-  saveApi,
-} from '#/api/file/file-upload-rule';
+  saveFileUploadRuleApi,
+} from '#/api';
 import { ButtonClose, ButtonSave } from '#/components/button';
 
 const emit = defineEmits(['success']);
@@ -188,7 +188,7 @@ async function handleSubmit(callback: (res: FileUploadRuleVO) => any) {
       return;
     }
     const values: FileUploadRuleVO = await baseFormApi.getValues();
-    const res = await saveApi({
+    const res = await saveFileUploadRuleApi({
       ...values,
       lowerLimit: unref(lowerLimit),
       upperLimit: unref(upperLimit),
@@ -214,7 +214,7 @@ async function handleSave() {
 async function handleSaveAndAdd() {
   await handleSubmit(() => {
     baseFormApi.resetForm();
-    addApi().then((res) => {
+    addFileUploadRuleApi().then((res) => {
       // lowerLimit.value = res.lowerLimit;
       // upperLimit.value = res.upperLimit;
       // maxWidth.value = res.maxWidth;

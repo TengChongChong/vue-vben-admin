@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { SysDept } from '#/api/auth/model/sys-dept-model';
+import type { SysDept } from '#/api';
 
 import { AccessControl } from '@vben/access';
 import { Page, useVbenDrawer } from '@vben/common-ui';
@@ -9,7 +9,12 @@ import { Page, useVbenDrawer } from '@vben/common-ui';
 import { Button, Divider, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { addApi, getApi, removeApi, selectApi } from '#/api/auth/sys-dept';
+import {
+  addSysDeptApi,
+  getSysDeptApi,
+  removeSysDeptApi,
+  selectSysDeptApi,
+} from '#/api';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
 import {
   LucideListOrdered,
@@ -70,7 +75,7 @@ const gridOptions: VxeGridProps<SysDept> = {
   proxyConfig: {
     ajax: {
       query: async (_, formValues) => {
-        return await selectApi({ ...formValues });
+        return await selectSysDeptApi({ ...formValues });
       },
     },
   },
@@ -90,7 +95,7 @@ const [BaseOrderDrawer, baseOrderDrawerApi] = useVbenDrawer({
 });
 
 function handleEdit(id: string) {
-  getApi(id).then((res) => {
+  getSysDeptApi(id).then((res) => {
     baseInputDrawerApi.setData(res);
     baseInputDrawerApi.open();
   });
@@ -98,7 +103,7 @@ function handleEdit(id: string) {
 
 function handleCreate(id: string) {
   baseInputDrawerApi.setData({ id });
-  addApi(id).then((res) => {
+  addSysDeptApi(id).then((res) => {
     baseInputDrawerApi.setData(res);
     baseInputDrawerApi.open();
   });
@@ -155,7 +160,7 @@ function handleCollapseAll() {
           </Button>
 
           <ButtonRemove
-            :api="removeApi"
+            :api="removeSysDeptApi"
             :auth-codes="['sys:dept:remove']"
             :grid-api="gridApi"
             @success="handleSearch"
@@ -181,7 +186,7 @@ function handleCollapseAll() {
         />
 
         <ButtonRemove
-          :api="removeApi"
+          :api="removeSysDeptApi"
           :auth-codes="['sys:dept:remove']"
           :ids="[row.id]"
           size="small"

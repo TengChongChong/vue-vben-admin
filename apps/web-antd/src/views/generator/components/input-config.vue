@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import type {
-  FieldConfig,
-  GeneratorConfig,
-} from '#/api/generator/model/generatorModel';
+import type { FieldConfig, GeneratorConfig } from '#/api';
 
 import { nextTick, onMounted, ref, unref, watch } from 'vue';
 

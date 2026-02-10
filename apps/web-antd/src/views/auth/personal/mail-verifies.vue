@@ -6,7 +6,7 @@ import { Page } from '@vben/common-ui';
 
 import { Button, Result, Spin } from 'ant-design-vue';
 
-import { verifiesEmailApi } from '#/api/auth/sys-mail-verification';
+import { verifiesEmailApi } from '#/api';
 
 const { currentRoute } = useRouter();
 

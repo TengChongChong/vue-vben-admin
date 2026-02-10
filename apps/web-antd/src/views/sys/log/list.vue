@@ -1,14 +1,14 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { SysLog } from '#/api/sys/model/sys-log-model';
+import type { SysLog } from '#/api';
 
 import { Page, useVbenDrawer } from '@vben/common-ui';
 
 import dayjs from 'dayjs';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { getApi, selectApi } from '#/api/sys/sys-log';
+import { getSysLogApi, selectSysLogApi } from '#/api';
 import { ButtonInfo } from '#/components/button';
 
 import { initColumns } from './data';
@@ -92,7 +92,7 @@ const gridOptions: VxeGridProps<SysLog> = {
     ajax: {
       query: async ({ page }, formValues) => {
         try {
-          return await selectApi({ ...formValues }, page);
+          return await selectSysLogApi({ ...formValues }, page);
         } catch (error) {
           console.error(error);
         }
@@ -112,7 +112,7 @@ const [BaseInfoDrawer, baseInfoDrawerApi] = useVbenDrawer({
 });
 
 async function handleInfo(id: string) {
-  getApi(id).then((res) => {
+  getSysLogApi(id).then((res) => {
     baseInfoDrawerApi.setData(res);
     baseInfoDrawerApi.open();
   });

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { TreeNode } from '#/api/base/model/tree-model';
+import type { TreeNode } from '#/api';
 
 import { h, ref } from 'vue';
 
@@ -11,8 +11,7 @@ import { Button, Card, message, Spin, Tag } from 'ant-design-vue';
 import dayjs from 'dayjs';
 
 import { useVbenForm, z } from '#/adapter/form';
-import { selectAllApi } from '#/api/auth/sys-menu';
-import { selectAllApi as selectAllDictTypeApi } from '#/api/sys/sys-dict-type';
+import { selectAllSysDictTypeApi, selectAllSysMenuApi } from '#/api';
 
 import DocButton from '../doc-button.vue';
 
@@ -70,7 +69,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
       // 对应组件的参数
       componentProps: {
         // 菜单接口
-        api: selectAllDictTypeApi,
+        api: selectAllSysDictTypeApi,
       },
       // 字段名
       fieldName: 'api',
@@ -114,7 +113,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
       label: 'ApiTreeSelect',
       component: 'ApiTreeSelect',
       componentProps: {
-        api: selectAllApi,
+        api: selectAllSysMenuApi,
         afterFetch: (res) => {
           const treeNodes: TreeNode[] = [] as TreeNode[];
           res.forEach((item) => {

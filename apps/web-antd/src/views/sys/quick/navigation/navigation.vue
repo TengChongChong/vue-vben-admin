@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SysQuickNavigation } from '#/api/sys/model/sys-quick-navigation-model';
+import type { SysQuickNavigation } from '#/api';
 
 import { useRouter } from 'vue-router';
 

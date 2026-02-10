@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { SysDataSource } from '#/api/sys/model/sys-data-source-model';
+import type { SysDataSource } from '#/api';
 
 import { ref } from 'vue';
 
@@ -8,7 +8,7 @@ import { useVbenModal, z } from '@vben/common-ui';
 import { message, Space } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { addApi, saveApi } from '#/api/sys/sys-data-source';
+import { addSysDataSourceApi, saveSysDataSourceApi } from '#/api';
 import { ButtonClose, ButtonSave } from '#/components/button';
 
 const emit = defineEmits(['success']);
@@ -104,7 +104,7 @@ async function handleSubmit(callback: (res: SysDataSource) => any) {
     if (!valid) {
       return;
     }
-    const res = await saveApi(await baseFormApi.getValues());
+    const res = await saveSysDataSourceApi(await baseFormApi.getValues());
     message.success('保存成功');
     emit('success');
     callback(res);
@@ -123,7 +123,7 @@ async function handleSave() {
 
 async function handleSaveAndAdd() {
   await handleSubmit(() => {
-    addApi().then((res) => {
+    addSysDataSourceApi().then((res) => {
       baseFormApi.resetForm();
       baseFormApi.setValues(res);
     });

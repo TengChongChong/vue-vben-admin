@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import type { SysMenu } from '#/api/auth/model/sys-menu-model';
-import type { TreeNode } from '#/api/base/model/tree-model';
+import type { SysMenu, TreeNode } from '#/api';
 
 import { ref } from 'vue';
 
@@ -10,7 +9,7 @@ import { listToTree } from '@vben/utils';
 import { Space, TypographyText } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { addApi, saveApi, selectAllApi } from '#/api/auth/sys-menu';
+import { addSysMenuApi, saveSysMenuApi, selectAllSysMenuApi } from '#/api';
 import { ButtonClose, ButtonSave } from '#/components/button';
 import { Divider } from '#/components/divider';
 import { componentKeys } from '#/router/routes';
@@ -51,7 +50,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
       label: '上级菜单',
       component: 'ApiTreeSelect',
       componentProps: {
-        api: selectAllApi,
+        api: selectAllSysMenuApi,
         afterFetch: (res) => {
           const treeNodes: TreeNode[] = [] as TreeNode[];
           res.forEach((item) => {
@@ -448,7 +447,7 @@ async function handleSubmit(callback: (res: SysMenu) => any) {
       return;
     }
     const values: SysMenu = await baseFormApi.getValues();
-    const res = await saveApi({
+    const res = await saveSysMenuApi({
       ...values,
       keepAlive: values.keepAlive ? '1' : '0',
       affixTab: values.affixTab ? '1' : '0',
@@ -475,7 +474,7 @@ async function handleSave() {
 async function handleSaveAndAdd() {
   await handleSubmit((res) => {
     baseFormApi.resetForm();
-    addApi(res.parentId).then((data) => {
+    addSysMenuApi(res.parentId).then((data) => {
       baseFormApi.setValues(data);
     });
   });

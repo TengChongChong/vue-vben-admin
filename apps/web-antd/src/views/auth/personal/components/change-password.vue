@@ -7,7 +7,7 @@ import { HashingFactory } from '@vben/utils';
 import { Card, Modal } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { changePasswordApi } from '#/api/auth/sys-user-personal';
+import { changePasswordApi } from '#/api';
 import { useAuthStore } from '#/store';
 
 const onSubmit = async (values: Record<string, any>) => {

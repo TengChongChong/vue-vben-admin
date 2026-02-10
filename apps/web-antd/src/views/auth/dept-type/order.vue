@@ -2,7 +2,7 @@
 import type { TreeProps } from 'ant-design-vue';
 import type { AntTreeNodeDropEvent } from 'ant-design-vue/lib/tree';
 
-import type { SysDeptType } from '#/api/auth/model/sys-dept-type-model';
+import type { SysDeptType } from '#/api';
 
 import { ref } from 'vue';
 
@@ -11,10 +11,7 @@ import { listToTree, treeToList } from '@vben/utils';
 
 import { Alert, Space, Tree } from 'ant-design-vue';
 
-import {
-  saveOrderApi,
-  selectAllDeptTypeApi,
-} from '#/api/auth/sys-dept-type.ts';
+import { saveSysDeptTypeOrderApi, selectAllDeptTypeApi } from '#/api';
 import { ButtonClose, ButtonSave } from '#/components/button';
 
 const emit = defineEmits(['success']);
@@ -39,7 +36,7 @@ async function handleSave() {
       });
     });
 
-    await saveOrderApi(params);
+    await saveSysDeptTypeOrderApi(params);
     emit('success');
     drawerApi.close();
   } catch (error) {

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { SysUserOnline } from '#/api/auth/model/sys-user-online-model';
+import type { SysUserOnline } from '#/api';
 
 import { AccessControl } from '@vben/access';
 import { Page, VbenAvatar } from '@vben/common-ui';
@@ -9,7 +9,7 @@ import { Page, VbenAvatar } from '@vben/common-ui';
 import { Button, Popconfirm } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { forceLoginApi, selectApi } from '#/api/auth/sys-user-online';
+import { forceLoginApi, selectSysUserOnlineApi } from '#/api';
 import { LucideLogOut } from '#/components/icons';
 
 import { initColumns } from './data';
@@ -50,7 +50,7 @@ const gridOptions: VxeGridProps<SysUserOnline> = {
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
-        return await selectApi({ ...formValues }, page);
+        return await selectSysUserOnlineApi({ ...formValues }, page);
       },
     },
   },

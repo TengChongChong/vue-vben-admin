@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { SampleGeneral } from '#/api/sample/model/sample-general-model';
+import type { SampleGeneral } from '#/api';
 
 import { ref } from 'vue';
 
@@ -8,7 +8,7 @@ import { useVbenDrawer, z } from '@vben/common-ui';
 import { message, Space } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { addApi, saveApi } from '#/api/sample/sample-general';
+import { addSampleGeneralApi, saveSampleGeneralApi } from '#/api';
 import { ButtonClose, ButtonSave } from '#/components/button';
 
 const emit = defineEmits(['success']);
@@ -94,7 +94,7 @@ async function handleSubmit(callback: (res: SampleGeneral) => any) {
       return;
     }
     const values: SampleGeneral = await baseFormApi.getValues();
-    const res = await saveApi(values);
+    const res = await saveSampleGeneralApi(values);
     message.success('保存成功');
     emit('success');
     callback(res);
@@ -113,7 +113,7 @@ async function handleSave() {
 async function handleSaveAndAdd() {
   await handleSubmit(() => {
     baseFormApi.resetForm();
-    addApi().then((res) => {
+    addSampleGeneralApi().then((res) => {
       baseFormApi.setValues(res);
     });
   });

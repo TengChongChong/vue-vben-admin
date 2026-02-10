@@ -5,7 +5,7 @@ import { h } from 'vue';
 
 import { message, Switch } from 'ant-design-vue';
 
-import { setStatusApi } from '#/api/auth/sys-dept';
+import { setSysDeptStatusApi } from '#/api';
 
 export const initColumns = (): VxeGridPropTypes.Columns => {
   return [
@@ -57,7 +57,7 @@ export const initColumns = (): VxeGridPropTypes.Columns => {
             onChange(checked: boolean) {
               row.pendingStatus = true;
               const newStatus = checked ? '1' : '2';
-              setStatusApi(row.id, newStatus, row.type)
+              setSysDeptStatusApi(row.id, newStatus, row.type)
                 .then(() => {
                   row.status = newStatus;
                   message.success(`操作成功`);

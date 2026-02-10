@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { DragVerifyActionType, MoveData } from '../typing';
 
-import type { CaptchaVO } from '#/api/sys/model/sys-captcha-model';
+import type { CaptchaVO } from '#/api';
 
 import { reactive, ref, unref, watch } from 'vue';
 
@@ -10,7 +10,7 @@ import { EncryptionFactory } from '@vben/utils';
 
 import { Button, Spin } from 'ant-design-vue';
 
-import { checkCaptchaApi, getCaptchaApi } from '#/api/sys/sys-captcha';
+import { checkCaptchaApi, getCaptchaApi } from '#/api';
 import { LucideRotateCcw } from '#/components/icons';
 
 const emit = defineEmits(['success', 'change', 'update:value']);

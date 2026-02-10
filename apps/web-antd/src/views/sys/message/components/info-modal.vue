@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { SysMessage } from '#/api/sys/model/sys-message-model';
+import type { SysMessage } from '#/api';
 
 import { ref } from 'vue';
 
@@ -71,6 +71,7 @@ const [Modal, modalApi] = useVbenModal({
 
   :deep(.message__content) {
     padding: 0 16px;
+
     .editor-media {
       display: inline-block;
     }
@@ -78,31 +79,42 @@ const [Modal, modalApi] = useVbenModal({
     h1 {
       @apply text-4xl;
       @apply font-bold;
+
       margin: 22px 0;
     }
+
     h2 {
       @apply text-3xl;
       @apply font-bold;
+
       margin: 20px 0;
     }
+
     h3 {
       @apply text-2xl;
       @apply font-bold;
+
       margin: 18px 0;
     }
+
     h4 {
       @apply text-xl;
       @apply font-semibold;
+
       margin: 16px 0;
     }
+
     h5 {
       @apply text-lg;
       @apply font-semibold;
+
       margin: 14px 0;
     }
+
     h6 {
       @apply text-sm;
       @apply font-semibold;
+
       margin: 12px 0;
     }
   }

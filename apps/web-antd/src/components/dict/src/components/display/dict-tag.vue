@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { SysDict } from '#/api/sys/model/sys-dict-model';
+import type { SysDict } from '#/api';
 import type { DictTagProps } from '#/components/dict/src/props';
 
 import { computed } from 'vue';

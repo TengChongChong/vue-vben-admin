@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { SchedulerJob } from '#/api/scheduler/model/scheduler-job-model';
+import type { SchedulerJob } from '#/api';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { selectApi } from '#/api/scheduler/scheduler-job-log';
+import { selectSchedulerJobLogApi } from '#/api';
 
 const props = defineProps<{ schedulerJobId: string }>();
 
@@ -39,7 +39,10 @@ const gridOptions: VxeGridProps<SchedulerJob> = {
   proxyConfig: {
     ajax: {
       query: async ({ page }) => {
-        return await selectApi({ schedulerJobId: props.schedulerJobId }, page);
+        return await selectSchedulerJobLogApi(
+          { schedulerJobId: props.schedulerJobId },
+          page,
+        );
       },
     },
   },

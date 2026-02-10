@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { WorkflowCategoryVO } from '#/api/workflow/model/workflow-category-model';
+import type { WorkflowCategoryVO } from '#/api';
 
 import { ref } from 'vue';
 
@@ -8,7 +8,7 @@ import { useVbenModal, z } from '@vben/common-ui';
 import { message, Space } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { addApi, saveApi } from '#/api/workflow/workflow-category';
+import { addWorkflowCategoryApi, saveWorkflowCategoryApi } from '#/api';
 import { ButtonClose, ButtonSave } from '#/components/button';
 
 const emit = defineEmits(['success']);
@@ -85,7 +85,7 @@ async function handleSubmit(callback: (res: WorkflowCategoryVO) => any) {
       return;
     }
     const values: WorkflowCategoryVO = await baseFormApi.getValues();
-    const res = await saveApi(values);
+    const res = await saveWorkflowCategoryApi(values);
     message.success('保存成功');
     emit('success');
     callback(res);
@@ -104,7 +104,7 @@ async function handleSave() {
 async function handleSaveAndAdd() {
   await handleSubmit(() => {
     baseFormApi.resetForm();
-    addApi().then((res) => {
+    addWorkflowCategoryApi().then((res) => {
       baseFormApi.setValues(res);
     });
   });

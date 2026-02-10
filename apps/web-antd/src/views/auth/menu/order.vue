@@ -2,17 +2,16 @@
 import type { TreeProps } from 'ant-design-vue';
 import type { AntTreeNodeDropEvent } from 'ant-design-vue/lib/tree';
 
-import type { SysMenu } from '#/api/sys/model/sys-menu-model';
+import type { SysMenu } from '#/api';
 
 import { ref } from 'vue';
 
 import { useVbenDrawer } from '@vben/common-ui';
 import { listToTree, treeToList } from '@vben/utils';
 
-import { Alert, Tree } from 'ant-design-vue';
-import { Space } from 'ant-design-vue';
+import { Alert, Space, Tree } from 'ant-design-vue';
 
-import { saveOrderApi, selectAllApi } from '#/api/auth/sys-menu';
+import { saveSysMenuOrderApi, selectAllSysMenuApi } from '#/api';
 import { ButtonClose, ButtonSave } from '#/components/button';
 
 const emit = defineEmits(['success']);
@@ -37,7 +36,7 @@ async function handleSave() {
       });
     });
 
-    await saveOrderApi(params);
+    await saveSysMenuOrderApi(params);
     emit('success');
     drawerApi.close();
   } catch (error) {
@@ -51,7 +50,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
   onOpenChange(isOpen: boolean) {
     if (isOpen) {
       drawerApi.setLoading(true);
-      selectAllApi().then((res) => {
+      selectAllSysMenuApi().then((res) => {
         treeData.value = listToTree(res);
       });
       drawerApi.setLoading(false);

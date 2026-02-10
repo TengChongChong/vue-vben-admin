@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { SysMenu } from '#/api/auth/model/sys-menu-model';
+import type { SysMenu } from '#/api';
 
 import { h, ref, unref } from 'vue';
 
@@ -12,7 +12,7 @@ import { MenuBadge } from '@vben-core/menu-ui';
 import { Button, Divider, message, Space, Switch } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { selectApi, setStatusApi } from '#/api/auth/sys-menu';
+import { selectSysMenuApi, setSysMenuStatusApi } from '#/api';
 import { IconifyIcon, LucideMinus, LucidePlus } from '#/components/icons';
 
 const expandRecords = ref([]);
@@ -107,7 +107,7 @@ const gridOptions: VxeGridProps<SysMenu> = {
             onChange(checked: boolean) {
               row.pendingStatus = true;
               const newStatus = checked ? '1' : '2';
-              setStatusApi(row.id, newStatus, row.type)
+              setSysMenuStatusApi(row.id, newStatus, row.type)
                 .then(() => {
                   row.status = newStatus;
                   message.success(`操作成功`);
@@ -158,7 +158,7 @@ const gridOptions: VxeGridProps<SysMenu> = {
       query: async ({ page }, formValues) => {
         // 保持展开状态
         await gridApi.grid.setTreeExpand(unref(expandRecords), true);
-        return await selectApi({ ...formValues }, page);
+        return await selectSysMenuApi({ ...formValues }, page);
       },
     },
   },

@@ -7,7 +7,7 @@ import { useAccess } from '@vben/access';
 
 import { message, Switch } from 'ant-design-vue';
 
-import { pauseApi, startApi } from '#/api/scheduler/scheduler-job';
+import { pauseSchedulerJobApi, startSchedulerJobApi } from '#/api';
 import { RoleEnum } from '#/enums/roleEnum';
 
 const { hasAccessByRoles } = useAccess();
@@ -71,7 +71,9 @@ export const initColumns = (): VxeGridPropTypes.Columns => {
             loading: row.pendingStatus,
             onChange: async (checked: boolean) => {
               row.pendingStatus = true;
-              await (checked ? startApi(row.id) : pauseApi(row.id));
+              await (checked
+                ? startSchedulerJobApi(row.id)
+                : pauseSchedulerJobApi(row.id));
 
               const newStatus = checked ? '1' : '2';
               row.status = newStatus;

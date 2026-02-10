@@ -2,7 +2,7 @@
 import type { TreeProps } from 'ant-design-vue';
 import type { AntTreeNodeDropEvent } from 'ant-design-vue/lib/tree';
 
-import type { WorkflowCategory } from '#/api/workflow/model/workflow-category-model';
+import type { WorkflowCategory } from '#/api';
 
 import { ref } from 'vue';
 
@@ -11,7 +11,10 @@ import { listToTree, treeToList } from '@vben/utils';
 
 import { Alert, Space, Tree } from 'ant-design-vue';
 
-import { saveOrderApi, selectAllApi } from '#/api/workflow/workflow-category';
+import {
+  saveWorkflowCategoryOrderApi,
+  selectAllWorkflowCategoryApi,
+} from '#/api';
 import { ButtonClose, ButtonSave } from '#/components/button';
 
 const emit = defineEmits(['success']);
@@ -36,7 +39,7 @@ async function handleSave() {
       });
     });
 
-    await saveOrderApi(params);
+    await saveWorkflowCategoryOrderApi(params);
     emit('success');
     drawerApi.close();
   } catch (error) {
@@ -50,7 +53,7 @@ const [Modal, drawerApi] = useVbenModal({
   onOpenChange(isOpen: boolean) {
     if (isOpen) {
       drawerApi.setLoading(true);
-      selectAllApi().then((res) => {
+      selectAllWorkflowCategoryApi().then((res) => {
         treeData.value = listToTree(res);
       });
       drawerApi.setLoading(false);

@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import type { FileInfo } from '#/api/file/model/file-info-model';
-import type { SysImportExcelTemplateDetailVO } from '#/api/sys/model/sys-import-excel-template-detail-model';
-import type { SysImportExcelTemplateVO } from '#/api/sys/model/sys-import-excel-template-model';
+import type {
+  FileInfo,
+  SysImportExcelTemplateDetailVO,
+  SysImportExcelTemplateVO,
+} from '#/api';
 
 import { computed, ref, watch } from 'vue';
 
@@ -15,7 +17,7 @@ import {
   Table,
 } from 'ant-design-vue';
 
-import { analysisApi, analysisExcelApi } from '#/api/sys/sys-import-excel-data';
+import { analysisApi, analysisExcelApi } from '#/api';
 import { LucideArrowRight } from '#/components/icons';
 import { isString } from '#/util/is';
 import { getCellIndex } from '#/views/sys/import/excel/data/util';

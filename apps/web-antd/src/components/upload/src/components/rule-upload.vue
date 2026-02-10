@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import type { UploadChangeParam } from 'ant-design-vue';
 
-import type { FileInfo } from '#/api/file/model/file-info-model';
-import type { FileUploadRuleVO } from '#/api/file/model/file-upload-rule-model';
+import type { FileInfo, FileUploadRuleVO } from '#/api';
 import type {
   RuleUploadProps,
   UploadFileModel,
@@ -15,7 +14,7 @@ import { useAccessStore } from '@vben/stores';
 import { Button, message, Tag, Upload, UploadDragger } from 'ant-design-vue';
 import { isArray, isString } from 'lodash-es';
 
-import { getByKeyApi } from '#/api/file/file-upload-rule';
+import { getFileUploadRuleByKeyApi } from '#/api';
 import { LucideHardDriveUpload, LucideUpload } from '#/components/icons';
 import {
   convertToFileInfo,
@@ -55,7 +54,7 @@ async function initUpload() {
   loaded.value = false;
   uploadRule = null;
   if (props.ruleKey) {
-    uploadRule = await getByKeyApi(props.ruleKey);
+    uploadRule = await getFileUploadRuleByKeyApi(props.ruleKey);
   }
   url.value = `${import.meta.env.VITE_GLOB_API_URL}/auth/file/upload/${props.ruleKey}`;
   loaded.value = true;

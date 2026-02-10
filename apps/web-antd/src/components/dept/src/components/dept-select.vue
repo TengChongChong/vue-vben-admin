@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import type { TreeNode, TreeNodeModel } from '#/api/base/model/tree-model';
+import type { TreeNode, TreeNodeModel } from '#/api';
 import type { DeptSelectProps } from '#/components/dept/src/props';
 
-import { selectAllApi } from '#/api/auth/sys-dept';
-import { ApiTreeSelect } from '#/components/form';
-import { listToTree } from '@vben/utils';
 import { onMounted, ref, watch } from 'vue';
+
+import { listToTree } from '@vben/utils';
+
+import { selectAllSysDeptApi } from '#/api';
+import { ApiTreeSelect } from '#/components/form';
 
 defineOptions({
   inheritAttrs: false,
@@ -53,7 +55,7 @@ function handleChange(value) {
     v-bind="$attrs"
     v-model:value="currentValue"
     :after-fetch="afterFetch"
-    :api="selectAllApi"
+    :api="selectAllSysDeptApi"
     :multiple="props.multiple"
     @change="handleChange"
   />

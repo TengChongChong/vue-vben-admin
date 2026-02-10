@@ -3,7 +3,7 @@ import type { CSSProperties } from 'vue';
 
 import type { FileUploadResponse } from '@vben/request';
 
-import type { FileInfo } from '#/api/file/model/file-info-model';
+import type { FileInfo } from '#/api';
 import type { CropperProps } from '#/components/cropper/src/props';
 
 import { computed, ref, unref, watch } from 'vue';

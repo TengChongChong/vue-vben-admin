@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import type { SelectModel } from '#/api/base/model/select-model';
-import type { TreeNode, TreeNodeModel } from '#/api/base/model/tree-model';
 import type {
   BasicsConfigModel,
+  SelectModel,
   TableInfo,
-} from '#/api/generator/model/generatorModel';
+  TreeNode,
+  TreeNodeModel,
+} from '#/api';
 
 import { onMounted, ref, unref } from 'vue';
 
@@ -14,13 +15,13 @@ import { listToTree } from '@vben/utils';
 import { Affix, Button, Input, Select } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { selectAllApi } from '#/api/auth/sys-menu';
 import {
   getTableInfoApi,
+  selectAllSysMenuApi,
   selectModulesApi,
+  selectOptionsApi,
   selectTableApi,
-} from '#/api/generator/generator';
-import { selectOptionsApi } from '#/api/sys/sys-data-source';
+} from '#/api';
 import { Divider } from '#/components/divider';
 import { LucideArrowRight } from '#/components/icons';
 import { isArray, isBlank } from '#/util/is';
@@ -312,7 +313,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
       label: '上级菜单',
       component: 'ApiTreeSelect',
       componentProps: {
-        api: selectAllApi,
+        api: selectAllSysMenuApi,
         afterFetch: (res: TreeNodeModel[]) => {
           const treeNodes: TreeNode[] = [];
           res.forEach((item) => {

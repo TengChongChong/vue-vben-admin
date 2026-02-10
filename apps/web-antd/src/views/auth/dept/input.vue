@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import type { SysDept } from '#/api/auth/model/sys-dept-model';
-import type { TreeNode } from '#/api/base/model/tree-model';
+import type { SysDept, TreeNode } from '#/api';
 
 import { ref } from 'vue';
 
@@ -10,8 +9,12 @@ import { listToTree } from '@vben/utils';
 import { Space } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { addApi, saveApi, selectAllApi } from '#/api/auth/sys-dept';
-import { selectAllDeptTypeApi } from '#/api/auth/sys-dept-type';
+import {
+  addSysDeptApi,
+  saveSysDeptApi,
+  selectAllDeptTypeApi,
+  selectAllSysDeptApi,
+} from '#/api';
 import { ButtonClose, ButtonSave } from '#/components/button';
 
 const emit = defineEmits(['success']);
@@ -28,7 +31,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
       label: '上级部门',
       component: 'ApiTreeSelect',
       componentProps: {
-        api: selectAllApi,
+        api: selectAllSysDeptApi,
         afterFetch: (res) => {
           const treeNodes: TreeNode[] = [] as TreeNode[];
           res.forEach((item) => {
@@ -140,7 +143,7 @@ async function handleSubmit(callback: (res: SysDept) => any) {
     if (!valid) {
       return;
     }
-    const res = await saveApi(await baseFormApi.getValues());
+    const res = await saveSysDeptApi(await baseFormApi.getValues());
     emit('success');
     callback(res);
   } catch (error) {
@@ -160,7 +163,7 @@ async function handleSaveAndAdd() {
   await handleSubmit((res) => {
     baseFormApi.resetForm();
     const { parentId, typeCode } = res;
-    addApi(parentId, typeCode).then((data) => {
+    addSysDeptApi(parentId, typeCode).then((data) => {
       baseFormApi.setValues(data);
     });
   });

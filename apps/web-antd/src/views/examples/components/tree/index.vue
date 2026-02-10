@@ -8,7 +8,7 @@ import { convertCheckedKeys, listToTree } from '@vben/utils';
 
 import { Col, Row } from 'ant-design-vue';
 
-import { selectAllApi } from '#/api/auth/sys-menu';
+import { selectAllSysMenuApi } from '#/api';
 import { BasicTree } from '#/components/tree';
 
 const menuTreeData = ref<TreeItem[]>([]);
@@ -19,7 +19,7 @@ const checkedKeys = ref<KeyType[]>([
 ]);
 
 onMounted(() => {
-  selectAllApi().then((res) => {
+  selectAllSysMenuApi().then((res) => {
     menuTreeData.value = listToTree(res);
 
     checkedKeys.value = convertCheckedKeys(

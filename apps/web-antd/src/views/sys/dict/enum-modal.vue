@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { GenerateDictEnumResponse } from '#/api/generator/model/generatorModel';
+import type { GenerateDictEnumResponse } from '#/api';
 
 import { ref } from 'vue';
 import Prism from 'vue-prism-component';

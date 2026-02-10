@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { SampleGeneral } from '#/api/sample/model/sample-general-model';
+import type { SampleGeneral } from '#/api';
 
 import { ref } from 'vue';
 
@@ -11,10 +11,10 @@ import { Divider, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
-  exportDataApi,
-  removeApi,
-  selectApi,
-} from '#/api/sample/sample-general';
+  exportSampleGeneralDataApi,
+  removeSampleGeneralApi,
+  selectSampleGeneralApi,
+} from '#/api';
 import { ButtonExport, ButtonImport, ButtonRemove } from '#/components/button';
 import { downloadFileById } from '#/util/download';
 
@@ -140,7 +140,7 @@ const gridOptions: VxeGridProps<SampleGeneral> = {
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
-        return await selectApi({ ...formValues }, page);
+        return await selectSampleGeneralApi({ ...formValues }, page);
       },
     },
   },
@@ -155,9 +155,11 @@ const [Grid, gridApi] = useVbenVxeGrid({
 const handelExportData = async () => {
   exportBtnLoading.value = true;
   try {
-    await exportDataApi(await gridApi.formApi.getValues()).then((id) => {
-      downloadFileById(id);
-    });
+    await exportSampleGeneralDataApi(await gridApi.formApi.getValues()).then(
+      (id) => {
+        downloadFileById(id);
+      },
+    );
   } catch (error) {
     console.error('导出数据错误', error);
   } finally {
@@ -172,7 +174,7 @@ const handelExportData = async () => {
       <template #toolbar-tools>
         <Space>
           <ButtonRemove
-            :api="removeApi"
+            :api="removeSampleGeneralApi"
             :auth-codes="['sample:general:remove']"
             :grid-api="gridApi"
             @success="handleSearch"
@@ -188,7 +190,7 @@ const handelExportData = async () => {
       </template>
       <template #action="{ row }">
         <ButtonRemove
-          :api="removeApi"
+          :api="removeSampleGeneralApi"
           :auth-codes="['sample:general:remove']"
           :ids="[row.id]"
           size="small"

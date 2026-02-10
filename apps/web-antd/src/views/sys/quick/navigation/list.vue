@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { SysQuickNavigation } from '#/api/sys/model/sys-quick-navigation-model';
+import type { SysQuickNavigation } from '#/api';
 
 import { Page, useVbenModal } from '@vben/common-ui';
 
@@ -9,12 +9,12 @@ import { Button, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
-  addApi,
-  getApi,
-  removeApi,
+  addSysQuickNavigationApi,
+  getSysQuickNavigationApi,
+  removeSysQuickNavigationApi,
   saveOrderNoApi,
-  selectApi,
-} from '#/api/sys/sys-quick-navigation';
+  selectSysQuickNavigationApi,
+} from '#/api';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
 import { LucideSave } from '#/components/icons';
 import Navigation from '#/views/sys/quick/navigation/navigation.vue';
@@ -68,7 +68,7 @@ const gridOptions: VxeGridProps<SysQuickNavigation> = {
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
-        return await selectApi({ ...formValues }, page);
+        return await selectSysQuickNavigationApi({ ...formValues }, page);
       },
     },
   },
@@ -85,13 +85,13 @@ const [BaseInputModal, baseInputModalApi] = useVbenModal({
   connectedComponent: InputModal,
 });
 async function handleCreate() {
-  addApi().then((res) => {
+  addSysQuickNavigationApi().then((res) => {
     baseInputModalApi.setData(res);
     baseInputModalApi.open();
   });
 }
 function handleEdit(id: string) {
-  getApi(id).then((res) => {
+  getSysQuickNavigationApi(id).then((res) => {
     baseInputModalApi.setData(res);
     baseInputModalApi.open();
   });
@@ -122,7 +122,7 @@ function handleSaveOrderNo() {
             保存排序
           </Button>
           <ButtonRemove
-            :api="removeApi"
+            :api="removeSysQuickNavigationApi"
             :auth-codes="['sys:quick:navigation:remove']"
             :grid-api="gridApi"
             @success="handleSearch"
@@ -142,7 +142,7 @@ function handleSaveOrderNo() {
           @click="handleEdit(row.id)"
         />
         <ButtonRemove
-          :api="removeApi"
+          :api="removeSysQuickNavigationApi"
           :auth-codes="['sys:quick:navigation:remove']"
           :ids="[row.id]"
           size="small"

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { SysConfig } from '#/api/sys/model/sys-config-model';
+import type { SysConfig } from '#/api';
 
 import { watch } from 'vue';
 
@@ -12,12 +12,12 @@ import { Button, Divider, Modal, Popconfirm, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
-  addApi,
-  getApi,
-  removeApi,
+  addSysUserApi,
+  getSysUserApi,
+  removeSysUserApi,
   resetPasswordApi,
-  selectApi,
-} from '#/api/auth/sys-user';
+  selectSysUserApi,
+} from '#/api';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
 import { LucideRotateCcw } from '#/components/icons';
 
@@ -66,7 +66,10 @@ const gridOptions: VxeGridProps<SysConfig> = {
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
-        return await selectApi({ ...formValues, deptId: props.deptId }, page);
+        return await selectSysUserApi(
+          { ...formValues, deptId: props.deptId },
+          page,
+        );
       },
     },
   },
@@ -83,14 +86,14 @@ const [BaseInputDrawer, baseInputDrawerApi] = useVbenDrawer({
 });
 
 async function handleCreate() {
-  addApi(props.deptId).then((res) => {
+  addSysUserApi(props.deptId).then((res) => {
     baseInputDrawerApi.setData(res);
     baseInputDrawerApi.open();
   });
 }
 
 function handleEdit(id: string) {
-  getApi(id).then((res) => {
+  getSysUserApi(id).then((res) => {
     baseInputDrawerApi.setData(res);
     baseInputDrawerApi.open();
   });
@@ -113,7 +116,7 @@ const handleResetPassword = (id: string) => {
         <ButtonAdd :auth-codes="['sys:user:save']" @click="handleCreate" />
 
         <ButtonRemove
-          :api="removeApi"
+          :api="removeSysUserApi"
           :auth-codes="['sys:user:remove']"
           :grid-api="gridApi"
           @success="handleSearch"
@@ -148,7 +151,7 @@ const handleResetPassword = (id: string) => {
       />
 
       <ButtonRemove
-        :api="removeApi"
+        :api="removeSysUserApi"
         :auth-codes="['sys:user:remove']"
         :ids="[row.id]"
         size="small"

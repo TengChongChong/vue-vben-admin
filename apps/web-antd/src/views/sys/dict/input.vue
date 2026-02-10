@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { SysDict } from '#/api/sys/model/sys-dict-model';
+import type { SysDict } from '#/api';
 
 import { ref } from 'vue';
 
@@ -9,8 +9,7 @@ import { message, Space } from 'ant-design-vue';
 import { isArray } from 'lodash-es';
 
 import { useVbenForm } from '#/adapter/form';
-import { addApi, saveApi } from '#/api/sys/sys-dict';
-import { selectAllApi } from '#/api/sys/sys-dict-type';
+import { addSysDictApi, saveSysDictApi, selectAllSysDictTypeApi } from '#/api';
 import { ButtonClose, ButtonSave } from '#/components/button';
 
 const emit = defineEmits(['success']);
@@ -53,7 +52,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
       label: '字典类型',
       component: 'ApiSelect',
       componentProps: {
-        api: selectAllApi,
+        api: selectAllSysDictTypeApi,
         onChange(value) {
           changeDictType(value);
         },
@@ -145,7 +144,7 @@ async function handleSubmit(callback: (res: SysDict) => any) {
       values && isArray(values.parentCode) && values.parentCode?.length
         ? values.parentCode[values.parentCode.length - 1]
         : '';
-    const res = await saveApi({
+    const res = await saveSysDictApi({
       ...values,
       parentCode,
     });
@@ -168,7 +167,7 @@ async function handleSave() {
 async function handleSaveAndAdd() {
   await handleSubmit((res) => {
     baseFormApi.resetForm();
-    addApi(res.parentId, res.dictType).then((res) => {
+    addSysDictApi(res.parentId, res.dictType).then((res) => {
       baseFormApi.setValues(res);
     });
   });

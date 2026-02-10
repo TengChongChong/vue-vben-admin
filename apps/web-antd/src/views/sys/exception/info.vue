@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { SysException } from '#/api/sys/model/sys-exception-model';
+import type { SysException } from '#/api';
 
 import { ref } from 'vue';
 

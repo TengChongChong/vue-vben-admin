@@ -1,13 +1,10 @@
 <script lang="ts" setup>
-import type { SelectModel } from '#/api/base/model/select-model';
-import type {
-  FieldConfig,
-  TableField,
-} from '#/api/generator/model/generatorModel';
+import type { FieldConfig, SelectModel, TableField } from '#/api';
 
-import { selectAllApi } from '#/api/sys/sys-dict-type';
-import { ButtonClose, ButtonSave } from '#/components/button';
+import { onMounted, ref, unref } from 'vue';
+
 import { useVbenModal } from '@vben/common-ui';
+
 import {
   Checkbox,
   Input,
@@ -19,7 +16,9 @@ import {
   TypographyLink,
 } from 'ant-design-vue';
 import { cloneDeep } from 'lodash-es';
-import { onMounted, ref, unref } from 'vue';
+
+import { selectAllSysDictTypeApi } from '#/api';
+import { ButtonClose, ButtonSave } from '#/components/button';
 
 const emit = defineEmits(['updateConfig']);
 
@@ -60,7 +59,7 @@ const columns = [
 ];
 
 onMounted(() => {
-  selectAllApi().then((res) => {
+  selectAllSysDictTypeApi().then((res) => {
     dictTypeArray.value = res;
   });
 });

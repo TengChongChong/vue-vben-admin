@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { SysMenu } from '#/api/auth/model/sys-menu-model';
+import type { SysMenu } from '#/api';
 
 import { AccessControl } from '@vben/access';
 import { Page, useVbenDrawer, useVbenModal } from '@vben/common-ui';
@@ -19,12 +19,12 @@ import {
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
-  addApi as addMenuApi,
-  getApi,
-  removeApi,
-  selectApi,
-} from '#/api/auth/sys-menu';
-import { addApi as addQuickNavigationApi } from '#/api/sys/sys-quick-navigation';
+  addSysMenuApi,
+  addSysQuickNavigationApi,
+  getSysMenuApi,
+  removeSysMenuApi,
+  selectSysMenuApi,
+} from '#/api';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
 import {
   IconifyIcon,
@@ -100,7 +100,7 @@ const gridOptions: VxeGridProps<SysMenu> = {
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
-        return await selectApi({ ...formValues }, page);
+        return await selectSysMenuApi({ ...formValues }, page);
       },
     },
   },
@@ -121,13 +121,13 @@ const [BaseQuickNavigationModal, baseQuickNavigationModalApi] = useVbenModal({
   connectedComponent: QuickNavigationModal,
 });
 async function handleCreate(id: string) {
-  addMenuApi(id).then((res) => {
+  addSysMenuApi(id).then((res) => {
     baseInputDrawerApi.setData(res);
     baseInputDrawerApi.open();
   });
 }
 function handleEdit(id: string) {
-  getApi(id).then((res) => {
+  getSysMenuApi(id).then((res) => {
     baseInputDrawerApi.setData(res);
     baseInputDrawerApi.open();
   });
@@ -135,7 +135,7 @@ function handleEdit(id: string) {
 
 function handleConvertQuickNavigation(sysMenu: SysMenu) {
   const { title, path, icon } = sysMenu;
-  addQuickNavigationApi().then((res) => {
+  addSysQuickNavigationApi().then((res) => {
     baseQuickNavigationModalApi.setData({
       ...res,
       name: title,
@@ -183,7 +183,7 @@ function handleCollapseAll() {
             折叠全部
           </Button>
           <ButtonRemove
-            :api="removeApi"
+            :api="removeSysMenuApi"
             :auth-codes="['sys:menu:remove']"
             :grid-api="gridApi"
             @success="handleSearch"
@@ -231,7 +231,7 @@ function handleCollapseAll() {
           @click="handleEdit(row.id)"
         />
         <ButtonRemove
-          :api="removeApi"
+          :api="removeSysMenuApi"
           :auth-codes="['sys:menu:remove']"
           :ids="[row.id]"
           size="small"

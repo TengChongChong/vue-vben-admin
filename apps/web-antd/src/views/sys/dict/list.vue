@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { SysDict } from '#/api/sys/model/sys-dict-model';
+import type { SysDict } from '#/api';
 
 import { ref, unref } from 'vue';
 
@@ -11,15 +11,15 @@ import { ColPage, useVbenModal } from '@vben/common-ui';
 import { Button, Divider, message, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { generateDictEnumApi } from '#/api/generator/generator';
 import {
-  addApi,
-  exportDataApi,
-  getApi,
-  refreshApi,
-  removeApi,
-  selectApi,
-} from '#/api/sys/sys-dict';
+  addSysDictApi,
+  exportSysDictDataApi,
+  generateDictEnumApi,
+  getSysDictApi,
+  refreshSysDictCacheApi,
+  removeSysDictApi,
+  selectSysDictApi,
+} from '#/api';
 import {
   ButtonAdd,
   ButtonEdit,
@@ -69,7 +69,7 @@ const gridOptions: VxeGridProps<SysDict> = {
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
-        return await selectApi(
+        return await selectSysDictApi(
           { ...formValues, dictType: unref(dictType) },
           page,
         );
@@ -103,21 +103,21 @@ async function handleCreate(id: string | undefined, type: string | undefined) {
     type = dictType.value;
   }
 
-  addApi(id, type).then((res) => {
+  addSysDictApi(id, type).then((res) => {
     baseInputModalApi.setData(res);
     baseInputModalApi.open();
   });
 }
 
 function handleEdit(id: string) {
-  getApi(id).then((res) => {
+  getSysDictApi(id).then((res) => {
     baseInputModalApi.setData(res);
     baseInputModalApi.open();
   });
 }
 
 function handleReloadCache() {
-  refreshApi().then(() => {
+  refreshSysDictCacheApi().then(() => {
     message.success('刷新成功');
   });
 }
@@ -137,7 +137,7 @@ function handleGeneratorEnum() {
 const handelExportData = async () => {
   exportBtnLoading.value = true;
   try {
-    await exportDataApi({
+    await exportSysDictDataApi({
       ...(await gridApi.formApi.getValues()),
       dictType: unref(dictType),
     }).then((id) => {
@@ -184,7 +184,7 @@ const handelExportData = async () => {
             </AccessControl>
 
             <ButtonRemove
-              :api="removeApi"
+              :api="removeSysDictApi"
               :auth-codes="['sys:dict:remove']"
               :grid-api="gridApi"
               @success="handleSearch"
@@ -212,7 +212,7 @@ const handelExportData = async () => {
           />
 
           <ButtonRemove
-            :api="removeApi"
+            :api="removeSysDictApi"
             :auth-codes="['sys:dict:remove']"
             :ids="[row.id]"
             size="small"

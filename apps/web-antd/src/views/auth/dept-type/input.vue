@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import type { SysDeptTypeVO } from '#/api/auth/model/sys-dept-type-model';
-import type { TreeNode } from '#/api/base/model/tree-model';
+import type { SysDeptTypeVO, TreeNode } from '#/api';
 
 import { ref } from 'vue';
 
@@ -11,10 +10,10 @@ import { Space } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
 import {
-  addApi,
-  saveApi,
+  addSysDeptTypeApi,
+  saveSysDeptTypeApi,
   selectAllDeptTypeApi,
-} from '#/api/auth/sys-dept-type.ts';
+} from '#/api';
 import { ButtonClose, ButtonSave } from '#/components/button';
 
 const emit = defineEmits(['success']);
@@ -121,7 +120,7 @@ async function handleSubmit(callback: (res: SysDeptTypeVO) => any) {
     if (!valid) {
       return;
     }
-    const res = await saveApi(await baseFormApi.getValues());
+    const res = await saveSysDeptTypeApi(await baseFormApi.getValues());
     emit('success');
     callback(res);
   } catch (error) {
@@ -141,7 +140,7 @@ async function handleSaveAndAdd() {
   await handleSubmit((res) => {
     baseFormApi.resetForm();
     const { parentId } = res;
-    addApi(parentId).then((data) => {
+    addSysDeptTypeApi(parentId).then((data) => {
       baseFormApi.setValues(data);
     });
   });

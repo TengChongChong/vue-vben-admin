@@ -7,8 +7,7 @@ import { $t } from '@vben/locales';
 import { message, Space } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { bindingPhoneNumberApi } from '#/api/auth/sys-user-personal';
-import { sendBindingPhoneNumberSmsApi } from '#/api/sys/sys-captcha';
+import { bindingPhoneNumberApi, sendBindingPhoneNumberSmsApi } from '#/api';
 import { ButtonClose, ButtonSave } from '#/components/button';
 
 const emit = defineEmits(['success']);

@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import type { TreeNode } from '#/api/base/model/tree-model';
-import type { WorkflowProcess } from '#/api/workflow/model/workflow-process-model';
+import type { TreeNode, WorkflowProcess } from '#/api';
 
 import { ref } from 'vue';
 
@@ -10,8 +9,7 @@ import { listToTree } from '@vben/utils';
 import { message, Space } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { selectAllApi } from '#/api/workflow/workflow-category';
-import { convertToModelApi } from '#/api/workflow/workflow-process';
+import { convertToModelApi, selectAllWorkflowCategoryApi } from '#/api';
 import { ButtonClose, ButtonSave } from '#/components/button';
 
 const emit = defineEmits(['success']);
@@ -33,7 +31,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
       label: '所属分类',
       component: 'ApiTreeSelect',
       componentProps: {
-        api: selectAllApi,
+        api: selectAllWorkflowCategoryApi,
         afterFetch: (res) => {
           const treeNodes: TreeNode[] = [] as TreeNode[];
           res.forEach((item) => {

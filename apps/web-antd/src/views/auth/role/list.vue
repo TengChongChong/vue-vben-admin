@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { SysRole } from '#/api/auth/model/sys-role-model';
+import type { SysRole } from '#/api';
 
 import { useAccess } from '@vben/access';
 import { Page, useVbenDrawer } from '@vben/common-ui';
@@ -10,12 +10,12 @@ import { Button, Divider, message, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
-  addApi,
-  getApi,
-  refreshApi,
-  removeApi,
-  selectApi,
-} from '#/api/auth/sys-role';
+  addSysRoleApi,
+  getSysRoleApi,
+  refreshSysRoleCacheApi,
+  removeSysRoleApi,
+  selectSysRoleApi,
+} from '#/api';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
 import { LucideRefreshCw } from '#/components/icons';
 import { RoleEnum } from '#/enums/roleEnum';
@@ -69,7 +69,7 @@ const gridOptions: VxeGridProps<SysRole> = {
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
-        return await selectApi({ ...formValues }, page);
+        return await selectSysRoleApi({ ...formValues }, page);
       },
     },
   },
@@ -86,21 +86,21 @@ const [BaseInputDrawer, baseInputDrawerApi] = useVbenDrawer({
 });
 
 async function handleCreate() {
-  addApi().then((res) => {
+  addSysRoleApi().then((res) => {
     baseInputDrawerApi.setData(res);
     baseInputDrawerApi.open();
   });
 }
 
 function handleEdit(id: string) {
-  getApi(id).then((res) => {
+  getSysRoleApi(id).then((res) => {
     baseInputDrawerApi.setData(res);
     baseInputDrawerApi.open();
   });
 }
 
 function handleReloadCache() {
-  refreshApi().then(() => {
+  refreshSysRoleCacheApi().then(() => {
     message.success('刷新成功');
   });
 }
@@ -114,7 +114,7 @@ function handleReloadCache() {
           <ButtonAdd :auth-codes="['sys:role:save']" @click="handleCreate" />
 
           <ButtonRemove
-            :api="removeApi"
+            :api="removeSysRoleApi"
             :auth-codes="['sys:role:remove']"
             :grid-api="gridApi"
             @success="handleSearch"
@@ -137,7 +137,7 @@ function handleReloadCache() {
         />
 
         <ButtonRemove
-          :api="removeApi"
+          :api="removeSysRoleApi"
           :auth-codes="['sys:role:remove']"
           :ids="[row.id]"
           size="small"

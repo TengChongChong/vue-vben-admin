@@ -4,7 +4,7 @@ import { useUserStore } from '@vben/stores';
 
 import { Button, Card, List, ListItem, ListItemMeta } from 'ant-design-vue';
 
-import { getUserInfoApi } from '#/api/auth/auth';
+import { getCurrentUserApi } from '#/api';
 import { LucideLink, LucideMail, LucideSmartphone } from '#/components/icons';
 
 import ChangeEmailModal from './modal/change-email-modal.vue';
@@ -30,7 +30,7 @@ function handleChangePhone() {
 
 async function handleSuccess() {
   const userStore = useUserStore();
-  const userInfo = await getUserInfoApi();
+  const userInfo = await getCurrentUserApi();
   userStore.setUserInfo(userInfo);
 }
 </script>

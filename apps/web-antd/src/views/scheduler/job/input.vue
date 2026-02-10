@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { SchedulerJob } from '#/api/scheduler/model/scheduler-job-model';
+import type { SchedulerJob } from '#/api';
 
 import { ref } from 'vue';
 
@@ -18,7 +18,7 @@ import {
 } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { addApi, saveApi } from '#/api/scheduler/scheduler-job';
+import { addSchedulerJobApi, saveSchedulerJobApi } from '#/api';
 import { ButtonClose, ButtonSave } from '#/components/button';
 import { LucideChevronDown } from '#/components/icons';
 import { RoleEnum } from '#/enums/roleEnum';
@@ -127,7 +127,7 @@ async function handleSubmit(callback: (res: SchedulerJob) => any) {
       return;
     }
     const values: SchedulerJob = await baseFormApi.getValues();
-    const res = await saveApi(values);
+    const res = await saveSchedulerJobApi(values);
     message.success('保存成功');
     emit('success');
     callback(res);
@@ -147,7 +147,7 @@ async function handleSave() {
 async function handleSaveAndAdd() {
   await handleSubmit(() => {
     baseFormApi.resetForm();
-    addApi().then((res) => {
+    addSchedulerJobApi().then((res) => {
       baseFormApi.setValues(res);
     });
   });

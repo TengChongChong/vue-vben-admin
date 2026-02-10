@@ -26,6 +26,7 @@
     "#/*": "./src/*"
   },
   "dependencies": {
+    "@vben/api": "workspace:*",
     "@tanstack/vue-query": "catalog:",
     "@vben-core/menu-ui": "workspace:*",
     "@vben/access": "workspace:*",

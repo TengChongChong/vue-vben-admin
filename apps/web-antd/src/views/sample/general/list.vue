@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { SampleGeneral } from '#/api/sample/model/sample-general-model';
+import type { SampleGeneral } from '#/api';
 
 import { ref } from 'vue';
 
@@ -11,12 +11,12 @@ import { Divider, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
-  addApi,
-  exportDataApi,
-  getApi,
-  removeApi,
-  selectApi,
-} from '#/api/sample/sample-general';
+  addSampleGeneralApi,
+  exportSampleGeneralDataApi,
+  getSampleGeneralApi,
+  removeSampleGeneralApi,
+  selectSampleGeneralApi,
+} from '#/api';
 import {
   ButtonAdd,
   ButtonEdit,
@@ -77,7 +77,7 @@ const gridOptions: VxeGridProps<SampleGeneral> = {
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
-        return await selectApi({ ...formValues }, page);
+        return await selectSampleGeneralApi({ ...formValues }, page);
       },
     },
   },
@@ -92,13 +92,13 @@ const [BaseInputDrawer, baseInputDrawerApi] = useVbenDrawer({
   connectedComponent: InputDrawer,
 });
 async function handleCreate() {
-  addApi().then((res) => {
+  addSampleGeneralApi().then((res) => {
     baseInputDrawerApi.setData(res);
     baseInputDrawerApi.open();
   });
 }
 function handleEdit(id: string) {
-  getApi(id).then((res) => {
+  getSampleGeneralApi(id).then((res) => {
     baseInputDrawerApi.setData(res);
     baseInputDrawerApi.open();
   });
@@ -106,9 +106,11 @@ function handleEdit(id: string) {
 const handelExportData = async () => {
   exportBtnLoading.value = true;
   try {
-    await exportDataApi(await gridApi.formApi.getValues()).then((id) => {
-      downloadFileById(id);
-    });
+    await exportSampleGeneralDataApi(await gridApi.formApi.getValues()).then(
+      (id) => {
+        downloadFileById(id);
+      },
+    );
   } catch (error) {
     console.error('导出数据错误', error);
   } finally {
@@ -127,7 +129,7 @@ const handelExportData = async () => {
             @click="handleCreate"
           />
           <ButtonRemove
-            :api="removeApi"
+            :api="removeSampleGeneralApi"
             :auth-codes="['sample:general:remove']"
             :grid-api="gridApi"
             @success="handleSearch"
@@ -149,7 +151,7 @@ const handelExportData = async () => {
           @click="handleEdit(row.id)"
         />
         <ButtonRemove
-          :api="removeApi"
+          :api="removeSampleGeneralApi"
           :auth-codes="['sample:general:remove']"
           :ids="[row.id]"
           size="small"

@@ -27,7 +27,12 @@ import {
   watch,
 } from 'vue';
 
-import { globalShareState, IconPicker, VCropper } from '@vben/common-ui';
+import {
+  ApiComponent,
+  globalShareState,
+  IconPicker,
+  VCropper,
+} from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
 import { $t } from '@vben/locales';
 import { isEmpty } from '@vben/utils';
@@ -46,7 +51,7 @@ import {
 } from '#/components/dict';
 import { Divider } from '#/components/divider';
 import { Editor } from '#/components/editor';
-import { ApiSelect, ApiTreeSelect } from '#/components/form';
+import { ApiTreeSelect } from '#/components/form';
 import { RoleSelect } from '#/components/role';
 import { SmsVerificationCode } from '#/components/sms-verification-code';
 import { RuleUpload } from '#/components/upload';
@@ -544,56 +549,33 @@ async function initComponentAdapter() {
     // 如果你的组件体积比较大，可以使用异步加载
     // Button: () =>
     // import('xxx').then((res) => res.Button),
-
-    // ApiCascader: withDefaultPlaceholder(ApiComponent, 'select', {
-    //   component: Cascader,
-    //   fieldNames: { label: 'label', value: 'value', children: 'children' },
-    //   loadingSlot: 'suffixIcon',
-    //   modelPropName: 'value',
-    //   visibleEvent: 'onVisibleChange',
-    // }),
-    // ApiSelect: withDefaultPlaceholder(ApiComponent, 'select', {
-    //   component: Select,
-    //   loadingSlot: 'suffixIcon',
-    //   modelPropName: 'value',
-    //   visibleEvent: 'onVisibleChange',
-    // }),
+    ApiCascader: withDefaultPlaceholder(ApiComponent, 'select', {
+      component: Cascader,
+      showSearch: true,
+      style: { width: '100%' },
+      fieldNames: { label: 'label', value: 'value', children: 'children' },
+      loadingSlot: 'suffixIcon',
+      modelPropName: 'value',
+      visibleEvent: 'onVisibleChange',
+    }),
+    ApiSelect: withDefaultPlaceholder(ApiComponent, 'select', {
+      component: Select,
+      showSearch: true,
+      style: { width: '100%' },
+      loadingSlot: 'suffixIcon',
+      modelPropName: 'value',
+      visibleEvent: 'onVisibleChange',
+    }),
     // ApiTreeSelect: withDefaultPlaceholder(ApiComponent, 'select', {
     //   component: TreeSelect,
+    //   showSearch: true,
+    //   style: { width: '100%' },
     //   fieldNames: { label: 'label', value: 'value', children: 'children' },
     //   loadingSlot: 'suffixIcon',
     //   modelPropName: 'value',
     //   optionsPropName: 'treeData',
     //   visibleEvent: 'onVisibleChange',
     // }),
-    // ApiSelect: withDefaultPlaceholder(
-    //   {
-    //     ...ApiComponent,
-    //     name: 'ApiSelect',
-    //   },
-    //   'select',
-    //   {
-    //     component: Select,
-    //     loadingSlot: 'suffixIcon',
-    //     visibleEvent: 'onDropdownVisibleChange',
-    //     modelPropName: 'value',
-    //   },
-    // ),
-    // ApiTreeSelect: withDefaultPlaceholder(
-    //   {
-    //     ...ApiComponent,
-    //     name: 'ApiTreeSelect',
-    //   },
-    //   'select',
-    //   {
-    //     component: TreeSelect,
-    //     fieldNames: { label: 'label', value: 'value', children: 'children' },
-    //     loadingSlot: 'suffixIcon',
-    //     modelPropName: 'value',
-    //     optionsPropName: 'treeData',
-    //     visibleEvent: 'onVisibleChange',
-    //   },
-    // ),
     AutoComplete,
     Cropper,
     Cascader,
@@ -633,7 +615,6 @@ async function initComponentAdapter() {
     Upload: withPreviewUpload(),
     //
     ApiTreeSelect: withDefaultPlaceholder(ApiTreeSelect, 'select'),
-    ApiSelect: withDefaultPlaceholder(ApiSelect, 'select'),
     DictCascader: withDefaultPlaceholder(DictCascader, 'select'),
     DictCheckbox,
     DictRadio,

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { SysDataSource } from '#/api/sys/model/sys-data-source-model';
+import type { SysDataSource } from '#/api';
 
 import { Page, useVbenModal } from '@vben/common-ui';
 
@@ -9,11 +9,11 @@ import { Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
-  addApi,
-  getApi,
-  removeApi,
-  selectApi,
-} from '#/api/sys/sys-data-source';
+  addSysDataSourceApi,
+  getSysDataSourceApi,
+  removeSysDataSourceApi,
+  selectSysDataSourceApi,
+} from '#/api';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
 
 import { initColumns } from './data';
@@ -55,7 +55,7 @@ const gridOptions: VxeGridProps<SysDataSource> = {
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
-        return await selectApi({ ...formValues }, page);
+        return await selectSysDataSourceApi({ ...formValues }, page);
       },
     },
   },
@@ -72,14 +72,14 @@ const [BaseInputModal, baseInputModalApi] = useVbenModal({
 });
 
 async function handleCreate() {
-  addApi().then((res) => {
+  addSysDataSourceApi().then((res) => {
     baseInputModalApi.setData(res);
     baseInputModalApi.open();
   });
 }
 
 function handleEdit(id: string) {
-  getApi(id).then((res) => {
+  getSysDataSourceApi(id).then((res) => {
     baseInputModalApi.setData(res);
     baseInputModalApi.open();
   });
@@ -97,7 +97,7 @@ function handleEdit(id: string) {
           />
 
           <ButtonRemove
-            :api="removeApi"
+            :api="removeSysDataSourceApi"
             :auth-codes="['sys:data:source:remove']"
             :grid-api="gridApi"
             @success="handleSearch"
@@ -113,7 +113,7 @@ function handleEdit(id: string) {
         />
 
         <ButtonRemove
-          :api="removeApi"
+          :api="removeSysDataSourceApi"
           :auth-codes="['sys:data:source:remove']"
           :ids="[row.id]"
           size="small"

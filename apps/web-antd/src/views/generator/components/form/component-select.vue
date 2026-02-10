@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SelectModel } from '#/api/base/model/select-model';
+import type { SelectModel } from '#/api';
 
 import { onMounted, ref, watch } from 'vue';
 

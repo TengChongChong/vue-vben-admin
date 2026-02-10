@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue';
 
 import { VbenAvatar } from '@vben/common-ui';
 
-import { selectUnreadCountApi } from '#/api/sys/sys-message';
+import { selectUnreadCountApi } from '#/api';
 import { router } from '#/router';
 
 interface Props {
@@ -46,7 +46,7 @@ function handleToMessage() {
       <h1 v-if="$slots.title" class="text-md font-semibold md:text-xl">
         <slot name="title"></slot>
       </h1>
-      <span v-if="$slots.description" class="text-foreground/80 mt-1">
+      <span v-if="$slots.description" class="mt-1 text-foreground/80">
         <slot name="description"></slot>
       </span>
     </div>

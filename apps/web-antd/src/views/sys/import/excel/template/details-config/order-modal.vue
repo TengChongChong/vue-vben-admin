@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { SysImportExcelTemplateDetail } from '#/api/sys/model/sys-import-excel-template-detail-model';
+import type { SysImportExcelTemplateDetail } from '#/api';
 
 import { nextTick, ref, unref } from 'vue';
 

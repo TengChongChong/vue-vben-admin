@@ -1,8 +1,10 @@
 <script lang="ts" setup>
-import type { SelectModel } from '#/api/base/model/select-model';
-import type { TableInfo } from '#/api/generator/model/generatorModel';
-import type { SysImportExcelTemplateDetail } from '#/api/sys/model/sys-import-excel-template-detail-model';
-import type { SysImportExcelTemplate } from '#/api/sys/model/sys-import-excel-template-model';
+import type {
+  SelectModel,
+  SysImportExcelTemplate,
+  SysImportExcelTemplateDetail,
+  TableInfo,
+} from '#/api';
 
 import { ref, unref } from 'vue';
 
@@ -22,12 +24,13 @@ import {
   TypographyLink,
 } from 'ant-design-vue';
 
-import { getTableInfoApi, selectTableApi } from '#/api/generator/generator';
-import { selectAllApi } from '#/api/sys/sys-dict-type';
 import {
+  getTableInfoApi,
   saveDataApi,
+  selectAllSysDictTypeApi,
   selectDetailsApi,
-} from '#/api/sys/sys-import-excel-template-detail';
+  selectTableApi,
+} from '#/api';
 import { ButtonClose, ButtonSave } from '#/components/button';
 import { LucideSave } from '#/components/icons';
 import { getDictType, toDictTypeArray } from '#/views/generator/util/util';
@@ -136,7 +139,7 @@ async function initCommonData() {
     tableArray.value = res;
   });
 
-  dictTypeArray.value = await selectAllApi();
+  dictTypeArray.value = await selectAllSysDictTypeApi();
   tableInfo = await getTableInfoApi(
     'master',
     sysImportExcelTemplate.value.importTable!,

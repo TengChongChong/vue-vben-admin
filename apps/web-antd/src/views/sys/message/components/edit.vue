@@ -4,7 +4,7 @@ import { onMounted, ref, watch } from 'vue';
 import { Card, message, Space } from 'ant-design-vue';
 
 import { useVbenForm, z } from '#/adapter/form';
-import { addApi, getApi, saveApi } from '#/api/sys/sys-message';
+import { addSysMessageApi, getSysMessageApi, saveSysMessageApi } from '#/api';
 import { ButtonSave } from '#/components/button';
 
 const props = defineProps<{ id?: string }>();
@@ -73,7 +73,9 @@ watch(
  * 初始化数据
  */
 async function initPage() {
-  const data = await (props.id ? getApi(props.id) : addApi());
+  const data = await (props.id
+    ? getSysMessageApi(props.id)
+    : addSysMessageApi());
   baseFormApi.setValues({ ...data });
 }
 
@@ -84,7 +86,7 @@ async function handleSubmit() {
     if (!valid) {
       return;
     }
-    await saveApi(await baseFormApi.getValues());
+    await saveSysMessageApi(await baseFormApi.getValues());
     message.success('保存成功');
   } catch (error) {
     console.error('保存失败', error);

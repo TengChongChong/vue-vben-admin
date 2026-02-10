@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { GeneratorConfig } from '#/api/generator/model/generatorModel';
+import type { GeneratorConfig } from '#/api';
 
 import { ref, watch } from 'vue';
 
@@ -14,7 +14,7 @@ import {
 } from 'ant-design-vue';
 import { cloneDeep } from 'lodash-es';
 
-import { generateApi } from '#/api/generator/generator';
+import { generateApi } from '#/api';
 import { Divider } from '#/components/divider';
 import { LucideArrowLeft, LucideCheck } from '#/components/icons';
 
@@ -55,7 +55,7 @@ function initGeneratorFileArray() {
     return null;
   }
   basicsConfig.genFile.forEach((item) => {
-    const packagePath = basicsConfig.packagePath?.replace(/\./g, '/');
+    const packagePath = basicsConfig.packagePath?.replaceAll('.', '/');
     const backEndPathBasePath = `${basicsConfig.backEndPath}/src/main/java/`;
     switch (item) {
       case GenFile.API_TS: {

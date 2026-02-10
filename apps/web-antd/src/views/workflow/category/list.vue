@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { WorkflowCategory } from '#/api/workflow/model/workflow-category-model';
+import type { WorkflowCategory } from '#/api';
 
 import { Page, useVbenModal } from '@vben/common-ui';
 
@@ -9,11 +9,11 @@ import { Button, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
-  addApi,
-  getApi,
-  removeApi,
-  selectApi,
-} from '#/api/workflow/workflow-category';
+  addWorkflowCategoryApi,
+  getWorkflowCategoryApi,
+  removeWorkflowCategoryApi,
+  selectWorkflowCategoryApi,
+} from '#/api';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
 import { LucideListOrdered, LucideMinus, LucidePlus } from '#/components/icons';
 
@@ -71,7 +71,7 @@ const gridOptions: VxeGridProps<WorkflowCategory> = {
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
-        return await selectApi({ ...formValues }, page);
+        return await selectWorkflowCategoryApi({ ...formValues }, page);
       },
     },
   },
@@ -89,13 +89,13 @@ const [BaseOrderModal, baseOrderModalApi] = useVbenModal({
   connectedComponent: OrderModal,
 });
 async function handleCreate(id: string) {
-  addApi(id).then((res) => {
+  addWorkflowCategoryApi(id).then((res) => {
     baseInputModalApi.setData(res);
     baseInputModalApi.open();
   });
 }
 function handleEdit(id: string) {
-  getApi(id).then((res) => {
+  getWorkflowCategoryApi(id).then((res) => {
     baseInputModalApi.setData(res);
     baseInputModalApi.open();
   });
@@ -141,7 +141,7 @@ function handleCollapseAll() {
             折叠全部
           </Button>
           <ButtonRemove
-            :api="removeApi"
+            :api="removeWorkflowCategoryApi"
             :auth-codes="['workflow:category:remove']"
             :grid-api="gridApi"
             @success="handleSearch"
@@ -163,7 +163,7 @@ function handleCollapseAll() {
           @click="handleEdit(row.id)"
         />
         <ButtonRemove
-          :api="removeApi"
+          :api="removeWorkflowCategoryApi"
           :auth-codes="['workflow:category:remove']"
           :ids="[row.id]"
           size="small"

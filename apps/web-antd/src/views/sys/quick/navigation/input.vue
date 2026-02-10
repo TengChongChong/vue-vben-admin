@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { SysQuickNavigationVO } from '#/api/sys/model/sys-quick-navigation-model';
+import type { SysQuickNavigationVO } from '#/api';
 
 import { ref } from 'vue';
 
@@ -8,7 +8,7 @@ import { useVbenModal, z } from '@vben/common-ui';
 import { message, Space } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { addApi, saveApi } from '#/api/sys/sys-quick-navigation';
+import { addSysQuickNavigationApi, saveSysQuickNavigationApi } from '#/api';
 import { ButtonClose, ButtonSave } from '#/components/button';
 
 const emit = defineEmits(['success']);
@@ -84,7 +84,7 @@ async function handleSubmit(callback: (res: SysQuickNavigationVO) => any) {
       return;
     }
     const values: SysQuickNavigationVO = await baseFormApi.getValues();
-    const res = await saveApi(values);
+    const res = await saveSysQuickNavigationApi(values);
     message.success('保存成功');
     emit('success');
     callback(res);
@@ -103,7 +103,7 @@ async function handleSave() {
 async function handleSaveAndAdd() {
   await handleSubmit(() => {
     baseFormApi.resetForm();
-    addApi().then((res) => {
+    addSysQuickNavigationApi().then((res) => {
       baseFormApi.setValues(res);
     });
   });

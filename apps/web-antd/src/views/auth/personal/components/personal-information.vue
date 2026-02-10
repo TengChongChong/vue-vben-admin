@@ -6,8 +6,7 @@ import { useUserStore } from '@vben/stores';
 import { Card, message, Space } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { getUserInfoApi } from '#/api/auth/auth';
-import { currentUserApi, saveUserInfoApi } from '#/api/auth/sys-user-personal';
+import { currentUserApi, getUserInfoApi, saveUserInfoApi } from '#/api';
 import { ButtonSave } from '#/components/button';
 
 const saveBtnLoading = ref(false);

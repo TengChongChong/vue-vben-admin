@@ -1,14 +1,14 @@
 <script lang="ts" setup>
 import type { VbenFormSchema } from '@vben/common-ui';
 
-import type { LoginAccountParams } from '#/api/auth/model/auth-model';
+import type { LoginAccountParams } from '#/api';
 
 import { computed } from 'vue';
 
 import { AuthenticationLogin, useVbenModal, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 
-import { getByKeyApi } from '#/api/sys/sys-config';
+import { getSysConfigByKeyApi } from '#/api';
 import { SlideVerifyModal } from '#/components/verify';
 import { useAuthStore } from '#/store';
 
@@ -16,7 +16,7 @@ defineOptions({ name: 'Login' });
 
 // 是否开启登录验证码
 let loginVerificationCode = true;
-getByKeyApi('loginVerificationCode').then((res) => {
+getSysConfigByKeyApi('loginVerificationCode').then((res) => {
   if (res && res.value) {
     loginVerificationCode = res.value === 'true';
   }

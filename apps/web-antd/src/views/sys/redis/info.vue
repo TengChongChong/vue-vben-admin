@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { SysRedisVO } from '#/api/sys/model/sys-redis-model';
+import type { SysRedisVO } from '#/api';
 
 import { ref } from 'vue';
 
@@ -13,7 +13,7 @@ import {
   Space,
 } from 'ant-design-vue';
 
-import { removeApi } from '#/api/sys/sys-redis';
+import { removeSysRedisApi } from '#/api';
 import { ButtonClose } from '#/components/button';
 import { LucideTrash } from '#/components/icons';
 
@@ -26,7 +26,7 @@ const sysRedis = ref<SysRedisVO>();
 async function handleRemove() {
   try {
     removeBtnLoading.value = true;
-    await removeApi(sysRedis.value?.key);
+    await removeSysRedisApi(sysRedis.value?.key);
     message.success('删除成功');
     emit('success');
     modalApi.close();

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { SysConfig } from '#/api/sys/model/sys-config-model';
+import type { SysConfig } from '#/api';
 
 import { ref } from 'vue';
 
@@ -9,7 +9,7 @@ import { useVbenModal, z } from '@vben/common-ui';
 import { message, Space } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { saveApi } from '#/api/sys/sys-config';
+import { saveSysConfigApi } from '#/api';
 import { ButtonClose, ButtonSave } from '#/components/button';
 import { RoleEnum } from '#/enums/roleEnum';
 
@@ -144,7 +144,7 @@ async function handleSubmit(callback: (res: SysConfig) => any) {
     if (!valid) {
       return;
     }
-    const res = await saveApi(await baseFormApi.getValues());
+    const res = await saveSysConfigApi(await baseFormApi.getValues());
     message.success('保存成功');
     emit('success');
     callback(res);

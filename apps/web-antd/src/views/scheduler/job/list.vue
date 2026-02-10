@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { SchedulerJob } from '#/api/scheduler/model/scheduler-job-model';
+import type { SchedulerJob } from '#/api';
 
 import { AccessControl } from '@vben/access';
 import { Page, useVbenDrawer, useVbenModal } from '@vben/common-ui';
@@ -19,14 +19,14 @@ import {
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
-  addApi,
-  getApi,
-  immediateExecutionApi,
-  pauseAllApi,
-  removeApi,
-  selectApi,
-  startAllApi,
-} from '#/api/scheduler/scheduler-job';
+  addSchedulerJobApi,
+  getSchedulerJobApi,
+  immediateExecutionSchedulerJobApi,
+  pauseAllSchedulerJobApi,
+  removeSchedulerJobApi,
+  selectSchedulerJobApi,
+  startAllSchedulerJobApi,
+} from '#/api';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
 import {
   LucideChevronDown,
@@ -75,7 +75,7 @@ const gridOptions: VxeGridProps<SchedulerJob> = {
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
-        return await selectApi({ ...formValues }, page);
+        return await selectSchedulerJobApi({ ...formValues }, page);
       },
     },
   },
@@ -96,35 +96,35 @@ const [BaseInputDrawer, baseInputDrawerApi] = useVbenDrawer({
 });
 
 async function handleCreate() {
-  addApi().then((res) => {
+  addSchedulerJobApi().then((res) => {
     baseInputDrawerApi.setData(res);
     baseInputDrawerApi.open();
   });
 }
 
 function handleEdit(id: string) {
-  getApi(id).then((res) => {
+  getSchedulerJobApi(id).then((res) => {
     baseInputDrawerApi.setData(res);
     baseInputDrawerApi.open();
   });
 }
 
 const handleImmediateExecution = (id) => {
-  immediateExecutionApi(id).then(() => {
+  immediateExecutionSchedulerJobApi(id).then(() => {
     message.success('执行成功');
     handleSearch();
   });
 };
 
 const handleStartAll = () => {
-  startAllApi().then(() => {
+  startAllSchedulerJobApi().then(() => {
     message.success('执行成功');
     handleSearch();
   });
 };
 
 const handlePauseAll = () => {
-  pauseAllApi().then(() => {
+  pauseAllSchedulerJobApi().then(() => {
     message.success('执行成功');
     handleSearch();
   });
@@ -147,7 +147,7 @@ async function handleOpenRunLogModal(id: string) {
           />
 
           <ButtonRemove
-            :api="removeApi"
+            :api="removeSchedulerJobApi"
             :auth-codes="['scheduler:job:remove']"
             :grid-api="gridApi"
             @success="handleSearch"
@@ -192,7 +192,7 @@ async function handleOpenRunLogModal(id: string) {
         />
 
         <ButtonRemove
-          :api="removeApi"
+          :api="removeSchedulerJobApi"
           :auth-codes="['scheduler:job:remove']"
           :ids="[row.id]"
           size="small"

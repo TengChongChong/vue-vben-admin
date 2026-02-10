@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { WorkflowModelVO } from '#/api/workflow/model/workflow-model-model';
+import type { WorkflowModelVO } from '#/api';
 
 import { watch } from 'vue';
 
@@ -21,10 +21,10 @@ import {
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
   deploymentProcessApi,
-  getApi,
-  removeApi,
-  selectApi,
-} from '#/api/workflow/workflow-model';
+  getWorkflowModelApi,
+  removeWorkflowModelApi,
+  selectWorkflowModelApi,
+} from '#/api';
 import { ButtonAdd, ButtonRemove } from '#/components/button';
 import {
   LucideCheck,
@@ -72,7 +72,7 @@ const gridOptions: VxeGridProps<WorkflowModelVO> = {
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
-        return await selectApi(
+        return await selectWorkflowModelApi(
           { ...formValues, category: props.categoryId },
           page,
         );
@@ -104,7 +104,7 @@ async function handleCreate() {
 }
 
 function handleEdit(id: string) {
-  getApi(id).then((res) => {
+  getWorkflowModelApi(id).then((res) => {
     baseInputModalApi.setData(res);
     baseInputModalApi.open();
   });
@@ -133,7 +133,7 @@ function handleDeploymentProcess(id: string) {
         />
 
         <ButtonRemove
-          :api="removeApi"
+          :api="removeWorkflowModelApi"
           :auth-codes="['workflow:model:remove']"
           :grid-api="gridApi"
           @success="handleSearch"
@@ -153,7 +153,7 @@ function handleDeploymentProcess(id: string) {
       </AccessControl>
 
       <ButtonRemove
-        :api="removeApi"
+        :api="removeWorkflowModelApi"
         :auth-codes="['workflow:model:remove']"
         :ids="[row.id]"
         size="small"

@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import type { FileInfo } from '#/api/file/model/file-info-model';
-import type { SysImportExcelTemplateVO } from '#/api/sys/model/sys-import-excel-template-model';
+import type { FileInfo, SysImportExcelTemplateVO } from '#/api';
 
 import { ref } from 'vue';
 
 import { Button, message } from 'ant-design-vue';
 
-import { downloadTemplateApi } from '#/api/sys/sys-import-excel-template';
+import { downloadTemplateApi } from '#/api';
 import { LucideArrowRight } from '#/components/icons';
 import { RuleUpload } from '#/components/upload';
 import { downloadFileById } from '#/util/download';

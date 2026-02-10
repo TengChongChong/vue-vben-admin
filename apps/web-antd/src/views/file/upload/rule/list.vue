@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { FileUploadRule } from '#/api/file/model/file-upload-rule-model';
+import type { FileUploadRule } from '#/api';
 
 import { Page, useVbenDrawer } from '@vben/common-ui';
 
@@ -9,12 +9,12 @@ import { Divider, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
-  addApi,
-  getApi,
+  addFileUploadRuleApi,
   getFileStorageListApi,
-  removeApi,
-  selectApi,
-} from '#/api/file/file-upload-rule';
+  getFileUploadRuleApi,
+  removeFileUploadRuleApi,
+  selectFileUploadRuleApi,
+} from '#/api';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
 import { formatSize } from '#/util/format';
 
@@ -87,7 +87,7 @@ const gridOptions: VxeGridProps<FileUploadRule> = {
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
-        return await selectApi({ ...formValues }, page);
+        return await selectFileUploadRuleApi({ ...formValues }, page);
       },
     },
   },
@@ -104,7 +104,7 @@ const [BaseInputDrawer, baseInputDrawerApi] = useVbenDrawer({
 });
 
 async function handleCreate() {
-  addApi().then(async (res) => {
+  addFileUploadRuleApi().then(async (res) => {
     const formValues = await gridApi.formApi.getValues();
     baseInputDrawerApi.setData({
       ...res,
@@ -115,7 +115,7 @@ async function handleCreate() {
 }
 
 function handleEdit(id: string) {
-  getApi(id).then((res) => {
+  getFileUploadRuleApi(id).then((res) => {
     baseInputDrawerApi.setData(res);
     baseInputDrawerApi.open();
   });
@@ -133,7 +133,7 @@ function handleEdit(id: string) {
           />
 
           <ButtonRemove
-            :api="removeApi"
+            :api="removeFileUploadRuleApi"
             :auth-codes="['file:upload:rule:remove']"
             :grid-api="gridApi"
             @success="handleSearch"
@@ -155,7 +155,7 @@ function handleEdit(id: string) {
         />
 
         <ButtonRemove
-          :api="removeApi"
+          :api="removeFileUploadRuleApi"
           :auth-codes="['file:upload:rule:remove']"
           :ids="[row.id]"
           size="small"

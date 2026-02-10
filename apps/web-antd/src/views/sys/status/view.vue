@@ -9,7 +9,7 @@ import type {
   OsInfo,
   RuntimeInfo,
   UserInfo,
-} from '#/api/sys/model/sys-status-model';
+} from '#/api';
 
 import { onMounted, ref } from 'vue';
 
@@ -26,8 +26,8 @@ import {
   getJvmSpecInfoApi,
   getOsInfoApi,
   getRuntimeInfoApi,
-  getUserInfoApi,
-} from '#/api/sys/sys-status';
+  getSysStatusUserInfoApi,
+} from '#/api';
 import { formatSize } from '#/util/format';
 
 const jvmSpecInfo = ref<JvmSpecInfo>();
@@ -55,7 +55,7 @@ async function loadData() {
   javaInfo.value = await getJavaInfoApi();
   javaRuntimeInfo.value = await getJavaRuntimeInfoApi();
   osInfo.value = await getOsInfoApi();
-  userInfo.value = await getUserInfoApi();
+  userInfo.value = await getSysStatusUserInfoApi();
   hostInfo.value = await getHostInfoApi();
   runtimeInfo.value = await getRuntimeInfoApi();
 }

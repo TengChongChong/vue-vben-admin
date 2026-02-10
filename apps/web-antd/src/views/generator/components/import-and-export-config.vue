@@ -4,7 +4,7 @@ import type {
   GeneratorConfig,
   ImportCellConfig,
   TableCellConfig,
-} from '#/api/generator/model/generatorModel';
+} from '#/api';
 
 import { computed, nextTick, onMounted, ref, unref, watch } from 'vue';
 

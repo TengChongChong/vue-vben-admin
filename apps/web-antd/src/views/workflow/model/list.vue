@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import type { TreeDataItem } from 'ant-design-vue/es/tree/Tree';
 
-import type { TreeNode } from '#/api/base/model/tree-model';
+import type { TreeNode } from '#/api';
 
 import { ref } from 'vue';
 
 import { ColPage } from '@vben/common-ui';
 import { listToTree } from '@vben/utils';
 
-import { selectAllApi } from '#/api/workflow/workflow-category';
+import { selectAllWorkflowCategoryApi } from '#/api';
 import { BasicTree } from '#/components/tree';
 
 import ModelList from './components/list.vue';
@@ -17,7 +17,7 @@ const treeData = ref<TreeDataItem[]>([]);
 const selectedKeys = ref<string[]>([]);
 
 function initData() {
-  selectAllApi().then((res) => {
+  selectAllWorkflowCategoryApi().then((res) => {
     const treeNodes: TreeNode[] = [] as TreeNode[];
     res.forEach((item) => {
       const { id, parentId, title } = item;

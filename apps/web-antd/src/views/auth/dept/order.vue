@@ -2,7 +2,7 @@
 import type { TreeProps } from 'ant-design-vue';
 import type { AntTreeNodeDropEvent } from 'ant-design-vue/lib/tree';
 
-import type { SysDept } from '#/api/auth/model/sys-dept-model';
+import type { SysDept } from '#/api';
 
 import { ref } from 'vue';
 
@@ -11,7 +11,7 @@ import { listToTree, treeToList } from '@vben/utils';
 
 import { Alert, Space, Tree } from 'ant-design-vue';
 
-import { saveOrderApi, selectAllApi } from '#/api/auth/sys-dept';
+import { saveSysDeptOrderApi, selectAllSysDeptApi } from '#/api';
 import { ButtonClose, ButtonSave } from '#/components/button';
 
 const emit = defineEmits(['success']);
@@ -36,7 +36,7 @@ async function handleSave() {
       });
     });
 
-    await saveOrderApi(params);
+    await saveSysDeptOrderApi(params);
     emit('success');
     drawerApi.close();
   } catch (error) {
@@ -50,7 +50,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
   onOpenChange(isOpen: boolean) {
     if (isOpen) {
       drawerApi.setLoading(true);
-      selectAllApi().then((res) => {
+      selectAllSysDeptApi().then((res) => {
         treeData.value = listToTree(res);
       });
       drawerApi.setLoading(false);

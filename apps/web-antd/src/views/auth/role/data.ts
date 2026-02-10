@@ -7,7 +7,7 @@ import { useAccess } from '@vben/access';
 
 import { message, Switch } from 'ant-design-vue';
 
-import { setStatusApi } from '#/api/auth/sys-role';
+import { setSysRoleStatusApi } from '#/api';
 import { RoleEnum } from '#/enums/roleEnum';
 
 const { hasAccessByRoles } = useAccess();
@@ -66,7 +66,7 @@ export const initColumns = (): VxeGridPropTypes.Columns => {
             onChange(checked: boolean) {
               row.pendingStatus = true;
               const newStatus = checked ? '1' : '2';
-              setStatusApi(row.id, newStatus, row.type)
+              setSysRoleStatusApi(row.id, newStatus, row.type)
                 .then(() => {
                   row.status = newStatus;
                   message.success(`操作成功`);

@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import type { FormType } from './types/generator.data';
 
-import type { SelectModel } from '#/api/base/model/select-model';
 import type {
   BasicsConfigModel,
   FieldConfig,
   GeneratorConfig,
   ImportCellConfig,
+  SelectModel,
   TableCellConfig,
   TableInfo,
-} from '#/api/generator/model/generatorModel';
+} from '#/api';
 
 import { onMounted, ref, unref } from 'vue';
 
@@ -17,7 +17,7 @@ import { Page } from '@vben/common-ui';
 
 import { Card, Step, Steps } from 'ant-design-vue';
 
-import { selectAllApi } from '#/api/sys/sys-dict-type';
+import { selectAllSysDictTypeApi } from '#/api';
 
 import BasicsConfig from './components/basics-config.vue';
 import Finish from './components/finish.vue';
@@ -50,7 +50,7 @@ const generatorConfig = ref<GeneratorConfig>({
 const current = ref<number>(0);
 
 onMounted(() => {
-  selectAllApi().then((res) => {
+  selectAllSysDictTypeApi().then((res) => {
     dictTypeSelectModelArray.value = res;
   });
 });

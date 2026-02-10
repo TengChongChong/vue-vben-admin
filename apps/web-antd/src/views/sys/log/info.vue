@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { SysLog } from '#/api/sys/model/sys-log-model';
+import type { SysLog } from '#/api';
 
 import { ref } from 'vue';
 
@@ -14,7 +14,7 @@ const logInfo = ref<SysLog>();
 const [Drawer, drawerApi] = useVbenDrawer({
   onOpenChange: async (isOpen: boolean) => {
     if (isOpen) {
-      logInfo.value = drawerApi.getData();
+      logInfo.value = drawerApi.getData<SysLog>();
     }
   },
 });

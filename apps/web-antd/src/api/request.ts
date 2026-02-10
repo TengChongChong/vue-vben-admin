@@ -3,6 +3,7 @@
  */
 import type { RequestClientOptions } from '@vben/request';
 
+import { refreshTokenApi, setRequestClient } from '@vben/api';
 import { useAppConfig } from '@vben/hooks';
 import { preferences } from '@vben/preferences';
 import {
@@ -16,8 +17,6 @@ import { useAccessStore } from '@vben/stores';
 import { message } from 'ant-design-vue';
 
 import { useAuthStore } from '#/store';
-
-import { refreshTokenApi } from './core';
 
 const { apiURL } = useAppConfig(import.meta.env, import.meta.env.PROD);
 
@@ -124,3 +123,5 @@ export const requestClient = createRequestClient(apiURL, {
 });
 
 export const baseRequestClient = new RequestClient({ baseURL: apiURL });
+
+setRequestClient(requestClient, baseRequestClient);

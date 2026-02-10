@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { SysImportExcelTemplate } from '#/api/sys/model/sys-import-excel-template-model';
+import type { SysImportExcelTemplate } from '#/api';
 
 import { Page, useVbenDrawer } from '@vben/common-ui';
 
@@ -9,10 +9,10 @@ import { Button, Divider, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
-  getApi,
-  removeApi,
-  selectApi,
-} from '#/api/sys/sys-import-excel-template';
+  getSysImportExcelTemplateApi,
+  removeSysImportExcelTemplateApi,
+  selectSysImportExcelTemplateApi,
+} from '#/api';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
 import { LucideSquarePen } from '#/components/icons';
 
@@ -51,7 +51,7 @@ const gridOptions: VxeGridProps<SysImportExcelTemplate> = {
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
-        return await selectApi({ ...formValues }, page);
+        return await selectSysImportExcelTemplateApi({ ...formValues }, page);
       },
     },
   },
@@ -76,7 +76,7 @@ async function handleCreate() {
 }
 
 function handleEdit(id: string) {
-  getApi(id).then((res) => {
+  getSysImportExcelTemplateApi(id).then((res) => {
     baseInputDrawerApi.setData(res);
     baseInputDrawerApi.open();
   });
@@ -99,7 +99,7 @@ function handleDetailsConfig(row) {
           />
 
           <ButtonRemove
-            :api="removeApi"
+            :api="removeSysImportExcelTemplateApi"
             :auth-codes="['sys:import:excel:template:remove']"
             :grid-api="gridApi"
             @success="handleSearch"
@@ -117,7 +117,7 @@ function handleDetailsConfig(row) {
         />
 
         <ButtonRemove
-          :api="removeApi"
+          :api="removeSysImportExcelTemplateApi"
           :auth-codes="['sys:import:excel:template:remove']"
           :ids="[row.id]"
           size="small"

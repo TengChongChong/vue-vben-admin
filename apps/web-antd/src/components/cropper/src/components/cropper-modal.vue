@@ -9,7 +9,7 @@ import { useVbenModal } from '@vben/common-ui';
 
 import { Avatar, Button, Space, Tooltip, Upload } from 'ant-design-vue';
 
-import { fileUpload } from '#/api/file/file-upload';
+import { fileUpload } from '#/api';
 import {
   LucideMoveHorizontal,
   LucideMoveVertical,

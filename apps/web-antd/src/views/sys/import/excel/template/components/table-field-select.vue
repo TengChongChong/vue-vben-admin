@@ -5,7 +5,7 @@ import { onMounted, ref, watch } from 'vue';
 
 import { Select } from 'ant-design-vue';
 
-import { getTableInfoApi } from '#/api/generator/generator';
+import { getTableInfoApi } from '#/api';
 import { HighlightText } from '#/components/highlight-text';
 
 defineOptions({

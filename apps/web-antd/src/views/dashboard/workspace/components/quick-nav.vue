@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { SysQuickNavigationVO } from '#/api/sys/model/sys-quick-navigation-model';
+import type { SysQuickNavigationVO } from '#/api';
 
 import { ref } from 'vue';
 
 import { Card } from 'ant-design-vue';
 
-import { getCurrentUserQuickNavigationApi } from '#/api/auth/auth';
+import { getCurrentUserQuickNavigationApi } from '#/api';
 import Navigation from '#/views/sys/quick/navigation/navigation.vue';
 
 const sysQuickNavigationList = ref<SysQuickNavigationVO[]>([]);

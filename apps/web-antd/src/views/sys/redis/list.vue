@@ -14,7 +14,7 @@ import {
   Tooltip,
 } from 'ant-design-vue';
 
-import { getApi, selectByPrefixApi } from '#/api/sys/sys-redis';
+import { getSysRedisApi, selectByPrefixApi } from '#/api';
 import { useDictStore } from '#/store';
 
 import InfoModal from './info.vue';
@@ -54,7 +54,7 @@ const [BaseInfoModal, baseInfoModalApi] = useVbenModal({
 });
 
 async function handleInfo(key: string) {
-  await getApi(key).then((res) => {
+  await getSysRedisApi(key).then((res) => {
     baseInfoModalApi.setData(res);
     baseInfoModalApi.open();
   });

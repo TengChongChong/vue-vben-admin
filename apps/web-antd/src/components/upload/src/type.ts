@@ -1,7 +1,7 @@
 import type { UploadFile } from 'ant-design-vue';
 import type { UploadListType } from 'ant-design-vue/lib/upload/interface';
 
-import type { FileInfo } from '#/api/file/model/file-info-model';
+import type { FileInfo } from '#/api';
 
 /**
  * 根据文件上传策略上传 Props

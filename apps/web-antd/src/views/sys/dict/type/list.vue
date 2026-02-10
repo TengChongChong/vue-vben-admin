@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { SysDictType } from '#/api/sys/model/sys-dict-type-model';
+import type { SysDictType } from '#/api';
 
 import { ref, unref } from 'vue';
 
@@ -10,12 +10,12 @@ import { InputSearch, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
-  addApi,
-  exportDataApi,
-  getApi,
-  removeApi,
-  selectApi,
-} from '#/api/sys/sys-dict-type';
+  addSysDictTypeApi,
+  exportSysDictTypeDataApi,
+  getSysDictTypeApi,
+  removeSysDictTypeApi,
+  selectSysDictTypeApi,
+} from '#/api';
 import {
   ButtonAdd,
   ButtonEdit,
@@ -55,7 +55,7 @@ const gridOptions: VxeGridProps<SysDictType> = {
   proxyConfig: {
     ajax: {
       query: async ({ page }) => {
-        return await selectApi({ name: unref(searchValue) }, page);
+        return await selectSysDictTypeApi({ name: unref(searchValue) }, page);
       },
     },
   },
@@ -76,14 +76,14 @@ const [BaseInputModal, baseInputModalApi] = useVbenModal({
 });
 
 async function handleCreate() {
-  addApi().then((res) => {
+  addSysDictTypeApi().then((res) => {
     baseInputModalApi.setData(res);
     baseInputModalApi.open();
   });
 }
 
 function handleEdit(id: string) {
-  getApi(id).then((res) => {
+  getSysDictTypeApi(id).then((res) => {
     baseInputModalApi.setData(res);
     baseInputModalApi.open();
   });
@@ -92,7 +92,7 @@ function handleEdit(id: string) {
 const handelExportData = async () => {
   exportBtnLoading.value = true;
   try {
-    await exportDataApi({ name: unref(searchValue) }).then((id) => {
+    await exportSysDictTypeDataApi({ name: unref(searchValue) }).then((id) => {
       downloadFileById(id);
     });
   } catch (error) {
@@ -104,7 +104,7 @@ const handelExportData = async () => {
 </script>
 
 <template>
-  <div class="dict-type-page bg-card mr-2 h-full rounded-md">
+  <div class="dict-type-page mr-2 h-full rounded-md bg-card">
     <div class="dict-type-search w-full">
       <InputSearch
         v-model:value="searchValue"
@@ -133,7 +133,7 @@ const handelExportData = async () => {
           />
 
           <ButtonRemove
-            :api="removeApi"
+            :api="removeSysDictTypeApi"
             :auth-codes="['sys:dict:remove']"
             :ids="[row.id]"
             size="small"

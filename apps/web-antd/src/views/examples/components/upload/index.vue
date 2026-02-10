@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { FileInfo } from '#/api/file/model/file-info-model';
+import type { FileInfo } from '#/api';
 
 import { onMounted, ref } from 'vue';
 
@@ -8,7 +8,7 @@ import { JsonViewer, Page } from '@vben/common-ui';
 import { Card, Col, Row } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { currentUserApi } from '#/api/auth/sys-user-personal';
+import { currentUserApi } from '#/api';
 import { RuleUpload } from '#/components/upload';
 
 const avatar = ref<FileInfo>();

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { SysConfig } from '#/api/sys/model/sys-config-model';
+import type { SysConfig } from '#/api';
 
 import { useAccess } from '@vben/access';
 import { Page, useVbenModal } from '@vben/common-ui';
@@ -9,7 +9,12 @@ import { Page, useVbenModal } from '@vben/common-ui';
 import { Button, Divider, message, Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { getApi, refreshApi, removeApi, selectApi } from '#/api/sys/sys-config';
+import {
+  getSysConfigApi,
+  refreshSysConfigCacheApi,
+  removeSysConfigApi,
+  selectSysConfigApi,
+} from '#/api';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
 import { LucideRefreshCw } from '#/components/icons';
 import { RoleEnum } from '#/enums/roleEnum';
@@ -78,7 +83,7 @@ const gridOptions: VxeGridProps<SysConfig> = {
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
-        return await selectApi({ ...formValues }, page);
+        return await selectSysConfigApi({ ...formValues }, page);
       },
     },
   },
@@ -106,14 +111,14 @@ async function handleCreate() {
 }
 
 function handleEdit(id: string) {
-  getApi(id).then((res) => {
+  getSysConfigApi(id).then((res) => {
     baseInputModalApi.setData(res);
     baseInputModalApi.open();
   });
 }
 
 function handleReloadCache() {
-  refreshApi().then(() => {
+  refreshSysConfigCacheApi().then(() => {
     message.success('刷新成功');
   });
 }
@@ -127,7 +132,7 @@ function handleReloadCache() {
           <ButtonAdd :auth-codes="['sys:config:save']" @click="handleCreate" />
 
           <ButtonRemove
-            :api="removeApi"
+            :api="removeSysConfigApi"
             :auth-codes="['sys:config:remove']"
             :grid-api="gridApi"
             @success="handleSearch"
@@ -150,7 +155,7 @@ function handleReloadCache() {
         />
 
         <ButtonRemove
-          :api="removeApi"
+          :api="removeSysConfigApi"
           :auth-codes="['sys:config:remove']"
           :ids="[row.id]"
           size="small"

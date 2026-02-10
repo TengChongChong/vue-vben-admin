@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { SysException } from '#/api/sys/model/sys-exception-model';
+import type { SysException } from '#/api';
 
 import { Page, useVbenDrawer } from '@vben/common-ui';
 
@@ -9,7 +9,11 @@ import { Divider, Space } from 'ant-design-vue';
 import dayjs from 'dayjs';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { getApi, removeApi, selectApi } from '#/api/sys/sys-exception';
+import {
+  getSysExceptionApi,
+  removeSysExceptionApi,
+  selectSysExceptionApi,
+} from '#/api';
 import { ButtonInfo, ButtonRemove } from '#/components/button';
 
 import { initColumns } from './data';
@@ -92,7 +96,7 @@ const gridOptions: VxeGridProps<SysException> = {
     ajax: {
       query: async ({ page }, formValues) => {
         try {
-          return await selectApi({ ...formValues }, page);
+          return await selectSysExceptionApi({ ...formValues }, page);
         } catch (error) {
           console.error(error);
         }
@@ -112,7 +116,7 @@ const [BaseInfoDrawer, baseInfoDrawerApi] = useVbenDrawer({
 });
 
 async function handleInfo(id: string) {
-  getApi(id).then((res) => {
+  getSysExceptionApi(id).then((res) => {
     baseInfoDrawerApi.setData(res);
     baseInfoDrawerApi.open();
   });
@@ -125,7 +129,7 @@ async function handleInfo(id: string) {
       <template #toolbar-tools>
         <Space>
           <ButtonRemove
-            :api="removeApi"
+            :api="removeSysExceptionApi"
             :auth-codes="['sys:exception:remove']"
             :grid-api="gridApi"
             @success="handleSearch"
@@ -138,7 +142,7 @@ async function handleInfo(id: string) {
         <ButtonInfo size="small" type="link" @click="handleInfo(row.id)" />
 
         <ButtonRemove
-          :api="removeApi"
+          :api="removeSysExceptionApi"
           :auth-codes="['sys:exception:remove']"
           :ids="[row.id]"
           size="small"

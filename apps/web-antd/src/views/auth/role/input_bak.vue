@@ -3,7 +3,7 @@ import type { TreeDataItem } from 'ant-design-vue/es/tree/Tree';
 
 import type { Recordable } from '@vben/types';
 
-import type { SysRoleVO } from '#/api/auth/model/sys-role-model';
+import type { SysRoleVO } from '#/api';
 
 import { ref } from 'vue';
 
@@ -14,9 +14,12 @@ import { clearTreeEmptyChildren, listToTree } from '@vben/utils';
 import { message, Space } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { selectAllApi as selectAllDeptApi } from '#/api/auth/sys-dept';
-import { selectAllApi as selectAllMenuApi } from '#/api/auth/sys-menu';
-import { addApi, saveApi } from '#/api/auth/sys-role';
+import {
+  addSysRoleApi,
+  saveSysRoleApi,
+  selectAllSysDeptApi,
+  selectAllSysMenuApi,
+} from '#/api';
 import { ButtonClose, ButtonSave } from '#/components/button';
 import { RoleEnum } from '#/enums/roleEnum';
 
@@ -30,11 +33,11 @@ const menuTreeData = ref<TreeDataItem[]>([]);
 const deptTreeData = ref<TreeDataItem[]>([]);
 
 function initData() {
-  selectAllMenuApi().then((res) => {
+  selectAllSysMenuApi().then((res) => {
     menuTreeData.value = clearTreeEmptyChildren(listToTree(res), 'children');
   });
 
-  selectAllDeptApi().then((res) => {
+  selectAllSysDeptApi().then((res) => {
     deptTreeData.value = clearTreeEmptyChildren(listToTree(res), 'children');
   });
 }
@@ -150,7 +153,7 @@ async function handleSubmit(callback: (res: SysRoleVO) => any) {
       return;
     }
     const values: SysRoleVO = { ...(await baseFormApi.getValues()) };
-    const res = await saveApi(values);
+    const res = await saveSysRoleApi(values);
     message.success('保存成功');
     emit('success');
     callback(res);
@@ -170,7 +173,7 @@ async function handleSave() {
 async function handleSaveAndAdd() {
   await handleSubmit(() => {
     baseFormApi.resetForm();
-    addApi().then((res) => {
+    addSysRoleApi().then((res) => {
       baseFormApi.setValues(res);
     });
   });

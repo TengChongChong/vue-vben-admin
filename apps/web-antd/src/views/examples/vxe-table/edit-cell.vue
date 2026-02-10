@@ -4,7 +4,7 @@ import type { VxeGridProps } from '#/adapter/vxe-table';
 import { Page } from '@vben/common-ui';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { selectApi } from '#/api/sample/sample-general';
+import { selectSampleGeneralApi } from '#/api';
 
 interface RowType {
   category: string;
@@ -107,7 +107,7 @@ const gridOptions: VxeGridProps<RowType> = {
   proxyConfig: {
     ajax: {
       query: async ({ page }) => {
-        return await selectApi({}, page);
+        return await selectSampleGeneralApi({}, page);
       },
     },
   },

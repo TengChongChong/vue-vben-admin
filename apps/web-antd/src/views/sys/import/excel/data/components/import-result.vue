@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import type { SysImportExcelTemplateVO } from '#/api/sys/model/sys-import-excel-template-model';
-import type { SysImportSummary } from '#/api/sys/sys-import-excel-data';
+import type { SysImportExcelTemplateVO, SysImportSummary } from '#/api';
 
 import { ref } from 'vue';
 
 import { Button, Result } from 'ant-design-vue';
 
-import { exportVerificationFailDataApi } from '#/api/sys/sys-import-excel-data';
-import { cleanMyImportApi } from '#/api/sys/sys-import-excel-temporary';
+import { cleanMyImportApi, exportVerificationFailDataApi } from '#/api';
 import {
   LucideHardDriveDownload,
   LucideHardDriveUpload,

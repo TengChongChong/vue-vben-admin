@@ -1,15 +1,16 @@
 import type {
+  SysDict,
+  SysDictTree,
   TableFilterModel,
   TempSelectModel,
   TreeSelectModel,
-} from '#/api/base/model/select-model';
-import type { SysDict, SysDictTree } from '#/api/sys/model/sys-dict-model';
+} from '#/api';
 
 import { listToTree } from '@vben/utils';
 
 import { defineStore } from 'pinia';
 
-import { selectAllApi } from '#/api/sys/sys-dict';
+import { selectAllSysDictApi } from '#/api';
 
 interface DictState {
   isLoading: boolean;
@@ -172,7 +173,7 @@ export const useDictStore = defineStore('sys-dict', {
       }
       this.isLoading = true;
       // 初始化字典数据
-      selectAllApi().then((data) => {
+      selectAllSysDictApi().then((data) => {
         this.setDict(data);
         callback();
       });

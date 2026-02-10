@@ -1,0 +1,75 @@
+import type { SessionUser } from '@vben/types';
+
+import type { SysUser } from '#/api/auth/model/sys-user-model';
+
+import { getRequestClient } from '../request-context';
+
+// base url
+const BASE_URL = '/auth/sys/user/personal/center';
+
+/**
+ * 当前用户
+ */
+export function currentUserApi() {
+  return getRequestClient().get<SessionUser>(`${BASE_URL}/current/user`);
+}
+
+/**
+ * 密码修改
+ *
+ * @param currentPassword 当前密码
+ * @param newPassword 新密码
+ */
+export function changePasswordApi(
+  currentPassword: string,
+  newPassword: string,
+) {
+  return getRequestClient().post<boolean>(`${BASE_URL}/change/password`, {
+    currentPassword,
+    newPassword,
+  });
+}
+
+/**
+ * 保存用户头像
+ *
+ * @param path 头像路径
+ */
+export function saveUserAvatarApi(path: string) {
+  return getRequestClient().post<string>(`${BASE_URL}/user/avatar`, {
+    path,
+  });
+}
+
+/**
+ * 保存用户信息
+ *
+ * @param params 用户信息
+ */
+export function saveUserInfoApi(params: SysUser) {
+  return getRequestClient().post<SysUser>(`${BASE_URL}/user/info`, params);
+}
+
+/**
+ * 申请绑定密保邮箱
+ *
+ * @param email 邮箱
+ */
+export function applicationBindingEmailApi(email: string) {
+  return getRequestClient().post<boolean>(`${BASE_URL}/email`, {
+    email,
+  });
+}
+
+/**
+ * 绑定密保手机
+ *
+ * @param phoneNumber 手机号
+ * @param captcha 验证码
+ */
+export function bindingPhoneNumberApi(phoneNumber: string, captcha: string) {
+  return getRequestClient().post<boolean>(`${BASE_URL}/phone`, {
+    phoneNumber,
+    captcha,
+  });
+}

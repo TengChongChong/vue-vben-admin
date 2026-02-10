@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import type { FileInfo } from '#/api/file/model/file-info-model';
-import type { SysImportExcelTemplateVO } from '#/api/sys/model/sys-import-excel-template-model';
-import type { SysImportSummary } from '#/api/sys/sys-import-excel-data';
+import type {
+  FileInfo,
+  SysImportExcelTemplateVO,
+  SysImportSummary,
+} from '#/api';
 
 import { onMounted, ref, unref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -10,10 +12,7 @@ import { Page } from '@vben/common-ui';
 
 import { Card, Result, Step, Steps } from 'ant-design-vue';
 
-import {
-  checkLastDataApi,
-  getImportExcelTemplateApi,
-} from '#/api/sys/sys-import-excel-data';
+import { checkLastDataApi, getImportExcelTemplateApi } from '#/api';
 
 import ImportConfig from './components/import-config.vue';
 import ImportPreview from './components/import-preview.vue';

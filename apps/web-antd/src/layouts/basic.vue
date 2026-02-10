@@ -2,7 +2,7 @@
 import type { NotificationItem } from '@vben/layouts';
 import type { TimeoutHandle } from '@vben/types';
 
-import type { SysMessage } from '#/api/sys/model/sys-message-model';
+import type { SysMessage } from '#/api';
 
 import { computed, onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
@@ -20,9 +20,12 @@ import { preferences } from '@vben/preferences';
 import { useAccessStore, useUserStore } from '@vben/stores';
 import { openWindow } from '@vben/utils';
 
-import { getByKeyApi } from '#/api/sys/sys-config';
-import { infoApi, selectReceiveApi } from '#/api/sys/sys-message';
-import { setReadApi } from '#/api/sys/sys-message-detail';
+import {
+  getSysConfigByKeyApi,
+  infoApi,
+  selectReceiveApi,
+  setReadApi,
+} from '#/api';
 import {
   BookOpenText,
   CircleHelp,
@@ -223,7 +226,7 @@ onMounted(async () => {
   if (timeStamp === null) {
     try {
       // 获取后台配置的 新消息检查间隔时长
-      await getByKeyApi('messageCheckInterval').then((res) => {
+      await getSysConfigByKeyApi('messageCheckInterval').then((res) => {
         timeStamp = Number(res.value) * 1000;
       });
     } catch {

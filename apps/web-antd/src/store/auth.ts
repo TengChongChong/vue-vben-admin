@@ -1,6 +1,6 @@
 import type { UserInfo } from '@vben/types';
 
-import type { LoginAccountParams } from '#/api/auth/model/auth-model';
+import type { LoginAccountParams } from '#/api';
 
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -13,7 +13,7 @@ import { HashingFactory } from '@vben/utils';
 import { notification } from 'ant-design-vue';
 import { defineStore } from 'pinia';
 
-import { getUserInfoApi, loginAccountApi, logoutApi } from '#/api/auth/auth';
+import { getCurrentUserApi, loginAccountApi, logoutApi } from '#/api';
 import { $t } from '#/locales';
 
 export const useAuthStore = defineStore('auth', () => {
@@ -97,7 +97,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function fetchUserInfo() {
-    const userInfo = await getUserInfoApi();
+    const userInfo = await getCurrentUserApi();
     userStore.setUserInfo(userInfo);
     return userInfo;
   }

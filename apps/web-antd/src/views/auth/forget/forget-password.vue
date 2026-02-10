@@ -15,11 +15,7 @@ import {
 } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import {
-  resetPasswordApi,
-  sendEmailApi,
-  sendSmsApi,
-} from '#/api/auth/sys-user-retrieve-password';
+import { resetPasswordApi, sendEmailApi, sendSmsApi } from '#/api';
 
 defineOptions({
   name: 'ForgetPassword',
@@ -165,12 +161,12 @@ function goToLogin() {
   <div>
     <div class="mb-7 sm:mx-auto sm:w-full sm:max-w-md">
       <h2
-        class="text-foreground mb-3 text-3xl font-bold leading-9 tracking-tight lg:text-4xl"
+        class="mb-3 text-3xl font-bold leading-9 tracking-tight text-foreground lg:text-4xl"
       >
         找回密码
       </h2>
 
-      <p class="text-muted-foreground lg:text-md text-sm">
+      <p class="lg:text-md text-sm text-muted-foreground">
         使用邮箱或手机号找回密码
       </p>
     </div>

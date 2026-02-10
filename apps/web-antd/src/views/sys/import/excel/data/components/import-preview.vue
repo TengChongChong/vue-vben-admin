@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { FileInfo } from '#/api/file/model/file-info-model';
-import type { SysConfig } from '#/api/sys/model/sys-config-model';
-import type { SysImportExcelTemplateDetail } from '#/api/sys/model/sys-import-excel-template-detail-model';
-import type { SysImportExcelTemplateVO } from '#/api/sys/model/sys-import-excel-template-model';
-import type { SysImportSummary } from '#/api/sys/sys-import-excel-data';
+import type {
+  FileInfo,
+  SysConfig,
+  SysImportExcelTemplateDetail,
+  SysImportExcelTemplateVO,
+  SysImportSummary,
+} from '#/api';
 
 import { onMounted, ref, watch } from 'vue';
 
@@ -19,15 +21,13 @@ import {
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
+  cleanMyImportApi,
   exportVerificationFailDataApi,
   insertDataApi,
+  removeSysImportExcelTemporaryApi,
   selectSummaryApi,
-} from '#/api/sys/sys-import-excel-data';
-import {
-  cleanMyImportApi,
-  removeApi,
-  selectApi,
-} from '#/api/sys/sys-import-excel-temporary';
+  selectSysImportExcelTemporaryApi,
+} from '#/api';
 import { ButtonRemove } from '#/components/button';
 import {
   LucideArrowLeft,
@@ -153,7 +153,7 @@ const gridOptions: VxeGridProps<SysConfig> = {
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
-        return await selectApi(
+        return await selectSysImportExcelTemporaryApi(
           { ...formValues, templateId: props.sysImportExcelTemplate?.id },
           page,
         );
@@ -295,7 +295,7 @@ async function handleStepNext() {
         <template #toolbar-tools>
           <Space>
             <ButtonRemove
-              :api="removeApi"
+              :api="removeSysImportExcelTemporaryApi"
               :grid-api="gridApi"
               @success="removeCallback"
             />
@@ -327,7 +327,7 @@ async function handleStepNext() {
         </template>
         <template #action="{ row }">
           <ButtonRemove
-            :api="removeApi"
+            :api="removeSysImportExcelTemporaryApi"
             :ids="[row.id]"
             size="small"
             type="link"

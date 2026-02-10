@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { TreeDataItem } from 'ant-design-vue/es/tree/Tree';
 
-import type { TreeNode } from '#/api/base/model/tree-model';
+import type { TreeNode } from '#/api';
 
 import { ref } from 'vue';
 
@@ -9,7 +9,7 @@ import { ColPage } from '@vben/common-ui';
 import { useUserStore } from '@vben/stores';
 import { listToTree } from '@vben/utils';
 
-import { selectAllApi } from '#/api/auth/sys-dept';
+import { selectAllSysDeptApi } from '#/api';
 import { BasicTree } from '#/components/tree';
 
 import UserList from './components/user-list.vue';
@@ -20,7 +20,7 @@ const deptTreeData = ref<TreeDataItem[]>([]);
 const selectedKeys = ref<string[]>([userStore.userInfo?.deptId]);
 
 function initData() {
-  selectAllApi().then((res) => {
+  selectAllSysDeptApi().then((res) => {
     const treeNodes: TreeNode[] = [] as TreeNode[];
     res.forEach((item) => {
       const { id, parentId, title } = item;

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { FileUploadRule } from '#/api/file/model/file-upload-rule-model';
+import type { FileUploadRule } from '#/api';
 
 import { useVbenDrawer, useVbenModal } from '@vben/common-ui';
 
@@ -9,7 +9,12 @@ import { Button, Divider, message, Popconfirm, Space } from 'ant-design-vue';
 import dayjs from 'dayjs';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { infoApi, removeApi, selectApi, sendApi } from '#/api/sys/sys-message';
+import {
+  infoApi,
+  removeSysMessageApi,
+  selectSysMessageApi,
+  sendApi,
+} from '#/api';
 import { ButtonEdit, ButtonRemove } from '#/components/button';
 import { LucideListOrdered, LucideSend } from '#/components/icons';
 import { SysMessageStatus } from '#/views/sys/message/components/data';
@@ -110,7 +115,10 @@ const gridOptions: VxeGridProps<FileUploadRule> = {
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
-        return await selectApi({ ...formValues, status: props.pageType }, page);
+        return await selectSysMessageApi(
+          { ...formValues, status: props.pageType },
+          page,
+        );
       },
     },
   },
@@ -166,7 +174,7 @@ function handleOpenInfoModel(id: string) {
       <template #toolbar-tools>
         <Space>
           <ButtonRemove
-            :api="removeApi"
+            :api="removeSysMessageApi"
             :grid-api="gridApi"
             @success="handleSearch"
           />
@@ -197,7 +205,7 @@ function handleOpenInfoModel(id: string) {
 
         <template v-if="SysMessageStatus.DRAFT === props.pageType">
           <ButtonRemove
-            :api="removeApi"
+            :api="removeSysMessageApi"
             :ids="[row.id]"
             size="small"
             type="link"

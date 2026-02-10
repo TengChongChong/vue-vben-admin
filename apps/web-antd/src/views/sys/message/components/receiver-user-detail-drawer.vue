@@ -2,7 +2,7 @@
 import type { VbenFormProps } from '@vben/common-ui';
 
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { FileUploadRule } from '#/api/file/model/file-upload-rule-model';
+import type { FileUploadRule } from '#/api';
 
 import { ref, unref } from 'vue';
 
@@ -11,7 +11,7 @@ import { useVbenDrawer } from '@vben/common-ui';
 import { Space } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { selectMessageReceiverUserDetailApi } from '#/api/sys/sys-message-detail';
+import { selectMessageReceiverUserDetailApi } from '#/api';
 import { ButtonClose } from '#/components/button';
 
 const messageId = ref();
@@ -120,6 +120,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
   .bg-background-deep {
     height: 1px;
   }
+
   .vxe-tools--operate {
     display: none;
   }

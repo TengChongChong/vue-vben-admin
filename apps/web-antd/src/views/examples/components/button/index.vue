@@ -5,7 +5,7 @@ import { Page } from '@vben/common-ui';
 
 import { Button, Card, Col, Divider, Row, Space } from 'ant-design-vue';
 
-import { removeApi } from '#/api/sys/sys-dict';
+import { removeSysDictApi } from '#/api';
 import {
   ButtonAdd,
   ButtonCancel,
@@ -98,7 +98,7 @@ function handleRemoveFail(id: string | string[]) {
             <ButtonInfo />
             <ButtonRemove
               :id="['xxx']"
-              :api="removeApi"
+              :api="removeSysDictApi"
               @fail="handleRemoveFail"
               @success="handleRemoveSuccess"
             />
@@ -123,7 +123,7 @@ function handleRemoveFail(id: string | string[]) {
             <Divider type="vertical" />
             <ButtonRemove
               :id="['xxx']"
-              :api="removeApi"
+              :api="removeSysDictApi"
               size="small"
               type="link"
               @fail="handleRemoveFail"

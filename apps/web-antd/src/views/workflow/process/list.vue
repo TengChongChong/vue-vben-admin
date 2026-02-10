@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { WorkflowProcess } from '#/api/workflow/model/workflow-process-model';
+import type { WorkflowProcess } from '#/api';
 
 import { AccessControl } from '@vben/access';
 import { Page, useVbenModal } from '@vben/common-ui';
@@ -19,11 +19,11 @@ import {
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
-  activationApi,
-  removeApi,
-  selectApi,
-  suspendApi,
-} from '#/api/workflow/workflow-process';
+  activationWorkflowProcessApi,
+  removeWorkflowProcessApi,
+  selectWorkflowProcessApi,
+  suspendWorkflowProcessApi,
+} from '#/api';
 import { ButtonRemove } from '#/components/button';
 import {
   LucideCheck,
@@ -58,7 +58,7 @@ const gridOptions: VxeGridProps<WorkflowProcess> = {
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
-        return await selectApi({ ...formValues }, page);
+        return await selectWorkflowProcessApi({ ...formValues }, page);
       },
     },
   },
@@ -96,7 +96,7 @@ function handleSuspend(processDefinitionId: string) {
     okText: '确认',
     cancelText: '取消',
     onOk: () => {
-      suspendApi(processDefinitionId, true).then(() => {
+      suspendWorkflowProcessApi(processDefinitionId, true).then(() => {
         message.success('流程已挂起');
         handleSearch();
       });
@@ -116,7 +116,7 @@ function handleActivation(processDefinitionId: string) {
     okText: '确认',
     cancelText: '取消',
     onOk: () => {
-      activationApi(processDefinitionId, true).then(() => {
+      activationWorkflowProcessApi(processDefinitionId, true).then(() => {
         message.success('流程已激活');
         handleSearch();
       });
@@ -139,7 +139,7 @@ function handleOpenProcessModal({ deploymentId, dgrmResourceName }) {}
       <template #toolbar-tools>
         <Space>
           <ButtonRemove
-            :api="removeApi"
+            :api="removeWorkflowProcessApi"
             :auth-codes="['sample:general:remove']"
             :grid-api="gridApi"
             @success="handleSearch"
@@ -150,7 +150,7 @@ function handleOpenProcessModal({ deploymentId, dgrmResourceName }) {}
       </template>
       <template #action="{ row }">
         <ButtonRemove
-          :api="removeApi"
+          :api="removeWorkflowProcessApi"
           :auth-codes="['sample:general:remove']"
           :ids="[row.id]"
           size="small"

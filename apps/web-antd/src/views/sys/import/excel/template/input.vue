@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import type { SelectModel } from '#/api/base/model/select-model';
-import type { SysImportExcelTemplate } from '#/api/sys/model/sys-import-excel-template-model';
+import type { SelectModel, SysImportExcelTemplate } from '#/api';
 
 import { ref } from 'vue';
 
@@ -10,8 +9,7 @@ import { message, Space } from 'ant-design-vue';
 import { cloneDeep } from 'lodash-es';
 
 import { useVbenForm } from '#/adapter/form';
-import { selectTableApi } from '#/api/generator/generator';
-import { saveApi } from '#/api/sys/sys-import-excel-template';
+import { saveSysImportExcelTemplateApi, selectTableApi } from '#/api';
 import { ButtonClose, ButtonSave } from '#/components/button';
 
 const emit = defineEmits(['success']);
@@ -148,7 +146,7 @@ async function handleSubmit(callback: (res: SysImportExcelTemplate) => any) {
       return;
     }
     const values = await baseFormApi.getValues();
-    const res = await saveApi(values);
+    const res = await saveSysImportExcelTemplateApi(values);
     message.success('保存成功');
     emit('success');
     callback(res);

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { SysUserVO } from '#/api/auth/model/sys-user-model';
+import type { SysUserVO } from '#/api';
 
 import { ref } from 'vue';
 
@@ -8,7 +8,7 @@ import { useVbenDrawer, z } from '@vben/common-ui';
 import { message, Space } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { addApi, saveApi } from '#/api/auth/sys-user';
+import { addSysUserApi, saveSysUserApi } from '#/api';
 import { ButtonClose, ButtonSave } from '#/components/button';
 
 const emit = defineEmits(['success']);
@@ -115,7 +115,7 @@ async function handleSubmit(callback: (res: SysUserVO) => any) {
     if (!valid) {
       return;
     }
-    const res = await saveApi(await baseFormApi.getValues());
+    const res = await saveSysUserApi(await baseFormApi.getValues());
     message.success('保存成功');
     emit('success');
     callback(res);
@@ -136,7 +136,7 @@ async function handleSaveAndAdd() {
   await handleSubmit((res) => {
     baseFormApi.resetForm();
     const { deptId } = res;
-    addApi(deptId).then((res) => {
+    addSysUserApi(deptId).then((res) => {
       baseFormApi.setValues(res);
     });
   });

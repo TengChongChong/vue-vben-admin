@@ -1,4 +1,4 @@
-import type { FileInfo } from '#/api/file/model/file-info-model';
+import type { FileInfo } from '#/api';
 import type { UploadFileModel } from '#/components/upload/src/type';
 
 /**
