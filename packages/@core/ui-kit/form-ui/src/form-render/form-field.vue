@@ -381,11 +381,7 @@ onUnmounted(() => {
             <VbenRenderContent :content="suffix" />
           </div>
         </div>
-        <FormDescription v-if="description" class="text-xs">
-          <VbenRenderContent :content="description" />
-        </FormDescription>
-
-        <FormDescription v-if="description" class="ml-1">
+        <FormDescription v-if="description" class="mt-1 text-xs">
           <VbenRenderContent :content="description" />
         </FormDescription>
 
