@@ -60,6 +60,8 @@ function menuIcon(menu: MenuRecordRaw) {
 <style lang="scss" scoped>
 $namespace: vben;
 
+@reference "@vben-core/design/theme";
+
 .#{$namespace}-normal-menu {
   --menu-item-margin-y: 4px;
   --menu-item-margin-x: 0px;
@@ -129,7 +131,7 @@ $namespace: vben;
 
       .#{$namespace}-normal-menu__name,
       .#{$namespace}-normal-menu__icon {
-        @apply font-semibold text-primary-foreground;
+        @apply text-primary-foreground font-semibold;
       }
     }
 
@@ -151,10 +153,12 @@ $namespace: vben;
   }
 
   &__name {
+    width: 100%;
     margin-top: 8px;
     margin-bottom: 0;
     font-size: calc(var(--font-size-base, 16px) * 0.75);
     font-weight: 400;
+    text-align: center;
     transition: all 0.25s ease;
   }
 }

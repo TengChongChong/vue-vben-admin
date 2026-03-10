@@ -307,7 +307,7 @@ onUnmounted(() => {
           cn(
             'flex h-[32px] leading-6',
             {
-              'mr-2 flex-shrink-0 justify-end': !isVertical,
+              'mr-2 shrink-0 justify-end': !isVertical,
               'mb-1 flex-row': isVertical,
             },
             labelClass,
@@ -323,7 +323,7 @@ onUnmounted(() => {
           <VbenRenderContent :content="label" />
         </template>
       </FormLabel>
-      <div class="flex-auto overflow-hidden p-[1px]">
+      <div class="flex-auto overflow-hidden p-px">
         <div :class="cn('relative flex w-full items-center', wrapperClass)">
           <FormControl :class="cn(controlClass)">
             <slot
@@ -381,6 +381,9 @@ onUnmounted(() => {
             <VbenRenderContent :content="suffix" />
           </div>
         </div>
+        <FormDescription v-if="description" class="text-xs">
+          <VbenRenderContent :content="description" />
+        </FormDescription>
 
         <FormDescription v-if="description" class="ml-1">
           <VbenRenderContent :content="description" />
