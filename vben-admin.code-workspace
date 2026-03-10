@@ -109,6 +109,10 @@
       "path": "packages/@core/ui-kit/tabs-ui",
     },
     {
+      "name": "@vben/api",
+      "path": "packages/api",
+    },
+    {
       "name": "@vben/constants",
       "path": "packages/constants",
     },
