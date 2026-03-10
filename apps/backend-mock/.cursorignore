@@ -1,0 +1,11 @@
+node_modules
+dist
+dist-ssr
+.vite
+.turbo
+.cache
+.temp
+coverage
+*.log
+*.tmp
+.DS_Store
