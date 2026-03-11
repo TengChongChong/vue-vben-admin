@@ -4,10 +4,9 @@ import type { SysLog } from '#/api';
 import { ref } from 'vue';
 
 import { useVbenDrawer } from '@vben/common-ui';
+import { formatToDateTime } from '@vben/utils';
 
 import { Descriptions, DescriptionsItem } from 'ant-design-vue';
-
-import { formatToDateTime } from '#/util/date';
 
 const logInfo = ref<SysLog>();
 

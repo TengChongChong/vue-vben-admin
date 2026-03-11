@@ -18,7 +18,7 @@ import {
 } from '@vben/layouts';
 import { preferences } from '@vben/preferences';
 import { useAccessStore, useUserStore } from '@vben/stores';
-import { openWindow } from '@vben/utils';
+import { formatToNow, openWindow } from '@vben/utils';
 
 import {
   getSysConfigByKeyApi,
@@ -34,7 +34,6 @@ import {
 } from '#/components/icons';
 import { $t } from '#/locales';
 import { useAuthStore, useDictStore } from '#/store';
-import { formatToNow } from '#/util/date';
 import LoginForm from '#/views/_core/authentication/login.vue';
 import { SysMessageDetailsStatus } from '#/views/sys/message/components/data';
 import MessageInfoModal from '#/views/sys/message/components/info-modal.vue';

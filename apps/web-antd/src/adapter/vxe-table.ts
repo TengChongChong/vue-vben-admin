@@ -3,11 +3,11 @@ import type { VxeTableGridOptions } from '@vben/plugins/vxe-table';
 import { h } from 'vue';
 
 import { setupVbenVxeTable, useVbenVxeGrid } from '@vben/plugins/vxe-table';
+import { formatToDate, formatToDuration } from '@vben/utils';
 
 import { Button, Image } from 'ant-design-vue';
 
 import { DictTag } from '#/components/dict';
-import { formatToDate, formatToDuration } from '#/util/date';
 
 import { useVbenForm } from './form';
 

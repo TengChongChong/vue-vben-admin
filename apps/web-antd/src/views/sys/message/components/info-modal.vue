@@ -5,11 +5,11 @@ import { ref } from 'vue';
 
 import { useVbenModal, VbenAvatar } from '@vben/common-ui';
 import { preferences } from '@vben/preferences';
+import { formatToDateTime } from '@vben/utils';
 
 import { Divider, Space } from 'ant-design-vue';
 
 import { ButtonClose } from '#/components/button';
-import { formatToDateTime } from '#/util/date';
 
 const messageInfo = ref<SysMessage>();
 

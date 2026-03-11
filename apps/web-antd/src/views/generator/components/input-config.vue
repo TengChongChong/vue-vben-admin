@@ -5,6 +5,7 @@ import { nextTick, onMounted, ref, unref, watch } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
 import { useSortable } from '@vben/hooks';
+import { isNullOrUnDef } from '@vben/utils';
 
 import {
   Button,
@@ -22,7 +23,6 @@ import {
   LucideSettings,
   LucideTrash,
 } from '#/components/icons';
-import { isNullOrUnDef } from '#/util/is';
 
 import InputConfigModal from './modal/input-config-modal.vue';
 
@@ -130,7 +130,7 @@ function handleStepNext() {
             字段设置
           </Button>
         </template>
-        <div class="config-items config-input config-items-input">
+        <div class="config-input config-items config-items-input">
           <template v-for="item in inputConfig" :key="item.name">
             <div v-show="item.isEnable" class="config-item">
               <div class="config-item-body">

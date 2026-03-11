@@ -10,7 +10,7 @@ import type {
 import { onMounted, ref, unref } from 'vue';
 
 import { useUserStore } from '@vben/stores';
-import { listToTree } from '@vben/utils';
+import { isArray, isBlank, listToTree } from '@vben/utils';
 
 import { Affix, Button, Input, Select } from 'ant-design-vue';
 
@@ -24,7 +24,6 @@ import {
 } from '#/api';
 import { Divider } from '#/components/divider';
 import { LucideArrowRight } from '#/components/icons';
-import { isArray, isBlank } from '#/util/is';
 
 import {
   FormGeneratorTemplate,

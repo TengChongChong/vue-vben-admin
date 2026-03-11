@@ -91,27 +91,29 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
   );
 
   client.addResponseInterceptor(
-    errorMessageResponseInterceptor((_msg: string, error) => {
+    errorMessageResponseInterceptor((msg: string, error) => {
       // 这里可以根据业务进行定制,你可以拿到 error 内的信息进行定制化处理，根据不同的 code 做不同的提示，而不是直接使用 message.error 提示 msg
-      // message.error(msg);
       if (error.config.errorMessageMode === 'silent') {
         return Promise.reject(error);
       }
-      // eslint-disable-next-line no-unsafe-optional-chaining
-      const { errorMessage, showType } = error?.response?.data;
-      if (errorMessage) {
-        // 如果后端有响应错误消息
-        message.open({
-          type: showType || 'error',
-          content: errorMessage,
-        });
-        return Promise.reject(error);
+
+      if (error?.response) {
+        // eslint-disable-next-line no-unsafe-optional-chaining
+        const { errorMessage, showType } = error.response?.data;
+        if (errorMessage) {
+          // 如果后端有响应错误消息
+          message.open({
+            type: showType || 'error',
+            content: errorMessage,
+          });
+          return Promise.reject(error);
+        }
       }
 
-      // 使用通用错误消息提示
-      return errorMessageResponseInterceptor((msg: string) =>
-        message.error(msg),
-      );
+      if (msg) {
+        // 使用通用错误消息提示
+        message.error(msg);
+      }
     }),
   );
 

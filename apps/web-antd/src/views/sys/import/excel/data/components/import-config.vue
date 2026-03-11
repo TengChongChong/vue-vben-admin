@@ -7,6 +7,8 @@ import type {
 
 import { computed, ref, watch } from 'vue';
 
+import { isString } from '@vben/utils';
+
 import {
   Button,
   Descriptions,
@@ -19,7 +21,6 @@ import {
 
 import { analysisApi, analysisExcelApi } from '#/api';
 import { LucideArrowRight } from '#/components/icons';
-import { isString } from '#/util/is';
 import { getCellIndex } from '#/views/sys/import/excel/data/util';
 
 const props = defineProps<{

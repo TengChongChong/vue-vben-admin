@@ -10,6 +10,7 @@ import type {
 import { computed, onMounted, ref, watch } from 'vue';
 
 import { useAccessStore } from '@vben/stores';
+import { formatSize } from '@vben/utils';
 
 import { Button, message, Tag, Upload, UploadDragger } from 'ant-design-vue';
 import { isArray, isString } from 'lodash-es';
@@ -21,7 +22,6 @@ import {
   convertToUploadFileModelArray,
 } from '#/components/upload/src/helper';
 import { useUploadType } from '#/components/upload/src/useUpload';
-import { formatSize } from '#/util/format';
 
 const props = withDefaults(defineProps<RuleUploadProps>(), {
   listType: 'text',

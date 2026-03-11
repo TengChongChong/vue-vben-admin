@@ -4,6 +4,7 @@ import type { VxeGridProps } from '#/adapter/vxe-table';
 import type { FileUploadRule } from '#/api';
 
 import { Page, useVbenDrawer } from '@vben/common-ui';
+import { formatSize } from '@vben/utils';
 
 import { Divider, Space } from 'ant-design-vue';
 
@@ -16,7 +17,6 @@ import {
   selectFileUploadRuleApi,
 } from '#/api';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
-import { formatSize } from '#/util/format';
 
 import { initColumns } from './data';
 import InputDrawer from './input.vue';

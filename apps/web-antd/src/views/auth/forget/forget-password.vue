@@ -15,7 +15,7 @@ import {
 } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { resetPasswordApi, sendEmailApi, sendSmsApi } from '#/api';
+import { resetMyPasswordApi, sendEmailApi, sendSmsApi } from '#/api';
 
 defineOptions({
   name: 'ForgetPassword',
@@ -137,7 +137,7 @@ async function handleReset() {
     try {
       loading.value = true;
       const { username, password, code } = values;
-      await resetPasswordApi(
+      await resetMyPasswordApi(
         username,
         code,
         HashingFactory.createMD5Hashing().hash(password.trim()),
@@ -161,7 +161,7 @@ function goToLogin() {
   <div>
     <div class="mb-7 sm:mx-auto sm:w-full sm:max-w-md">
       <h2
-        class="mb-3 text-3xl font-bold leading-9 tracking-tight text-foreground lg:text-4xl"
+        class="mb-3 text-3xl/9 font-bold tracking-tight text-foreground lg:text-4xl"
       >
         找回密码
       </h2>

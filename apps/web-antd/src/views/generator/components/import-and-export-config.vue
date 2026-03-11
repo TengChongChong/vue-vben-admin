@@ -10,6 +10,7 @@ import { computed, nextTick, onMounted, ref, unref, watch } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
 import { useSortable } from '@vben/hooks';
+import { isNullOrUnDef } from '@vben/utils';
 
 import {
   Button,
@@ -27,7 +28,6 @@ import {
   LucideSettings,
   LucideTrash,
 } from '#/components/icons';
-import { isNullOrUnDef } from '#/util/is';
 
 import { needGeneratorExport, needGeneratorImport } from '../util/util';
 import ExportConfigModal from './modal/export-config-modal.vue';
@@ -214,7 +214,7 @@ function handleStepNext() {
             字段设置
           </Button>
         </template>
-        <div class="config-table config-items config-items-import">
+        <div class="config-items config-items-import config-table">
           <template v-for="item in importConfig" :key="item.name">
             <div
               v-show="item.isEnable"
@@ -291,7 +291,7 @@ function handleStepNext() {
             字段设置
           </Button>
         </template>
-        <div class="config-table config-items config-items-export">
+        <div class="config-items config-items-export config-table">
           <template v-for="item in exportConfig" :key="item.name">
             <div
               v-show="item.isEnable"

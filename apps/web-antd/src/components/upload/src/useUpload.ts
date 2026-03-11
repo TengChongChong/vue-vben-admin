@@ -1,6 +1,6 @@
 import { computed, unref } from 'vue';
 
-import { formatSize } from '#/util/format';
+import { formatSize } from '@vben/utils';
 
 export function useUploadType({
   acceptRef,

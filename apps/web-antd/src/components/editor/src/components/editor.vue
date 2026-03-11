@@ -13,12 +13,12 @@ import {
 } from 'vue';
 
 import { useAccessStore } from '@vben/stores';
+import { isNumber } from '@vben/utils';
 
 import { AiEditor } from 'aieditor';
 import { message } from 'ant-design-vue';
 
 import { toolbarKeys } from '#/components/editor/src/components/config';
-import { isNumber } from '#/util/is';
 
 import 'aieditor/dist/style.css';
 
