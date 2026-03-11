@@ -60,7 +60,7 @@ export function verifiesCodeApi(username: string, code: string) {
  * @param code 验证码
  * @param password
  */
-export function resetPasswordApi(
+export function resetMyPasswordApi(
   username: string,
   code: string,
   password: string,

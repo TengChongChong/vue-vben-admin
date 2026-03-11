@@ -107,6 +107,6 @@ export function setSysUserStatusApi(ids: string, status: string) {
  *
  * @param ids 用户ids
  */
-export function resetPasswordApi(ids: string) {
+export function resetUserPasswordApi(ids: string) {
   return getRequestClient().post<string>(`${BASE_URL}/reset/password/${ids}`);
 }
