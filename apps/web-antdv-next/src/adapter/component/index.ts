@@ -35,6 +35,24 @@ import { isEmpty } from '@vben/utils';
 
 import { message, Modal, notification } from 'antdv-next';
 
+import { AreaCascader } from '#/components/area-cascader';
+import { Cropper } from '#/components/cropper';
+import { DeptSelect } from '#/components/dept';
+import {
+  DictCascader,
+  DictCheckbox,
+  DictRadio,
+  DictSelect,
+  DictTreeSelect,
+} from '#/components/dict';
+import { Divider } from '#/components/divider';
+import { Editor } from '#/components/editor';
+import { ApiTreeSelect } from '#/components/form';
+import { RoleSelect } from '#/components/role';
+import { SmsVerificationCode } from '#/components/sms-verification-code';
+import { RuleUpload } from '#/components/upload';
+import { UserSelect } from '#/components/user';
+
 const AutoComplete = defineAsyncComponent(
   () => import('antdv-next/dist/auto-complete/index'),
 );
@@ -50,9 +68,9 @@ const CheckboxGroup = defineAsyncComponent(
 const DatePicker = defineAsyncComponent(
   () => import('antdv-next/dist/date-picker/index'),
 );
-const Divider = defineAsyncComponent(
-  () => import('antdv-next/dist/divider/index'),
-);
+// const Divider = defineAsyncComponent(
+//   () => import('antdv-next/dist/divider/index'),
+// );
 const Input = defineAsyncComponent(() => import('antdv-next/dist/input/index'));
 const InputNumber = defineAsyncComponent(
   () => import('antdv-next/dist/input-number/index'),
@@ -495,13 +513,22 @@ export type ComponentType =
   | 'ApiCascader'
   | 'ApiSelect'
   | 'ApiTreeSelect'
+  | 'AreaCascader'
   | 'AutoComplete'
   | 'Cascader'
   | 'Checkbox'
   | 'CheckboxGroup'
+  | 'Cropper'
   | 'DatePicker'
   | 'DefaultButton'
+  | 'DeptSelect'
+  | 'DictCascader'
+  | 'DictCheckbox'
+  | 'DictRadio'
+  | 'DictSelect'
+  | 'DictTreeSelect'
   | 'Divider'
+  | 'Editor'
   | 'IconPicker'
   | 'Input'
   | 'InputNumber'
@@ -512,13 +539,17 @@ export type ComponentType =
   | 'RadioGroup'
   | 'RangePicker'
   | 'Rate'
+  | 'RoleSelect'
+  | 'RuleUpload'
   | 'Select'
+  | 'SmsVerificationCode'
   | 'Space'
   | 'Switch'
   | 'Textarea'
   | 'TimePicker'
   | 'TreeSelect'
   | 'Upload'
+  | 'UserSelect'
   | BaseFormComponentType;
 
 async function initComponentAdapter() {
@@ -526,9 +557,10 @@ async function initComponentAdapter() {
     // 如果你的组件体积比较大，可以使用异步加载
     // Button: () =>
     // import('xxx').then((res) => res.Button),
-
     ApiCascader: withDefaultPlaceholder(ApiComponent, 'select', {
       component: Cascader,
+      showSearch: true,
+      style: { width: '100%' },
       fieldNames: { label: 'label', value: 'value', children: 'children' },
       loadingSlot: 'suffixIcon',
       modelPropName: 'value',
@@ -536,19 +568,24 @@ async function initComponentAdapter() {
     }),
     ApiSelect: withDefaultPlaceholder(ApiComponent, 'select', {
       component: Select,
+      showSearch: true,
+      style: { width: '100%' },
       loadingSlot: 'suffixIcon',
       modelPropName: 'value',
       visibleEvent: 'onVisibleChange',
     }),
-    ApiTreeSelect: withDefaultPlaceholder(ApiComponent, 'select', {
-      component: TreeSelect,
-      fieldNames: { label: 'label', value: 'value', children: 'children' },
-      loadingSlot: 'suffixIcon',
-      modelPropName: 'value',
-      optionsPropName: 'treeData',
-      visibleEvent: 'onVisibleChange',
-    }),
+    // ApiTreeSelect: withDefaultPlaceholder(ApiComponent, 'select', {
+    //   component: TreeSelect,
+    //   showSearch: true,
+    //   style: { width: '100%' },
+    //   fieldNames: { label: 'label', value: 'value', children: 'children' },
+    //   loadingSlot: 'suffixIcon',
+    //   modelPropName: 'value',
+    //   optionsPropName: 'treeData',
+    //   visibleEvent: 'onVisibleChange',
+    // }),
     AutoComplete,
+    Cropper,
     Cascader,
     Checkbox,
     CheckboxGroup,
@@ -571,17 +608,31 @@ async function initComponentAdapter() {
     PrimaryButton: (props, { attrs, slots }) => {
       return h(Button, { ...props, attrs, type: 'primary' }, slots);
     },
+    RuleUpload,
     Radio,
     RadioGroup,
     RangePicker,
     Rate,
     Select: withDefaultPlaceholder(Select, 'select'),
+    SmsVerificationCode,
     Space,
     Switch,
     Textarea: withDefaultPlaceholder(Textarea, 'input'),
     TimePicker,
     TreeSelect: withDefaultPlaceholder(TreeSelect, 'select'),
     Upload: withPreviewUpload(),
+    //
+    ApiTreeSelect: withDefaultPlaceholder(ApiTreeSelect, 'select'),
+    DictCascader: withDefaultPlaceholder(DictCascader, 'select'),
+    DictCheckbox,
+    DictRadio,
+    Editor,
+    DictSelect: withDefaultPlaceholder(DictSelect, 'select'),
+    AreaCascader: withDefaultPlaceholder(AreaCascader, 'select'),
+    DictTreeSelect: withDefaultPlaceholder(DictTreeSelect, 'select'),
+    DeptSelect: withDefaultPlaceholder(DeptSelect, 'select'),
+    RoleSelect: withDefaultPlaceholder(RoleSelect, 'select'),
+    UserSelect: withDefaultPlaceholder(UserSelect, 'select'),
   };
 
   // 将组件注册到全局共享状态中

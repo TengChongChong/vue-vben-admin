@@ -16,6 +16,9 @@ import { initSetupVbenForm } from './adapter/form';
 import App from './app.vue';
 import { router } from './router';
 
+// 尽早加载并注入 requestClient，供 @vben/api 使用
+import '#/api/request';
+
 async function bootstrap(namespace: string) {
   // 初始化组件适配器
   await initComponentAdapter();
