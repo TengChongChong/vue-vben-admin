@@ -14,7 +14,7 @@ const DATE_FORMAT = 'YYYY-MM-DD';
 export function formatToDateTime(
   date?: dayjs.ConfigType,
   format = DATE_TIME_FORMAT,
-): string {
+): null | string {
   if (!date) {
     return null;
   }
@@ -24,7 +24,7 @@ export function formatToDateTime(
 export function formatToDate(
   date?: dayjs.ConfigType,
   format = DATE_FORMAT,
-): string {
+): null | string {
   if (!date) {
     return null;
   }
