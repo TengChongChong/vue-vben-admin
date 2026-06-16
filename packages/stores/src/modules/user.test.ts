@@ -19,7 +19,8 @@ describe('useUserStore', () => {
   it('clears userInfo and userRoles when setting null userInfo', () => {
     const store = useUserStore();
     store.setUserInfo({
-      roles: [{ roleName: 'User', value: 'user' }],
+      roleCodeList: ['user'],
+      permissionCodeList: ['read'],
     } as any);
     expect(store.userInfo).not.toBeNull();
     expect(store.roleCodeList.length).toBeGreaterThan(0);
