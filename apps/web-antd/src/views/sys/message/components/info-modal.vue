@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { SysMessage } from '#/api';
 
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import { useVbenModal, VbenAvatar } from '@vben/common-ui';
 import { preferences } from '@vben/preferences';
@@ -12,6 +12,37 @@ import { Divider, Space } from 'ant-design-vue';
 import { ButtonClose } from '#/components/button';
 
 const messageInfo = ref<SysMessage>();
+
+function sanitizeMessageHtml(html?: string) {
+  if (!html) {
+    return '';
+  }
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
+  doc.querySelectorAll('script, iframe, object, embed').forEach((node) => {
+    node.remove();
+  });
+  doc.querySelectorAll('*').forEach((node) => {
+    for (const attr of [...node.attributes]) {
+      const attrName = attr.name.toLowerCase();
+      const attrValue = attr.value.trim().toLowerCase();
+      if (attrName.startsWith('on')) {
+        node.removeAttribute(attr.name);
+      }
+      if (
+        ['href', 'src', 'xlink:href'].includes(attrName) &&
+        attrValue.startsWith('javascript:')
+      ) {
+        node.removeAttribute(attr.name);
+      }
+    }
+  });
+  return doc.body.innerHTML;
+}
+
+const sanitizedContent = computed(() =>
+  sanitizeMessageHtml(messageInfo.value?.content),
+);
 
 const [Modal, modalApi] = useVbenModal({
   onOpenChange: async (isOpen: boolean) => {
@@ -44,7 +75,7 @@ const [Modal, modalApi] = useVbenModal({
         }}
       </div>
       <Divider />
-      <div class="message__content" v-html="messageInfo?.content"></div>
+      <div class="message__content" v-html="sanitizedContent"></div>
     </div>
 
     <template #footer>

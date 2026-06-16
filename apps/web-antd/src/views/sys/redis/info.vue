@@ -3,6 +3,7 @@ import type { SysRedisVO } from '#/api';
 
 import { ref } from 'vue';
 
+import { AccessControl } from '@vben/access';
 import { JsonViewer, useVbenModal, VbenScrollbar } from '@vben/common-ui';
 
 import {
@@ -10,6 +11,7 @@ import {
   Descriptions,
   DescriptionsItem,
   message,
+  Popconfirm,
   Space,
 } from 'ant-design-vue';
 
@@ -71,17 +73,21 @@ const [Modal, modalApi] = useVbenModal({
     <template #footer>
       <Space>
         <ButtonClose @click="modalApi.close()" />
-        <Button
-          :loading="removeBtnLoading"
-          danger
-          type="primary"
-          @click.stop="handleRemove"
-        >
-          <template #icon>
-            <LucideTrash />
-          </template>
-          删除
-        </Button>
+        <AccessControl :codes="['sys:redis:remove']">
+          <Popconfirm
+            cancel-text="否"
+            ok-text="是"
+            title="确定要删除该缓存吗？删除后不可恢复。"
+            @confirm="handleRemove"
+          >
+            <Button :loading="removeBtnLoading" danger type="primary">
+              <template #icon>
+                <LucideTrash />
+              </template>
+              删除
+            </Button>
+          </Popconfirm>
+        </AccessControl>
       </Space>
     </template>
   </Modal>

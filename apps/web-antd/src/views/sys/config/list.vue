@@ -3,7 +3,7 @@ import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
 import type { SysConfig } from '#/api';
 
-import { useAccess } from '@vben/access';
+import { AccessControl, useAccess } from '@vben/access';
 import { Page, useVbenModal } from '@vben/common-ui';
 
 import { Button, Divider, message, Space } from 'ant-design-vue';
@@ -138,10 +138,12 @@ function handleReloadCache() {
             @success="handleSearch"
           />
 
-          <Button @click="handleReloadCache">
-            <template #icon> <LucideRefreshCw /> </template>
-            刷新缓存
-          </Button>
+          <AccessControl :codes="['sys:config:save']">
+            <Button @click="handleReloadCache">
+              <template #icon> <LucideRefreshCw /> </template>
+              刷新缓存
+            </Button>
+          </AccessControl>
 
           <Divider class="h-5" type="vertical" />
         </Space>

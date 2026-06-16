@@ -78,23 +78,20 @@ export const initColumns = (): VxeGridPropTypes.Columns => {
             unCheckedChildren: '已禁用',
             loading: row.pendingStatus,
             onChange: async (checked: boolean) => {
+              const previousStatus = row.status;
               row.pendingStatus = true;
-              await (checked
-                ? startSchedulerJobApi(row.id)
-                : pauseSchedulerJobApi(row.id));
-
-              const newStatus = checked ? '1' : '2';
-              row.status = newStatus;
-              message.success(`操作成功`);
-              if (
-                row.type === 'menu' && // 同时更新子级数据
-                row.children
-              ) {
-                row.children.forEach((item) => {
-                  item.status = newStatus;
-                });
+              try {
+                await (checked
+                  ? startSchedulerJobApi(row.id)
+                  : pauseSchedulerJobApi(row.id));
+                row.status = checked ? '1' : '2';
+                message.success(`操作成功`);
+              } catch (error) {
+                row.status = previousStatus;
+                message.error('操作失败，请稍后重试');
+              } finally {
+                row.pendingStatus = false;
               }
-              row.pendingStatus = false;
             },
           });
         },

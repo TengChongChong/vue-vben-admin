@@ -3,6 +3,7 @@ import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
 import type { SysQuickNavigation } from '#/api';
 
+import { AccessControl } from '@vben/access';
 import { Page, useVbenModal } from '@vben/common-ui';
 
 import { Button, Space } from 'ant-design-vue';
@@ -115,12 +116,14 @@ function handleSaveOrderNo() {
             :auth-codes="['sys:quick:navigation:save']"
             @click="handleCreate"
           />
-          <Button @click="handleSaveOrderNo" type="primary">
-            <template #icon>
-              <LucideSave />
-            </template>
-            保存排序
-          </Button>
+          <AccessControl :codes="['sys:quick:navigation:save']">
+            <Button @click="handleSaveOrderNo" type="primary">
+              <template #icon>
+                <LucideSave />
+              </template>
+              保存排序
+            </Button>
+          </AccessControl>
           <ButtonRemove
             :api="removeSysQuickNavigationApi"
             :auth-codes="['sys:quick:navigation:remove']"

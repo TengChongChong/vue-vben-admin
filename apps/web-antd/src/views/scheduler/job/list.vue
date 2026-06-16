@@ -153,32 +153,36 @@ async function handleOpenRunLogModal(id: string) {
             @success="handleSearch"
           />
 
-          <Popconfirm
-            cancel-text="否"
-            ok-text="是"
-            title="确定要全部开始吗？"
-            @confirm="handleStartAll()"
-          >
-            <Button danger type="primary">
-              <template #icon>
-                <LucideCirclePlay />
-              </template>
-              全部开始
-            </Button>
-          </Popconfirm>
-          <Popconfirm
-            cancel-text="否"
-            ok-text="是"
-            title="确定要全部暂停吗？"
-            @confirm="handlePauseAll()"
-          >
-            <Button danger type="primary">
-              <template #icon>
-                <LucideCirclePause />
-              </template>
-              全部暂停
-            </Button>
-          </Popconfirm>
+          <AccessControl :codes="['scheduler:job:save']">
+            <Popconfirm
+              cancel-text="否"
+              ok-text="是"
+              title="确定要全部开始吗？"
+              @confirm="handleStartAll()"
+            >
+              <Button danger type="primary">
+                <template #icon>
+                  <LucideCirclePlay />
+                </template>
+                全部开始
+              </Button>
+            </Popconfirm>
+          </AccessControl>
+          <AccessControl :codes="['scheduler:job:save']">
+            <Popconfirm
+              cancel-text="否"
+              ok-text="是"
+              title="确定要全部暂停吗？"
+              @confirm="handlePauseAll()"
+            >
+              <Button danger type="primary">
+                <template #icon>
+                  <LucideCirclePause />
+                </template>
+                全部暂停
+              </Button>
+            </Popconfirm>
+          </AccessControl>
 
           <Divider class="h-5" type="vertical" />
         </Space>
@@ -222,12 +226,14 @@ async function handleOpenRunLogModal(id: string) {
                   </MenuItem>
                 </Popconfirm>
               </AccessControl>
-              <MenuItem key="2" @click="handleOpenRunLogModal(row.id)">
-                <template #icon>
-                  <LucideLogs />
-                </template>
-                执行日志
-              </MenuItem>
+              <AccessControl :codes="['scheduler:job:select']">
+                <MenuItem key="2" @click="handleOpenRunLogModal(row.id)">
+                  <template #icon>
+                    <LucideLogs />
+                  </template>
+                  执行日志
+                </MenuItem>
+              </AccessControl>
             </Menu>
           </template>
         </Dropdown>

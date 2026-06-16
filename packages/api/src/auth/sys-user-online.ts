@@ -1,4 +1,5 @@
 import type { SysUserOnline } from '#/api/auth/model/sys-user-online-model';
+import type { Page } from '#/api/base/model/page-model';
 
 import { getRequestClient } from '../request-context';
 
@@ -10,8 +11,13 @@ const BASE_URL = '/auth/sys/online';
  *
  * @param params 查询条件
  */
-export function selectSysUserOnlineApi(params: SysUserOnline) {
-  return getRequestClient().get<SysUserOnline[]>(BASE_URL, { params });
+export function selectSysUserOnlineApi(
+  params: SysUserOnline,
+  page: Page<SysUserOnline>,
+) {
+  return getRequestClient().get<Page<SysUserOnline>>(BASE_URL, {
+    params: Object.assign(params, page),
+  });
 }
 
 /**

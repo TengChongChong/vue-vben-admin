@@ -1,9 +1,9 @@
-import type { SysUser } from '#/api/auth/model/sys-user-model';
+import type { SysUserVO } from '#/api/auth/model/sys-user-model';
 
 /**
  * 在线用户
  */
-export interface SysUserOnline extends SysUser {
+export interface SysUserOnline extends SysUserVO {
   /**
    * 设备
    */
@@ -20,6 +20,10 @@ export interface SysUserOnline extends SysUser {
    * 会话id（token）
    */
   sessionId: string;
+  /**
+   * token
+   */
+  token: string;
   /**
    * 回话状态
    */

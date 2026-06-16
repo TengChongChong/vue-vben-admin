@@ -9,7 +9,7 @@ import { ref } from 'vue';
 import { useVbenDrawer } from '@vben/common-ui';
 import { listToTree, treeToList } from '@vben/utils';
 
-import { Alert, Space, Tree } from 'ant-design-vue';
+import { Alert, message, Space, Tree } from 'ant-design-vue';
 
 import { saveSysDeptOrderApi, selectAllSysDeptApi } from '#/api';
 import { ButtonClose, ButtonSave } from '#/components/button';
@@ -40,20 +40,24 @@ async function handleSave() {
     emit('success');
     drawerApi.close();
   } catch (error) {
-    console.error('保存失败', error);
+    message.error('保存失败，请稍后重试');
   } finally {
     saveBtnLoading.value = false;
   }
 }
 
 const [Drawer, drawerApi] = useVbenDrawer({
-  onOpenChange(isOpen: boolean) {
+  async onOpenChange(isOpen: boolean) {
     if (isOpen) {
       drawerApi.setLoading(true);
-      selectAllSysDeptApi().then((res) => {
+      try {
+        const res = await selectAllSysDeptApi();
         treeData.value = listToTree(res);
-      });
-      drawerApi.setLoading(false);
+      } catch (error) {
+        message.error('加载部门数据失败，请稍后重试');
+      } finally {
+        drawerApi.setLoading(false);
+      }
     }
   },
 });

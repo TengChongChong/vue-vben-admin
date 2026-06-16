@@ -67,7 +67,12 @@ function filterMethodOption(input: string, option: { value: string }) {
 }
 
 async function loadBeanOptions(keyword = '') {
-  beanOptions.value = await selectSchedulerJobBeansApi(keyword);
+  try {
+    beanOptions.value = await selectSchedulerJobBeansApi(keyword);
+  } catch (error) {
+    beanOptions.value = [];
+    message.error('加载Bean列表失败，请稍后重试');
+  }
 }
 
 function handleBeanSearch(value: string) {
@@ -80,7 +85,7 @@ function handleBeanSearch(value: string) {
       beanOptions.value = [];
       return;
     }
-    loadBeanOptions(keyword);
+    void loadBeanOptions(keyword);
   }, 200);
 }
 
@@ -92,15 +97,21 @@ async function loadMethodOptions(bean: string) {
     }
     return;
   }
-  const data = await selectSchedulerJobMethodsApi(bean);
-  if (requestId === methodRequestId.value) {
-    methodOptions.value = data;
+  try {
+    const data = await selectSchedulerJobMethodsApi(bean);
+    if (requestId === methodRequestId.value) {
+      methodOptions.value = data;
+    }
+  } catch (error) {
+    if (requestId === methodRequestId.value) {
+      methodOptions.value = [];
+    }
+    message.error('加载方法列表失败，请稍后重试');
   }
 }
 
 async function handleBeanChange(value: unknown) {
-  const beanValue =
-    value == null || Array.isArray(value) ? '' : String(value);
+  const beanValue = value == null || Array.isArray(value) ? '' : String(value);
   if (beanValue === currentBean.value) {
     return;
   }
@@ -124,8 +135,7 @@ async function handleMethodSelect(value: unknown) {
   }
   const updates: Partial<SchedulerJob> = {
     method: option.method,
-    params:
-      option.params.length > 0 ? JSON.stringify(option.params) : '',
+    params: option.params.length > 0 ? JSON.stringify(option.params) : '',
   };
   await baseFormApi.setValues(updates);
 }
@@ -249,7 +259,7 @@ async function handleSubmit(callback: (res: SchedulerJob) => any) {
     emit('success');
     callback(res);
   } catch (error) {
-    console.error('保存失败', error);
+    message.error('保存失败，请稍后重试');
   } finally {
     saveBtnLoading.value = false;
   }
@@ -266,9 +276,13 @@ async function handleSaveAndAdd() {
     baseFormApi.resetForm();
     currentBean.value = '';
     methodOptions.value = [];
-    addSchedulerJobApi().then((res) => {
-      baseFormApi.setValues(res);
-    });
+    addSchedulerJobApi()
+      .then((res) => {
+        baseFormApi.setValues(res);
+      })
+      .catch(() => {
+        message.error('初始化新增表单失败，请稍后重试');
+      });
   });
 }
 
@@ -328,7 +342,7 @@ function handleSetCron({ key }: { key: number | string }) {
           <template #addonAfter>
             <Dropdown>
               <Button size="small" type="text">
-                常用Corn表达式
+                常用Cron表达式
                 <LucideChevronDown />
               </Button>
               <template #overlay>

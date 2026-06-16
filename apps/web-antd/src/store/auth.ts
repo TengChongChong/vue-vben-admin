@@ -1,6 +1,6 @@
 import type { UserInfo } from '@vben/types';
 
-import type { LoginAccountParams } from '#/api';
+import type { LoginAccountParams, LoginSmsParams } from '#/api';
 
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -13,7 +13,12 @@ import { HashingFactory } from '@vben/utils';
 import { notification } from 'ant-design-vue';
 import { defineStore } from 'pinia';
 
-import { getCurrentUserApi, loginAccountApi, logoutApi } from '#/api';
+import {
+  getCurrentUserApi,
+  loginAccountApi,
+  loginSmsApi,
+  logoutApi,
+} from '#/api';
 import { $t } from '#/locales';
 
 export const useAuthStore = defineStore('auth', () => {
@@ -76,6 +81,45 @@ export const useAuthStore = defineStore('auth', () => {
     };
   }
 
+  async function authLoginSms(
+    params: LoginSmsParams,
+    onSuccess?: () => Promise<void> | void,
+  ) {
+    let userInfo: null | UserInfo = null;
+    try {
+      loginLoading.value = true;
+      const { accessToken } = await loginSmsApi(params);
+      if (accessToken) {
+        accessStore.setAccessToken(accessToken);
+        userInfo = await fetchUserInfo();
+        userStore.setUserInfo(userInfo);
+
+        if (accessStore.loginExpired) {
+          accessStore.setLoginExpired(false);
+        } else {
+          onSuccess
+            ? await onSuccess?.()
+            : await router.push(
+                userInfo.homePath || preferences.app.defaultHomePath,
+              );
+        }
+
+        if (userInfo?.nickname) {
+          notification.success({
+            description: `${$t('authentication.loginSuccessDesc')}:${userInfo?.nickname}`,
+            duration: 3,
+            message: $t('authentication.loginSuccess'),
+          });
+        }
+      }
+    } finally {
+      loginLoading.value = false;
+    }
+    return {
+      userInfo,
+    };
+  }
+
   async function logout(redirect: boolean = true) {
     try {
       await logoutApi();
@@ -109,6 +153,7 @@ export const useAuthStore = defineStore('auth', () => {
   return {
     $reset,
     authLoginAccount,
+    authLoginSms,
     fetchUserInfo,
     loginLoading,
     logout,

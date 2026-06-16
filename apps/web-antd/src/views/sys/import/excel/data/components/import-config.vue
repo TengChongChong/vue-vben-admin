@@ -138,20 +138,21 @@ function matchSimilarColumn(title: string) {
     return;
   }
   let similarColumn: null | number = null;
+  const headerRow = importExcelColumns.value[startRow.value - 1];
+  const titleLowerCase = isString(title) ? title.toLowerCase() : `${title}`;
   // 1、字段与Excel中字段完全一致
-  importExcelColumns.value[startRow.value - 1].forEach((item, index) => {
+  headerRow.forEach((item, index) => {
     if (item === title) {
       similarColumn = index;
     }
   });
-  // 2、字段与Excel中部分文字一致
+  // 2、字段与Excel中部分文字一致（包含双向包含）
   if (similarColumn == null) {
-    importExcelColumns.value[startRow.value - 1].forEach((item, index) => {
+    headerRow.forEach((item, index) => {
       const itemLowerCase = isString(item) ? item.toLowerCase() : `${item}`;
-      const titleLowerCase = isString(title) ? title.toLowerCase() : `${title}`;
       if (
-        itemLowerCase.includes(itemLowerCase) ||
-        itemLowerCase.includes(titleLowerCase)
+        itemLowerCase.includes(titleLowerCase) ||
+        titleLowerCase.includes(itemLowerCase)
       ) {
         similarColumn = index;
       }

@@ -11,7 +11,7 @@ import type {
   UserInfo,
 } from '#/api';
 
-import { onMounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
 import { formatSize } from '@vben/utils';
@@ -41,12 +41,24 @@ const hostInfo = ref<HostInfo>();
 const runtimeInfo = ref<RuntimeInfo>();
 
 onMounted(() => {
-  loadData();
+  void loadData();
+  runtimeTimer = setInterval(() => {
+    void refreshRuntimeInfo();
+  }, 1000 * 10);
 });
 
-setInterval(async () => {
+onUnmounted(() => {
+  if (runtimeTimer) {
+    clearInterval(runtimeTimer);
+    runtimeTimer = null;
+  }
+});
+
+let runtimeTimer: null | ReturnType<typeof setInterval> = null;
+
+async function refreshRuntimeInfo() {
   runtimeInfo.value = await getRuntimeInfoApi();
-}, 1000 * 10);
+}
 
 async function loadData() {
   jvmSpecInfo.value = await getJvmSpecInfoApi();
@@ -57,7 +69,7 @@ async function loadData() {
   osInfo.value = await getOsInfoApi();
   userInfo.value = await getSysStatusUserInfoApi();
   hostInfo.value = await getHostInfoApi();
-  runtimeInfo.value = await getRuntimeInfoApi();
+  await refreshRuntimeInfo();
 }
 </script>
 

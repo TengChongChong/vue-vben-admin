@@ -76,7 +76,7 @@ function handleForceLogin(token: string) {
         <VbenAvatar
           :alt="row.nickname"
           :size="32"
-          :src="row.avatarUrl"
+          :src="row.avatarUrl || ''"
           class="mx-auto"
         />
       </template>
