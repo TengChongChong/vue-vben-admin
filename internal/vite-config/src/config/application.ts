@@ -63,13 +63,14 @@ function defineApplicationConfig(userConfigPromise?: DefineApplicationOptions) {
             assetFileNames: '[ext]/[name]-[hash].[ext]',
             chunkFileNames: 'js/[name]-[hash].js',
             entryFileNames: 'jse/index-[name]-[hash].js',
-            minify: isBuild
-              ? {
-                  compress: {
-                    dropDebugger: true,
-                  },
-                }
-              : false,
+            minify: false,
+            // minify: isBuild
+            //   ? {
+            //       compress: {
+            //         dropDebugger: true,
+            //       },
+            //     }
+            //   : false,
           },
         },
         target: 'es2015',

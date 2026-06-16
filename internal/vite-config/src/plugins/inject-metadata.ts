@@ -31,8 +31,8 @@ async function resolveMonorepoDependencies() {
   const manifest = await readWorkspaceManifest(findMonorepoRoot());
   const catalog = manifest?.catalog || {};
 
-  const resultDevDependencies: Record<string, string> = {};
-  const resultDependencies: Record<string, string> = {};
+  const resultDevDependencies: Record<string, string | undefined> = {};
+  const resultDependencies: Record<string, string | undefined> = {};
   const pkgsMeta: Record<string, string> = {};
 
   for (const { packageJson } of packages) {

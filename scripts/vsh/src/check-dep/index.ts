@@ -8,11 +8,8 @@ import { dirname, join } from 'node:path';
 import { execa } from '@vben/node-utils';
 
 const require = createRequire(import.meta.url);
-
-function resolveKnipCli(): string {
-  const knipMain = require.resolve('knip');
-  return join(dirname(knipMain), '..', 'bin', 'knip.js');
-}
+const knipMain = require.resolve('knip');
+const knipCli = join(dirname(knipMain), '..', 'bin', 'knip.js');
 
 const DEFAULT_CONFIG = {
   ignore: ['dist/**', 'docs/**', 'node_modules/**', 'public/**'],
@@ -101,7 +98,7 @@ async function runKnipCheck(): Promise<void> {
     await writeFile(configFile, JSON.stringify(DEFAULT_CONFIG));
 
     const args = [
-      resolveKnipCli(),
+      knipCli,
       '--config',
       configFile,
       '--include',

@@ -10,11 +10,11 @@ import { minify } from 'html-minifier-terser';
 
 const DEFAULT_PROVIDER = 'jspm.io';
 
-type pluginOptions = {
+type pluginOptions = GeneratorOptions & {
   debug?: boolean;
   defaultProvider?: 'esm.sh' | 'jsdelivr' | 'jspm.io';
   importmap?: Array<{ name: string; range?: string }>;
-} & GeneratorOptions;
+};
 
 // async function getLatestVersionOfShims() {
 //   const result = await fetch('https://ga.jspm.io/npm:es-module-shims');
@@ -80,7 +80,7 @@ async function viteImportMapPlugin(
   const firstLayerKeys = Object.keys(scopes);
   const inputMapScopes: string[] = [];
   firstLayerKeys.forEach((key) => {
-    inputMapScopes.push(...Object.keys(scopes[key]));
+    inputMapScopes.push(...Object.keys(scopes[key] || {}));
   });
   const inputMapImports = Object.keys(imports);
 
@@ -160,7 +160,10 @@ async function viteImportMapPlugin(
             options.defaultProvider || DEFAULT_PROVIDER,
           );
 
-          const resultHtml = await injectShimsToHtml(html, esModuleShimsSrc);
+          const resultHtml = await injectShimsToHtml(
+            html,
+            esModuleShimsSrc || '',
+          );
           html = await minify(resultHtml || html, {
             collapseWhitespace: true,
             minifyCSS: true,

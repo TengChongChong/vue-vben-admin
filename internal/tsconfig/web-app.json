@@ -3,9 +3,6 @@
   "display": "Web Application",
   "extends": "./web.json",
   "compilerOptions": {
-    "types": ["vite/client", "@vben/types/global"],
-    "paths": {
-      "#/api/*": ["../../packages/api/src/*"]
-    }
+    "types": ["vite/client", "@vben/types/global"]
   }
 }
