@@ -3,9 +3,10 @@ import type { StyleValue } from 'vue';
 
 import type { PageProps } from './types';
 
+import { computed, nextTick, onMounted, ref, useTemplateRef } from 'vue';
+
 import { CSS_VARIABLE_LAYOUT_CONTENT_HEIGHT } from '@vben-core/shared/constants';
 import { cn } from '@vben-core/shared/utils';
-import { computed, nextTick, onMounted, ref, useTemplateRef } from 'vue';
 
 defineOptions({
   name: 'Page',
@@ -55,7 +56,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="relative flex min-h-full flex-col">
+  <div class="relative flex h-full flex-col">
     <div
       v-if="
         description ||
@@ -91,7 +92,10 @@ onMounted(() => {
       </div>
     </div>
 
-    <div :class="cn('h-full p-4', contentClass)" :style="contentStyle">
+    <div
+      :class="cn(autoContentHeight ? 'h-full' : 'flex-1', 'p-4', contentClass)"
+      :style="contentStyle"
+    >
       <slot></slot>
     </div>
     <div
