@@ -3,7 +3,7 @@ import {
   definePreferencesExtension,
 } from '@vben/preferences';
 
-interface WebAntdPreferencesExtension {
+export interface WebAntdPreferencesExtension {
   defaultTableSize: number;
   enableFormFullscreen: boolean;
   reportTitle: string;

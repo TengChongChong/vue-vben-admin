@@ -34,8 +34,7 @@
   /* table */
   --vxe-ui-table-header-background-color: hsl(var(--accent));
   --vxe-ui-table-border-color: hsl(var(--border));
-
-  /* --vxe-ui-table-row-hover-background-color: hsl(var(--accent-hover)); */
+  --vxe-ui-table-row-hover-background-color: hsl(var(--accent-hover));
   --vxe-ui-table-row-striped-background-color: hsl(var(--accent) / 60%);
   --vxe-ui-table-row-hover-striped-background-color: hsl(var(--accent));
   --vxe-ui-table-row-radio-checked-background-color: hsl(var(--accent));
@@ -90,7 +89,7 @@
 
 .vxe-tools--operate {
   margin-right: 0.25rem;
-  margin-left: 0.25rem;
+  margin-left: 0.75rem;
 }
 
 .vxe-table-custom--checkbox-option:hover {
@@ -125,19 +124,5 @@
 
   .vxe-body--column {
     opacity: 0.9;
-  }
-}
-
-.vxe-table {
-  .vxe-cell--checkbox {
-    .vxe-checkbox--label {
-      display: none;
-    }
-  }
-
-  .vxe-cell {
-    .ant-tag {
-      margin: 0;
-    }
   }
 }

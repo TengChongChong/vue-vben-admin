@@ -2,19 +2,30 @@ import type { VxeTableGridOptions } from '@vben/plugins/vxe-table';
 
 import type { ComponentPropsMap, ComponentType } from './component';
 
+import type { WebAntdPreferencesExtension } from '#/preferences';
+
 import { h } from 'vue';
 
-import { formatToDate, formatToDuration } from '@vben/utils';
 import {
   setupVbenVxeTable,
   useVbenVxeGrid as useGrid,
 } from '@vben/plugins/vxe-table';
+import { getCustomPreferences } from '@vben/preferences';
+import { formatToDate, formatToDuration } from '@vben/utils';
 
 import { Button, Image } from 'ant-design-vue';
 
 import { DictTag } from '#/components/dict';
 
 import { useVbenForm } from './form';
+
+const { defaultTableSize } =
+  getCustomPreferences<WebAntdPreferencesExtension>();
+
+const basePageSizes = [10, 15, 20, 30, 40, 50, 100, 200];
+const pageSizes = [...new Set([...basePageSizes, defaultTableSize])].toSorted(
+  (a, b) => a - b,
+);
 
 setupVbenVxeTable({
   configVxeTable: (vxeUI) => {
@@ -80,9 +91,9 @@ setupVbenVxeTable({
         },
         pagerConfig: {
           // 每页大小
-          pageSize: 15,
+          pageSize: defaultTableSize,
           // 每页大小选项列表
-          pageSizes: [10, 15, 20, 30, 40, 50, 100, 200],
+          pageSizes,
         },
         // 列配置信息
         columnConfig: {

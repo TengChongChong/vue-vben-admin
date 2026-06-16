@@ -240,9 +240,7 @@ const options = computed(() => {
       {},
       mergedOptions.pagerConfig,
       {
-        pageSize: 20,
         background: true,
-        pageSizes: [10, 20, 30, 50, 100, 200],
         className: 'mt-2 w-full',
         layouts: isMobile.value ? mobileLayouts : layouts,
         size: 'mini' as const,
@@ -400,7 +398,7 @@ onUnmounted(() => {
       ref="gridRef"
       :class="
         cn(
-          'p-4',
+          'p-2',
           {
             'pt-0': showToolbar && !formOptions,
           },
@@ -493,7 +491,7 @@ onUnmounted(() => {
             :style="{
               ...(separatorBg ? { backgroundColor: separatorBg } : undefined),
             }"
-            class="absolute bottom-1 -left-4 z-100 h-2 w-[calc(100%+2rem)] overflow-hidden bg-background-deep md:bottom-2 md:h-3"
+            class="absolute bottom-1 -left-2 z-100 h-2 w-[calc(100%+1rem)] overflow-hidden bg-background-deep md:bottom-2 md:h-3"
           ></div>
         </div>
       </template>
