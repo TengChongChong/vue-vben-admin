@@ -18,7 +18,7 @@
  */
 'use strict';
 
-var KISBPM = KISBPM || {};
+const KISBPM = KISBPM || {};
 KISBPM.TOOLBAR_CONFIG = {
     "items" : [
         {

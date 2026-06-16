@@ -70,14 +70,14 @@ describe('Date', function () {
 
             // When time zone is missed, local offset should be used (ES 5.1 bug)
             // see https://bugs.ecmascript.org/show_bug.cgi?id=112
-            var tzOffset = Number(new Date(1970, 0));
+            const tzOffset = Number(new Date(1970, 0));
             // same as (new Date().getTimezoneOffset() * 60000)
             expect(Date.parse('1970-01-01T00:00:00')).toBe(tzOffset);             //tzOffset    0            0            0               NaN
         });
 
         it("should be able to coerce to a number", function(){
-            var actual = Number(new Date(1970, 0));
-            var expected = parseInt(actual, 10);
+            const actual = Number(new Date(1970, 0));
+            const expected = parseInt(actual, 10);
             expect(actual).toBeDefined();
             expect(actual).toEqual(expected);
             expect(isNaN(actual)).toBeFalsy();
@@ -86,11 +86,11 @@ describe('Date', function () {
     });
 
     describe("toString", function(){
-        var actual = (new Date(1970, 0)).toString();
+        let actual = (new Date(1970, 0)).toString();
         beforeEach(function(){
             actual = (new Date(1970, 0)).toString();
         });
-        it("should show correct date info for "+actual, function(){
+        it(`should show correct date info for ${actual}`, function(){
             expect(actual).toMatch(/1970/);
             expect(actual).toMatch(/jan/i);
             expect(actual).toMatch(/thu/i);
@@ -99,7 +99,7 @@ describe('Date', function () {
     });
 
     describe("valueOf", function(){
-        var actual = (new Date(1970, 0));
+        let actual = (new Date(1970, 0));
         beforeEach(function(){
             actual = (new Date(1970, 0)).valueOf();
         });
@@ -127,7 +127,7 @@ describe('Date', function () {
 
         // Opera 11.6x/12 bug
         it('should call toISOString', function () {
-          var date = new Date(0);
+          const date = new Date(0);
           date.toISOString = function () {
             return 1;
           };
@@ -135,7 +135,7 @@ describe('Date', function () {
         });
 
         it('should return null for not finite dates', function () {
-          var date = new Date(NaN),
+          let date = new Date(NaN),
               json;
           try {
             json = date.toJSON();
@@ -144,7 +144,7 @@ describe('Date', function () {
         });
 
         it('should return the isoString when stringified', function () {
-            var date = new Date();
+            const date = new Date();
             expect(JSON.stringify(date.toISOString())).toBe(JSON.stringify(date));
         }) 
     });

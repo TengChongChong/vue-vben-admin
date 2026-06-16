@@ -53,11 +53,13 @@ function handleClose() {
 
 const keys = useMagicKeys();
 const cmd = isWindowsOs() ? keys['ctrl+k'] : keys['cmd+k'];
-whenever(cmd!, () => {
-  if (props.enableShortcutKey) {
-    modalApi.open();
-  }
-});
+if (cmd) {
+  whenever(cmd, () => {
+    if (props.enableShortcutKey) {
+      modalApi.open();
+    }
+  });
+}
 
 whenever(open, () => {
   nextTick(() => {
@@ -98,7 +100,7 @@ onMounted(() => {
   <div>
     <Modal
       :fullscreen-button="false"
-      class="w-[600px]"
+      class="w-150"
       header-class="py-2 border-b"
     >
       <template #title>

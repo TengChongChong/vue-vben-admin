@@ -1,7 +1,7 @@
 describe('String', function() {
     "use strict";
     describe("trim", function() {
-        var test = "\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFFHello, World!\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF";
+        const test = "\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFFHello, World!\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028\u2029\uFEFF";
 
         it('trims all ES5 whitespace', function() {
             expect(test.trim()).toEqual("Hello, World!");
@@ -10,7 +10,7 @@ describe('String', function() {
     });
 
     describe("split", function() {
-        var test = "ab";
+        const test = "ab";
 
         it('If "separator" is undefined must return Array with one String - "this" string', function() {
             expect(test.split()).toEqual([test]);
@@ -191,10 +191,10 @@ describe('String', function() {
                 expect('.'.split(/(((((.??)))))/)).toEqual(['.']);
             });
             it("'a b c d'.split(/ /, -(Math.pow(2, 32) - 1)) results in ['a']", function () {
-                expect('a b c d'.split(/ /, -(Math.pow(2, 32) - 1))).toEqual(['a']);
+                expect('a b c d'.split(/ /, -(2 ** 32 - 1))).toEqual(['a']);
             });
             it("'a b c d'.split(/ /, Math.pow(2, 32) + 1) results in ['a']", function () {
-                expect('a b c d'.split(/ /, Math.pow(2, 32) + 1)).toEqual(['a']);
+                expect('a b c d'.split(/ /, 2 ** 32 + 1)).toEqual(['a']);
             });
             it("'a b c d'.split(/ /, Infinity) results in []", function () {
                 expect('a b c d'.split(/ /, Infinity)).toEqual([]);

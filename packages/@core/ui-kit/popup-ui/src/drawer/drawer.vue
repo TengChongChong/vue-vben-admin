@@ -185,11 +185,16 @@ const getForceMount = computed(() => {
     <SheetContent
       :append-to="getAppendTo"
       :class="
-        cn('flex w-[520px] flex-col', drawerClass, {
-          'w-full!': isMobile || placement === 'bottom' || placement === 'top',
-          'max-h-screen': placement === 'bottom' || placement === 'top',
-          hidden: isClosed,
-        })
+        cn(
+          'flex w-130 flex-col',
+          {
+            'w-full!':
+              isMobile || placement === 'bottom' || placement === 'top',
+            'max-h-screen': placement === 'bottom' || placement === 'top',
+            hidden: isClosed,
+          },
+          drawerClass,
+        )
       "
       :modal="modal"
       :open="state?.isOpen"
@@ -224,7 +229,7 @@ const getForceMount = computed(() => {
             v-if="closable && closeIconPlacement === 'left'"
             as-child
             :disabled="submitting"
-            class="ml-[2px] cursor-pointer rounded-full opacity-80 transition-opacity hover:opacity-100 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-secondary"
+            class="ml-0.5 cursor-pointer rounded-full opacity-80 transition-opacity hover:opacity-100 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-secondary"
           >
             <slot name="close-icon">
               <VbenIconButton>
@@ -265,7 +270,7 @@ const getForceMount = computed(() => {
             v-if="closable && closeIconPlacement === 'right'"
             as-child
             :disabled="submitting"
-            class="ml-[2px] cursor-pointer rounded-full opacity-80 transition-opacity hover:opacity-100 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-secondary"
+            class="ml-0.5 cursor-pointer rounded-full opacity-80 transition-opacity hover:opacity-100 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-secondary"
           >
             <slot name="close-icon">
               <VbenIconButton>

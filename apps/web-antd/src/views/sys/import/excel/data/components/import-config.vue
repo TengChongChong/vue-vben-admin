@@ -54,10 +54,10 @@ function initConfig() {
   if (!checkImportExcelTemplate()) {
     return;
   }
-  // @ts-ignore
+  // @ts-expect-error
   startRow.value = props.sysImportExcelTemplate.startRow!;
   // 系统预设导入规则
-  // @ts-ignore
+  // @ts-expect-error
   columns.value = props.sysImportExcelTemplate.detailList.map((item, index) => {
     return {
       title: `${getCellIndex(index)}.${item.title}`,
@@ -188,7 +188,7 @@ async function handleStepNext() {
       i < props.sysImportExcelTemplate?.detailList?.length!;
       i++
     ) {
-      // @ts-ignore
+      // @ts-expect-error
       const detail = props.sysImportExcelTemplate?.detailList[i]!;
       if (
         detail?.dataRequired &&

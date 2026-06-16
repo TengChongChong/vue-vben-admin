@@ -7,7 +7,7 @@ import { useAccess } from '@vben/access';
 import { Page } from '@vben/common-ui';
 import { resetAllStores, useUserStore } from '@vben/stores';
 
-import { Button, Card } from 'ant-design-vue';
+import { Button, Card } from 'antdv-next';
 
 import { useAuthStore } from '#/store';
 
@@ -32,11 +32,11 @@ const accessStore = useAuthStore();
 const router = useRouter();
 
 function roleButtonType(role: string) {
-  return userStore.userRoles.includes(role) ? 'primary' : 'default';
+  return userStore.roleCodeList.includes(role) ? 'primary' : 'default';
 }
 
 async function changeAccount(role: string) {
-  if (userStore.userRoles.includes(role)) {
+  if (userStore.roleCodeList.includes(role)) {
     return;
   }
 

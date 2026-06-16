@@ -480,7 +480,7 @@ onMounted(() => {
  */
 async function handleTableChange(table: string) {
   const values = (await baseFormApi.getValues()) as BasicsConfigModel;
-  // @ts-ignore
+  // @ts-expect-error
   if (values.dataSource && table) {
     getTableInfoApi(values.dataSource, table).then((info) => {
       tableInfo.value = info;

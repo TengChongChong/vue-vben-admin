@@ -125,7 +125,7 @@ export const useDictStore = defineStore('sys-dict', {
         }
         const dictArray = this.selectDictArray(dictType);
 
-        return getParentPath(dictArray, [code], code).reverse();
+        return getParentPath(dictArray, [code], code).toReversed();
       };
     },
 

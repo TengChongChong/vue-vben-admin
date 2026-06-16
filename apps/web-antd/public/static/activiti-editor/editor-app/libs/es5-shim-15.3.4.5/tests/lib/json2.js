@@ -166,7 +166,7 @@ if (!this.JSON) {
 
     function f(n) {
         // Format integers to have at least two digits.
-        return n < 10 ? '0' + n : n;
+        return n < 10 ? `0${  n}` : n;
     }
 
     if (typeof Date.prototype.toJSON !== 'function') {
@@ -174,12 +174,12 @@ if (!this.JSON) {
         Date.prototype.toJSON = function (key) {
 
             return isFinite(this.valueOf()) ?
-                   this.getUTCFullYear()   + '-' +
-                 f(this.getUTCMonth() + 1) + '-' +
-                 f(this.getUTCDate())      + 'T' +
-                 f(this.getUTCHours())     + ':' +
-                 f(this.getUTCMinutes())   + ':' +
-                 f(this.getUTCSeconds())   + 'Z' : null;
+                   `${this.getUTCFullYear()    }-${ 
+                 f(this.getUTCMonth() + 1)  }-${ 
+                 f(this.getUTCDate())       }T${ 
+                 f(this.getUTCHours())      }:${ 
+                 f(this.getUTCMinutes())    }:${ 
+                 f(this.getUTCSeconds())    }Z` : null;
         };
 
         String.prototype.toJSON =
@@ -189,7 +189,7 @@ if (!this.JSON) {
         };
     }
 
-    var cx = /[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
+    let cx = /[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
         escapable = /[\\\"\x00-\x1f\x7f-\x9f\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g,
         gap,
         indent,
@@ -214,19 +214,19 @@ if (!this.JSON) {
 
         escapable.lastIndex = 0;
         return escapable.test(string) ?
-            '"' + string.replace(escapable, function (a) {
+            `"${  string.replace(escapable, function (a) {
                 var c = meta[a];
                 return typeof c === 'string' ? c :
                     '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
-            }) + '"' :
-            '"' + string + '"';
+            })  }"` :
+            `"${  string  }"`;
     }
 
 
     function str(key, holder) {
 // Produce a string from holder[key].
 
-        var i,          // The loop counter.
+        let i,          // The loop counter.
             k,          // The member key.
             v,          // The member value.
             length,
@@ -302,10 +302,10 @@ if (!this.JSON) {
 // brackets.
 
                 v = partial.length === 0 ? '[]' :
-                    gap ? '[\n' + gap +
-                            partial.join(',\n' + gap) + '\n' +
-                                mind + ']' :
-                          '[' + partial.join(',') + ']';
+                    gap ? `[\n${  gap 
+                            }${partial.join(',\n' + gap)  }\n${ 
+                                mind  }]` :
+                          `[${  partial.join(',')  }]`;
                 gap = mind;
                 return v;
             }
@@ -341,8 +341,8 @@ if (!this.JSON) {
 // and wrap them in braces.
 
             v = partial.length === 0 ? '{}' :
-                gap ? '{\n' + gap + partial.join(',\n' + gap) + '\n' +
-                        mind + '}' : '{' + partial.join(',') + '}';
+                gap ? `{\n${  gap  }${partial.join(',\n' + gap)  }\n${ 
+                        mind  }}` : `{${  partial.join(',')  }}`;
             gap = mind;
             return v;
         }
@@ -358,7 +358,7 @@ if (!this.JSON) {
 // A default replacer method can be provided. Use of the space parameter can
 // produce text that is more easily readable.
 
-            var i;
+            let i;
             gap = '';
             indent = '';
 
@@ -402,14 +402,14 @@ if (!this.JSON) {
 // The parse method takes a text and an optional reviver function, and returns
 // a JavaScript value if the text is a valid JSON text.
 
-            var j;
+            let j;
 
             function walk(holder, key) {
 
 // The walk method is used to recursively walk the resulting structure so
 // that modifications can be made.
 
-                var k, v, value = holder[key];
+                let k, v, value = holder[key];
                 if (value && typeof value === 'object') {
                     for (k in value) {
                         if (Object.hasOwnProperty.call(value, k)) {
@@ -433,8 +433,8 @@ if (!this.JSON) {
             cx.lastIndex = 0;
             if (cx.test(text)) {
                 text = text.replace(cx, function (a) {
-                    return '\\u' +
-                        ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
+                    return `\\u${ 
+                        ('0000' + a.charCodeAt(0).toString(16)).slice(-4)}`;
                 });
             }
 
@@ -452,8 +452,8 @@ if (!this.JSON) {
 // ',' or ':' or '{' or '}'. If that is so, then the text is safe for eval.
 
             if (/^[\],:{}\s]*$/.
-test(text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, '@').
-replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
+test(text.replace(/\\(?:["\\/bfnrt]|u[0-9a-fA-F]{4})/g, '@').
+replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?/g, ']').
 replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
 
 // In the third stage we use the eval function to compile the text into a
@@ -461,7 +461,7 @@ replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
 // in JavaScript: it can begin a block or an object literal. We wrap the text
 // in parens to eliminate the ambiguity.
 
-                j = eval('(' + text + ')');
+                j = eval(`(${  text  })`);
 
 // In the optional fourth stage, we recursively walk the new structure, passing
 // each name/value pair to a reviver function for possible transformation.

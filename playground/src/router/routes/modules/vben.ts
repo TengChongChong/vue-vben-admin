@@ -10,11 +10,6 @@ import {
   VBEN_NAIVE_PREVIEW_URL,
   VBEN_TD_PREVIEW_URL,
 } from '@vben/constants';
-import {
-  SvgAntdvLogoIcon,
-  SvgAntdvNextLogoIcon,
-  SvgTDesignIcon,
-} from '@vben/icons';
 
 import { IFrameView } from '#/layouts';
 import { $t } from '#/locales';
@@ -56,7 +51,7 @@ const routes: RouteRecordRaw[] = [
         component: IFrameView,
         meta: {
           badgeType: 'dot',
-          icon: SvgAntdvLogoIcon,
+          icon: 'simple-icons:antdesign',
           link: VBEN_ANT_PREVIEW_URL,
           title: $t('demos.vben.antdv'),
         },
@@ -67,7 +62,7 @@ const routes: RouteRecordRaw[] = [
         component: IFrameView,
         meta: {
           badgeType: 'dot',
-          icon: SvgAntdvNextLogoIcon,
+          icon: 'svg:antdv-next',
           link: VBEN_ANTDV_NEXT_PREVIEW_URL,
           title: $t('demos.vben.antdv-next'),
         },
@@ -101,7 +96,7 @@ const routes: RouteRecordRaw[] = [
         component: IFrameView,
         meta: {
           badgeType: 'dot',
-          icon: SvgTDesignIcon,
+          icon: 'simple-icons:tencentqq',
           link: VBEN_TD_PREVIEW_URL,
           title: $t('demos.vben.tdesign'),
         },

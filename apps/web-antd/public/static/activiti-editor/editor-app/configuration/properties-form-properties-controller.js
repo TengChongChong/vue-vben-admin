@@ -21,7 +21,7 @@
  * Form Properties
  */
 
-var KisBpmFormPropertiesCtrl = [ '$scope', '$modal', '$timeout', '$translate', function($scope, $modal, $timeout, $translate) {
+const KisBpmFormPropertiesCtrl = [ '$scope', '$modal', '$timeout', '$translate', function($scope, $modal, $timeout, $translate) {
 
     // Config for the modal window
     var opts = {
@@ -33,7 +33,7 @@ var KisBpmFormPropertiesCtrl = [ '$scope', '$modal', '$timeout', '$translate', f
     $modal(opts);
 }];
 
-var KisBpmFormPropertiesPopupCtrl = ['$scope', '$q', '$translate', '$timeout', function($scope, $q, $translate, $timeout) {
+const KisBpmFormPropertiesPopupCtrl = ['$scope', '$q', '$translate', '$timeout', function($scope, $q, $translate, $timeout) {
 
     // Put json representing form properties on scope
     if ($scope.property.value !== undefined && $scope.property.value !== null

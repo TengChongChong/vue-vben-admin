@@ -4,10 +4,10 @@
 // Module systems magic dance
 (function (definition) {
     // RequireJS
-    if (typeof define == "function") {
+    if (typeof define === "function") {
         define(definition);
     // YUI3
-    } else if (typeof YUI == "function") {
+    } else if (typeof YUI === "function") {
         YUI.add("es5-sham", definition);
     // CommonJS and <script>
     } else {
@@ -16,16 +16,16 @@
 })(function () {
 
 
-var call = Function.prototype.call;
-var prototypeOfObject = Object.prototype;
-var owns = call.bind(prototypeOfObject.hasOwnProperty);
+const call = Function.prototype.call;
+const prototypeOfObject = Object.prototype;
+const owns = call.bind(prototypeOfObject.hasOwnProperty);
 
 // If JS engine supports accessors creating shortcuts.
-var defineGetter;
-var defineSetter;
-var lookupGetter;
-var lookupSetter;
-var supportsAccessors;
+let defineGetter;
+let defineSetter;
+let lookupGetter;
+let lookupSetter;
+let supportsAccessors;
 if ((supportsAccessors = owns(prototypeOfObject, "__defineGetter__"))) {
     defineGetter = call.bind(prototypeOfObject.__defineGetter__);
     defineSetter = call.bind(prototypeOfObject.__defineSetter__);
@@ -66,9 +66,9 @@ function doesGetOwnPropertyDescriptorWork(object) {
 //check whether getOwnPropertyDescriptor works if it's given. Otherwise,
 //shim partially.
 if (Object.defineProperty) {
-    var getOwnPropertyDescriptorWorksOnObject = 
+    const getOwnPropertyDescriptorWorksOnObject = 
         doesGetOwnPropertyDescriptorWork({});
-    var getOwnPropertyDescriptorWorksOnDom = typeof document == "undefined" ||
+    const getOwnPropertyDescriptorWorksOnDom = typeof document == "undefined" ||
     doesGetOwnPropertyDescriptorWork(document.createElement("div"));
     if (!getOwnPropertyDescriptorWorksOnDom || 
             !getOwnPropertyDescriptorWorksOnObject
@@ -78,10 +78,10 @@ if (Object.defineProperty) {
 }
 
 if (!Object.getOwnPropertyDescriptor || getOwnPropertyDescriptorFallback) {
-    var ERR_NON_OBJECT = "Object.getOwnPropertyDescriptor called on a non-object: ";
+    const ERR_NON_OBJECT = "Object.getOwnPropertyDescriptor called on a non-object: ";
 
     Object.getOwnPropertyDescriptor = function getOwnPropertyDescriptor(object, property) {
-        if ((typeof object != "object" && typeof object != "function") || object === null) {
+        if ((typeof object !== "object" && typeof object !== "function") || object === null) {
             throw new TypeError(ERR_NON_OBJECT + object);
         }
 
@@ -102,7 +102,7 @@ if (!Object.getOwnPropertyDescriptor || getOwnPropertyDescriptorFallback) {
 
         // If object has a property then it's for sure both `enumerable` and
         // `configurable`.
-        var descriptor =  { enumerable: true, configurable: true };
+        const descriptor =  { enumerable: true, configurable: true };
 
         // If JS engine supports accessor properties then property may be a
         // getter or setter.
@@ -112,11 +112,11 @@ if (!Object.getOwnPropertyDescriptor || getOwnPropertyDescriptorFallback) {
             // inherited getter. To avoid misbehavior we temporary remove
             // `__proto__` so that `__lookupGetter__` will return getter only
             // if it's owned by an object.
-            var prototype = object.__proto__;
+            const prototype = object.__proto__;
             object.__proto__ = prototypeOfObject;
 
-            var getter = lookupGetter(object, property);
-            var setter = lookupSetter(object, property);
+            const getter = lookupGetter(object, property);
+            const setter = lookupSetter(object, property);
 
             // Once we have getter and setter we can put values back.
             object.__proto__ = prototype;
@@ -155,9 +155,9 @@ if (!Object.getOwnPropertyNames) {
 if (!Object.create) {
 
     // Contributed by Brandon Benvie, October, 2012
-    var createEmpty;
-    var supportsProto = Object.prototype.__proto__ === null;
-    if (supportsProto || typeof document == 'undefined') {
+    let createEmpty;
+    const supportsProto = Object.prototype.__proto__ === null;
+    if (supportsProto || typeof document === 'undefined') {
         createEmpty = function () {
             return { "__proto__": null };
         };
@@ -168,12 +168,12 @@ if (!Object.create) {
         // object and *steal* its Object.prototype and strip it bare. This is
         // used as the prototype to create nullary objects.
         createEmpty = function () {
-            var iframe = document.createElement('iframe');
-            var parent = document.body || document.documentElement;
+            let iframe = document.createElement('iframe');
+            const parent = document.body || document.documentElement;
             iframe.style.display = 'none';
             parent.appendChild(iframe);
             iframe.src = 'javascript:';
-            var empty = iframe.contentWindow.Object.prototype;
+            const empty = iframe.contentWindow.Object.prototype;
             parent.removeChild(iframe);
             iframe = null;
             delete empty.constructor;
@@ -197,7 +197,7 @@ if (!Object.create) {
 
     Object.create = function create(prototype, properties) {
 
-        var object;
+        let object;
         function Type() {}  // An empty constructor.
 
         if (prototype === null) {
@@ -252,8 +252,8 @@ function doesDefinePropertyWork(object) {
 // check whether defineProperty works if it's given. Otherwise,
 // shim partially.
 if (Object.defineProperty) {
-    var definePropertyWorksOnObject = doesDefinePropertyWork({});
-    var definePropertyWorksOnDom = typeof document == "undefined" ||
+    const definePropertyWorksOnObject = doesDefinePropertyWork({});
+    const definePropertyWorksOnDom = typeof document == "undefined" ||
         doesDefinePropertyWork(document.createElement("div"));
     if (!definePropertyWorksOnObject || !definePropertyWorksOnDom) {
         var definePropertyFallback = Object.defineProperty,
@@ -262,16 +262,16 @@ if (Object.defineProperty) {
 }
 
 if (!Object.defineProperty || definePropertyFallback) {
-    var ERR_NON_OBJECT_DESCRIPTOR = "Property description must be an object: ";
-    var ERR_NON_OBJECT_TARGET = "Object.defineProperty called on non-object: "
-    var ERR_ACCESSORS_NOT_SUPPORTED = "getters & setters can not be defined " +
+    const ERR_NON_OBJECT_DESCRIPTOR = "Property description must be an object: ";
+    const ERR_NON_OBJECT_TARGET = "Object.defineProperty called on non-object: "
+    const ERR_ACCESSORS_NOT_SUPPORTED = "getters & setters can not be defined " +
                                       "on this javascript engine";
 
     Object.defineProperty = function defineProperty(object, property, descriptor) {
-        if ((typeof object != "object" && typeof object != "function") || object === null) {
+        if ((typeof object !== "object" && typeof object !== "function") || object === null) {
             throw new TypeError(ERR_NON_OBJECT_TARGET + object);
         }
-        if ((typeof descriptor != "object" && typeof descriptor != "function") || descriptor === null) {
+        if ((typeof descriptor !== "object" && typeof descriptor !== "function") || descriptor === null) {
             throw new TypeError(ERR_NON_OBJECT_DESCRIPTOR + descriptor);
         }
         // make a valiant attempt to use the real defineProperty
@@ -308,7 +308,7 @@ if (!Object.defineProperty || definePropertyFallback) {
                 // `__proto__` we can safely override `__proto__` while defining
                 // a property to make sure that we don't hit an inherited
                 // accessor.
-                var prototype = object.__proto__;
+                const prototype = object.__proto__;
                 object.__proto__ = prototypeOfObject;
                 // Deleting a property anyway since getter / setter may be
                 // defined on object itself.
@@ -348,7 +348,7 @@ if (!Object.defineProperties || definePropertiesFallback) {
             }
         }
 
-        for (var property in properties) {
+        for (let property in properties) {
             if (owns(properties, property) && property != "__proto__") {
                 Object.defineProperty(object, property, properties[property]);
             }
@@ -385,7 +385,7 @@ try {
 } catch (exception) {
     Object.freeze = (function freeze(freezeObject) {
         return function freeze(object) {
-            if (typeof object == "function") {
+            if (typeof object === "function") {
                 return object;
             } else {
                 return freezeObject(object);
@@ -430,12 +430,12 @@ if (!Object.isExtensible) {
             throw new TypeError(); // TODO message
         }
         // 2. Return the Boolean value of the [[Extensible]] internal property of O.
-        var name = '';
+        let name = '';
         while (owns(object, name)) {
             name += '?';
         }
         object[name] = true;
-        var returnValue = owns(object, name);
+        const returnValue = owns(object, name);
         delete object[name];
         return returnValue;
     };

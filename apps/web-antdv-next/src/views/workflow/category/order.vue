@@ -81,7 +81,7 @@ function setProps(
 function onDrop(info: AntTreeNodeDropEvent) {
   const dropKey = info.node.key;
   const dragKey = info.dragNode.key;
-  // @ts-ignore
+  // @ts-expect-error
   const dropPos = info.node.pos.split('-');
   const dropPosition = info.dropPosition - Number(dropPos[dropPos.length - 1]);
   const loop = (
@@ -89,7 +89,7 @@ function onDrop(info: AntTreeNodeDropEvent) {
     key: number | string,
     callback: any,
   ) => {
-    // @ts-ignore
+    // @ts-expect-error
     data.forEach((item, index) => {
       if (item.key === key) {
         return callback(item, index, data);
@@ -99,7 +99,7 @@ function onDrop(info: AntTreeNodeDropEvent) {
       }
     });
   };
-  // @ts-ignore
+  // @ts-expect-error
   const data = [...treeData.value];
 
   // Find dragObject
@@ -108,7 +108,7 @@ function onDrop(info: AntTreeNodeDropEvent) {
     data,
     dragKey,
     (item: TreeDataItem, index: number, arr: TreeProps['treeData']) => {
-      // @ts-ignore
+      // @ts-expect-error
       arr.splice(index, 1);
       dragObj = item;
     },
@@ -142,10 +142,10 @@ function onDrop(info: AntTreeNodeDropEvent) {
       },
     );
     if (dropPosition === -1) {
-      // @ts-ignore
+      // @ts-expect-error
       ar.splice(i, 0, dragObj);
     } else {
-      // @ts-ignore
+      // @ts-expect-error
       ar.splice(i + 1, 0, dragObj);
     }
   }

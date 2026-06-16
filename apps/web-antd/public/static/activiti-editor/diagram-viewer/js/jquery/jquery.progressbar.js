@@ -93,7 +93,7 @@ $.ProgressBar.prototype = {
 	},
 
 	_value: function() {
-		var val = this.options.value;
+		let val = this.options.value;
 		// normalize invalid value
 		if ( typeof val !== "number" ) {
 			val = 0;
@@ -106,7 +106,7 @@ $.ProgressBar.prototype = {
 	},
 
 	_refreshValue: function() {
-		var value = this.value(),
+		const value = this.value(),
 			percentage = this._percentage();
 
 		if ( this.oldValue !== value ) {
@@ -117,7 +117,7 @@ $.ProgressBar.prototype = {
 		this.valueDiv
 			.toggle( value > this.min )
 			.toggleClass( "ui-corner-right", value === this.options.max )
-			.width( percentage.toFixed(0) + "%" );
+			.width( `${percentage.toFixed(0)  }%` );
 		this.element.attr( "aria-valuenow", value );
 		
 		//$(this.element).find(".ui-progressbar-label").html(value + "%");

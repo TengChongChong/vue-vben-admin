@@ -20,8 +20,8 @@
 angular.module('activitiModeler').controller('ActivitiMessageRefCtrl', [ '$scope', function($scope) {
 
     // Find the parent shape on which the message definitions are defined
-    var messageDefinitionsProperty = undefined;
-    var parent = $scope.selectedShape;
+    let messageDefinitionsProperty = undefined;
+    let parent = $scope.selectedShape;
     while (parent !== null && parent !== undefined && messageDefinitionsProperty === undefined) {
         if (parent.properties && parent.properties['oryx-messagedefinitions']) {
             messageDefinitionsProperty = parent.properties['oryx-messagedefinitions'];
@@ -32,7 +32,7 @@ angular.module('activitiModeler').controller('ActivitiMessageRefCtrl', [ '$scope
 
     try {
         messageDefinitionsProperty = JSON.parse(messageDefinitionsProperty);
-        if (typeof messageDefinitionsProperty == 'string') {
+        if (typeof messageDefinitionsProperty === 'string') {
             messageDefinitionsProperty = JSON.parse(messageDefinitionsProperty);
         }
     } catch (err) {

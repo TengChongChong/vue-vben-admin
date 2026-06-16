@@ -4,7 +4,7 @@
  * @author Dmitry Farafonov
  */
  
-var ANCHOR_TYPE= {
+const ANCHOR_TYPE= {
 	main: "main",
 	middle: "middle",
 	first: "first",
@@ -66,7 +66,7 @@ Polyline.prototype = {
 	closePath: false,
 	
 	init: function(points){
-		var linesCount = this.getLinesCount();
+		const linesCount = this.getLinesCount();
 		if (linesCount < 1)
 			return;
 			
@@ -76,8 +76,8 @@ Polyline.prototype = {
 		
 		this.pushAnchor(ANCHOR_TYPE.first, this.getLine(0).x1, this.getLine(0).y1);
 		
-		for(var i = 1; i < linesCount; i++){
-			var line1 = this.getLine(i-1),
+		for(let i = 1; i < linesCount; i++){
+			const line1 = this.getLine(i-1),
 				line2 = this.getLine(i);
 			
 			//this.pushAnchor(ANCHOR_TYPE.middle, line1.x1 + line1.x2-line1.x1, line1.y1 + line1.y2-line1.y1);
@@ -91,7 +91,7 @@ Polyline.prototype = {
 	},
 	
 	normalizeCoordinates: function(){
-		for(var i=0; i < this.points.length; i++){
+		for(let i=0; i < this.points.length; i++){
 			this.points[i].x = parseFloat(this.points[i].x);
 			this.points[i].y = parseFloat(this.points[i].y);
 		}
@@ -104,25 +104,25 @@ Polyline.prototype = {
 		return {x1: this.points[i].x, y1: this.points[i].y, x2: this.points[i+1].x, y2: this.points[i+1].y};
 	},
 	getLine: function(i){
-		var line = this._getLine(i);
+		const line = this._getLine(i);
 		line.angle = this.getLineAngle(i) ;
 		return line;
 	},
 	getLineAngle: function(i){
-		var line = this._getLine(i);
+		const line = this._getLine(i);
 		return Math.atan2(line.y2 - line.y1, line.x2 - line.x1);
 	},
 	getLineLengthX: function(i){
-		var line = this.getLine(i);
+		const line = this.getLine(i);
 		return (line.x2 - line.x1);
 	},
 	getLineLengthY: function(i){
-		var line = this.getLine(i);
+		const line = this.getLine(i);
 		return (line.y2 - line.y1);
 	},
 	getLineLength: function(i){
-		var line = this.getLine(i);
-		return Math.sqrt(Math.pow(this.getLineLengthX(i), 2) + Math.pow(this.getLineLengthY(i), 2));
+		const line = this.getLine(i);
+		return Math.sqrt(this.getLineLengthX(i) ** 2 + this.getLineLengthY(i) ** 2);
 	},
 	
 	getAnchors: function(){
@@ -134,9 +134,9 @@ Polyline.prototype = {
 		if (!type)
 			return this.anchors.length;
 		else {
-			var count = 0;
-			for(var i=0; i < this.getAnchorsCount(); i++){
-				var anchor = this.anchors[i];
+			let count = 0;
+			for(let i=0; i < this.getAnchorsCount(); i++){
+				const anchor = this.anchors[i];
 				if (anchor.getType() == type) {
 					count++;
 				}
@@ -157,7 +157,7 @@ Polyline.prototype = {
 		} else {
 			// ��������� anchors, �������� ������� ��� �������, ������� � index
 			//var anchor = this.getAnchor()
-			for(var i=0; i < this.getAnchorsCount(); i++){
+			for(let i=0; i < this.getAnchorsCount(); i++){
 				var anchor = this.anchors[i];
 				if (anchor.index > index) {
 					anchor.index++;
@@ -166,7 +166,7 @@ Polyline.prototype = {
 			}
 		}
 		
-		var anchor = new Anchor(this.id, ANCHOR_TYPE.main, x, y, index, typeIndex);
+		const anchor = new Anchor(this.id, ANCHOR_TYPE.main, x, y, index, typeIndex);
 		
 		this.anchors.push(anchor);
 	},
@@ -181,8 +181,8 @@ Polyline.prototype = {
 		if (type == ANCHOR_TYPE.last)
 			return this.anchors[this.getAnchorsCount()-1];
 		
-		for(var i=0; i < this.getAnchorsCount(); i++){
-			var anchor = this.anchors[i];
+		for(let i=0; i < this.getAnchorsCount(); i++){
+			const anchor = this.anchors[i];
 			if (anchor.type == type) {
 				if( position == anchor.position)
 					return anchor;
@@ -193,8 +193,8 @@ Polyline.prototype = {
 	
 	addNewPoint: function(position, x, y){
 		// 
-		for(var i = 0; i < this.getLinesCount(); i++){
-			var line = this.getLine(i);
+		for(let i = 0; i < this.getLinesCount(); i++){
+			const line = this.getLine(i);
 			if (x > line.x1 && x < line.x2 && y > line.y1 && y < line.y2) {
 				this.points.splice(i+1,0,{x: x, y: y});
 				break;
@@ -205,12 +205,12 @@ Polyline.prototype = {
 	},
 	
 	rebuildPath: function(){
-		var path = [];
+		const path = [];
 		
-		for(var i = 0; i < this.getAnchorsCount(); i++){
-			var anchor = this.getAnchor(i);
+		for(let i = 0; i < this.getAnchorsCount(); i++){
+			const anchor = this.getAnchor(i);
 			
-			var pathType = ""
+			let pathType = ""
 			if (i==0)
 				pathType = "M";
 			else 
@@ -218,10 +218,10 @@ Polyline.prototype = {
 			
 // TODO: save previous points and calculate new path just if points are updated, and then save currents values as previous
 			
-			var targetX = anchor.x, targetY = anchor.y;
+			let targetX = anchor.x, targetY = anchor.y;
 			if (i>0 && i < this.getAnchorsCount()-1) {
 				// get new x,y
-				var cx = anchor.x, cy = anchor.y;
+				const cx = anchor.x, cy = anchor.y;
 				
 				// pivot point of prev line
 				var AO = this.getLineLength(i-1);
@@ -232,8 +232,8 @@ Polyline.prototype = {
 				this.isDefaultConditionAvailable = (this.isDefaultConditionAvailable || (i == 1 && AO > 10));
 				//console.log("isDefaultConditionAvailable", this.isDefaultConditionAvailable);
 				
-				var ED = this.getLineLengthY(i-1) * this.radius / AO;
-				var OD = this.getLineLengthX(i-1) * this.radius / AO;
+				const ED = this.getLineLengthY(i-1) * this.radius / AO;
+				const OD = this.getLineLengthX(i-1) * this.radius / AO;
 					targetX = anchor.x - OD;
 					targetY = anchor.y - ED;
 				
@@ -247,10 +247,10 @@ Polyline.prototype = {
 				if (AO < this.radius) {
 					AO = this.radius;
 				}
-				var ED = this.getLineLengthY(i) * this.radius / AO;
-				var OD = this.getLineLengthX(i) * this.radius / AO;
-					var nextSrcX = anchor.x + OD;
-					var nextSrcY = anchor.y + ED;
+				const ED = this.getLineLengthY(i) * this.radius / AO;
+				const OD = this.getLineLengthX(i) * this.radius / AO;
+					let nextSrcX = anchor.x + OD;
+					let nextSrcY = anchor.y + ED;
 					
 				if (AO < 2*this.radius && i<this.getAnchorsCount()-2) {
 					nextSrcX = anchor.x + this.getLineLengthX(i)/2;
@@ -271,13 +271,13 @@ Polyline.prototype = {
 					zx=nextSrcX, zy=nextSrcY;
 					
 				if (this.showDetails) {
-					var c = ProcessDiagramCanvas.g.path("M"+targetX+","+targetY+"L"+ax+","+ay).attr({stroke: Color.get(255, 153, 51), "stroke-dasharray": "- "});
-					var c = ProcessDiagramCanvas.g.path("M"+nextSrcX+","+nextSrcY+"L"+bx+","+by).attr({stroke: Color.get(255, 153, 51), "stroke-dasharray": "- "});
-					var c = ProcessDiagramCanvas.g.ellipse(ax, ay, 2, 2).attr({stroke: Color.SlateGrey});
-					var c = ProcessDiagramCanvas.g.ellipse(bx, by, 2, 2).attr({stroke: Color.SlateGrey});
-					var c = ProcessDiagramCanvas.g.ellipse(cx, cy, this.radius, this.radius).attr({stroke: Color.Gainsboro});
-					var c = ProcessDiagramCanvas.g.ellipse(targetX, targetY, 2, 2).attr({fill: Color.red});
-					var c = ProcessDiagramCanvas.g.ellipse(nextSrcX, nextSrcY, 2, 2).attr({fill: Color.red});
+					const c = ProcessDiagramCanvas.g.path("M"+targetX+","+targetY+"L"+ax+","+ay).attr({stroke: Color.get(255, 153, 51), "stroke-dasharray": "- "});
+					const c = ProcessDiagramCanvas.g.path("M"+nextSrcX+","+nextSrcY+"L"+bx+","+by).attr({stroke: Color.get(255, 153, 51), "stroke-dasharray": "- "});
+					const c = ProcessDiagramCanvas.g.ellipse(ax, ay, 2, 2).attr({stroke: Color.SlateGrey});
+					const c = ProcessDiagramCanvas.g.ellipse(bx, by, 2, 2).attr({stroke: Color.SlateGrey});
+					const c = ProcessDiagramCanvas.g.ellipse(cx, cy, this.radius, this.radius).attr({stroke: Color.Gainsboro});
+					const c = ProcessDiagramCanvas.g.ellipse(targetX, targetY, 2, 2).attr({fill: Color.red});
+					const c = ProcessDiagramCanvas.g.ellipse(nextSrcX, nextSrcY, 2, 2).attr({fill: Color.red});
 				}
 			} else if (i==1 && this.getAnchorsCount() == 2){
 				var AO = this.getLineLength(i-1);
@@ -348,24 +348,24 @@ function Polygone(points, strokeWidth) {
  * Poligone is inherited from Poliline: draws closedPath of polyline
  */
 
-var Foo = function () { };
+const Foo = function () { };
 Foo.prototype = Polyline.prototype;
 
 Polygone.prototype = new Foo();
 
 Polygone.prototype.rebuildPath = function(){
-	var path = [];
+	const path = [];
 	//console.log("Polygone rebuildPath");
-	for(var i = 0; i < this.getAnchorsCount(); i++){
-		var anchor = this.getAnchor(i);
+	for(let i = 0; i < this.getAnchorsCount(); i++){
+		const anchor = this.getAnchor(i);
 		
-		var pathType = ""
+		let pathType = ""
 		if (i==0)
 			pathType = "M";
 		else 
 			pathType = "L";
 		
-		var targetX = anchor.x, targetY = anchor.y;
+		let targetX = anchor.x, targetY = anchor.y;
 		
 		// anti smoothing
 		if (this.strokeWidth%2 == 1) {

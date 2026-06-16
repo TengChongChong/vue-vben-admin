@@ -38,10 +38,10 @@ angular.module('activitiModeler')
       /* Build stencil item list */
 
       // Build simple json representation of stencil set
-      var stencilItemGroups = []
+      const stencilItemGroups = []
 
       // Helper method: find a group in an array
-      var findGroup = function (name, groupArray) {
+      const findGroup = function (name, groupArray) {
         for (var index = 0; index < groupArray.length; index++) {
           if (groupArray[index].name === name) {
             return groupArray[index]
@@ -51,14 +51,14 @@ angular.module('activitiModeler')
       }
 
       // Helper method: add a new group to an array of groups
-      var addGroup = function (groupName, groupArray) {
+      const addGroup = function (groupName, groupArray) {
         var group = { name: groupName, items: [], paletteItems: [], groups: [], visible: true }
         groupArray.push(group)
         return group
       }
 
-      var headers = {}
-      var token = EDITOR.UTIL.getParameterByName('token')
+      const headers = {}
+      let token = EDITOR.UTIL.getParameterByName('token')
       token = token && token.replace(/^"|"$/g, '')
       headers[$rootScope.config.token] = token
 
@@ -66,33 +66,33 @@ angular.module('activitiModeler')
        StencilSet items
        */
       $http({ method: 'GET', url: KISBPM.URL.getStencilSet(), headers }).success(function (data, status, headers, config) {
-        var quickMenuDefinition = ['UserTask', 'EndNoneEvent', 'ExclusiveGateway',
+        const quickMenuDefinition = ['UserTask', 'EndNoneEvent', 'ExclusiveGateway',
           'CatchTimerEvent', 'ThrowNoneEvent', 'TextAnnotation',
           'SequenceFlow', 'Association']
-        var ignoreForPaletteDefinition = ['SequenceFlow', 'MessageFlow', 'Association', 'DataAssociation', 'DataStore', 'SendTask']
-        var quickMenuItems = []
+        const ignoreForPaletteDefinition = ['SequenceFlow', 'MessageFlow', 'Association', 'DataAssociation', 'DataStore', 'SendTask']
+        const quickMenuItems = []
 
-        var morphRoles = []
+        const morphRoles = []
         for (var i = 0; i < data.rules.morphingRules.length; i++) {
-          var role = data.rules.morphingRules[i].role
-          var roleItem = { 'role': role, 'morphOptions': [] }
+          const role = data.rules.morphingRules[i].role
+          const roleItem = { 'role': role, 'morphOptions': [] }
           morphRoles.push(roleItem)
         }
 
         // Check all received items
-        for (var stencilIndex = 0; stencilIndex < data.stencils.length; stencilIndex++) {
+        for (let stencilIndex = 0; stencilIndex < data.stencils.length; stencilIndex++) {
           // Check if the root group is the 'diagram' group. If so, this item should not be shown.
-          var currentGroupName = data.stencils[stencilIndex].groups[0]
+          const currentGroupName = data.stencils[stencilIndex].groups[0]
           if (currentGroupName === 'Diagram' || currentGroupName === 'Form') {
             continue // go to next item
           }
 
-          var removed = false
+          let removed = false
           if (data.stencils[stencilIndex].removed) {
             removed = true
           }
 
-          var currentGroup = undefined
+          let currentGroup = undefined
           if (!removed) {
             // Check if this group already exists. If not, we create a new one
 
@@ -103,9 +103,9 @@ angular.module('activitiModeler')
               }
 
               // Add all child groups (if any)
-              for (var groupIndex = 1; groupIndex < data.stencils[stencilIndex].groups.length; groupIndex++) {
-                var childGroupName = data.stencils[stencilIndex].groups[groupIndex]
-                var childGroup = findGroup(childGroupName, currentGroup.groups)
+              for (let groupIndex = 1; groupIndex < data.stencils[stencilIndex].groups.length; groupIndex++) {
+                const childGroupName = data.stencils[stencilIndex].groups[groupIndex]
+                let childGroup = findGroup(childGroupName, currentGroup.groups)
                 if (childGroup === null) {
                   childGroup = addGroup(childGroupName, currentGroup.groups)
                 }
@@ -118,7 +118,7 @@ angular.module('activitiModeler')
           }
 
           // Construct the stencil item
-          var stencilItem = {
+          const stencilItem = {
             'id': data.stencils[stencilIndex].id,
             'name': data.stencils[stencilIndex].title,
             'description': data.stencils[stencilIndex].description,
@@ -148,14 +148,14 @@ angular.module('activitiModeler')
           }
 
           for (var i = 0; i < data.stencils[stencilIndex].roles.length; i++) {
-            var stencilRole = data.stencils[stencilIndex].roles[i]
+            const stencilRole = data.stencils[stencilIndex].roles[i]
             if (stencilRole === 'sequence_start') {
               stencilItem.canConnect = true
             } else if (stencilRole === 'sequence_end') {
               stencilItem.canConnectTo = true
             }
 
-            for (var j = 0; j < morphRoles.length; j++) {
+            for (let j = 0; j < morphRoles.length; j++) {
               if (stencilRole === morphRoles[j].role) {
                 if (!removed) {
                   morphRoles[j].morphOptions.push(stencilItem)
@@ -188,15 +188,15 @@ angular.module('activitiModeler')
 
         $scope.stencilItemGroups = stencilItemGroups
 
-        var containmentRules = []
+        const containmentRules = []
         for (var i = 0; i < data.rules.containmentRules.length; i++) {
-          var rule = data.rules.containmentRules[i]
+          const rule = data.rules.containmentRules[i]
           containmentRules.push(rule)
         }
         $scope.containmentRules = containmentRules
 
         // remove quick menu items which are not available anymore due to custom pallette
-        var availableQuickMenuItems = []
+        const availableQuickMenuItems = []
         for (var i = 0; i < quickMenuItems.length; i++) {
           if (quickMenuItems[i]) {
             availableQuickMenuItems[availableQuickMenuItems.length] = quickMenuItems[i]
@@ -206,22 +206,22 @@ angular.module('activitiModeler')
         $scope.quickMenuItems = availableQuickMenuItems
         $scope.morphRoles = morphRoles
       }).error(function (data, status, headers, config) {
-        console.log('Something went wrong when fetching stencil items:' + JSON.stringify(data))
+        console.log(`Something went wrong when fetching stencil items:${  JSON.stringify(data)}`)
       })
 
       /*
        * Listen to selection change events: show properties
        */
       $scope.editor.registerOnEvent(ORYX.CONFIG.EVENT_SELECTION_CHANGED, function (event) {
-        var shapes = event.elements
-        var canvasSelected = false
+        let shapes = event.elements
+        let canvasSelected = false
         if (shapes && shapes.length == 0) {
           shapes = [$scope.editor.getCanvas()]
           canvasSelected = true
         }
         if (shapes && shapes.length > 0) {
-          var selectedShape = shapes.first()
-          var stencil = selectedShape.getStencil()
+          const selectedShape = shapes.first()
+          const stencil = selectedShape.getStencil()
 
           if ($rootScope.selectedElementBeforeScrolling && stencil.id().indexOf('BPMNDiagram') !== -1) {
             // ignore canvas event because of empty selection when scrolling stops
@@ -247,7 +247,7 @@ angular.module('activitiModeler')
             }
           }
 
-          var selectedItem = { 'title': '', 'properties': [] }
+          const selectedItem = { 'title': '', 'properties': [] }
 
           if (canvasSelected) {
             selectedItem.auditData = {
@@ -257,24 +257,24 @@ angular.module('activitiModeler')
           }
 
           // Gather properties of selected item
-          var properties = stencil.properties()
-          for (var i = 0; i < properties.length; i++) {
-            var property = properties[i]
+          const properties = stencil.properties()
+          for (let i = 0; i < properties.length; i++) {
+            const property = properties[i]
             if (property.popular() == false) continue
-            var key = property.prefix() + '-' + property.id()
+            const key = property.prefix() + '-' + property.id()
 
             if (key === 'oryx-name') {
               selectedItem.title = selectedShape.properties[key]
             }
 
             // First we check if there is a config for 'key-type' and then for 'type' alone
-            var propertyConfig = KISBPM.PROPERTY_CONFIG[key + '-' + property.type()]
+            let propertyConfig = KISBPM.PROPERTY_CONFIG[key + '-' + property.type()]
             if (propertyConfig === undefined || propertyConfig === null) {
               propertyConfig = KISBPM.PROPERTY_CONFIG[property.type()]
             }
 
             if (propertyConfig === undefined || propertyConfig === null) {
-              console.log('WARNING: no property configuration defined for ' + key + ' of type ' + property.type())
+              console.log(`WARNING: no property configuration defined for ${  key  } of type ${  property.type()}`)
             } else {
               if (selectedShape.properties[key] === 'true') {
                 selectedShape.properties[key] = true
@@ -284,7 +284,7 @@ angular.module('activitiModeler')
                 continue
               }
 
-              var currentProperty = {
+              const currentProperty = {
                 'key': key,
                 'title': property.title(),
                 'type': property.type(),
@@ -302,14 +302,14 @@ angular.module('activitiModeler')
               }
 
               if (propertyConfig.readModeTemplateUrl !== undefined && propertyConfig.readModeTemplateUrl !== null) {
-                currentProperty.readModeTemplateUrl = propertyConfig.readModeTemplateUrl + '?version=' + $rootScope.staticIncludeVersion
+                currentProperty.readModeTemplateUrl = `${propertyConfig.readModeTemplateUrl  }?version=${  $rootScope.staticIncludeVersion}`
               }
               if (propertyConfig.writeModeTemplateUrl !== null && propertyConfig.writeModeTemplateUrl !== null) {
-                currentProperty.writeModeTemplateUrl = propertyConfig.writeModeTemplateUrl + '?version=' + $rootScope.staticIncludeVersion
+                currentProperty.writeModeTemplateUrl = `${propertyConfig.writeModeTemplateUrl  }?version=${  $rootScope.staticIncludeVersion}`
               }
 
               if (propertyConfig.templateUrl !== undefined && propertyConfig.templateUrl !== null) {
-                currentProperty.templateUrl = propertyConfig.templateUrl + '?version=' + $rootScope.staticIncludeVersion
+                currentProperty.templateUrl = `${propertyConfig.templateUrl  }?version=${  $rootScope.staticIncludeVersion}`
                 currentProperty.hasReadWriteMode = false
               } else {
                 currentProperty.hasReadWriteMode = true
@@ -340,24 +340,24 @@ angular.module('activitiModeler')
 
       $scope.editor.registerOnEvent(ORYX.CONFIG.EVENT_SELECTION_CHANGED, function (event) {
         KISBPM.eventBus.dispatch(KISBPM.eventBus.EVENT_TYPE_HIDE_SHAPE_BUTTONS)
-        var shapes = event.elements
+        const shapes = event.elements
 
         if (shapes && shapes.length == 1) {
-          var selectedShape = shapes.first()
+          const selectedShape = shapes.first()
 
-          var a = $scope.editor.getCanvas().node.getScreenCTM()
+          const a = $scope.editor.getCanvas().node.getScreenCTM()
 
-          var absoluteXY = selectedShape.absoluteXY()
+          const absoluteXY = selectedShape.absoluteXY()
 
           absoluteXY.x *= a.a
           absoluteXY.y *= a.d
 
-          var additionalIEZoom = 1
+          let additionalIEZoom = 1
           if (!isNaN(screen.logicalXDPI) && !isNaN(screen.systemXDPI)) {
-            var ua = navigator.userAgent
+            const ua = navigator.userAgent
             if (ua.indexOf('MSIE') >= 0) {
               // IE 10 and below
-              var zoom = Math.round((screen.deviceXDPI / screen.logicalXDPI) * 100)
+              const zoom = Math.round((screen.deviceXDPI / screen.logicalXDPI) * 100)
               if (zoom !== 100) {
                 additionalIEZoom = zoom / 100
               }
@@ -368,12 +368,12 @@ angular.module('activitiModeler')
             absoluteXY.y = absoluteXY.y - jQuery('#canvasSection').offset().top + 5
             absoluteXY.x = absoluteXY.x - jQuery('#canvasSection').offset().left
           } else {
-            var canvasOffsetLeft = jQuery('#canvasSection').offset().left
-            var canvasScrollLeft = jQuery('#canvasSection').scrollLeft()
-            var canvasScrollTop = jQuery('#canvasSection').scrollTop()
+            const canvasOffsetLeft = jQuery('#canvasSection').offset().left
+            const canvasScrollLeft = jQuery('#canvasSection').scrollLeft()
+            const canvasScrollTop = jQuery('#canvasSection').scrollTop()
 
-            var offset = a.e - (canvasOffsetLeft * additionalIEZoom)
-            var additionaloffset = 0
+            const offset = a.e - (canvasOffsetLeft * additionalIEZoom)
+            let additionaloffset = 0
             if (offset > 10) {
               additionaloffset = (offset / additionalIEZoom) - offset
             }
@@ -381,20 +381,20 @@ angular.module('activitiModeler')
             absoluteXY.x = absoluteXY.x - (canvasOffsetLeft * additionalIEZoom) + additionaloffset + ((canvasScrollLeft * additionalIEZoom) - canvasScrollLeft)
           }
 
-          var bounds = new ORYX.Core.Bounds(a.e + absoluteXY.x, a.f + absoluteXY.y, a.e + absoluteXY.x + a.a * selectedShape.bounds.width(), a.f + absoluteXY.y + a.d * selectedShape.bounds.height())
-          var shapeXY = bounds.upperLeft()
+          const bounds = new ORYX.Core.Bounds(a.e + absoluteXY.x, a.f + absoluteXY.y, a.e + absoluteXY.x + a.a * selectedShape.bounds.width(), a.f + absoluteXY.y + a.d * selectedShape.bounds.height())
+          const shapeXY = bounds.upperLeft()
 
-          var stencilItem = $scope.getStencilItemById(selectedShape.getStencil().idWithoutNs())
-          var morphShapes = []
+          const stencilItem = $scope.getStencilItemById(selectedShape.getStencil().idWithoutNs())
+          let morphShapes = []
           if (stencilItem && stencilItem.morphRole) {
-            for (var i = 0; i < $scope.morphRoles.length; i++) {
+            for (let i = 0; i < $scope.morphRoles.length; i++) {
               if ($scope.morphRoles[i].role === stencilItem.morphRole) {
                 morphShapes = $scope.morphRoles[i].morphOptions
               }
             }
           }
 
-          var x = shapeXY.x
+          let x = shapeXY.x
           if (bounds.width() < 48) {
             x -= 24
           }
@@ -402,21 +402,21 @@ angular.module('activitiModeler')
           if (morphShapes && morphShapes.length > 0) {
             // In case the element is not wide enough, start the 2 bottom-buttons more to the left
             // to prevent overflow in the right-menu
-            var morphButton = document.getElementById('morph-button')
+            const morphButton = document.getElementById('morph-button')
             morphButton.style.display = 'block'
-            morphButton.style.left = x + 24 + 'px'
-            morphButton.style.top = (shapeXY.y + bounds.height() + 2) + 'px'
+            morphButton.style.left = `${x + 24  }px`
+            morphButton.style.top = `${shapeXY.y + bounds.height() + 2  }px`
           }
 
-          var deleteButton = document.getElementById('delete-button')
+          const deleteButton = document.getElementById('delete-button')
           deleteButton.style.display = 'block'
-          deleteButton.style.left = x + 'px'
-          deleteButton.style.top = (shapeXY.y + bounds.height() + 2) + 'px'
+          deleteButton.style.left = `${x  }px`
+          deleteButton.style.top = `${shapeXY.y + bounds.height() + 2  }px`
 
           if (stencilItem && (stencilItem.canConnect || stencilItem.canConnectAssociation)) {
-            var quickButtonCounter = 0
-            var quickButtonX = shapeXY.x + bounds.width() + 5
-            var quickButtonY = shapeXY.y
+            let quickButtonCounter = 0
+            let quickButtonX = shapeXY.x + bounds.width() + 5
+            let quickButtonY = shapeXY.y
             jQuery('.Oryx_button').each(function (i, obj) {
               if (obj.id !== 'morph-button' && obj.id != 'delete-button') {
                 quickButtonCounter++
@@ -428,8 +428,8 @@ angular.module('activitiModeler')
                   quickButtonX += 24
                 }
                 obj.style.display = 'block'
-                obj.style.left = quickButtonX + 'px'
-                obj.style.top = quickButtonY + 'px'
+                obj.style.left = `${quickButtonX  }px`
+                obj.style.top = `${quickButtonY  }px`
               }
             })
           }
@@ -465,19 +465,19 @@ angular.module('activitiModeler')
 
       $scope.morphShape = function () {
         $scope.safeApply(function () {
-          var shapes = $rootScope.editor.getSelection()
+          const shapes = $rootScope.editor.getSelection()
           if (shapes && shapes.length == 1) {
             $rootScope.currentSelectedShape = shapes.first()
-            var stencilItem = $scope.getStencilItemById($rootScope.currentSelectedShape.getStencil().idWithoutNs())
-            var morphShapes = []
-            for (var i = 0; i < $scope.morphRoles.length; i++) {
+            const stencilItem = $scope.getStencilItemById($rootScope.currentSelectedShape.getStencil().idWithoutNs())
+            let morphShapes = []
+            for (let i = 0; i < $scope.morphRoles.length; i++) {
               if ($scope.morphRoles[i].role === stencilItem.morphRole) {
                 morphShapes = $scope.morphRoles[i].morphOptions.slice()
               }
             }
 
             // Method to open shape select dialog (used later on)
-            var showSelectShapeDialog = function () {
+            const showSelectShapeDialog = function () {
               $rootScope.morphShapes = morphShapes
               $modal({
                 backdrop: false,
@@ -497,16 +497,16 @@ angular.module('activitiModeler')
 
       $scope.quickAddItem = function (newItemId) {
         $scope.safeApply(function () {
-          var shapes = $rootScope.editor.getSelection()
+          const shapes = $rootScope.editor.getSelection()
           if (shapes && shapes.length == 1) {
             $rootScope.currentSelectedShape = shapes.first()
 
-            var containedStencil = undefined
-            var stencilSets = $scope.editor.getStencilSets().values()
-            for (var i = 0; i < stencilSets.length; i++) {
-              var stencilSet = stencilSets[i]
-              var nodes = stencilSet.nodes()
-              for (var j = 0; j < nodes.length; j++) {
+            let containedStencil = undefined
+            const stencilSets = $scope.editor.getStencilSets().values()
+            for (let i = 0; i < stencilSets.length; i++) {
+              const stencilSet = stencilSets[i]
+              const nodes = stencilSet.nodes()
+              for (let j = 0; j < nodes.length; j++) {
                 if (nodes[j].idWithoutNs() === newItemId) {
                   containedStencil = nodes[j]
                   break
@@ -516,7 +516,7 @@ angular.module('activitiModeler')
 
             if (!containedStencil) return
 
-            var option = {
+            const option = {
               type: $scope.currentSelectedShape.getStencil().namespace() + newItemId,
               namespace: $scope.currentSelectedShape.getStencil().namespace()
             }
@@ -524,14 +524,14 @@ angular.module('activitiModeler')
             option['parent'] = $rootScope.currentSelectedShape.parent
             option['containedStencil'] = containedStencil
 
-            var args = { sourceShape: $rootScope.currentSelectedShape, targetStencil: containedStencil }
-            var targetStencil = $scope.editor.getRules().connectMorph(args)
+            const args = { sourceShape: $rootScope.currentSelectedShape, targetStencil: containedStencil }
+            const targetStencil = $scope.editor.getRules().connectMorph(args)
             if (!targetStencil) {
               return
             }// Check if there can be a target shape
             option['connectingType'] = targetStencil.id()
 
-            var command = new KISBPM.CreateCommand(option, undefined, undefined, $scope.editor)
+            const command = new KISBPM.CreateCommand(option, undefined, undefined, $scope.editor)
 
             $scope.editor.executeCommands([command])
           }
@@ -559,7 +559,7 @@ angular.module('activitiModeler')
 
     /* Method available to all sub controllers (for property controllers) to update the internal Oryx model */
     $scope.updatePropertyInModel = function (property, shapeId) {
-      var shape = $scope.selectedShape
+      let shape = $scope.selectedShape
       // Some updates may happen when selected shape is already changed, so when an additional
       // shapeId is supplied, we need to make sure the correct shape is updated (current or previous)
       if (shapeId) {
@@ -575,12 +575,12 @@ angular.module('activitiModeler')
         // shape ID, do nothing
         return
       }
-      var key = property.key
-      var newValue = property.value
-      var oldValue = shape.properties[key]
+      const key = property.key
+      const newValue = property.value
+      const oldValue = shape.properties[key]
 
       if (newValue != oldValue) {
-        var commandClass = ORYX.Core.Command.extend({
+        const commandClass = ORYX.Core.Command.extend({
           construct: function () {
             this.key = key
             this.oldValue = oldValue
@@ -600,7 +600,7 @@ angular.module('activitiModeler')
           }
         })
         // Instantiate the class
-        var command = new commandClass()
+        const command = new commandClass()
 
         // Execute the command
         $scope.editor.executeCommands([command])
@@ -615,7 +615,7 @@ angular.module('activitiModeler')
 
         // Fire event to all who is interested
         // Fire event to all who want to know about this
-        var event = {
+        const event = {
           type: KISBPM.eventBus.EVENT_TYPE_PROPERTY_VALUE_CHANGED,
           property: property,
           oldValue: oldValue,
@@ -633,10 +633,10 @@ angular.module('activitiModeler')
      * If not found, will return undefined.
      */
     $scope.findStencilItemInGroup = function (stencilItemId, group) {
-      var item
+      let item
 
       // Check all items directly in this group
-      for (var j = 0; j < group.items.length; j++) {
+      for (let j = 0; j < group.items.length; j++) {
         item = group.items[j]
         if (item.id === stencilItemId) {
           return item
@@ -645,7 +645,7 @@ angular.module('activitiModeler')
 
       // Check the child groups
       if (group.groups && group.groups.length > 0) {
-        for (var k = 0; k < group.groups.length; k++) {
+        for (let k = 0; k < group.groups.length; k++) {
           item = $scope.findStencilItemInGroup(stencilItemId, group.groups[k])
           if (item) {
             return item
@@ -660,12 +660,12 @@ angular.module('activitiModeler')
      * Helper method to find a stencil item.
      */
     $scope.getStencilItemById = function (stencilItemId) {
-      for (var i = 0; i < $scope.stencilItemGroups.length; i++) {
-        var element = $scope.stencilItemGroups[i]
+      for (let i = 0; i < $scope.stencilItemGroups.length; i++) {
+        const element = $scope.stencilItemGroups[i]
 
         // Real group
         if (element.items !== null && element.items !== undefined) {
-          var item = $scope.findStencilItemInGroup(stencilItemId, element)
+          const item = $scope.findStencilItemInGroup(stencilItemId, element)
           if (item) {
             return item
           }
@@ -700,23 +700,23 @@ angular.module('activitiModeler')
       KISBPM.eventBus.dispatch(KISBPM.eventBus.EVENT_TYPE_HIDE_SHAPE_BUTTONS)
 
       if ($scope.dragCanContain) {
-        var item = $scope.getStencilItemById(ui.draggable[0].id)
+        const item = $scope.getStencilItemById(ui.draggable[0].id)
 
-        var pos = { x: event.pageX, y: event.pageY }
+        let pos = { x: event.pageX, y: event.pageY }
 
-        var additionalIEZoom = 1
+        let additionalIEZoom = 1
         if (!isNaN(screen.logicalXDPI) && !isNaN(screen.systemXDPI)) {
-          var ua = navigator.userAgent
+          const ua = navigator.userAgent
           if (ua.indexOf('MSIE') >= 0) {
             // IE 10 and below
-            var zoom = Math.round((screen.deviceXDPI / screen.logicalXDPI) * 100)
+            const zoom = Math.round((screen.deviceXDPI / screen.logicalXDPI) * 100)
             if (zoom !== 100) {
               additionalIEZoom = zoom / 100
             }
           }
         }
 
-        var screenCTM = $scope.editor.getCanvas().node.getScreenCTM()
+        const screenCTM = $scope.editor.getCanvas().node.getScreenCTM()
 
         // Correcting the UpperLeft-Offset
         pos.x -= (screenCTM.e / additionalIEZoom)
@@ -729,15 +729,15 @@ angular.module('activitiModeler')
         pos.x -= document.documentElement.scrollLeft
         pos.y -= document.documentElement.scrollTop
 
-        var parentAbs = $scope.dragCurrentParent.absoluteXY()
+        const parentAbs = $scope.dragCurrentParent.absoluteXY()
         pos.x -= parentAbs.x
         pos.y -= parentAbs.y
 
-        var containedStencil = undefined
-        var stencilSets = $scope.editor.getStencilSets().values()
-        for (var i = 0; i < stencilSets.length; i++) {
-          var stencilSet = stencilSets[i]
-          var nodes = stencilSet.nodes()
+        let containedStencil = undefined
+        const stencilSets = $scope.editor.getStencilSets().values()
+        for (let i = 0; i < stencilSets.length; i++) {
+          const stencilSet = stencilSets[i]
+          const nodes = stencilSet.nodes()
           for (var j = 0; j < nodes.length; j++) {
             if (nodes[j].idWithoutNs() === ui.draggable[0].id) {
               containedStencil = nodes[j]
@@ -746,7 +746,7 @@ angular.module('activitiModeler')
           }
 
           if (!containedStencil) {
-            var edges = stencilSet.edges()
+            const edges = stencilSet.edges()
             for (var j = 0; j < edges.length; j++) {
               if (edges[j].idWithoutNs() === ui.draggable[0].id) {
                 containedStencil = edges[j]
@@ -759,9 +759,9 @@ angular.module('activitiModeler')
         if (!containedStencil) return
 
         if ($scope.quickMenu) {
-          var shapes = $scope.editor.getSelection()
+          const shapes = $scope.editor.getSelection()
           if (shapes && shapes.length == 1) {
-            var currentSelectedShape = shapes.first()
+            const currentSelectedShape = shapes.first()
 
             var option = {}
             option.type = currentSelectedShape.getStencil().namespace() + ui.draggable[0].id
@@ -775,7 +775,7 @@ angular.module('activitiModeler')
             // if it is near to the center of the other shape
             if (!event.ctrlKey) {
               // Get the center of the shape
-              var cShape = currentSelectedShape.bounds.center()
+              const cShape = currentSelectedShape.bounds.center()
               // Snapp +-20 Pixel horizontal to the center
               if (Math.abs(cShape.x - pos.x) < 20) {
                 pos.x = cShape.x
@@ -790,8 +790,8 @@ angular.module('activitiModeler')
 
             if (containedStencil.idWithoutNs() !== 'SequenceFlow' && containedStencil.idWithoutNs() !== 'Association' &&
               containedStencil.idWithoutNs() !== 'MessageFlow' && containedStencil.idWithoutNs() !== 'DataAssociation') {
-              var args = { sourceShape: currentSelectedShape, targetStencil: containedStencil }
-              var targetStencil = $scope.editor.getRules().connectMorph(args)
+              const args = { sourceShape: currentSelectedShape, targetStencil: containedStencil }
+              const targetStencil = $scope.editor.getRules().connectMorph(args)
               if (!targetStencil) {
                 return
               }// Check if there can be a target shape
@@ -803,7 +803,7 @@ angular.module('activitiModeler')
             $scope.editor.executeCommands([command])
           }
         } else {
-          var canAttach = false
+          let canAttach = false
           if (containedStencil.idWithoutNs() === 'BoundaryErrorEvent' || containedStencil.idWithoutNs() === 'BoundaryTimerEvent' ||
             containedStencil.idWithoutNs() === 'BoundarySignalEvent' || containedStencil.idWithoutNs() === 'BoundaryMessageEvent' ||
             containedStencil.idWithoutNs() === 'BoundaryCancelEvent' || containedStencil.idWithoutNs() === 'BoundaryCompensationEvent') {
@@ -818,7 +818,7 @@ angular.module('activitiModeler')
           option['position'] = pos
           option['parent'] = $scope.dragCurrentParent
 
-          var commandClass = ORYX.Core.Command.extend({
+          const commandClass = ORYX.Core.Command.extend({
             construct: function (option, dockedShape, canAttach, position, facade) {
               this.option = option
               this.docker = null
@@ -874,7 +874,7 @@ angular.module('activitiModeler')
           $scope.editor.executeCommands([command])
 
           // Fire event to all who want to know about this
-          var dropEvent = {
+          const dropEvent = {
             type: KISBPM.eventBus.EVENT_TYPE_ITEM_DROPPED,
             droppedItem: item,
             position: pos
@@ -914,14 +914,14 @@ angular.module('activitiModeler')
 
     $scope.dragCallback = function (event, ui) {
       if ($scope.dragModeOver != false) {
-        var coord = $scope.editor.eventCoordinatesXY(event.pageX, event.pageY)
+        const coord = $scope.editor.eventCoordinatesXY(event.pageX, event.pageY)
 
-        var additionalIEZoom = 1
+        let additionalIEZoom = 1
         if (!isNaN(screen.logicalXDPI) && !isNaN(screen.systemXDPI)) {
-          var ua = navigator.userAgent
+          const ua = navigator.userAgent
           if (ua.indexOf('MSIE') >= 0) {
             // IE 10 and below
-            var zoom = Math.round((screen.deviceXDPI / screen.logicalXDPI) * 100)
+            const zoom = Math.round((screen.deviceXDPI / screen.logicalXDPI) * 100)
             if (zoom !== 100) {
               additionalIEZoom = zoom / 100
             }
@@ -933,7 +933,7 @@ angular.module('activitiModeler')
           coord.y = coord.y / additionalIEZoom
         }
 
-        var aShapes = $scope.editor.getCanvas().getAbstractShapesAtPosition(coord)
+        const aShapes = $scope.editor.getCanvas().getAbstractShapesAtPosition(coord)
 
         if (aShapes.length <= 0) {
           if (event.helper) {
@@ -963,9 +963,9 @@ angular.module('activitiModeler')
           })
           return false
         } else {
-          var item = $scope.getStencilItemById(event.target.id)
+          const item = $scope.getStencilItemById(event.target.id)
 
-          var parentCandidate = aShapes.reverse().find(function (candidate) {
+          var parentCandidate = aShapes.toReversed().find(function (candidate) {
             return (candidate instanceof ORYX.Core.Canvas ||
               candidate instanceof ORYX.Core.Node ||
               candidate instanceof ORYX.Core.Edge)
@@ -978,14 +978,14 @@ angular.module('activitiModeler')
 
           if (item.type === 'node') {
             // check if the draggable is a boundary event and the parent an Activity
-            var _canContain = false
-            var parentStencilId = parentCandidate.getStencil().id()
+            let _canContain = false
+            const parentStencilId = parentCandidate.getStencil().id()
 
             if ($scope.dragCurrentParentId && $scope.dragCurrentParentId === parentCandidate.id) {
               return false
             }
 
-            var parentItem = $scope.getStencilItemById(parentCandidate.getStencil().idWithoutNs())
+            const parentItem = $scope.getStencilItemById(parentCandidate.getStencil().idWithoutNs())
             if (parentItem.roles.indexOf('Activity') > -1) {
               if (item.roles.indexOf('IntermediateEventOnActivityBoundary') > -1) {
                 _canContain = true
@@ -1010,10 +1010,10 @@ angular.module('activitiModeler')
                 highlightId: 'shapeRepo.added'
               })
             } else {
-              for (var i = 0; i < $scope.containmentRules.length; i++) {
-                var rule = $scope.containmentRules[i]
+              for (let i = 0; i < $scope.containmentRules.length; i++) {
+                const rule = $scope.containmentRules[i]
                 if (rule.role === parentItem.id) {
-                  for (var j = 0; j < rule.contains.length; j++) {
+                  for (let j = 0; j < rule.contains.length; j++) {
                     if (item.roles.indexOf(rule.contains[j]) > -1) {
                       _canContain = true
                       break
@@ -1045,12 +1045,12 @@ angular.module('activitiModeler')
             $scope.dragCurrentParentStencil = parentStencilId
             $scope.dragCanContain = _canContain
           } else {
-            var canvasCandidate = $scope.editor.getCanvas()
-            var canConnect = false
+            const canvasCandidate = $scope.editor.getCanvas()
+            let canConnect = false
 
-            var targetStencil = $scope.getStencilItemById(parentCandidate.getStencil().idWithoutNs())
+            const targetStencil = $scope.getStencilItemById(parentCandidate.getStencil().idWithoutNs())
             if (targetStencil) {
-              var associationConnect = false
+              let associationConnect = false
               if (stencil.idWithoutNs() === 'Association' && (curCan.getStencil().idWithoutNs() === 'TextAnnotation' || curCan.getStencil().idWithoutNs() === 'BoundaryCompensationEvent')) {
                 associationConnect = true
               } else if (stencil.idWithoutNs() === 'DataAssociation' && curCan.getStencil().idWithoutNs() === 'DataStore') {
@@ -1087,14 +1087,14 @@ angular.module('activitiModeler')
 
     $scope.dragCallbackQuickMenu = function (event, ui) {
       if ($scope.dragModeOver != false) {
-        var coord = $scope.editor.eventCoordinatesXY(event.pageX, event.pageY)
+        const coord = $scope.editor.eventCoordinatesXY(event.pageX, event.pageY)
 
-        var additionalIEZoom = 1
+        let additionalIEZoom = 1
         if (!isNaN(screen.logicalXDPI) && !isNaN(screen.systemXDPI)) {
-          var ua = navigator.userAgent
+          const ua = navigator.userAgent
           if (ua.indexOf('MSIE') >= 0) {
             // IE 10 and below
-            var zoom = Math.round((screen.deviceXDPI / screen.logicalXDPI) * 100)
+            const zoom = Math.round((screen.deviceXDPI / screen.logicalXDPI) * 100)
             if (zoom !== 100) {
               additionalIEZoom = zoom / 100
             }
@@ -1106,7 +1106,7 @@ angular.module('activitiModeler')
           coord.y = coord.y / additionalIEZoom
         }
 
-        var aShapes = $scope.editor.getCanvas().getAbstractShapesAtPosition(coord)
+        const aShapes = $scope.editor.getCanvas().getAbstractShapesAtPosition(coord)
 
         if (aShapes.length <= 0) {
           if (event.helper) {
@@ -1119,11 +1119,11 @@ angular.module('activitiModeler')
           $scope.editor.getCanvas().setHightlightStateBasedOnX(coord.x)
         }
 
-        var stencil = undefined
-        var stencilSets = $scope.editor.getStencilSets().values()
-        for (var i = 0; i < stencilSets.length; i++) {
-          var stencilSet = stencilSets[i]
-          var nodes = stencilSet.nodes()
+        let stencil = undefined
+        const stencilSets = $scope.editor.getStencilSets().values()
+        for (let i = 0; i < stencilSets.length; i++) {
+          const stencilSet = stencilSets[i]
+          const nodes = stencilSet.nodes()
           for (var j = 0; j < nodes.length; j++) {
             if (nodes[j].idWithoutNs() === event.target.id) {
               stencil = nodes[j]
@@ -1132,7 +1132,7 @@ angular.module('activitiModeler')
           }
 
           if (!stencil) {
-            var edges = stencilSet.edges()
+            const edges = stencilSet.edges()
             for (var j = 0; j < edges.length; j++) {
               if (edges[j].idWithoutNs() === event.target.id) {
                 stencil = edges[j]
@@ -1142,17 +1142,17 @@ angular.module('activitiModeler')
           }
         }
 
-        var candidate = aShapes.last()
+        let candidate = aShapes.last()
 
-        var isValid = false
+        let isValid = false
         if (stencil.type() === 'node') {
           // check containment rules
-          var canContain = $scope.editor.getRules().canContain({
+          const canContain = $scope.editor.getRules().canContain({
             containingShape: candidate,
             containedStencil: stencil
           })
 
-          var parentCandidate = aShapes.reverse().find(function (candidate) {
+          var parentCandidate = aShapes.toReversed().find(function (candidate) {
             return (candidate instanceof ORYX.Core.Canvas ||
               candidate instanceof ORYX.Core.Node ||
               candidate instanceof ORYX.Core.Edge)
@@ -1170,15 +1170,15 @@ angular.module('activitiModeler')
           $scope.dropTargetElement = parentCandidate
           isValid = canContain
         } else { // Edge
-          var shapes = $scope.editor.getSelection()
+          const shapes = $scope.editor.getSelection()
           if (shapes && shapes.length == 1) {
-            var currentSelectedShape = shapes.first()
-            var curCan = candidate
-            var canConnect = false
+            const currentSelectedShape = shapes.first()
+            let curCan = candidate
+            let canConnect = false
 
-            var targetStencil = $scope.getStencilItemById(curCan.getStencil().idWithoutNs())
+            const targetStencil = $scope.getStencilItemById(curCan.getStencil().idWithoutNs())
             if (targetStencil) {
-              var associationConnect = false
+              let associationConnect = false
               if (stencil.idWithoutNs() === 'Association' && (curCan.getStencil().idWithoutNs() === 'TextAnnotation' || curCan.getStencil().idWithoutNs() === 'BoundaryCompensationEvent')) {
                 associationConnect = true
               } else if (stencil.idWithoutNs() === 'DataAssociation' && curCan.getStencil().idWithoutNs() === 'DataStore') {
@@ -1219,7 +1219,7 @@ angular.module('activitiModeler')
     }
   }])
 
-var KISBPM = KISBPM || {}
+const KISBPM = KISBPM || {}
 // create command for undo/redo
 KISBPM.CreateCommand = ORYX.Core.Command.extend({
   construct: function (option, currentReference, position, facade) {
@@ -1272,7 +1272,7 @@ KISBPM.CreateCommand = ORYX.Core.Command.extend({
           this.shape.dockers.last().setDockedShape(this.currentReference)
 
           if (this.currentReference.getStencil().idWithoutNs() === 'TextAnnotation') {
-            var midpoint = {}
+            const midpoint = {}
             midpoint.x = 0
             midpoint.y = this.currentReference.bounds.height() / 2
             this.shape.dockers.last().setReferencePoint(midpoint)
@@ -1289,12 +1289,12 @@ KISBPM.CreateCommand = ORYX.Core.Command.extend({
         this.targetRefPos = this.edge.dockers.last().referencePoint
       }
     } else {
-      var containedStencil = this.containedStencil
-      var connectedShape = this.connectedShape
-      var bc = connectedShape.bounds
-      var bs = this.shape.bounds
+      const containedStencil = this.containedStencil
+      const connectedShape = this.connectedShape
+      const bc = connectedShape.bounds
+      const bs = this.shape.bounds
 
-      var pos = bc.center()
+      const pos = bc.center()
       if (containedStencil.defaultAlign() === 'north') {
         pos.y -= (bc.height() / 2) + ORYX.CONFIG.SHAPEMENU_CREATE_OFFSET + (bs.height() / 2)
       } else if (containedStencil.defaultAlign() === 'northeast') {

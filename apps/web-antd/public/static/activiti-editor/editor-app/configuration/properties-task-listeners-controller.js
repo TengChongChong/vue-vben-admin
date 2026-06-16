@@ -21,7 +21,7 @@
  * Task listeners
  */
 
-var KisBpmTaskListenersCtrl = [ '$scope', '$modal', '$timeout', '$translate', function($scope, $modal, $timeout, $translate) {
+const KisBpmTaskListenersCtrl = [ '$scope', '$modal', '$timeout', '$translate', function($scope, $modal, $timeout, $translate) {
 
     // Config for the modal window
     var opts = {
@@ -33,7 +33,7 @@ var KisBpmTaskListenersCtrl = [ '$scope', '$modal', '$timeout', '$translate', fu
     $modal(opts);
 }];
 
-var KisBpmTaskListenersPopupCtrl = [ '$scope', '$q', '$translate', function($scope, $q, $translate) {
+const KisBpmTaskListenersPopupCtrl = [ '$scope', '$q', '$translate', function($scope, $q, $translate) {
 
     // Put json representing form properties on scope
     if ($scope.property.value !== undefined && $scope.property.value !== null

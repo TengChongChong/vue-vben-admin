@@ -30,7 +30,7 @@ const active = defineModel<string>('active');
 const typeWithClass = computed(() => {
   const typeClasses: Record<string, { content: string }> = {
     brisk: {
-      content: `h-full after:content-['']  after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1.5px] after:bg-primary after:scale-x-0 after:transition-[transform] after:ease-out after:duration-300 hover:after:scale-x-100 after:origin-left [&.is-active]:after:scale-x-100 [&:not(:first-child)]:border-l last:border-r last:border-r border-border`,
+      content: `h-full after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[1.5px] after:bg-primary after:scale-x-0 after:transition-[transform] after:ease-out after:duration-300 hover:after:scale-x-100 after:origin-left [&.is-active]:after:scale-x-100 [&:not(:first-child)]:border-l last:border-r last:border-r border-border`,
     },
     card: {
       content:
@@ -115,19 +115,19 @@ function onMouseDown(e: MouseEvent, tab: TabConfig) {
               <!-- close-icon -->
               <X
                 v-show="!tab.affixTab && tabsView.length > 1 && tab.closable"
-                class="size-3 cursor-pointer rounded-full stroke-accent-foreground/80 transition-all group-[.is-active]:text-primary hover:bg-accent hover:stroke-accent-foreground dark:group-[.is-active]:text-accent-foreground"
+                class="size-3 cursor-pointer rounded-full stroke-accent-foreground/80 transition-all group-[.is-active]:text-primary hover:bg-accent hover:stroke-accent-foreground group-[.is-active]:dark:text-accent-foreground"
                 @click.stop="() => emit('close', tab.key)"
               />
               <Pin
                 v-show="tab.affixTab && tabsView.length > 1 && tab.closable"
-                class="mt-px size-3.5 cursor-pointer rounded-full transition-all group-[.is-active]:text-primary hover:bg-accent hover:stroke-accent-foreground dark:group-[.is-active]:text-accent-foreground"
+                class="mt-px size-3.5 cursor-pointer rounded-full transition-all group-[.is-active]:text-primary hover:bg-accent hover:stroke-accent-foreground group-[.is-active]:dark:text-accent-foreground"
                 @click.stop="() => emit('unpin', tab)"
               />
             </div>
 
             <!-- tab-item-main -->
             <div
-              class="mx-3 mr-4 flex h-full items-center overflow-hidden rounded-tl-[5px] rounded-tr-[5px] pr-3 text-accent-foreground transition-all duration-300 group-[.is-active]:text-primary dark:group-[.is-active]:text-accent-foreground"
+              class="mx-3 mr-4 flex h-full items-center overflow-hidden rounded-tl-[5px] rounded-tr-[5px] pr-3 text-accent-foreground transition-all duration-300 group-[.is-active]:text-primary group-[.is-active]:dark:text-accent-foreground"
             >
               <VbenIcon
                 v-if="showIcon"

@@ -2,7 +2,7 @@ describe('Object', function () {
     "use strict";
 
     describe("Object.keys", function () {
-        var obj = {
+        const obj = {
             "str": "boz",
             "obj": { },
             "arr": [],
@@ -12,12 +12,12 @@ describe('Object', function () {
             "undefined": undefined
         };
 
-        var loopedValues = [];
-        for (var k in obj) {
+        const loopedValues = [];
+        for (let k in obj) {
             loopedValues.push(k);
         }
 
-        var keys = Object.keys(obj);
+        const keys = Object.keys(obj);
         it('should have correct length', function () {
             expect(keys.length).toBe(7);
         });
@@ -39,7 +39,7 @@ describe('Object', function () {
         });
 
         it('should throw error for non object', function () {
-            var e = {};
+            const e = {};
             expect(function () {
                 try {
                     Object.keys(42)
@@ -51,7 +51,7 @@ describe('Object', function () {
     });
 
 	describe("Object.isExtensible", function () {
-        var obj = { };
+        const obj = { };
 
         it('should return true if object is extensible', function () {
             expect(Object.isExtensible(obj)).toBe(true);
@@ -70,7 +70,7 @@ describe('Object', function () {
         });
 
         it('should throw error for non object', function () {
-            var e1 = {};
+            const e1 = {};
             expect(function () {
                 try {
                     Object.isExtensible(42)
@@ -82,7 +82,7 @@ describe('Object', function () {
     });
 
 	describe("Object.defineProperty", function () {
-        var obj;
+        let obj;
 
         beforeEach(function() {
            obj = {};
@@ -106,14 +106,14 @@ describe('Object', function () {
         });
 
         it('should return the parent initial value', function () {
-            var child = Object.create(obj, {});
+            const child = Object.create(obj, {});
 
             expect(child.name).toBe('Testing');
             expect(child.hasOwnProperty('name')).toBeFalsy();
         });
 
         it('should not override the parent value', function () {
-            var child = Object.create(obj, {});
+            const child = Object.create(obj, {});
 
             Object.defineProperty(child, 'name', {
                 value : 'Other'
@@ -132,13 +132,13 @@ describe('Object', function () {
 
 	describe("Object.getOwnPropertyDescriptor", function () {
         it('should return undefined because the object does not own the property', function () {
-            var descr = Object.getOwnPropertyDescriptor({}, 'name');
+            const descr = Object.getOwnPropertyDescriptor({}, 'name');
 
             expect(descr).toBeUndefined()
         });
 
         it('should return a data descriptor', function () {
-            var descr = Object.getOwnPropertyDescriptor({name: 'Testing'}, 'name');
+            const descr = Object.getOwnPropertyDescriptor({name: 'Testing'}, 'name');
 
             expect(descr).not.toBeUndefined();
             expect(descr.value).toBe('Testing');
@@ -148,13 +148,13 @@ describe('Object', function () {
         });
 
         it('should return undefined because the object does not own the property', function () {
-            var descr = Object.getOwnPropertyDescriptor(Object.create({name: 'Testing'}, {}), 'name');
+            const descr = Object.getOwnPropertyDescriptor(Object.create({name: 'Testing'}, {}), 'name');
 
             expect(descr).toBeUndefined()
         });
 
         it('should return a data descriptor', function () {
-            var obj = Object.create({}, {
+            const obj = Object.create({}, {
                 name: {
                     value : 'Testing',
                     configurable: true,
@@ -163,7 +163,7 @@ describe('Object', function () {
                 }
             });
 
-            var descr = Object.getOwnPropertyDescriptor(obj, 'name');
+            const descr = Object.getOwnPropertyDescriptor(obj, 'name');
 
             expect(descr).not.toBeUndefined();
             expect(descr.value).toBe('Testing');

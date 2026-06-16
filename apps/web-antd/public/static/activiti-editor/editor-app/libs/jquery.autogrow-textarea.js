@@ -9,12 +9,12 @@
     {
         return this.filter('textarea').each(function()
         {
-            var self         = this;
-            var $self        = $(self);
-            var minHeight    = $self.height();
-            var noFlickerPad = $self.hasClass('autogrow-short') ? 0 : parseInt($self.css('lineHeight')) || 0;
+            const self         = this;
+            const $self        = $(self);
+            const minHeight    = $self.height();
+            const noFlickerPad = $self.hasClass('autogrow-short') ? 0 : parseInt($self.css('lineHeight')) || 0;
 
-            var shadow = $('<div></div>').css({
+            const shadow = $('<div></div>').css({
                 position:    'absolute',
                 top:         -10000,
                 left:        -10000,
@@ -27,7 +27,7 @@
                             'word-wrap': 'break-word'
             }).appendTo(document.body);
 
-            var update = function(event)
+            const update = function(event)
             {
                 var times = function(string, number)
                 {

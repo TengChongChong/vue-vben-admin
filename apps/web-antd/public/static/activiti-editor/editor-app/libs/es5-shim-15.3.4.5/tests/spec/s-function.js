@@ -2,7 +2,7 @@
 describe('Function', function() {
     "use strict";
     describe('bind', function() {
-        var actual, expected,
+        let actual, expected,
             testSubject;
         
         testSubject = {
@@ -24,7 +24,7 @@ describe('Function', function() {
         });
         
         it('binds properly without a context', function() {
-            var context;
+            let context;
             testSubject.func = function() {
                 context = this;
             }.bind();
@@ -32,7 +32,7 @@ describe('Function', function() {
             expect(context).toBe(function() {return this}.call());
         });
         it('binds properly without a context, and still supplies bound arguments', function() {
-            var a, context;
+            let a, context;
             testSubject.func = function() {
                 a = Array.prototype.slice.call(arguments);
                 context = this;
@@ -58,11 +58,11 @@ describe('Function', function() {
             testSubject.func = function() {
                 return this;
             }.bind();
-            var context = testSubject.func();
+            const context = testSubject.func();
             expect(context).toBe(function() {return this}.call());
         });
         it('returns properly without binding a context, and still supplies bound arguments', function() {
-            var context;
+            let context;
             testSubject.func = function() {
                 context = this;
                 return Array.prototype.slice.call(arguments);
@@ -72,21 +72,21 @@ describe('Function', function() {
             expect(actual).toEqual([1,2,3,1,2,3]);
         });
         it('returns properly while binding a context properly', function() {
-            var ret;
+            let ret;
             testSubject.func = func.bind(actual);
             ret = testSubject.func(1,2,3);
             expect(ret).toBe(actual);
             expect(ret).not.toBe(testSubject);
         });
         it('returns properly while binding a context and supplies bound arguments', function() {
-            var ret;
+            let ret;
             testSubject.func = func.bind(actual, 1,2,3);
             ret = testSubject.func(4,5,6);
             expect(ret).toBe(actual);
             expect(ret).not.toBe(testSubject);
         });
         it('passes the correct arguments as a constructor', function() {
-            var ret, expected = { name: "Correct" };
+            let ret, expected = { name: "Correct" };
             testSubject.func = function(arg) {
                 return arg;
             }.bind({ name: "Incorrect" });
@@ -94,19 +94,19 @@ describe('Function', function() {
             expect(ret).toBe(expected);
         });
         it('returns the return value of the bound function when called as a constructor', function () {
-            var oracle = [1, 2, 3];
-            var subject = function () {
+            const oracle = [1, 2, 3];
+            const subject = function () {
                 return oracle;
             }.bind(null);
-            var result = new subject;
+            const result = new subject;
             expect(result).toBe(oracle);
         });
         it('returns the correct value if constructor returns primitive', function() {
-            var oracle = [1, 2, 3];
-            var subject = function () {
+            let oracle = [1, 2, 3];
+            const subject = function () {
                 return oracle;
             }.bind(null);
-            var result = new subject;
+            let result = new subject;
             expect(result).toBe(oracle);
 
             oracle = {};
@@ -134,12 +134,12 @@ describe('Function', function() {
             expect(result).not.toBe(oracle);
         });
         it('returns the value that instance of original "class" when called as a constructor', function() {
-            var classA = function(x) {
+            const classA = function(x) {
                 this.name = x || "A";
             }
-            var classB = classA.bind(null, "B");
+            const classB = classA.bind(null, "B");
             
-            var result = new classB;
+            const result = new classB;
             expect(result instanceof classA).toBe(true);
             expect(result instanceof classB).toBe(true);
         });

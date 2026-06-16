@@ -4,7 +4,7 @@
  * @author (Javascript) Dmitry Farafonov
  */
 
-		var AttributedStringIterator = function(text){
+		const AttributedStringIterator = function(text){
 				//this.text = this.rtrim(this.ltrim(text));
 				text = text.replace(/(\s)+/, " ");
 				this.text = this.rtrim(text);
@@ -56,12 +56,12 @@
 			};
 			AttributedStringIterator.prototype = {
 				getEndIndex: function(pos){
-					if (typeof(pos) == "undefined")
+					if (typeof(pos) === "undefined")
 						return this.endIndex;
 						
-					var string = this.text.substr(pos, this.endIndex - pos);
+					const string = this.text.substr(pos, this.endIndex - pos);
 					
-					var posEndOfLine = string.search(/[\n]/);
+					const posEndOfLine = string.search(/[\n]/);
 					if (posEndOfLine == -1)
 						return this.endIndex;
 					else
@@ -71,21 +71,21 @@
 					return this.beginIndex;
 				},
 				isWhitespace: function(pos){
-					var str = this.text[pos];
-					var whitespaceChars = " \t\n\f";
+					const str = this.text[pos];
+					const whitespaceChars = " \t\n\f";
 					
 					return (whitespaceChars.indexOf(str) != -1);
 				},
 				isNewLine: function(pos){
-					var str = this.text[pos];
-					var whitespaceChars = "\n";
+					const str = this.text[pos];
+					const whitespaceChars = "\n";
 					
 					return (whitespaceChars.indexOf(str) != -1);
 				},
 				preceding: function(pos){
 					//console.group("[AttributedStringIterator.preceding]");
 					for(var i in this.startWordOffsets) {
-						var startWordOffset = this.startWordOffsets[i];
+						const startWordOffset = this.startWordOffsets[i];
 						if (pos < startWordOffset && i>0) {
 							//console.log("startWordOffset: " + this.startWordOffsets[i-1]);
 							//console.groupEnd();
@@ -99,7 +99,7 @@
 				following: function(pos){
 					//console.group("[AttributedStringIterator.following]");
 					for(var i in this.startWordOffsets) {
-						var startWordOffset = this.startWordOffsets[i];
+						const startWordOffset = this.startWordOffsets[i];
 						if (pos < startWordOffset && i>0) {
 							//console.log("startWordOffset: " + this.startWordOffsets[i]);
 							//console.groupEnd();
@@ -111,11 +111,11 @@
 					return this.startWordOffsets[i];
 				},
 				ltrim: function(str){
-					var patt2=/^\s+/g;
+					const patt2=/^\s+/g;
 					return str.replace(patt2, "");
 				}, 
 				rtrim: function(str){
-					var patt2=/\s+$/g;
+					const patt2=/\s+$/g;
 					return str.replace(patt2, "");
 				},
 				getLayout: function(start, limit){
@@ -126,7 +126,7 @@
 				}
 			};
 
-		var LineBreakMeasurer = function(paper, x, y, text, fontAttrs){
+		const LineBreakMeasurer = function(paper, x, y, text, fontAttrs){
 				this.paper = paper;
 				this.text = new AttributedStringIterator(text);
 				this.fontAttrs = fontAttrs;
@@ -145,13 +145,13 @@
 			LineBreakMeasurer.prototype = {
 				nextOffset: function(wrappingWidth, offsetLimit, requireNextWord) {
 					//console.group("[nextOffset]");
-					var nextOffset = this.pos;
+					let nextOffset = this.pos;
 					if (this.pos < this.limit) {
 						if (offsetLimit <= this.pos) {
 							throw {message: "offsetLimit must be after current position", code: "IllegalArgumentException"};
 						}
 						
-						var charAtMaxAdvance = this.getLineBreakIndex(this.pos, wrappingWidth);
+						const charAtMaxAdvance = this.getLineBreakIndex(this.pos, wrappingWidth);
 						//charAtMaxAdvance --;
 						//console.log("charAtMaxAdvance:", charAtMaxAdvance, ", [" + this.text.getCharAtPos(charAtMaxAdvance) + "]");
 						
@@ -192,14 +192,14 @@
 				nextLayout: function(wrappingWidth) {
 					//console.groupCollapsed("[nextLayout]");
 					if (this.pos < this.limit) {
-						var requireNextWord = false;
-						var layoutLimit = this.nextOffset(wrappingWidth, this.limit, requireNextWord);
+						const requireNextWord = false;
+						const layoutLimit = this.nextOffset(wrappingWidth, this.limit, requireNextWord);
 						//console.log("layoutLimit:", layoutLimit);
 						if (layoutLimit == this.pos) {
 							//console.groupEnd();
 							return null;
 						}
-						var result = this.text.getLayout(this.pos, layoutLimit);
+						const result = this.text.getLayout(this.pos, layoutLimit);
 						//console.log("layout: \"" + result + "\"");
 						
 						// remove end of line
@@ -221,11 +221,11 @@
 					//console.group("[getLineBreakIndex]");
 					//console.log("pos:"+pos + ", text: \""+ this.text.text.replace(/\n/g, "_").substr(pos, 1) + "\"");
 					
-					var bb = this.rafaelTextObject.getBBox();
+					const bb = this.rafaelTextObject.getBBox();
 					
-					var charNum = -1;
+					let charNum = -1;
 					try {
-						var svgPoint = this.svgTextObject.getStartPositionOfChar(pos);
+						const svgPoint = this.svgTextObject.getStartPositionOfChar(pos);
 						//var dot = this.paper.ellipse(svgPoint.x, svgPoint.y, 1, 1).attr({"stroke-width": 0, fill: Color.blue});
 						svgPoint.x = svgPoint.x + wrappingWidth;
 						//svgPoint.y = bb.y;
@@ -235,7 +235,7 @@
 					
 						charNum = this.svgTextObject.getCharNumAtPosition(svgPoint);
 					} catch (e){
-						console.warn("getStartPositionOfChar error, pos:" + pos);
+						console.warn(`getStartPositionOfChar error, pos:${  pos}`);
 						/*
 						var testPos = pos + 1;
 						if (testPos < this.limit) {
@@ -249,16 +249,16 @@
 						return this.text.getEndIndex(pos);
 					} else {
 						// When case there is new line between pos and charnum then use this new line
-						var newLineIndex = this.text.getEndIndex(pos);
+						const newLineIndex = this.text.getEndIndex(pos);
 						if (newLineIndex < charNum ) {
-							console.log("newLineIndex <= charNum, newLineIndex:"+newLineIndex+", charNum:"+charNum, "\"" + this.text.text.substr(newLineIndex+1).replace(/\n/g, "?") + "\"");
+							console.log(`newLineIndex <= charNum, newLineIndex:${newLineIndex}, charNum:${charNum}`, `"${  this.text.text.substr(newLineIndex+1).replace(/\n/g, "?")  }"`);
 							//console.groupEnd();
 							
 							return newLineIndex;
 						}
 							
 						//var charAtMaxAdvance  = this.text.text.substring(charNum, charNum + 1);
-						var charAtMaxAdvance  = this.text.getCharAtPos(charNum);
+						const charAtMaxAdvance  = this.text.getCharAtPos(charNum);
 						//console.log("!!charAtMaxAdvance: " + charAtMaxAdvance);
 						//console.groupEnd();
 						return charNum;

@@ -28,7 +28,7 @@ angular.module('activitiModeler')
         $scope.secondaryItems = KISBPM.TOOLBAR_CONFIG.secondaryItems;
 
         // Call configurable click handler (From http://stackoverflow.com/questions/359788/how-to-execute-a-javascript-function-when-i-have-its-name-as-a-string)
-        var executeFunctionByName = function(functionName, context /*, args */) {
+        const executeFunctionByName = function(functionName, context /*, args */) {
             var args = Array.prototype.slice.call(arguments).splice(2);
             var namespaces = functionName.split(".");
             var func = namespaces.pop();
@@ -42,12 +42,12 @@ angular.module('activitiModeler')
         $scope.toolbarButtonClicked = function(buttonIndex) {
 
             // Default behaviour
-            var buttonClicked = $scope.items[buttonIndex];
-            var services = { '$scope' : $scope, '$rootScope' : $rootScope, '$http' : $http, '$modal' : $modal, '$q' : $q, '$translate' : $translate};
+            const buttonClicked = $scope.items[buttonIndex];
+            const services = { '$scope' : $scope, '$rootScope' : $rootScope, '$http' : $http, '$modal' : $modal, '$q' : $q, '$translate' : $translate};
             executeFunctionByName(buttonClicked.action, window, services);
 
             // Other events
-            var event = {
+            const event = {
                 type : KISBPM.eventBus.EVENT_TYPE_TOOLBAR_BUTTON_CLICKED,
                 toolbarItem : buttonClicked
             };
@@ -56,38 +56,38 @@ angular.module('activitiModeler')
         
         // Click handler for secondary toolbar buttons
         $scope.toolbarSecondaryButtonClicked = function(buttonIndex) {
-            var buttonClicked = $scope.secondaryItems[buttonIndex];
-            var services = { '$scope' : $scope, '$http' : $http, '$modal' : $modal, '$q' : $q, '$translate' : $translate, '$location': $location};
+            const buttonClicked = $scope.secondaryItems[buttonIndex];
+            const services = { '$scope' : $scope, '$http' : $http, '$modal' : $modal, '$q' : $q, '$translate' : $translate, '$location': $location};
             executeFunctionByName(buttonClicked.action, window, services);
         };
         
         /* Key bindings */
         Mousetrap.bind(['command+z', 'ctrl+z'], function(e) {
-        	var services = { '$scope' : $scope, '$rootScope' : $rootScope, '$http' : $http, '$modal' : $modal, '$q' : $q, '$translate' : $translate};
+        	const services = { '$scope' : $scope, '$rootScope' : $rootScope, '$http' : $http, '$modal' : $modal, '$q' : $q, '$translate' : $translate};
         	KISBPM.TOOLBAR.ACTIONS.undo(services);
             return false;
         });
         
         Mousetrap.bind(['command+y', 'ctrl+y'], function(e) {
-        	var services = { '$scope' : $scope, '$rootScope' : $rootScope, '$http' : $http, '$modal' : $modal, '$q' : $q, '$translate' : $translate};
+        	const services = { '$scope' : $scope, '$rootScope' : $rootScope, '$http' : $http, '$modal' : $modal, '$q' : $q, '$translate' : $translate};
         	KISBPM.TOOLBAR.ACTIONS.redo(services);
             return false;
         });
         
         Mousetrap.bind(['command+c', 'ctrl+c'], function(e) {
-        	var services = { '$scope' : $scope, '$rootScope' : $rootScope, '$http' : $http, '$modal' : $modal, '$q' : $q, '$translate' : $translate};
+        	const services = { '$scope' : $scope, '$rootScope' : $rootScope, '$http' : $http, '$modal' : $modal, '$q' : $q, '$translate' : $translate};
         	KISBPM.TOOLBAR.ACTIONS.copy(services);
             return false;
         });
         
         Mousetrap.bind(['command+v', 'ctrl+v'], function(e) {
-        	var services = { '$scope' : $scope, '$rootScope' : $rootScope, '$http' : $http, '$modal' : $modal, '$q' : $q, '$translate' : $translate};
+        	const services = { '$scope' : $scope, '$rootScope' : $rootScope, '$http' : $http, '$modal' : $modal, '$q' : $q, '$translate' : $translate};
         	KISBPM.TOOLBAR.ACTIONS.paste(services);
             return false;
         });
         
         Mousetrap.bind(['del'], function(e) {
-        	var services = { '$scope' : $scope, '$rootScope' : $rootScope, '$http' : $http, '$modal' : $modal, '$q' : $q, '$translate' : $translate};
+        	const services = { '$scope' : $scope, '$rootScope' : $rootScope, '$http' : $http, '$modal' : $modal, '$q' : $q, '$translate' : $translate};
         	KISBPM.TOOLBAR.ACTIONS.deleteItem(services);
             return false;
         });
@@ -108,9 +108,9 @@ angular.module('activitiModeler')
                 $scope.undoStack.push( evt.commands );
                 $scope.redoStack = [];
                 
-                for(var i = 0; i < $scope.items.length; i++) 
+                for(let i = 0; i < $scope.items.length; i++) 
         		{
-                    var item = $scope.items[i];
+                    const item = $scope.items[i];
                     if (item.action === 'KISBPM.TOOLBAR.ACTIONS.undo')
                     {
                     	item.enabled = true;
@@ -132,14 +132,14 @@ angular.module('activitiModeler')
         // Handle enable/disable toolbar buttons 
         $scope.editorFactory.promise.then(function() {
         	$scope.editor.registerOnEvent(ORYX.CONFIG.EVENT_SELECTION_CHANGED, function( evt ){
-        		var elements = evt.elements;
+        		const elements = evt.elements;
         		
-        		for(var i = 0; i < $scope.items.length; i++) 
+        		for(let i = 0; i < $scope.items.length; i++) 
         		{
-                    var item = $scope.items[i];
+                    const item = $scope.items[i];
                     if (item.enabledAction && item.enabledAction === 'element')
                     {
-                    	var minLength = 1;
+                    	let minLength = 1;
                     	if(item.minSelectionCount) {
                     		minLength = item.minSelectionCount;
                     	}

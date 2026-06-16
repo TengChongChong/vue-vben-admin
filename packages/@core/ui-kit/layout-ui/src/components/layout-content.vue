@@ -24,7 +24,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {});
 
-// @ts-expect-error unused
+// @ts-expect-error - unused
 const { contentElement, overlayStyle } = useLayoutContentStyle();
 
 const style = computed((): CSSProperties => {

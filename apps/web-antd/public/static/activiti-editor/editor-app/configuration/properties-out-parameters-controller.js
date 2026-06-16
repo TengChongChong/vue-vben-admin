@@ -21,7 +21,7 @@
  * Input parameters for call activity
  */
 
-var KisBpmOutParametersCtrl = [ '$scope' , '$modal', '$timeout', '$translate', function($scope, $modal, $timeout, $translate) {
+const KisBpmOutParametersCtrl = [ '$scope' , '$modal', '$timeout', '$translate', function($scope, $modal, $timeout, $translate) {
 
     // Config for the modal window
     var opts = {
@@ -33,7 +33,7 @@ var KisBpmOutParametersCtrl = [ '$scope' , '$modal', '$timeout', '$translate', f
     $modal(opts);
 }];
 
-var KisBpmOutParametersPopupCtrl = [ '$scope', '$q', '$translate', function($scope, $q, $translate) {
+const KisBpmOutParametersPopupCtrl = [ '$scope', '$q', '$translate', function($scope, $q, $translate) {
 
     // Put json representing form properties on scope
     if ($scope.property.value !== undefined && $scope.property.value !== null

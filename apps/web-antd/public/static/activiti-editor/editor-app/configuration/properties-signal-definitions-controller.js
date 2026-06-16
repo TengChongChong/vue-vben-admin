@@ -20,7 +20,7 @@
 angular.module('activitiModeler').controller('ActivitiSignalDefinitionsCtrl', ['$scope', '$modal', function ($scope, $modal) {
 
     // Config for the modal window
-    var opts = {
+    const opts = {
         template: 'editor-app/configuration/properties/signal-definitions-popup.html?version=' + Date.now(),
         scope: $scope
     };
@@ -56,9 +56,9 @@ angular.module('activitiModeler').controller('ActivitiSignalDefinitionsPopupCtrl
 
         $scope.labels = {};
 
-        var idPromise = $translate('PROPERTY.SIGNALDEFINITIONS.ID');
-        var namePromise = $translate('PROPERTY.SIGNALDEFINITIONS.NAME');
-        var scopePromise = $translate('PROPERTY.SIGNALDEFINITIONS.SCOPE');
+        const idPromise = $translate('PROPERTY.SIGNALDEFINITIONS.ID');
+        const namePromise = $translate('PROPERTY.SIGNALDEFINITIONS.NAME');
+        const scopePromise = $translate('PROPERTY.SIGNALDEFINITIONS.SCOPE');
 
         $q.all([idPromise, namePromise, scopePromise]).then(function (results) {
 
@@ -85,7 +85,7 @@ angular.module('activitiModeler').controller('ActivitiSignalDefinitionsPopupCtrl
 
         // Click handler for add button
         $scope.addNewSignalDefinition = function () {
-            var newSignalDefinition = {id: '', name: '', scope: 'global'};
+            const newSignalDefinition = {id: '', name: '', scope: 'global'};
 
             $scope.signalDefinitions.push(newSignalDefinition);
             $timeout(function () {
@@ -96,7 +96,7 @@ angular.module('activitiModeler').controller('ActivitiSignalDefinitionsPopupCtrl
         // Click handler for remove button
         $scope.removeSignalDefinition = function () {
             if ($scope.selectedSignals && $scope.selectedSignals.length > 0) {
-            	var index = $scope.signalDefinitions.indexOf($scope.selectedSignals[0]);
+            	const index = $scope.signalDefinitions.indexOf($scope.selectedSignals[0]);
                 $scope.gridOptions.selectItem(index, false);
                 $scope.signalDefinitions.splice(index, 1);
 

@@ -22,7 +22,7 @@
  * <div doc-module-components="ngRoute"></div>
  */
  /* global -ngRouteModule */
-var ngRouteModule = angular.module('ngRoute', ['ng']).
+const ngRouteModule = angular.module('ngRoute', ['ng']).
                         provider('$route', $RouteProvider);
 
 /**
@@ -45,7 +45,7 @@ function $RouteProvider(){
     return angular.extend(new (angular.extend(function() {}, {prototype:parent}))(), extra);
   }
 
-  var routes = {};
+  const routes = {};
 
   /**
    * @ngdoc method
@@ -156,7 +156,7 @@ function $RouteProvider(){
 
     // create redirection for trailing slashes
     if (path) {
-      var redirectPath = (path[path.length-1] == '/')
+      const redirectPath = (path[path.length-1] == '/')
             ? path.substr(0, path.length-1)
             : path +'/';
 
@@ -181,7 +181,7 @@ function $RouteProvider(){
     * Inspired by pathRexp in visionmedia/express/lib/utils.js.
     */
   function pathRegExp(path, opts) {
-    var insensitive = opts.caseInsensitiveMatch,
+    const insensitive = opts.caseInsensitiveMatch,
         ret = {
           originalPath: path,
           regexp: path
@@ -190,23 +190,23 @@ function $RouteProvider(){
 
     path = path
       .replace(/([().])/g, '\\$1')
-      .replace(/(\/)?:(\w+)([\?\*])?/g, function(_, slash, key, option){
-        var optional = option === '?' ? option : null;
-        var star = option === '*' ? option : null;
+      .replace(/(\/)?:(\w+)([?\*])?/g, function(_, slash, key, option){
+        const optional = option === '?' ? option : null;
+        const star = option === '*' ? option : null;
         keys.push({ name: key, optional: !!optional });
         slash = slash || '';
-        return ''
-          + (optional ? '' : slash)
-          + '(?:'
-          + (optional ? slash : '')
-          + (star && '(.+?)' || '([^/]+)')
-          + (optional || '')
-          + ')'
-          + (optional || '');
+        return `${
+           optional ? '' : slash
+           }(?:${
+           optional ? slash : ''
+           }${star && '(.+?)' || '([^/]+)'
+           }${optional || ''
+           })${
+           optional || ''}`;
       })
-      .replace(/([\/$\*])/g, '\\$1');
+      .replace(/([/$*])/g, '\\$1');
 
-    ret.regexp = new RegExp('^' + path + '$', insensitive ? 'i' : '');
+    ret.regexp = new RegExp(`^${  path  }$`, insensitive ? 'i' : '');
     return ret;
   }
 
@@ -426,7 +426,7 @@ function $RouteProvider(){
      * instance of the Controller.
      */
 
-    var forceReload = false,
+    let forceReload = false,
         $route = {
           routes: routes,
 
@@ -466,18 +466,18 @@ function $RouteProvider(){
      * visionmedia/express/lib/router/router.js.
      */
     function switchRouteMatcher(on, route) {
-      var keys = route.keys,
+      const keys = route.keys,
           params = {};
 
       if (!route.regexp) return null;
 
-      var m = route.regexp.exec(on);
+      const m = route.regexp.exec(on);
       if (!m) return null;
 
-      for (var i = 1, len = m.length; i < len; ++i) {
-        var key = keys[i - 1];
+      for (let i = 1, len = m.length; i < len; ++i) {
+        const key = keys[i - 1];
 
-        var val = 'string' == typeof m[i]
+        const val = 'string' == typeof m[i]
               ? decodeURIComponent(m[i])
               : m[i];
 
@@ -489,7 +489,7 @@ function $RouteProvider(){
     }
 
     function updateRoute() {
-      var next = parseRoute(),
+      const next = parseRoute(),
           last = $route.current;
 
       if (next && last && next.$$route === last.$$route
@@ -517,7 +517,7 @@ function $RouteProvider(){
         $q.when(next).
           then(function() {
             if (next) {
-              var locals = angular.extend({}, next.resolve),
+              let locals = angular.extend({}, next.resolve),
                   template, templateUrl;
 
               angular.forEach(locals, function(value, key) {
@@ -569,7 +569,7 @@ function $RouteProvider(){
      */
     function parseRoute() {
       // Match a route
-      var params, match;
+      let params, match;
       angular.forEach(routes, function(route, path) {
         if (!match && (params = switchRouteMatcher($location.path(), route))) {
           match = inherit(route, {
@@ -586,13 +586,13 @@ function $RouteProvider(){
      * @returns interpolation of the redirect path with the parameters
      */
     function interpolate(string, params) {
-      var result = [];
+      const result = [];
       angular.forEach((string||'').split(':'), function(segment, i) {
         if (i === 0) {
           result.push(segment);
         } else {
-          var segmentMatch = segment.match(/(\w+)(.*)/);
-          var key = segmentMatch[1];
+          const segmentMatch = segment.match(/(\w+)(.*)/);
+          const key = segmentMatch[1];
           result.push(params[key]);
           result.push(segmentMatch[2] || '');
           delete params[key];
@@ -829,7 +829,7 @@ function ngViewFactory(   $route,   $anchorScroll,   $animate) {
     priority: 400,
     transclude: 'element',
     link: function(scope, $element, attr, ctrl, $transclude) {
-        var currentScope,
+        let currentScope,
             currentElement,
             autoScrollExp = attr.autoscroll,
             onloadExp = attr.onload || '';
@@ -849,12 +849,12 @@ function ngViewFactory(   $route,   $anchorScroll,   $animate) {
         }
 
         function update() {
-          var locals = $route.current && $route.current.locals,
+          const locals = $route.current && $route.current.locals,
               template = locals && locals.$template;
 
           if (angular.isDefined(template)) {
-            var newScope = scope.$new();
-            var current = $route.current;
+            const newScope = scope.$new();
+            const current = $route.current;
 
             // Note: This will also link all children of ng-view that were contained in the original
             // html. If that content contains controllers, ... they could pollute/change the scope.
@@ -862,7 +862,7 @@ function ngViewFactory(   $route,   $anchorScroll,   $animate) {
             // Note: We can't remove them in the cloneAttchFn of $transclude as that
             // function is called before linking the content, which would apply child
             // directives to non existing elements.
-            var clone = $transclude(newScope, function(clone) {
+            const clone = $transclude(newScope, function(clone) {
               $animate.enter(clone, null, currentElement || $element, function onNgViewEnter () {
                 if (angular.isDefined(autoScrollExp)
                   && (!autoScrollExp || scope.$eval(autoScrollExp))) {
@@ -895,16 +895,16 @@ function ngViewFillContentFactory($compile, $controller, $route) {
     restrict: 'ECA',
     priority: -400,
     link: function(scope, $element) {
-      var current = $route.current,
+      const current = $route.current,
           locals = current.locals;
 
       $element.html(locals.$template);
 
-      var link = $compile($element.contents());
+      const link = $compile($element.contents());
 
       if (current.controller) {
         locals.$scope = scope;
-        var controller = $controller(current.controller, locals);
+        const controller = $controller(current.controller, locals);
         if (current.controllerAs) {
           scope[current.controllerAs] = controller;
         }

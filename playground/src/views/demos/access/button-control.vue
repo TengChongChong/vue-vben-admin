@@ -7,7 +7,7 @@ import { AccessControl, useAccess } from '@vben/access';
 import { Page } from '@vben/common-ui';
 import { resetAllStores, useUserStore } from '@vben/stores';
 
-import { Button, Card } from 'ant-design-vue';
+import { Button, Card } from 'antdv-next';
 
 import { useAuthStore } from '#/store';
 
@@ -32,11 +32,11 @@ const userStore = useUserStore();
 const router = useRouter();
 
 function roleButtonType(role: string) {
-  return userStore.userRoles.includes(role) ? 'primary' : 'default';
+  return userStore.roleCodeList.includes(role) ? 'primary' : 'default';
 }
 
 async function changeAccount(role: string) {
-  if (userStore.userRoles.includes(role)) {
+  if (userStore.roleCodeList.includes(role)) {
     return;
   }
 
@@ -59,7 +59,7 @@ async function changeAccount(role: string) {
       <template #title>
         <span class="font-semibold">当前角色:</span>
         <span class="mx-4 text-lg text-primary">
-          {{ userStore.userRoles?.[0] }}
+          {{ userStore.roleCodeList?.[0] }}
         </span>
       </template>
 

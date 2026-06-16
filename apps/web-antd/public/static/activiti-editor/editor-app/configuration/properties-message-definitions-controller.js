@@ -24,7 +24,7 @@
 angular.module('activitiModeler').controller('ActivitiMessageDefinitionsCtrl', ['$scope', '$modal', function ($scope, $modal) {
 
     // Config for the modal window
-    var opts = {
+    const opts = {
         template: 'editor-app/configuration/properties/message-definitions-popup.html?version=' + Date.now(),
         scope: $scope
     };
@@ -60,8 +60,8 @@ angular.module('activitiModeler').controller('ActivitiMessageDefinitionsPopupCtr
 
         $scope.labels = {};
 
-        var idPromise = $translate('PROPERTY.MESSAGEDEFINITIONS.ID');
-        var namePromise = $translate('PROPERTY.MESSAGEDEFINITIONS.NAME');
+        const idPromise = $translate('PROPERTY.MESSAGEDEFINITIONS.ID');
+        const namePromise = $translate('PROPERTY.MESSAGEDEFINITIONS.NAME');
 
         $q.all([idPromise, namePromise]).then(function (results) {
 
@@ -86,7 +86,7 @@ angular.module('activitiModeler').controller('ActivitiMessageDefinitionsPopupCtr
 
         // Click handler for add button
         $scope.addNewMessageDefinition = function () {
-            var newMessageDefinition = {id: '', name: ''};
+            const newMessageDefinition = {id: '', name: ''};
 
             $scope.messageDefinitions.push(newMessageDefinition);
             $timeout(function () {
@@ -97,7 +97,7 @@ angular.module('activitiModeler').controller('ActivitiMessageDefinitionsPopupCtr
         // Click handler for remove button
         $scope.removeMessageDefinition = function () {
         	if ($scope.selectedMessages && $scope.selectedMessages.length > 0) {
-            	var index = $scope.messageDefinitions.indexOf($scope.selectedMessages[0]);
+            	const index = $scope.messageDefinitions.indexOf($scope.selectedMessages[0]);
                 $scope.gridOptions.selectItem(index, false);
                 $scope.messageDefinitions.splice(index, 1);
 

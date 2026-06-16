@@ -14,10 +14,10 @@ ORYX.Utils = {
      * @param {Object} name
      */
     getParamFromUrl: function(name){
-        name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-        var regexS = "[\\?&]" + name + "=([^&#]*)";
-        var regex = new RegExp(regexS);
-        var results = regex.exec(window.location.href);
+        name = name.replace(/[[]/, "\\\[").replace(/[\]]/, "\\\]");
+        const regexS = "[\\?&]" + name + "=([^&#]*)";
+        const regex = new RegExp(regexS);
+        const results = regex.exec(window.location.href);
         if (results == null) {
             return null;
         }
@@ -34,7 +34,7 @@ ORYX.Utils = {
 
 		if (ORYX.CONFIG.DISABLE_GRADIENT && gradient){
 
-			var col = reference.getAttributeNS(null, "stop-color") || "#ffffff";
+			const col = reference.getAttributeNS(null, "stop-color") || "#ffffff";
 
 			$A(gradient.getElementsByTagName("stop")).each(function(stop){
 				if (stop == reference){ return; }
@@ -66,7 +66,7 @@ XMLNS = {
 
 //TODO kann kickstart sich vielleicht auch um die erzeugung von paketen/
 // namespaces k???mmern? z.b. requireNamespace("ORYX.Core.SVG");
-var Kickstart = {
+const Kickstart = {
  	started: false,
 	callbacks: [],
 	alreadyLoaded: [],
@@ -139,7 +139,7 @@ Event.observe(window, 'load', Kickstart.load);/*
  * All code Copyright 2013 KIS Consultancy all rights reserved
  */
 
-var ERDF = {
+const ERDF = {
 
 	LITERAL: 0x01,
 	RESOURCE: 0x02,
@@ -494,10 +494,10 @@ ERDF.Triple = function(subject, predicate, object) {
 
 	this.toString = function() {
 
-		return "[ERDF.Triple] " +
-			this.subject.toString() + ' ' +
-			this.predicate.prefix + ':' + this.predicate.name + ' ' +
-			this.object.toString();
+		return `[ERDF.Triple] ${ 
+			this.subject.toString()  } ${ 
+			this.predicate.prefix  }:${  this.predicate.name  } ${ 
+			this.object.toString()}`;
 		};
 };
 
@@ -508,7 +508,7 @@ ERDF.Resource = function(uri) {
 	ERDF.__enhanceObject.apply(this);
 
 	this.toString = function() {
-		return '&lt;' + this.value + '&gt;';
+		return `&lt;${  this.value  }&gt;`;
 	}
 
 };
@@ -520,7 +520,7 @@ ERDF.Literal = function(literal) {
 	ERDF.__enhanceObject.apply(this);
 
 	this.toString = function() {
-		return '"' + this.value + '"';
+		return `"${  this.value  }"`;
 	}
 };/*
  * Copyright 2005-2014 Alfresco Software, Ltd. All rights reserved.
@@ -536,20 +536,20 @@ ERDF.Literal = function(literal) {
  * Save and triple generation behaviour. Use this area to configure
  * data management to your needs.
  */
-var USE_ASYNCHRONOUS_REQUESTS =		true;
-var DISCARD_UNUSED_TRIPLES =			true;
-var PREFER_SPANS_OVER_DIVS =			true;
-var PREFER_TITLE_OVER_TEXTNODE =		false;
-var RESOURCE_ID_PREFIX =				'resource';
+const USE_ASYNCHRONOUS_REQUESTS =		true;
+const DISCARD_UNUSED_TRIPLES =			true;
+const PREFER_SPANS_OVER_DIVS =			true;
+const PREFER_TITLE_OVER_TEXTNODE =		false;
+const RESOURCE_ID_PREFIX =				'resource';
 
-var SHOW_DEBUG_ALERTS_WHEN_SAVING =	false;
-var SHOW_EXTENDED_DEBUG_INFORMATION =	false;
+const SHOW_DEBUG_ALERTS_WHEN_SAVING =	false;
+const SHOW_EXTENDED_DEBUG_INFORMATION =	false;
 
 /*
  * Back end specific workarounds.
  */
 
-var USE_ARESS_WORKAROUNDS =		true;
+const USE_ARESS_WORKAROUNDS =		true;
 
 /*
  * Data management constants. Do not change these, as they are used
@@ -558,19 +558,19 @@ var USE_ARESS_WORKAROUNDS =		true;
  */
 
 // Resource constants
-var RESOURCE_CREATED =			0x01;
-var RESOURCE_REMOVED =			0x02;
-var RESOURCE_SAVED =				0x04;
-var RESOURCE_RELOADED =			0x08;
-var RESOURCE_SYNCHRONIZED = 		0x10;
+const RESOURCE_CREATED =			0x01;
+const RESOURCE_REMOVED =			0x02;
+const RESOURCE_SAVED =				0x04;
+const RESOURCE_RELOADED =			0x08;
+const RESOURCE_SYNCHRONIZED = 		0x10;
 
 // Triple constants
-var TRIPLE_REMOVE =	0x01;
-var TRIPLE_ADD =		0x02;
-var TRIPLE_RELOAD =	0x04;
-var TRIPLE_SAVE =		0x08;
+const TRIPLE_REMOVE =	0x01;
+const TRIPLE_ADD =		0x02;
+const TRIPLE_RELOAD =	0x04;
+const TRIPLE_SAVE =		0x08;
 
-var PROCESSDATA_REF = 'processdata';
+const PROCESSDATA_REF = 'processdata';
 
 // HTTP status code constants
 //
@@ -603,7 +603,7 @@ var PROCESSDATA_REF = 'processdata';
  * data. Initialize data management by DataManager.init();
  * @class DataManager
  */
-var DataManager = {
+const DataManager = {
 
 	/**
 	 * The init method should be called once in the DataManagers lifetime.
@@ -1229,7 +1229,7 @@ function DMCommand(action, triple) {
 	this.triple = triple;
 
 	this.toString = function() {
-		return 'Command('+action+', '+triple+')';
+		return `Command(${action}, ${triple})`;
 	};
 }
 
@@ -1242,7 +1242,7 @@ function DMCommandHandler(nextHandler) {
 	 * @param {DMCommandHandler} handler The handler that is next in the chain.
 	 */
 	this.__setNext = function(handler) {
-		var _next = this.__next;
+		const _next = this.__next;
 		this.__next = nextHandler;
 		return _next ? _next : true;
 	};
@@ -1300,8 +1300,8 @@ function MetaTagHandler(next) {
 	};
 };
 
-var chain =	new MetaTagHandler();
-var command = new DMCommand(TRIPLE_ADD, new ERDF.Triple(
+const chain =	new MetaTagHandler();
+let command = new DMCommand(TRIPLE_ADD, new ERDF.Triple(
 	new ERDF.Resource(''),
 	'rdf:tool',
 	new ERDF.Literal('')
@@ -1327,8 +1327,8 @@ ResourceManager = {
 			throw 'Invalid mask for resource event listener registration.';
 
 		// construct controller and token.
-		var controller = {listener: listener, mask: mask};
-		var token = ResourceManager.__token++;
+		const controller = {listener: listener, mask: mask};
+		const token = ResourceManager.__token++;
 
 		// add new listener.
 		ResourceManager.__listeners[token] = controller;
@@ -1363,7 +1363,7 @@ ResourceManager = {
 
 		// get all possible resources for this.
 		id = ERDF.__stripHashes(id);
-		var resources = DataManager.query(
+		const resources = DataManager.query(
 			new ERDF.Resource('#'+id),
 			{prefix: 'raziel', name: 'entry'},
 			undefined
@@ -1371,22 +1371,22 @@ ResourceManager = {
 
 		// check for consistency.
 		if((resources.length == 1) && (resources[0].object.isResource())) {
-			var entryUrl = resources[0].object.value;
+			const entryUrl = resources[0].object.value;
 			return new ResourceManager.__Resource(id, entryUrl);
 		}
 
 		// else throw an error message.
-		throw ('Resource with id ' +id+ ' not recognized as such. ' +
-			((resources.length > 1) ?
+		throw (`Resource with id ${ id } not recognized as such. ${ 
+			(resources.length > 1) ?
 				' There is more than one raziel:entry URL.' :
-				' There is no raziel:entry URL.'));
+				' There is no raziel:entry URL.'}`);
 
 		return false;
 	},
 
 	__createResource: function(alternativeDiv) {
 
-		var collectionUrls = DataManager.query(
+		const collectionUrls = DataManager.query(
 			new ERDF.Resource(''),
 			// TODO This will become raziel:collection in near future.
 			{prefix: 'raziel', name: 'collection'},
@@ -1400,13 +1400,13 @@ ResourceManager = {
 
 			// get the collection url.
 
-			var collectionUrl = collectionUrls[0].object.value;
-			var resource = undefined;
+			const collectionUrl = collectionUrls[0].object.value;
+			let resource = undefined;
 
 			// if there is an old id, serialize the dummy div from there,
 			// otherwise create a dummy div on the fly.
 
-			var serialization = alternativeDiv? alternativeDiv :
+			const serialization = alternativeDiv? alternativeDiv :
 					'<div xmlns="http://www.w3.org/1999/xhtml"></div>';
 
 			ResourceManager.__request(
@@ -1417,16 +1417,16 @@ ResourceManager = {
 
 					// get div and id that have been generated by the server.
 
-					var response = (this.responseXML);
-					var div = response.childNodes[0];
-					var id = div.getAttribute('id');
+					const response = (this.responseXML);
+					const div = response.childNodes[0];
+					const id = div.getAttribute('id');
 
 					// store div in DOM
-					if(!$$('.' + PROCESSDATA_REF)[0])
+					if(!$$(`.${  PROCESSDATA_REF}`)[0])
 						DataManager.graft(XMLNS.XHTML,
 							document.getElementsByTagNameNS(XMLNS.XHTML, 'body').item(0), ['div', {'class': PROCESSDATA_REF, 'style':'display:none;'}]);
 
-					$$('.' + PROCESSDATA_REF)[0].appendChild(div.cloneNode(true));
+					$$(`.${  PROCESSDATA_REF}`)[0].appendChild(div.cloneNode(true));
 
 					// parse local erdf data once more.
 
@@ -1503,8 +1503,8 @@ ResourceManager = {
 		}
 
 		this.reload = function() {
-			var _url = this.__url;
-			var _id = this.__id;
+			const _url = this.__url;
+			const _id = this.__id;
 			ResourceManager.__request(
 				'GET', _url, null,
 				function() { ResourceManager.__resourceActionSucceeded(
@@ -1516,8 +1516,8 @@ ResourceManager = {
 		};
 
 		this.save = function(synchronize) {
-			var _url = this.__url;
-			var _id = this.__id;
+			const _url = this.__url;
+			const _id = this.__id;
 			data = DataManager.serialize($(_id));
 			ResourceManager.__request(
 				'PUT', _url, data,
@@ -1530,8 +1530,8 @@ ResourceManager = {
 		};
 
 		this.remove = function() {
-			var _url = this.__url;
-			var _id = this.__id;
+			const _url = this.__url;
+			const _id = this.__id;
 			ResourceManager.__request(
 				'DELETE', _url, null,
 				function() { ResourceManager.__resourceActionSucceeded(
@@ -1545,7 +1545,7 @@ ResourceManager = {
 
 	request: function(url, requestOptions) {
 
-		var options = {
+		const options = {
 			method:       'get',
 			asynchronous: true,
 			parameters:   {}
@@ -1553,7 +1553,7 @@ ResourceManager = {
 
 		Object.extend(options, requestOptions || {});
 
-		var params = Hash.toQueryString(options.parameters);
+		const params = Hash.toQueryString(options.parameters);
 		if (params)
 			url += (url.include('?') ? '&' : '?') + params;
 
@@ -1570,7 +1570,7 @@ ResourceManager = {
 	__request: function(method, url, data, success, error, async, headers) {
 
 		// get a request object
-		var httpRequest = Try.these(
+		const httpRequest = Try.these(
 
 			/* do the Mozilla/Safari/Opera stuff */
 			function() { return new XMLHttpRequest(); },
@@ -1594,7 +1594,7 @@ ResourceManager = {
 			httpRequest.onerror = error;
 		}
 
-		var h = $H(headers)
+		const h = $H(headers)
 		h.keys().each(function(key) {
 
 			httpRequest.setRequestHeader(key, h[key]);
@@ -1604,8 +1604,8 @@ ResourceManager = {
 
 			if(SHOW_DEBUG_ALERTS_WHEN_SAVING)
 
-				alert(method + ' ' + url + '\n' +
-					SHOW_EXTENDED_DEBUG_INFORMATION ? data : '');
+				alert(`${method  } ${  url  }\n${ 
+					SHOW_EXTENDED_DEBUG_INFORMATION}` ? data : '');
 
 			// TODO Remove synchronous calls to the server as soon as xenodot
 			// handles asynchronous requests without failure.
@@ -1620,17 +1620,17 @@ ResourceManager = {
 
 	__resourceActionSucceeded: function(transport, action, id) {
 
-		var status = transport.status;
-		var response = transport.responseText;
+		const status = transport.status;
+		const response = transport.responseText;
 
 		if(SHOW_DEBUG_ALERTS_WHEN_SAVING)
 
-			alert(status + ' ' + url + '\n' +
-				SHOW_EXTENDED_DEBUG_INFORMATION ? data : '');
+			alert(`${status  } ${  url  }\n${ 
+				SHOW_EXTENDED_DEBUG_INFORMATION}` ? data : '');
 
 		// if the status code is not in 2xx, throw an error.
 		if(status >= 300)
-			throw 'The server responded with an error: ' + status + '\n' + (SHOW_EXTENDED_DEBUG_INFORMATION ? + data : 'If you need additional information here, including the data sent by the server, consider setting SHOW_EXTENDED_DEBUG_INFORMATION to true.');
+			throw `The server responded with an error: ${  status  }\n${  SHOW_EXTENDED_DEBUG_INFORMATION ? + data : 'If you need additional information here, including the data sent by the server, consider setting SHOW_EXTENDED_DEBUG_INFORMATION to true.'}`;
 
 		switch(action) {
 
@@ -1717,7 +1717,7 @@ ResourceManager = {
  * Worth reading.
  * @class Clazz
  */
-var Clazz = function() {};
+const Clazz = function() {};
 
 /**
  * Empty constructor.
@@ -1743,15 +1743,15 @@ Clazz.prototype.construct = function() {};
  * @param {Object} def The definition of the new class.
  */
 Clazz.extend = function(def) {
-    var classDef = function() {
+    const classDef = function() {
         if (arguments[0] !== Clazz) { this.construct.apply(this, arguments); }
     };
 
-    var proto = new this(Clazz);
-    var superClass = this.prototype;
+    const proto = new this(Clazz);
+    const superClass = this.prototype;
 
-    for (var n in def) {
-        var item = def[n];
+    for (let n in def) {
+        const item = def[n];
         if (item instanceof Function) item.$ = superClass;
         proto[n] = item;
     }
@@ -1787,35 +1787,35 @@ ORYX.CONFIG.LIBS_PATH =					"libs";
  * Regular Config
  */
 ORYX.CONFIG.SERVER_HANDLER_ROOT = 			"service";
-ORYX.CONFIG.SERVER_EDITOR_HANDLER =			ORYX.CONFIG.SERVER_HANDLER_ROOT + "/editor";
-ORYX.CONFIG.SERVER_MODEL_HANDLER =			ORYX.CONFIG.SERVER_HANDLER_ROOT + "/model";
-ORYX.CONFIG.STENCILSET_HANDLER = 			ORYX.CONFIG.SERVER_HANDLER_ROOT + "/editor_stencilset?embedsvg=true&url=true&namespace=";
-ORYX.CONFIG.STENCIL_SETS_URL = 				ORYX.CONFIG.SERVER_HANDLER_ROOT + "/editor_stencilset";
+ORYX.CONFIG.SERVER_EDITOR_HANDLER =			`${ORYX.CONFIG.SERVER_HANDLER_ROOT  }/editor`;
+ORYX.CONFIG.SERVER_MODEL_HANDLER =			`${ORYX.CONFIG.SERVER_HANDLER_ROOT  }/model`;
+ORYX.CONFIG.STENCILSET_HANDLER = 			`${ORYX.CONFIG.SERVER_HANDLER_ROOT  }/editor_stencilset?embedsvg=true&url=true&namespace=`;
+ORYX.CONFIG.STENCIL_SETS_URL = 				`${ORYX.CONFIG.SERVER_HANDLER_ROOT  }/editor_stencilset`;
 
 ORYX.CONFIG.PLUGINS_CONFIG =				"editor-app/plugins.xml";
-ORYX.CONFIG.SYNTAXCHECKER_URL =				ORYX.CONFIG.SERVER_HANDLER_ROOT + "/syntaxchecker";
-ORYX.CONFIG.DEPLOY_URL = 					ORYX.CONFIG.SERVER_HANDLER_ROOT + "/model/deploy";
-ORYX.CONFIG.MODEL_LIST_URL = 				ORYX.CONFIG.SERVER_HANDLER_ROOT + "/models";
-ORYX.CONFIG.FORM_FLOW_LIST_URL = 			ORYX.CONFIG.SERVER_HANDLER_ROOT + "/formflows";
-ORYX.CONFIG.FORM_FLOW_IMAGE_URL = 			ORYX.CONFIG.SERVER_HANDLER_ROOT + "/formflow";
-ORYX.CONFIG.FORM_LIST_URL = 				ORYX.CONFIG.SERVER_HANDLER_ROOT + "/forms";
-ORYX.CONFIG.FORM_IMAGE_URL = 				ORYX.CONFIG.SERVER_HANDLER_ROOT + "/form";
-ORYX.CONFIG.SUB_PROCESS_LIST_URL = 			ORYX.CONFIG.SERVER_HANDLER_ROOT + "/subprocesses";
-ORYX.CONFIG.SUB_PROCESS_IMAGE_URL = 		ORYX.CONFIG.SERVER_HANDLER_ROOT + "/subprocess";
-ORYX.CONFIG.TEST_SERVICE_URL = 				ORYX.CONFIG.SERVER_HANDLER_ROOT + "/service/";
+ORYX.CONFIG.SYNTAXCHECKER_URL =				`${ORYX.CONFIG.SERVER_HANDLER_ROOT  }/syntaxchecker`;
+ORYX.CONFIG.DEPLOY_URL = 					`${ORYX.CONFIG.SERVER_HANDLER_ROOT  }/model/deploy`;
+ORYX.CONFIG.MODEL_LIST_URL = 				`${ORYX.CONFIG.SERVER_HANDLER_ROOT  }/models`;
+ORYX.CONFIG.FORM_FLOW_LIST_URL = 			`${ORYX.CONFIG.SERVER_HANDLER_ROOT  }/formflows`;
+ORYX.CONFIG.FORM_FLOW_IMAGE_URL = 			`${ORYX.CONFIG.SERVER_HANDLER_ROOT  }/formflow`;
+ORYX.CONFIG.FORM_LIST_URL = 				`${ORYX.CONFIG.SERVER_HANDLER_ROOT  }/forms`;
+ORYX.CONFIG.FORM_IMAGE_URL = 				`${ORYX.CONFIG.SERVER_HANDLER_ROOT  }/form`;
+ORYX.CONFIG.SUB_PROCESS_LIST_URL = 			`${ORYX.CONFIG.SERVER_HANDLER_ROOT  }/subprocesses`;
+ORYX.CONFIG.SUB_PROCESS_IMAGE_URL = 		`${ORYX.CONFIG.SERVER_HANDLER_ROOT  }/subprocess`;
+ORYX.CONFIG.TEST_SERVICE_URL = 				`${ORYX.CONFIG.SERVER_HANDLER_ROOT  }/service/`;
 
-ORYX.CONFIG.SERVICE_LIST_URL = 				ORYX.CONFIG.SERVER_HANDLER_ROOT + "/services";
-ORYX.CONFIG.CONDITION_ELEMENT_LIST_URL = 	ORYX.CONFIG.SERVER_HANDLER_ROOT + "/conditionelements";
-ORYX.CONFIG.VARIABLEDEF_ELEMENT_LIST_URL = 	ORYX.CONFIG.SERVER_HANDLER_ROOT + "/variabledefinitionelements";
-ORYX.CONFIG.VALIDATOR_LIST_URL = 			ORYX.CONFIG.SERVER_HANDLER_ROOT + "/validators";
+ORYX.CONFIG.SERVICE_LIST_URL = 				`${ORYX.CONFIG.SERVER_HANDLER_ROOT  }/services`;
+ORYX.CONFIG.CONDITION_ELEMENT_LIST_URL = 	`${ORYX.CONFIG.SERVER_HANDLER_ROOT  }/conditionelements`;
+ORYX.CONFIG.VARIABLEDEF_ELEMENT_LIST_URL = 	`${ORYX.CONFIG.SERVER_HANDLER_ROOT  }/variabledefinitionelements`;
+ORYX.CONFIG.VALIDATOR_LIST_URL = 			`${ORYX.CONFIG.SERVER_HANDLER_ROOT  }/validators`;
 
-ORYX.CONFIG.SS_EXTENSIONS_FOLDER =			ORYX.CONFIG.ROOT_PATH + "stencilsets/extensions/";
-ORYX.CONFIG.SS_EXTENSIONS_CONFIG =			ORYX.CONFIG.SERVER_HANDLER_ROOT + "/editor_ssextensions";
+ORYX.CONFIG.SS_EXTENSIONS_FOLDER =			`${ORYX.CONFIG.ROOT_PATH  }stencilsets/extensions/`;
+ORYX.CONFIG.SS_EXTENSIONS_CONFIG =			`${ORYX.CONFIG.SERVER_HANDLER_ROOT  }/editor_ssextensions`;
 ORYX.CONFIG.ORYX_NEW_URL =					"/new";
-ORYX.CONFIG.BPMN_LAYOUTER =					ORYX.CONFIG.ROOT_PATH + "bpmnlayouter";
+ORYX.CONFIG.BPMN_LAYOUTER =					`${ORYX.CONFIG.ROOT_PATH  }bpmnlayouter`;
 
-ORYX.CONFIG.EXPRESSION_METADATA_URL = 			ORYX.CONFIG.SERVER_HANDLER_ROOT + "/expression-metadata";
-ORYX.CONFIG.DATASOURCE_METADATA_URL = 			ORYX.CONFIG.SERVER_HANDLER_ROOT + "/datasource-metadata";/*
+ORYX.CONFIG.EXPRESSION_METADATA_URL = 			`${ORYX.CONFIG.SERVER_HANDLER_ROOT  }/expression-metadata`;
+ORYX.CONFIG.DATASOURCE_METADATA_URL = 			`${ORYX.CONFIG.SERVER_HANDLER_ROOT  }/datasource-metadata`;/*
  * Copyright 2005-2014 Alfresco Software, Ltd. All rights reserved.
  * License rights for this program may be obtained from Alfresco Software, Ltd.
  * pursuant to a written agreement and any use of this program without such an
@@ -1839,7 +1839,7 @@ ORYX.CONFIG.PANEL_RIGHT_WIDTH	= 		300;
 ORYX.CONFIG.APPNAME = 					'KISBPM';
 ORYX.CONFIG.WEB_URL = 					".";
 
-ORYX.CONFIG.BLANK_IMAGE = ORYX.CONFIG.LIBS_PATH + '/ext-2.0.2/resources/images/default/s.gif';
+ORYX.CONFIG.BLANK_IMAGE = `${ORYX.CONFIG.LIBS_PATH  }/ext-2.0.2/resources/images/default/s.gif`;
 
 /* Specify offset of header */
 ORYX.CONFIG.OFFSET_HEADER = 61;
@@ -2079,22 +2079,22 @@ ORYX.CONFIG.FORM_ELEMENT_TYPE_LABEL_FIELD = 		'http://b3mn.org/stencilset/xforms
 
 function printf() {
 
-	var result = arguments[0];
-	for (var i=1; i<arguments.length; i++)
-		result = result.replace('%' + (i-1), arguments[i]);
+	let result = arguments[0];
+	for (let i=1; i<arguments.length; i++)
+		result = result.replace(`%${  i-1}`, arguments[i]);
 	return result;
 }
 
 // oryx constants.
-var ORYX_LOGLEVEL_TRACE = 5;
-var ORYX_LOGLEVEL_DEBUG = 4;
-var ORYX_LOGLEVEL_INFO = 3;
-var ORYX_LOGLEVEL_WARN = 2;
-var ORYX_LOGLEVEL_ERROR = 1;
-var ORYX_LOGLEVEL_FATAL = 0;
-var ORYX_LOGLEVEL = 3;
-var ORYX_CONFIGURATION_DELAY = 100;
-var ORYX_CONFIGURATION_WAIT_ATTEMPTS = 10;
+const ORYX_LOGLEVEL_TRACE = 5;
+const ORYX_LOGLEVEL_DEBUG = 4;
+const ORYX_LOGLEVEL_INFO = 3;
+const ORYX_LOGLEVEL_WARN = 2;
+const ORYX_LOGLEVEL_ERROR = 1;
+const ORYX_LOGLEVEL_FATAL = 0;
+const ORYX_LOGLEVEL = 3;
+const ORYX_CONFIGURATION_DELAY = 100;
+const ORYX_CONFIGURATION_WAIT_ATTEMPTS = 10;
 
 if(!ORYX) var ORYX = {};
 
@@ -2144,9 +2144,9 @@ ORYX = Object.extend(ORYX, {
 
 		__log: function(prefix, messageParts) {
 
-			messageParts[0] = (new Date()).getTime() + " "
-				+ prefix + " " + messageParts[0];
-			var message = printf.apply(null, messageParts);
+			messageParts[0] = `${(new Date()).getTime()  } ${
+				 prefix  } ${  messageParts[0]}`;
+			const message = printf.apply(null, messageParts);
 
 			ORYX.Log.__appenders.each(function(appender) {
 				appender.append(message);
@@ -2171,11 +2171,11 @@ ORYX = Object.extend(ORYX, {
 		ORYX.Log.debug("Oryx begins loading procedure.");
 
 		// check for prototype
-		if( (typeof Prototype=='undefined') ||
-			(typeof Element == 'undefined') ||
-			(typeof Element.Methods=='undefined') ||
-			parseFloat(Prototype.Version.split(".")[0] + "." +
-				Prototype.Version.split(".")[1]) < 1.5)
+		if( (typeof Prototype === 'undefined') ||
+			(typeof Element === 'undefined') ||
+			(typeof Element.Methods === 'undefined') ||
+			parseFloat(`${Prototype.Version.split(".")[0]  }.${ 
+				Prototype.Version.split(".")[1]}`) < 1.5)
 
 			throw("Application requires the Prototype JavaScript framework >= 1.5.3");
 
@@ -2264,7 +2264,7 @@ ORYX = Object.extend(ORYX, {
 	_loadPlugins: function() {
 
 		// load plugin configuration file.
-		var source = ORYX.CONFIG.PLUGINS_CONFIG;
+		const source = ORYX.CONFIG.PLUGINS_CONFIG;
 
 		ORYX.Log.debug("Loading plugin configuration from '%0'.", source);
 
@@ -2283,20 +2283,20 @@ ORYX = Object.extend(ORYX, {
 				ORYX.Log.info("Plugin configuration file loaded.");
 
 				// get plugins.xml content
-				var resultXml = result.responseXML;
+				const resultXml = result.responseXML;
 
 				// TODO: Describe how properties are handled.
 				// Get the globale Properties
-				var globalProperties = [];
-				var preferences = $A(resultXml.getElementsByTagName("properties"));
+				const globalProperties = [];
+				const preferences = $A(resultXml.getElementsByTagName("properties"));
 				preferences.each( function(p) {
 
-					var props = $A(p.childNodes);
+					const props = $A(p.childNodes);
 					props.each( function(prop) {
-						var property = new Hash();
+						const property = new Hash();
 
 						// get all attributes from the node and set to global properties
-						var attributes = $A(prop.attributes)
+						const attributes = $A(prop.attributes)
 						attributes.each(function(attr){property[attr.nodeName] = attr.nodeValue});
 						if(attributes.length > 0) { globalProperties.push(property) };
 					});
@@ -2305,12 +2305,12 @@ ORYX = Object.extend(ORYX, {
 
 				// TODO Why are we using XML if we don't respect structure anyway?
 				// for each plugin element in the configuration..
-				var plugin = resultXml.getElementsByTagName("plugin");
+				const plugin = resultXml.getElementsByTagName("plugin");
 				$A(plugin).each( function(node) {
 
 					// get all element's attributes.
 					// TODO: What about: var pluginData = $H(node.attributes) !?
-					var pluginData = new Hash();
+					const pluginData = new Hash();
 					$A(node.attributes).each( function(attr){
 						pluginData[attr.nodeName] = attr.nodeValue});
 
@@ -2327,13 +2327,13 @@ ORYX = Object.extend(ORYX, {
 					}
 
 					// Get all private Properties
-					var propertyNodes = node.getElementsByTagName("property");
-					var properties = [];
+					const propertyNodes = node.getElementsByTagName("property");
+					let properties = [];
 					$A(propertyNodes).each(function(prop) {
-						var property = new Hash();
+						const property = new Hash();
 
 						// Get all Attributes from the Node
-						var attributes = $A(prop.attributes)
+						const attributes = $A(prop.attributes)
 						attributes.each(function(attr){property[attr.nodeName] = attr.nodeValue});
 						if(attributes.length > 0) { properties.push(property) };
 
@@ -2346,10 +2346,10 @@ ORYX = Object.extend(ORYX, {
 					pluginData['properties'] = properties;
 
 					// Get the RequieredNodes
-					var requireNodes = node.getElementsByTagName("requires");
-					var requires;
+					const requireNodes = node.getElementsByTagName("requires");
+					let requires;
 					$A(requireNodes).each(function(req) {
-						var namespace = $A(req.attributes).find(function(attr){ return attr.name == "namespace"})
+						const namespace = $A(req.attributes).find(function(attr){ return attr.name == "namespace"})
 						if( namespace && namespace.nodeValue ){
 							if( !requires ){
 								requires = {namespaces:[]}
@@ -2366,10 +2366,10 @@ ORYX = Object.extend(ORYX, {
 
 
 					// Get the RequieredNodes
-					var notUsesInNodes = node.getElementsByTagName("notUsesIn");
-					var notUsesIn;
+					const notUsesInNodes = node.getElementsByTagName("notUsesIn");
+					let notUsesIn;
 					$A(notUsesInNodes).each(function(not) {
-						var namespace = $A(not.attributes).find(function(attr){ return attr.name == "namespace"})
+						const namespace = $A(not.attributes).find(function(attr){ return attr.name == "namespace"})
 						if( namespace && namespace.nodeValue ){
 							if( !notUsesIn ){
 								notUsesIn = {namespaces:[]}
@@ -2385,7 +2385,7 @@ ORYX = Object.extend(ORYX, {
 					}
 
 
-					var url = ORYX.PATH + ORYX.CONFIG.PLUGINS_FOLDER + pluginData['source'];
+					const url = ORYX.PATH + ORYX.CONFIG.PLUGINS_FOLDER + pluginData['source'];
 
 					ORYX.Log.debug("Requireing '%0'", url);
 
@@ -2482,9 +2482,9 @@ ORYX.Core.SVG.EditPathHandler = Clazz.extend({
 	 */
 	editPointsAbs: function(points) {
 		if(points instanceof Array) {
-			var newPoints = [];
-			var x, y;
-			for(var i = 0; i < points.length; i++) {
+			const newPoints = [];
+			let x, y;
+			for(let i = 0; i < points.length; i++) {
 				x = (parseFloat(points[i]) - this.oldX)*this.deltaWidth + this.x;
 				i++;
 				y = (parseFloat(points[i]) - this.oldY)*this.deltaHeight + this.y;
@@ -2505,9 +2505,9 @@ ORYX.Core.SVG.EditPathHandler = Clazz.extend({
 	 */
 	editPointsRel: function(points) {
 		if(points instanceof Array) {
-			var newPoints = [];
-			var x, y;
-			for(var i = 0; i < points.length; i++) {
+			const newPoints = [];
+			let x, y;
+			for(let i = 0; i < points.length; i++) {
 				x = parseFloat(points[i])*this.deltaWidth;
 				i++;
 				y = parseFloat(points[i])*this.deltaHeight;
@@ -2533,13 +2533,13 @@ ORYX.Core.SVG.EditPathHandler = Clazz.extend({
 	 * @param {Number} y
 	 */
 	arcAbs: function(rx, ry, xAxisRotation, largeArcFlag, sweepFlag, x, y) {
-	    var pointsAbs = this.editPointsAbs([x, y]);
-		var pointsRel = this.editPointsRel([rx, ry]);
+	    const pointsAbs = this.editPointsAbs([x, y]);
+		const pointsRel = this.editPointsRel([rx, ry]);
 
-		this.d = this.d.concat(" A" + pointsRel[0] + " " + pointsRel[1] +
-								" " + xAxisRotation + " " + largeArcFlag +
-								" " + sweepFlag + " " + pointsAbs[0] + " " +
-								pointsAbs[1] + " ");
+		this.d = this.d.concat(` A${  pointsRel[0]  } ${  pointsRel[1] 
+								} ${  xAxisRotation  } ${  largeArcFlag 
+								} ${  sweepFlag  } ${  pointsAbs[0]  } ${ 
+								pointsAbs[1]  } `);
 	},
 
 	/**
@@ -2554,12 +2554,12 @@ ORYX.Core.SVG.EditPathHandler = Clazz.extend({
 	 * @param {Number} y
 	 */
 	arcRel: function(rx, ry, xAxisRotation, largeArcFlag, sweepFlag, x, y) {
-		var pointsRel = this.editPointsRel([rx, ry, x, y]);
+		const pointsRel = this.editPointsRel([rx, ry, x, y]);
 
-		this.d = this.d.concat(" a" + pointsRel[0] + " " + pointsRel[1] +
-								" " + xAxisRotation + " " + largeArcFlag +
-								" " + sweepFlag + " " + pointsRel[2] + " " +
-								pointsRel[3] + " ");
+		this.d = this.d.concat(` a${  pointsRel[0]  } ${  pointsRel[1] 
+								} ${  xAxisRotation  } ${  largeArcFlag 
+								} ${  sweepFlag  } ${  pointsRel[2]  } ${ 
+								pointsRel[3]  } `);
 	},
 
 	/**
@@ -2573,11 +2573,11 @@ ORYX.Core.SVG.EditPathHandler = Clazz.extend({
 	 * @param {Number} y
 	 */
 	curvetoCubicAbs: function(x1, y1, x2, y2, x, y) {
-	    var pointsAbs = this.editPointsAbs([x1, y1, x2, y2, x, y]);
+	    const pointsAbs = this.editPointsAbs([x1, y1, x2, y2, x, y]);
 
-		this.d = this.d.concat(" C" + pointsAbs[0] + " " + pointsAbs[1] +
-								" " + pointsAbs[2] + " " + pointsAbs[3] +
-								" " + pointsAbs[4] + " " + pointsAbs[5] + " ");
+		this.d = this.d.concat(` C${  pointsAbs[0]  } ${  pointsAbs[1] 
+								} ${  pointsAbs[2]  } ${  pointsAbs[3] 
+								} ${  pointsAbs[4]  } ${  pointsAbs[5]  } `);
 	},
 
 	/**
@@ -2591,11 +2591,11 @@ ORYX.Core.SVG.EditPathHandler = Clazz.extend({
 	 * @param {Number} y
 	 */
 	curvetoCubicRel: function(x1, y1, x2, y2, x, y) {
-	    var pointsRel = this.editPointsRel([x1, y1, x2, y2, x, y]);
+	    const pointsRel = this.editPointsRel([x1, y1, x2, y2, x, y]);
 
-		this.d = this.d.concat(" c" + pointsRel[0] + " " + pointsRel[1] +
-								" " + pointsRel[2] + " " + pointsRel[3] +
-								" " + pointsRel[4] + " " + pointsRel[5] + " ");
+		this.d = this.d.concat(` c${  pointsRel[0]  } ${  pointsRel[1] 
+								} ${  pointsRel[2]  } ${  pointsRel[3] 
+								} ${  pointsRel[4]  } ${  pointsRel[5]  } `);
 	},
 
 	/**
@@ -2604,9 +2604,9 @@ ORYX.Core.SVG.EditPathHandler = Clazz.extend({
 	 * @param {Number} x
 	 */
 	linetoHorizontalAbs: function(x) {
-	    var pointsAbs = this.editPointsAbs([x, 0]);
+	    const pointsAbs = this.editPointsAbs([x, 0]);
 
-		this.d = this.d.concat(" H" + pointsAbs[0] + " ");
+		this.d = this.d.concat(` H${  pointsAbs[0]  } `);
 	},
 
 	/**
@@ -2615,9 +2615,9 @@ ORYX.Core.SVG.EditPathHandler = Clazz.extend({
 	 * @param {Number} x
 	 */
 	linetoHorizontalRel: function(x) {
-	    var pointsRel = this.editPointsRel([x, 0]);
+	    const pointsRel = this.editPointsRel([x, 0]);
 
-		this.d = this.d.concat(" h" + pointsRel[0] + " ");
+		this.d = this.d.concat(` h${  pointsRel[0]  } `);
 	},
 
 	/**
@@ -2627,9 +2627,9 @@ ORYX.Core.SVG.EditPathHandler = Clazz.extend({
 	 * @param {Number} y
 	 */
 	linetoAbs: function(x, y) {
-	    var pointsAbs = this.editPointsAbs([x, y]);
+	    const pointsAbs = this.editPointsAbs([x, y]);
 
-		this.d = this.d.concat(" L" + pointsAbs[0] + " " + pointsAbs[1] + " ");
+		this.d = this.d.concat(` L${  pointsAbs[0]  } ${  pointsAbs[1]  } `);
 	},
 
 	/**
@@ -2639,9 +2639,9 @@ ORYX.Core.SVG.EditPathHandler = Clazz.extend({
 	 * @param {Number} y
 	 */
 	linetoRel: function(x, y) {
-	    var pointsRel = this.editPointsRel([x, y]);
+	    const pointsRel = this.editPointsRel([x, y]);
 
-		this.d = this.d.concat(" l" + pointsRel[0] + " " + pointsRel[1] + " ");
+		this.d = this.d.concat(` l${  pointsRel[0]  } ${  pointsRel[1]  } `);
 	},
 
 	/**
@@ -2651,9 +2651,9 @@ ORYX.Core.SVG.EditPathHandler = Clazz.extend({
 	 * @param {Number} y
 	 */
 	movetoAbs: function(x, y) {
-	    var pointsAbs = this.editPointsAbs([x, y]);
+	    const pointsAbs = this.editPointsAbs([x, y]);
 
-		this.d = this.d.concat(" M" + pointsAbs[0] + " " + pointsAbs[1] + " ");
+		this.d = this.d.concat(` M${  pointsAbs[0]  } ${  pointsAbs[1]  } `);
 	},
 
 	/**
@@ -2663,14 +2663,14 @@ ORYX.Core.SVG.EditPathHandler = Clazz.extend({
 	 * @param {Number} y
 	 */
 	movetoRel: function(x, y) {
-	    var pointsRel;
+	    let pointsRel;
 		if(this.d === "") {
 			pointsRel = this.editPointsAbs([x, y]);
 		} else {
 			pointsRel = this.editPointsRel([x, y]);
 		}
 
-		this.d = this.d.concat(" m" + pointsRel[0] + " " + pointsRel[1] + " ");
+		this.d = this.d.concat(` m${  pointsRel[0]  } ${  pointsRel[1]  } `);
 	},
 
 	/**
@@ -2682,10 +2682,10 @@ ORYX.Core.SVG.EditPathHandler = Clazz.extend({
 	 * @param {Number} y
 	 */
 	curvetoQuadraticAbs: function(x1, y1, x, y) {
-	    var pointsAbs = this.editPointsAbs([x1, y1, x, y]);
+	    const pointsAbs = this.editPointsAbs([x1, y1, x, y]);
 
-		this.d = this.d.concat(" Q" + pointsAbs[0] + " " + pointsAbs[1] + " " +
-								pointsAbs[2] + " " + pointsAbs[3] + " ");
+		this.d = this.d.concat(` Q${  pointsAbs[0]  } ${  pointsAbs[1]  } ${ 
+								pointsAbs[2]  } ${  pointsAbs[3]  } `);
 	},
 
 	/**
@@ -2697,10 +2697,10 @@ ORYX.Core.SVG.EditPathHandler = Clazz.extend({
 	 * @param {Number} y
 	 */
 	curvetoQuadraticRel: function(x1, y1, x, y) {
-	    var pointsRel = this.editPointsRel([x1, y1, x, y]);
+	    const pointsRel = this.editPointsRel([x1, y1, x, y]);
 
-		this.d = this.d.concat(" q" + pointsRel[0] + " " + pointsRel[1] + " " +
-								pointsRel[2] + " " + pointsRel[3] + " ");
+		this.d = this.d.concat(` q${  pointsRel[0]  } ${  pointsRel[1]  } ${ 
+								pointsRel[2]  } ${  pointsRel[3]  } `);
 	},
 
 	/**
@@ -2712,10 +2712,10 @@ ORYX.Core.SVG.EditPathHandler = Clazz.extend({
 	 * @param {Number} y
 	 */
 	curvetoCubicSmoothAbs: function(x2, y2, x, y) {
-	    var pointsAbs = this.editPointsAbs([x2, y2, x, y]);
+	    const pointsAbs = this.editPointsAbs([x2, y2, x, y]);
 
-		this.d = this.d.concat(" S" + pointsAbs[0] + " " + pointsAbs[1] + " " +
-								pointsAbs[2] + " " + pointsAbs[3] + " ");
+		this.d = this.d.concat(` S${  pointsAbs[0]  } ${  pointsAbs[1]  } ${ 
+								pointsAbs[2]  } ${  pointsAbs[3]  } `);
 	},
 
 	/**
@@ -2727,10 +2727,10 @@ ORYX.Core.SVG.EditPathHandler = Clazz.extend({
 	 * @param {Number} y
 	 */
 	curvetoCubicSmoothRel: function(x2, y2, x, y) {
-	    var pointsRel = this.editPointsRel([x2, y2, x, y]);
+	    const pointsRel = this.editPointsRel([x2, y2, x, y]);
 
-		this.d = this.d.concat(" s" + pointsRel[0] + " " + pointsRel[1] + " " +
-								pointsRel[2] + " " + pointsRel[3] + " ");
+		this.d = this.d.concat(` s${  pointsRel[0]  } ${  pointsRel[1]  } ${ 
+								pointsRel[2]  } ${  pointsRel[3]  } `);
 	},
 
 	/**
@@ -2740,9 +2740,9 @@ ORYX.Core.SVG.EditPathHandler = Clazz.extend({
 	 * @param {Number} y
 	 */
 	curvetoQuadraticSmoothAbs: function(x, y) {
-	    var pointsAbs = this.editPointsAbs([x, y]);
+	    const pointsAbs = this.editPointsAbs([x, y]);
 
-		this.d = this.d.concat(" T" + pointsAbs[0] + " " + pointsAbs[1] + " ");
+		this.d = this.d.concat(` T${  pointsAbs[0]  } ${  pointsAbs[1]  } `);
 	},
 
 	/**
@@ -2752,9 +2752,9 @@ ORYX.Core.SVG.EditPathHandler = Clazz.extend({
 	 * @param {Number} y
 	 */
 	curvetoQuadraticSmoothRel: function(x, y) {
-	    var pointsRel = this.editPointsRel([x, y]);
+	    const pointsRel = this.editPointsRel([x, y]);
 
-		this.d = this.d.concat(" t" + pointsRel[0] + " " + pointsRel[1] + " ");
+		this.d = this.d.concat(` t${  pointsRel[0]  } ${  pointsRel[1]  } `);
 	},
 
 	/**
@@ -2763,9 +2763,9 @@ ORYX.Core.SVG.EditPathHandler = Clazz.extend({
 	 * @param {Number} y
 	 */
 	linetoVerticalAbs: function(y) {
-	    var pointsAbs = this.editPointsAbs([0, y]);
+	    const pointsAbs = this.editPointsAbs([0, y]);
 
-		this.d = this.d.concat(" V" + pointsAbs[1] + " ");
+		this.d = this.d.concat(` V${  pointsAbs[1]  } `);
 	},
 
 	/**
@@ -2774,9 +2774,9 @@ ORYX.Core.SVG.EditPathHandler = Clazz.extend({
 	 * @param {Number} y
 	 */
 	linetoVerticalRel: function(y) {
-	    var pointsRel = this.editPointsRel([0, y]);
+	    const pointsRel = this.editPointsRel([0, y]);
 
-		this.d = this.d.concat(" v" + pointsRel[1] + " ");
+		this.d = this.d.concat(` v${  pointsRel[1]  } `);
 	},
 
 	/**
@@ -2834,8 +2834,8 @@ ORYX.Core.SVG.MinMaxPathHandler = Clazz.extend({
 	 */
 	calculateMinMax: function(points) {
 		if(points instanceof Array) {
-			var x, y;
-			for(var i = 0; i < points.length; i++) {
+			let x, y;
+			for(let i = 0; i < points.length; i++) {
 				x = parseFloat(points[i]);
 				i++;
 				y = parseFloat(points[i]);
@@ -3113,8 +3113,8 @@ ORYX.Core.SVG.PointsPathHandler = Clazz.extend({
 	 */
 	addPoints: function(points) {
 		if(points instanceof Array) {
-			var x, y;
-			for(var i = 0; i < points.length; i++) {
+			let x, y;
+			for(let i = 0; i < points.length; i++) {
 				x = parseFloat(points[i]);
 				i++;
 				y = parseFloat(points[i]);
@@ -3417,25 +3417,25 @@ ORYX.Core.SVG.SVGMarker = Clazz.extend({
 		this.id = this.element.getAttributeNS(null, "id");
 
 		//init svg marker attributes
-		var refXValue = this.element.getAttributeNS(null, "refX");
+		const refXValue = this.element.getAttributeNS(null, "refX");
 		if(refXValue) {
 			this.refX = parseFloat(refXValue);
 		} else {
 			this.refX = 0;
 		}
-		var refYValue = this.element.getAttributeNS(null, "refY");
+		const refYValue = this.element.getAttributeNS(null, "refY");
 		if(refYValue) {
 			this.refY = parseFloat(refYValue);
 		} else {
 			this.refY = 0;
 		}
-		var markerWidthValue = this.element.getAttributeNS(null, "markerWidth");
+		const markerWidthValue = this.element.getAttributeNS(null, "markerWidth");
 		if(markerWidthValue) {
 			this.markerWidth = parseFloat(markerWidthValue);
 		} else {
 			this.markerWidth = 3;
 		}
-		var markerHeightValue = this.element.getAttributeNS(null, "markerHeight");
+		const markerHeightValue = this.element.getAttributeNS(null, "markerHeight");
 		if(markerHeightValue) {
 			this.markerHeight = parseFloat(markerHeightValue);
 		} else {
@@ -3448,7 +3448,7 @@ ORYX.Core.SVG.SVGMarker = Clazz.extend({
 		this.oldMarkerHeight = this.markerHeight;
 
 		//init oryx attributes
-		var optionalAttr = this.element.getAttributeNS(NAMESPACE_ORYX, "optional");
+		let optionalAttr = this.element.getAttributeNS(NAMESPACE_ORYX, "optional");
 		if(optionalAttr) {
 			optionalAttr = optionalAttr.strip();
 			this.optional = (optionalAttr.toLowerCase() === "yes");
@@ -3456,7 +3456,7 @@ ORYX.Core.SVG.SVGMarker = Clazz.extend({
 			this.optional = false;
 		}
 
-		var enabledAttr = this.element.getAttributeNS(NAMESPACE_ORYX, "enabled");
+		let enabledAttr = this.element.getAttributeNS(NAMESPACE_ORYX, "enabled");
 		if(enabledAttr) {
 			enabledAttr = enabledAttr.strip();
 			this.enabled = !(enabledAttr.toLowerCase() === "no");
@@ -3464,12 +3464,12 @@ ORYX.Core.SVG.SVGMarker = Clazz.extend({
 			this.enabled = true;
 		}
 
-		var minLengthAttr = this.element.getAttributeNS(NAMESPACE_ORYX, "minimumLength");
+		const minLengthAttr = this.element.getAttributeNS(NAMESPACE_ORYX, "minimumLength");
 		if(minLengthAttr) {
 			this.minimumLength = parseFloat(minLengthAttr);
 		}
 
-		var resizeAttr = this.element.getAttributeNS(NAMESPACE_ORYX, "resize");
+		let resizeAttr = this.element.getAttributeNS(NAMESPACE_ORYX, "resize");
 		if(resizeAttr) {
 			resizeAttr = resizeAttr.strip();
 			this.resize = (resizeAttr.toLowerCase() === "yes");
@@ -3486,11 +3486,11 @@ ORYX.Core.SVG.SVGMarker = Clazz.extend({
 	 */
 	_getSVGShapes: function(svgElement) {
 		if(svgElement.hasChildNodes) {
-			var svgShapes = [];
-			var me = this;
+			let svgShapes = [];
+			const me = this;
 			$A(svgElement.childNodes).each(function(svgChild) {
 				try {
-					var svgShape = new ORYX.Core.SVG.SVGShape(svgChild);
+					const svgShape = new ORYX.Core.SVG.SVGShape(svgChild);
 					svgShapes.push(svgShape);
 				} catch (e) {
 					svgShapes = svgShapes.concat(me._getSVGShapes(svgChild));
@@ -3536,7 +3536,7 @@ ORYX.Core.SVG.SVGMarker = Clazz.extend({
 		this.oldMarkerHeight = this.markerHeight;
 	},
 
-	toString: function() { return (this.element) ? "SVGMarker " + this.element.id : "SVGMarker " + this.element;}
+	toString: function() { return (this.element) ? `SVGMarker ${  this.element.id}` : `SVGMarker ${  this.element}`;}
  });/*
  * Copyright 2005-2014 Alfresco Software, Ltd. All rights reserved.
  * License rights for this program may be obtained from Alfresco Software, Ltd.
@@ -3618,29 +3618,29 @@ ORYX.Core.SVG.SVGShape = Clazz.extend({
 		if(ORYX.Editor.checkClassType(this.element, SVGRectElement) || ORYX.Editor.checkClassType(this.element, SVGImageElement)) {
 			this.type = "Rect";
 
-			var xAttr = this.element.getAttributeNS(null, "x");
+			const xAttr = this.element.getAttributeNS(null, "x");
 			if(xAttr) {
 				this.oldX = parseFloat(xAttr);
 			} else {
-				throw "Missing attribute in element " + this.element;
+				throw `Missing attribute in element ${  this.element}`;
 			}
-			var yAttr = this.element.getAttributeNS(null, "y");
+			const yAttr = this.element.getAttributeNS(null, "y");
 			if(yAttr) {
 				this.oldY = parseFloat(yAttr);
 			} else {
-				throw "Missing attribute in element " + this.element;
+				throw `Missing attribute in element ${  this.element}`;
 			}
-			var widthAttr = this.element.getAttributeNS(null, "width");
+			const widthAttr = this.element.getAttributeNS(null, "width");
 			if(widthAttr) {
 				this.oldWidth = parseFloat(widthAttr);
 			} else {
-				throw "Missing attribute in element " + this.element;
+				throw `Missing attribute in element ${  this.element}`;
 			}
-			var heightAttr = this.element.getAttributeNS(null, "height");
+			const heightAttr = this.element.getAttributeNS(null, "height");
 			if(heightAttr) {
 				this.oldHeight = parseFloat(heightAttr);
 			} else {
-				throw "Missing attribute in element " + this.element;
+				throw `Missing attribute in element ${  this.element}`;
 			}
 
 		} else if(ORYX.Editor.checkClassType(this.element, SVGCircleElement)) {
@@ -3654,20 +3654,20 @@ ORYX.Core.SVG.SVGShape = Clazz.extend({
 			if(cxAttr) {
 				cx = parseFloat(cxAttr);
 			} else {
-				throw "Missing attribute in element " + this.element;
+				throw `Missing attribute in element ${  this.element}`;
 			}
 			var cyAttr = this.element.getAttributeNS(null, "cy");
 			if(cyAttr) {
 				cy = parseFloat(cyAttr);
 			} else {
-				throw "Missing attribute in element " + this.element;
+				throw `Missing attribute in element ${  this.element}`;
 			}
-			var rAttr = this.element.getAttributeNS(null, "r");
+			const rAttr = this.element.getAttributeNS(null, "r");
 			if(rAttr) {
 				//r = parseFloat(rAttr);
 				this.radiusX = parseFloat(rAttr);
 			} else {
-				throw "Missing attribute in element " + this.element;
+				throw `Missing attribute in element ${  this.element}`;
 			}
 			this.oldX = cx - this.radiusX;
 			this.oldY = cy - this.radiusX;
@@ -3685,25 +3685,25 @@ ORYX.Core.SVG.SVGShape = Clazz.extend({
 			if(cxAttr) {
 				cx = parseFloat(cxAttr);
 			} else {
-				throw "Missing attribute in element " + this.element;
+				throw `Missing attribute in element ${  this.element}`;
 			}
 			var cyAttr = this.element.getAttributeNS(null, "cy");
 			if(cyAttr) {
 				cy = parseFloat(cyAttr);
 			} else {
-				throw "Missing attribute in element " + this.element;
+				throw `Missing attribute in element ${  this.element}`;
 			}
-			var rxAttr = this.element.getAttributeNS(null, "rx");
+			const rxAttr = this.element.getAttributeNS(null, "rx");
 			if(rxAttr) {
 				this.radiusX = parseFloat(rxAttr);
 			} else {
-				throw "Missing attribute in element " + this.element;
+				throw `Missing attribute in element ${  this.element}`;
 			}
-			var ryAttr = this.element.getAttributeNS(null, "ry");
+			const ryAttr = this.element.getAttributeNS(null, "ry");
 			if(ryAttr) {
 				this.radiusY = parseFloat(ryAttr);
 			} else {
-				throw "Missing attribute in element " + this.element;
+				throw `Missing attribute in element ${  this.element}`;
 			}
 			this.oldX = cx - this.radiusX;
 			this.oldY = cy - this.radiusY;
@@ -3713,33 +3713,33 @@ ORYX.Core.SVG.SVGShape = Clazz.extend({
 		} else if(ORYX.Editor.checkClassType(this.element, SVGLineElement)) {
 			this.type = "Line";
 
-			var x1 = undefined;
-			var y1 = undefined;
-			var x2 = undefined;
-			var y2 = undefined;
-			var x1Attr = this.element.getAttributeNS(null, "x1");
+			let x1 = undefined;
+			let y1 = undefined;
+			let x2 = undefined;
+			let y2 = undefined;
+			const x1Attr = this.element.getAttributeNS(null, "x1");
 			if(x1Attr) {
 				x1 = parseFloat(x1Attr);
 			} else {
-				throw "Missing attribute in element " + this.element;
+				throw `Missing attribute in element ${  this.element}`;
 			}
-			var y1Attr = this.element.getAttributeNS(null, "y1");
+			const y1Attr = this.element.getAttributeNS(null, "y1");
 			if(y1Attr) {
 				y1 = parseFloat(y1Attr);
 			} else {
-				throw "Missing attribute in element " + this.element;
+				throw `Missing attribute in element ${  this.element}`;
 			}
-			var x2Attr = this.element.getAttributeNS(null, "x2");
+			const x2Attr = this.element.getAttributeNS(null, "x2");
 			if(x2Attr) {
 				x2 = parseFloat(x2Attr);
 			} else {
-				throw "Missing attribute in element " + this.element;
+				throw `Missing attribute in element ${  this.element}`;
 			}
-			var y2Attr = this.element.getAttributeNS(null, "y2");
+			const y2Attr = this.element.getAttributeNS(null, "y2");
 			if(y2Attr) {
 				y2 = parseFloat(y2Attr);
 			} else {
-				throw "Missing attribute in element " + this.element;
+				throw `Missing attribute in element ${  this.element}`;
 			}
 			this.oldX = Math.min(x1,x2);
 			this.oldY = Math.min(y1,y2);
@@ -3749,29 +3749,29 @@ ORYX.Core.SVG.SVGShape = Clazz.extend({
 		} else if(ORYX.Editor.checkClassType(this.element, SVGPolylineElement) || ORYX.Editor.checkClassType(this.element, SVGPolygonElement)) {
 			this.type = "Polyline";
 
-			var pointsArray = [];
+			let pointsArray = [];
 			if (this.element.points&&this.element.points.numberOfItems){
 			    for(var i=0, size=this.element.points.numberOfItems; i<size; i++){
 			        pointsArray.push(this.element.points.getItem(i).x)
 			        pointsArray.push(this.element.points.getItem(i).y)
 			    }
 			} else {
-				var points = this.element.getAttributeNS(null, "points");
+				let points = this.element.getAttributeNS(null, "points");
 				if(points) {
 					points = points.replace(/,/g , " ");
 					pointsArray = points.split(" ");
 					pointsArray = pointsArray.without("");
 				} else {
-					throw "Missing attribute in element " + this.element;
+					throw `Missing attribute in element ${  this.element}`;
 				}
 			}
 
 
 			if(pointsArray && pointsArray.length && pointsArray.length > 1) {
-				var minX = parseFloat(pointsArray[0]);
-				var minY = parseFloat(pointsArray[1]);
-				var maxX = parseFloat(pointsArray[0]);
-				var maxY = parseFloat(pointsArray[1]);
+				let minX = parseFloat(pointsArray[0]);
+				let minY = parseFloat(pointsArray[1]);
+				let maxX = parseFloat(pointsArray[0]);
+				let maxY = parseFloat(pointsArray[1]);
 
 				for(var i = 0; i < pointsArray.length; i++) {
 					minX = Math.min(minX, parseFloat(pointsArray[i]));
@@ -3786,7 +3786,7 @@ ORYX.Core.SVG.SVGShape = Clazz.extend({
 				this.oldWidth = maxX-minX;
 				this.oldHeight = maxY-minY;
 			} else {
-				throw "Missing attribute in element " + this.element;
+				throw `Missing attribute in element ${  this.element}`;
 			}
 
 		} else if(ORYX.Editor.checkClassType(this.element, SVGPathElement)) {
@@ -3796,8 +3796,8 @@ ORYX.Core.SVG.SVGShape = Clazz.extend({
 			this.editPathHandler = new ORYX.Core.SVG.EditPathHandler();
 			this.editPathParser.setHandler(this.editPathHandler);
 
-			var parser = new PathParser();
-			var handler = new ORYX.Core.SVG.MinMaxPathHandler();
+			const parser = new PathParser();
+			const handler = new ORYX.Core.SVG.MinMaxPathHandler();
 			parser.setHandler(handler);
 			parser.parsePath(this.element);
 
@@ -3814,7 +3814,7 @@ ORYX.Core.SVG.SVGShape = Clazz.extend({
 
 		/** initialize attributes of oryx namespace */
 		//resize
-		var resizeAttr = this.element.getAttributeNS(NAMESPACE_ORYX, "resize");
+		let resizeAttr = this.element.getAttributeNS(NAMESPACE_ORYX, "resize");
 		if(resizeAttr) {
 			resizeAttr = resizeAttr.toLowerCase();
 			if(resizeAttr.match(/horizontal/)) {
@@ -3833,10 +3833,10 @@ ORYX.Core.SVG.SVGShape = Clazz.extend({
 		}
 
 		//anchors
-		var anchorAttr = this.element.getAttributeNS(NAMESPACE_ORYX, "anchors");
+		let anchorAttr = this.element.getAttributeNS(NAMESPACE_ORYX, "anchors");
 		if(anchorAttr) {
 			anchorAttr = anchorAttr.replace("/,/g", " ");
-			var anchors = anchorAttr.split(" ").without("");
+			const anchors = anchorAttr.split(" ").without("");
 
 			for(var i = 0; i < anchors.length; i++) {
 				switch(anchors[i].toLowerCase()) {
@@ -3858,7 +3858,7 @@ ORYX.Core.SVG.SVGShape = Clazz.extend({
 
 		//allowDockers and resizeMarkerMid
 		if(ORYX.Editor.checkClassType(this.element, SVGPathElement)) {
-			var allowDockersAttr = this.element.getAttributeNS(NAMESPACE_ORYX, "allowDockers");
+			const allowDockersAttr = this.element.getAttributeNS(NAMESPACE_ORYX, "allowDockers");
 			if(allowDockersAttr) {
 				if(allowDockersAttr.toLowerCase() === "no") {
 					this.allowDockers = false;
@@ -3867,7 +3867,7 @@ ORYX.Core.SVG.SVGShape = Clazz.extend({
 				}
 			}
 
-			var resizeMarkerMidAttr = this.element.getAttributeNS(NAMESPACE_ORYX, "resizeMarker-mid");
+			const resizeMarkerMidAttr = this.element.getAttributeNS(NAMESPACE_ORYX, "resizeMarker-mid");
 			if(resizeMarkerMidAttr) {
 				if(resizeMarkerMidAttr.toLowerCase() === "yes") {
 					this.resizeMarkerMid = true;
@@ -3932,7 +3932,7 @@ ORYX.Core.SVG.SVGShape = Clazz.extend({
 						this.element.setAttributeNS(null, "y2", this.y + this.height);
 					break;
 				case "Polyline":
-					var points = this.element.getAttributeNS(null, "points");
+					let points = this.element.getAttributeNS(null, "points");
 					if(points) {
 						points = points.replace(/,/g, " ").split(" ").without("");
 
@@ -3942,12 +3942,12 @@ ORYX.Core.SVG.SVGShape = Clazz.extend({
 							var widthDelta = (this.oldWidth === 0) ? 0 : this.width / this.oldWidth;
 						    var heightDelta = (this.oldHeight === 0) ? 0 : this.height / this.oldHeight;
 
-							var updatedPoints = "";
-						    for(var i = 0; i < points.length; i++) {
-								var x = (parseFloat(points[i])-this.oldX)*widthDelta + this.x;
+							let updatedPoints = "";
+						    for(let i = 0; i < points.length; i++) {
+								const x = (parseFloat(points[i])-this.oldX)*widthDelta + this.x;
 								i++;
-								var y = (parseFloat(points[i])-this.oldY)*heightDelta + this.y;
-		    					updatedPoints += x + " " + y + " ";
+								const y = (parseFloat(points[i])-this.oldY)*heightDelta + this.y;
+		    					updatedPoints += `${x  } ${  y  } `;
 						    }
 							this.element.setAttributeNS(null, "points", updatedPoints);
 						} else {
@@ -4012,7 +4012,7 @@ ORYX.Core.SVG.SVGShape = Clazz.extend({
 				return ORYX.Core.Math.isPointInLine(pointX, pointY, this.x, this.y, this.x + this.width, this.y + this.height);
 				break;
 			case "Polyline":
-				var points = this.element.getAttributeNS(null, "points");
+				let points = this.element.getAttributeNS(null, "points");
 
 				if(points) {
 					points = points.replace(/,/g , " ").split(" ").without("");
@@ -4030,7 +4030,7 @@ ORYX.Core.SVG.SVGShape = Clazz.extend({
 
 				// Cache Path handler
 				if (!this.handler) {
-					var parser = new PathParser();
+					const parser = new PathParser();
 					this.handler = new ORYX.Core.SVG.PointsPathHandler();
 					parser.setHandler(this.handler);
 					parser.parsePath(this.element);
@@ -4059,7 +4059,7 @@ ORYX.Core.SVG.SVGShape = Clazz.extend({
 			elem = this.element;
 		}
 
-		var hasOwnerSVG = false;
+		let hasOwnerSVG = false;
 		try {
 			hasOwnerSVG = !!elem.ownerSVGElement;
 		} catch(e){}
@@ -4075,13 +4075,13 @@ ORYX.Core.SVG.SVGShape = Clazz.extend({
 			}
 
 			// Check if fill or stroke is set
-			var fill = elem.getAttributeNS(null, "fill");
-			var stroke = elem.getAttributeNS(null, "stroke");
+			const fill = elem.getAttributeNS(null, "fill");
+			const stroke = elem.getAttributeNS(null, "stroke");
 			if (fill && fill == "none" && stroke && stroke == "none") {
 				this.visible = false;
 			} else {
 				// Check if displayed
-				var attr = elem.getAttributeNS(null, "display");
+				const attr = elem.getAttributeNS(null, "display");
 				if(!attr)
 					this.visible = this.isVisible(elem.parentNode);
 				else if (attr == "none")
@@ -4096,7 +4096,7 @@ ORYX.Core.SVG.SVGShape = Clazz.extend({
 		return this.visible;
 	},
 
-	toString: function() { return (this.element) ? "SVGShape " + this.element.id : "SVGShape " + this.element;}
+	toString: function() { return (this.element) ? `SVGShape ${  this.element.id}` : `SVGShape ${  this.element}`;}
  });/*
  * Copyright 2005-2014 Alfresco Software, Ltd. All rights reserved.
  * License rights for this program may be obtained from Alfresco Software, Ltd.
@@ -4189,7 +4189,7 @@ ORYX.Core.SVG.Label = Clazz.extend({
 		this._isChanged = true;
 
 		//if the text element already has an id, don't change it.
-		var _id = this.node.getAttributeNS(null, 'id');
+		const _id = this.node.getAttributeNS(null, 'id');
 		if(_id) {
 			this.id = _id;
 		}
@@ -4202,7 +4202,7 @@ ORYX.Core.SVG.Label = Clazz.extend({
 			this.fitToElemId = this.shapeId + this.fitToElemId;
 
 		//set alignment
-		var alignValues = this.node.getAttributeNS(ORYX.CONFIG.NAMESPACE_ORYX, 'align');
+		let alignValues = this.node.getAttributeNS(ORYX.CONFIG.NAMESPACE_ORYX, 'align');
 		if(alignValues) {
 			alignValues = alignValues.replace(/,/g, " ");
 			alignValues = alignValues.split(" ");
@@ -4245,7 +4245,7 @@ ORYX.Core.SVG.Label = Clazz.extend({
 
 
 		//set rotation
-		var rotateValue = this.node.getAttributeNS(ORYX.CONFIG.NAMESPACE_ORYX, 'rotate');
+		const rotateValue = this.node.getAttributeNS(ORYX.CONFIG.NAMESPACE_ORYX, 'rotate');
 		if(rotateValue) {
 			try {
 				this._rotate = parseFloat(rotateValue);
@@ -4257,12 +4257,12 @@ ORYX.Core.SVG.Label = Clazz.extend({
 		}
 
 		//anchors
-		var anchorAttr = this.node.getAttributeNS(ORYX.CONFIG.NAMESPACE_ORYX, "anchors");
+		let anchorAttr = this.node.getAttributeNS(ORYX.CONFIG.NAMESPACE_ORYX, "anchors");
 		if(anchorAttr) {
 			anchorAttr = anchorAttr.replace("/,/g", " ");
-			var anchors = anchorAttr.split(" ").without("");
+			const anchors = anchorAttr.split(" ").without("");
 
-			for(var i = 0; i < anchors.length; i++) {
+			for(let i = 0; i < anchors.length; i++) {
 				switch(anchors[i].toLowerCase()) {
 					case "left":
 						this.originAnchorLeft = this.anchorLeft = true;
@@ -4284,14 +4284,14 @@ ORYX.Core.SVG.Label = Clazz.extend({
 		if(!this._verticalAlign) { this._verticalAlign = 'bottom'; }
 		if(!this._horizontalAlign) { this._horizontalAlign = 'left'; }
 
-		var xValue = this.node.getAttributeNS(null, 'x');
+		const xValue = this.node.getAttributeNS(null, 'x');
 		if(xValue) {
 			this.oldX = this.x = parseFloat(xValue);
 		} else {
 			//TODO error
 		}
 
-		var yValue = this.node.getAttributeNS(null, 'y');
+		const yValue = this.node.getAttributeNS(null, 'y');
 		if(yValue) {
 			this.oldY = this.y = parseFloat(yValue);
 		} else {
@@ -4331,7 +4331,7 @@ ORYX.Core.SVG.Label = Clazz.extend({
 	 */
 	getX: function(){
 		try {
-			var x = this.node.x.baseVal.getItem(0).value;
+			const x = this.node.x.baseVal.getItem(0).value;
 			switch(this.horizontalAlign()){
 				case "left": return x;
 				case "center": return x - (this.getWidth()/2);
@@ -4386,13 +4386,13 @@ ORYX.Core.SVG.Label = Clazz.extend({
 	getWidth: function(){
 		try {
 			try {
-				var width, cn = this.node.childNodes;
+				let width, cn = this.node.childNodes;
 				if (cn.length == 0) {
 					width = this.node.getBBox().width;
 				} else {
-					for (var i = 0, size = cn.length; i < size; ++i) {
-						var w = cn[i].getComputedTextLength();
-						if ("undefined" == typeof width || width < w) {
+					for (let i = 0, size = cn.length; i < size; ++i) {
+						const w = cn[i].getComputedTextLength();
+						if (typeof width == "undefined" || width < w) {
 							width = w;
 						}
 					}
@@ -4407,7 +4407,7 @@ ORYX.Core.SVG.Label = Clazz.extend({
 	},
 
 	getOriginUpperLeft: function(){
-		var x = this.x, y = this.y;
+		let x = this.x, y = this.y;
 		switch (this._horizontalAlign){
 			case 'center' :
 				x -= this.getWidth()/2;
@@ -4445,7 +4445,7 @@ ORYX.Core.SVG.Label = Clazz.extend({
 	 * @return {Object}
 	 */
 	getCenter: function(){
-		var up = {x: this.getX(), y: this.getY()};
+		const up = {x: this.getX(), y: this.getY()};
 		up.x += this.getWidth()/2;
 		up.y += this.getHeight()/2;
 		return up;
@@ -4568,7 +4568,7 @@ ORYX.Core.SVG.Label = Clazz.extend({
 	 */
 	update: function(force) {
 
-		var x = this.x, y = this.y;
+		let x = this.x, y = this.y;
 		if (this.position){
 			x = this.position.x;
 			y = this.position.y;
@@ -4594,15 +4594,15 @@ ORYX.Core.SVG.Label = Clazz.extend({
 				if (!this.position && !this.getReferencePoint()) {
 					if (this._rotate !== undefined) {
 						if (this._rotationPoint)
-							this.node.setAttributeNS(null, 'transform', 'rotate(' + this._rotate + ' ' + Math.floor(this._rotationPoint.x) + ' ' + Math.floor(this._rotationPoint.y) + ')');
+							this.node.setAttributeNS(null, 'transform', `rotate(${  this._rotate  } ${  Math.floor(this._rotationPoint.x)  } ${  Math.floor(this._rotationPoint.y)  })`);
 						else
-							this.node.setAttributeNS(null, 'transform', 'rotate(' + this._rotate + ' ' + Math.floor(x) + ' ' + Math.floor(y) + ')');
+							this.node.setAttributeNS(null, 'transform', `rotate(${  this._rotate  } ${  Math.floor(x)  } ${  Math.floor(y)  })`);
 					}
 				} else {
 					this.node.removeAttributeNS(null, 'transform');
 				}
 
-				var textLines = this._text.split("\n");
+				const textLines = this._text.split("\n");
 				while (textLines.last() == "")
 					textLines.pop();
 
@@ -4613,7 +4613,7 @@ ORYX.Core.SVG.Label = Clazz.extend({
 					if (this.fitToElemId || this._textHasChanged){
 						this.node.textContent = ""; // Remove content
 						textLines.each((function(textLine, index){
-							var tspan = this.node.ownerDocument.createElementNS(ORYX.CONFIG.NAMESPACE_SVG, 'tspan');
+							const tspan = this.node.ownerDocument.createElementNS(ORYX.CONFIG.NAMESPACE_SVG, 'tspan');
 							tspan.textContent = textLine.trim();
 							if (this.fitToElemId) {
 								tspan.setAttributeNS(null, 'x', this.invisibleRenderPoint);
@@ -4657,40 +4657,40 @@ ORYX.Core.SVG.Label = Clazz.extend({
 
 	_checkFittingToReferencedElem: function() {
 		try {
-			var tspans = $A(this.node.getElementsByTagNameNS(ORYX.CONFIG.NAMESPACE_SVG, 'tspan'));
+			const tspans = $A(this.node.getElementsByTagNameNS(ORYX.CONFIG.NAMESPACE_SVG, 'tspan'));
 
 			//only do this in firefox 3. all other browsers do not support word wrapping!!!!!
 			//if (/Firefox[\/\s](\d+\.\d+)/.test(navigator.userAgent) && new Number(RegExp.$1)>=3) {
-				var newtspans = [];
+				const newtspans = [];
 
-				var refNode = this.node.ownerDocument.getElementById(this.fitToElemId);
+				const refNode = this.node.ownerDocument.getElementById(this.fitToElemId);
 
 				if (refNode) {
-					var refbb = refNode.getBBox();
+					const refbb = refNode.getBBox();
 
-					var fontSize = this.getFontSize();
+					const fontSize = this.getFontSize();
 
-					for (var j = 0; j < tspans.length; j++) {
-						var tspan = tspans[j];
+					for (let j = 0; j < tspans.length; j++) {
+						const tspan = tspans[j];
 
-						var textLength = this._getRenderedTextLength(tspan, undefined, undefined, fontSize);
+						const textLength = this._getRenderedTextLength(tspan, undefined, undefined, fontSize);
 
-						var refBoxLength = (this._rotate != 0
+						const refBoxLength = (this._rotate != 0
 								&& this._rotate % 180 != 0
 								&& this._rotate % 90 == 0 ?
 										refbb.height : refbb.width);
 
 						if (textLength > refBoxLength) {
 
-							var startIndex = 0;
-							var lastSeperatorIndex = 0;
+							let startIndex = 0;
+							let lastSeperatorIndex = 0;
 
-							var numOfChars = this.getTrimmedTextLength(tspan.textContent);
-							for (var i = 0; i < numOfChars; i++) {
-								var sslength = this._getRenderedTextLength(tspan, startIndex, i-startIndex, fontSize);
+							const numOfChars = this.getTrimmedTextLength(tspan.textContent);
+							for (let i = 0; i < numOfChars; i++) {
+								const sslength = this._getRenderedTextLength(tspan, startIndex, i-startIndex, fontSize);
 
 								if (sslength > refBoxLength - 2) {
-									var newtspan = this.node.ownerDocument.createElementNS(ORYX.CONFIG.NAMESPACE_SVG, 'tspan');
+									const newtspan = this.node.ownerDocument.createElementNS(ORYX.CONFIG.NAMESPACE_SVG, 'tspan');
 									if (lastSeperatorIndex <= startIndex) {
 										lastSeperatorIndex = (i == 0) ? i : i-1;
 										newtspan.textContent = tspan.textContent.slice(startIndex, lastSeperatorIndex).trim();
@@ -4710,7 +4710,7 @@ ORYX.Core.SVG.Label = Clazz.extend({
 									startIndex = lastSeperatorIndex;
 								}
 								else {
-									var curChar = tspan.textContent.charAt(i);
+									const curChar = tspan.textContent.charAt(i);
 									if (curChar == ' ' ||
 									curChar == '-' ||
 									curChar == "." ||
@@ -4737,7 +4737,7 @@ ORYX.Core.SVG.Label = Clazz.extend({
 				}
 			//}
 		} catch (e) {
-			ORYX.Log.fatal("Error " + e);
+			ORYX.Log.fatal(`Error ${  e}`);
 		}
 		window.setTimeout(this._positionText.bind(this), 0);
 		//this._positionText();
@@ -4750,34 +4750,34 @@ ORYX.Core.SVG.Label = Clazz.extend({
 	_positionText: function() {
 		try {
 
-			var tspans = this.node.childNodes;
+			const tspans = this.node.childNodes;
 
-			var fontSize = this.getFontSize(this.node);
+			const fontSize = this.getFontSize(this.node);
 
-			var invalidTSpans = [];
+			const invalidTSpans = [];
 
-			var x = this.x, y = this.y;
+			let x = this.x, y = this.y;
 			if (this.position){
 				x = this.position.x;
 				y = this.position.y;
 			}
 			x = Math.floor(x); y = Math.floor(y);
 
-			var i = 0, indic = []; // Cache indices if the _positionText is called again, before update is called
-			var is =(this.indices || $R(0,tspans.length-1).toArray());
-			var length = is.length;
+			let i = 0, indic = []; // Cache indices if the _positionText is called again, before update is called
+			const is =(this.indices || $R(0,tspans.length-1).toArray());
+			const length = is.length;
 			is.each((function(index){
-				if ("undefined" == typeof index){
+				if (typeof index == "undefined"){
 					return;
 				}
 
-				var tspan = tspans[i++];
+				const tspan = tspans[i++];
 
 				if(tspan.textContent.trim() === "") {
 					invalidTSpans.push(tspan);
 				} else {
 					//set vertical position
-					var dy = 0;
+					let dy = 0;
 					switch (this._verticalAlign) {
 						case 'bottom':
 							dy = -(length - index - 1) * (fontSize);
@@ -4874,8 +4874,8 @@ ORYX.Core.SVG.Label = Clazz.extend({
 	 * @param {Object} text
 	 */
 	_estimateTextWidth: function(text, fontSize) {
-		var sum = 0.0;
-		for(var i = 0; i < text.length; i++) {
+		let sum = 0.0;
+		for(let i = 0; i < text.length; i++) {
 			sum += this._estimateCharacterWidth(text.charAt(i));
 		}
 
@@ -4888,7 +4888,7 @@ ORYX.Core.SVG.Label = Clazz.extend({
 	 * @param {Object} character
 	 */
 	_estimateCharacterWidth: function(character) {
-		for(var i = 0; i < this._characterSets.length; i++) {
+		for(let i = 0; i < this._characterSets.length; i++) {
  			if(this._characterSets[i].indexOf(character) >= 0) {
 				return this._characterSetValues[i];
 			}
@@ -4897,10 +4897,10 @@ ORYX.Core.SVG.Label = Clazz.extend({
  	},
 
 	getReferencedElementWidth: function() {
-		var refNode = this.node.ownerDocument.getElementById(this.fitToElemId);
+		const refNode = this.node.ownerDocument.getElementById(this.fitToElemId);
 
 		if(refNode) {
-			var refbb = refNode.getBBox();
+			const refbb = refNode.getBBox();
 
 			if(refbb) {
 				return (this._rotate != 0
@@ -4924,7 +4924,7 @@ ORYX.Core.SVG.Label = Clazz.extend({
 				break;
 
 			case 1:
-				var oldText = this._text;
+				const oldText = this._text;
 				if(arguments[0]) {
 					// Filter out multiple spaces to fix issue in chrome for line-wrapping
 					this._text = arguments[0].toString();
@@ -4956,7 +4956,7 @@ ORYX.Core.SVG.Label = Clazz.extend({
 				return this._verticalAlign;
 			case 1:
 				if(['top', 'middle', 'bottom'].member(arguments[0])) {
-					var oldValue = this._verticalAlign;
+					const oldValue = this._verticalAlign;
 					this._verticalAlign = arguments[0];
 					if(this._verticalAlign !== oldValue) {
 						this._isChanged = true;
@@ -4980,7 +4980,7 @@ ORYX.Core.SVG.Label = Clazz.extend({
 				return this._horizontalAlign;
 			case 1:
 				if(['left', 'center', 'right'].member(arguments[0])) {
-					var oldValue = this._horizontalAlign;
+					const oldValue = this._horizontalAlign;
 					this._horizontalAlign = arguments[0];
 					if(this._horizontalAlign !== oldValue) {
 						this._isChanged = true;
@@ -5044,7 +5044,7 @@ ORYX.Core.SVG.Label = Clazz.extend({
 		if(!node || !node.getAttributeNS)
 			return;
 
-		var attr = node.getAttributeNS(null, "font-size");
+		const attr = node.getAttributeNS(null, "font-size");
 		if(attr) {
 			return parseFloat(attr);
 		} else if(!ORYX.Editor.checkClassType(node, SVGSVGElement)) {
@@ -5053,15 +5053,15 @@ ORYX.Core.SVG.Label = Clazz.extend({
 	},
 
 	getFontSize: function(node) {
-		var tspans = this.node.getElementsByTagNameNS(ORYX.CONFIG.NAMESPACE_SVG, 'tspan');
+		const tspans = this.node.getElementsByTagNameNS(ORYX.CONFIG.NAMESPACE_SVG, 'tspan');
 
 		//trying to get an inherited font-size attribute
 		//NO CSS CONSIDERED!
-		var fontSize = this.getInheritedFontSize(this.node);
+		let fontSize = this.getInheritedFontSize(this.node);
 
 		if (!fontSize) {
 			//because this only works in firefox 3, all other browser use the default line height
-			if (tspans[0] && /Firefox[\/\s](\d+\.\d+)/.test(navigator.userAgent) && new Number(RegExp.$1) >= 3) {
+			if (tspans[0] && /Firefox[/\s](\d+\.\d+)/.test(navigator.userAgent) && Number(RegExp.$1) >= 3) {
 				fontSize = tspans[0].getExtentOfChar(0).height;
 			}
 			else {
@@ -5088,7 +5088,7 @@ ORYX.Core.SVG.Label = Clazz.extend({
 	getTrimmedTextLength: function(text) {
 		text = text.strip().gsub('  ', ' ');
 
-		var oldLength;
+		let oldLength;
 		do {
 			oldLength = text.length;
 			text = text.gsub('  ', ' ');
@@ -5123,12 +5123,12 @@ ORYX.Core.SVG.Label = Clazz.extend({
 	 * @param {Object} obj
 	 */
 	deserialize: function(obj, shape){
-		if (obj && "undefined" != typeof obj.x && "undefined" != typeof obj.y){
+		if (obj && typeof obj.x != "undefined" && typeof obj.y != "undefined"){
 			this.setPosition({x:obj.x, y:obj.y});
 
-			if ("undefined" != typeof obj.distance){
-				var from = shape.dockers[obj.from];
-				var to = shape.dockers[obj.to];
+			if (typeof obj.distance != "undefined"){
+				const from = shape.dockers[obj.from];
+				const to = shape.dockers[obj.to];
 				if (from && to){
 					this.setReferencePoint({
 						dirty : true,
@@ -5154,7 +5154,7 @@ ORYX.Core.SVG.Label = Clazz.extend({
 			if (obj.valign) this.verticalAlign(obj.valign);
 			if (obj.align) this.horizontalAlign(obj.align);
 
-		} else if (obj && "undefined" != typeof obj.edge){
+		} else if (obj && typeof obj.edge != "undefined"){
 			this.setEdgePosition(obj.edge);
 		}
 	},
@@ -5176,7 +5176,7 @@ ORYX.Core.SVG.Label = Clazz.extend({
 
 		// On self defined position
 		if (this.position){
-			var pos = {x: this.position.x, y: this.position.y};
+			const pos = {x: this.position.x, y: this.position.y};
 			if (this.isAnchorLeft() && this.isAnchorLeft() !== this.isOriginAnchorLeft()){
 				pos.left = true;
 			}
@@ -5202,7 +5202,7 @@ ORYX.Core.SVG.Label = Clazz.extend({
 
 		// On reference point which is interesting for edges
 		if (this.getReferencePoint()){
-			var ref = this.getReferencePoint();
+			const ref = this.getReferencePoint();
 			return {
 				distance : ref.distance,
 				x : ref.intersection.x,
@@ -5217,7 +5217,7 @@ ORYX.Core.SVG.Label = Clazz.extend({
 		return null;
 	},
 
-	toString: function() { return "Label " + this.id }
+	toString: function() { return `Label ${  this.id}` }
  });/*
  * Copyright 2005-2014 Alfresco Software, Ltd. All rights reserved.
  * License rights for this program may be obtained from Alfresco Software, Ltd.
@@ -5284,7 +5284,7 @@ ORYX.Core.Math.isPointInLine = function (pointX, pointY, lPoint1X, lPoint1Y, lPo
 		return false
 	}
 
-	var s = (lPoint1Y - lPoint2Y) / (lPoint1X - lPoint2X);
+	const s = (lPoint1Y - lPoint2Y) / (lPoint1X - lPoint2X);
 
 	return 	Math.abs(pointY - ((s * pointX) + lPoint1Y - s * lPoint1X)) < offset
 }
@@ -5299,8 +5299,8 @@ ORYX.Core.Math.isPointInEllipse = function (pointX, pointY, cx, cy, rx, ry) {
 		throw "ORYX.Core.Math.isPointInEllipse needs a ellipse with these properties: x, y, radiusX, radiusY"
 	}
 
-    var tx = (pointX - cx) / rx;
-    var ty = (pointY - cy) / ry;
+    const tx = (pointX - cx) / rx;
+    const ty = (pointY - cy) / ry;
 
     return tx * tx + ty * ty < 1.0;
 }
@@ -5317,18 +5317,18 @@ ORYX.Core.Math.isPointInPolygone = function(pointX, pointY, polygone){
 		throw "ORYX.Core.Math.isPointInPolygone needs two arguments"
 	}
 
-	var lastIndex = polygone.length-1;
+	const lastIndex = polygone.length-1;
 
 	if (polygone[0] !== polygone[lastIndex - 1] || polygone[1] !== polygone[lastIndex]) {
 		polygone.push(polygone[0]);
 		polygone.push(polygone[1]);
 	}
 
-	var crossings = 0;
+	let crossings = 0;
 
-	var x1, y1, x2, y2, d;
+	let x1, y1, x2, y2, d;
 
-    for (var i = 0; i < polygone.length - 3; ) {
+    for (let i = 0; i < polygone.length - 3; ) {
         x1=polygone[i];
         y1=polygone[++i];
         x2=polygone[++i];
@@ -5365,7 +5365,7 @@ ORYX.Core.Math.distancePointLinie = function(
 									point,
 									toSegmentOnly) {
 
-	var intersectionPoint =
+	const intersectionPoint =
 				ORYX.Core.Math.getPointOfIntersectionPointLine(lineP1,
 																lineP2,
 																point,
@@ -5385,7 +5385,7 @@ ORYX.Core.Math.distancePointLinie = function(
  * @param {point} point2
  */
 ORYX.Core.Math.getDistancePointToPoint = function(point1, point2) {
-	return Math.sqrt(Math.pow(point1.x - point2.x, 2) + Math.pow(point1.y - point2.y, 2));
+	return Math.sqrt((point1.x - point2.x) ** 2 + (point1.y - point2.y) ** 2);
 };
 
 /**
@@ -5411,8 +5411,8 @@ ORYX.Core.Math.getDistanceBetweenTwoPoints = function(between1, between2, point)
  */
 ORYX.Core.Math.pointIsLeftOfLine = function(lineP1, lineP2, point){
 
-	var vec1 = ORYX.Core.Math.getVector(lineP1, lineP2);
-	var vec2 = ORYX.Core.Math.getVector(lineP1, point);
+	const vec1 = ORYX.Core.Math.getVector(lineP1, lineP2);
+	const vec2 = ORYX.Core.Math.getVector(lineP1, point);
 	// if the cross produkt is more than 0
 	return ((vec1.x*vec2.y) - (vec2.x*vec1.y)) > 0
 };
@@ -5468,7 +5468,7 @@ ORYX.Core.Math.getIdentityVector = function(vector){
 		vector = ORYX.Core.Math.getVector(arguments[0], arguments[1]);
 	}
 
-	var length = Math.sqrt((vector.x*vector.x)+(vector.y*vector.y))
+	const length = Math.sqrt((vector.x*vector.x)+(vector.y*vector.y))
 	return {
 		x: vector.x / (length || 1),
 		y: vector.y / (length || 1)
@@ -5477,7 +5477,7 @@ ORYX.Core.Math.getIdentityVector = function(vector){
 
 
 ORYX.Core.Math.getOrthogonalIdentityVector = function(point1, point2){
-	var vec = arguments.length == 1 ? point1 : ORYX.Core.Math.getIdentityVector(point1, point2);
+	const vec = arguments.length == 1 ? point1 : ORYX.Core.Math.getIdentityVector(point1, point2);
 	return {
 		x: vec.y,
 		y: -vec.x
@@ -5508,18 +5508,18 @@ ORYX.Core.Math.getPointOfIntersectionPointLine = function(
 	 * [P3 - P1 - u(P2 - P1)] dot (P2 - P1) = 0
 	 * u =((x3-x1)(x2-x1)+(y3-y1)(y2-y1))/(p2-p1)??
 	 */
-	var denominator = Math.pow(lineP2.x - lineP1.x, 2)
+	const denominator = Math.pow(lineP2.x - lineP1.x, 2)
 						+ Math.pow(lineP2.y - lineP1.y, 2);
 	if(denominator == 0) {
 		return undefined;
 	}
 
-	var u = ((point.x - lineP1.x) * (lineP2.x - lineP1.x)
+	const u = ((point.x - lineP1.x) * (lineP2.x - lineP1.x)
 			+ (point.y - lineP1.y) * (lineP2.y - lineP1.y))
 			/ denominator;
 
 	if(onSegmentOnly) {
-		if (!(0 <= u && u <= 1)) {
+		if (!(u >= 0 && u <= 1)) {
 			return undefined;
 		}
 	}
@@ -5538,8 +5538,8 @@ ORYX.Core.Math.getPointOfIntersectionPointLine = function(
  * @return {Object} Includes x, y
  */
 ORYX.Core.Math.getTranslatedPoint = function(point, matrix){
-	var x = matrix.a*point.x+matrix.c*point.y+matrix.e*1;
-	var y = matrix.b*point.x+matrix.d*point.y+matrix.f*1;
+	const x = matrix.a*point.x+matrix.c*point.y+matrix.e*1;
+	const y = matrix.b*point.x+matrix.d*point.y+matrix.f*1;
     return {x:x, y:y}
 }
 
@@ -5551,7 +5551,7 @@ ORYX.Core.Math.getTranslatedPoint = function(point, matrix){
  */
 ORYX.Core.Math.getInverseMatrix = function(matrix){
 
-	var det = ORYX.Core.Math.getDeterminant(matrix), m = matrix;
+	const det = ORYX.Core.Math.getDeterminant(matrix), m = matrix;
 	// +-     -+
 	// | a c e |
 	// | b d f |
@@ -5585,18 +5585,18 @@ ORYX.Core.Math.getDeterminant = function(m){
  * @return {Object} Includes x, y, width, height
  */
 ORYX.Core.Math.getTranslatedBoundingBox = function(node){
-	var matrix = node.getCTM();
-	var bb = node.getBBox();
-	var ul = ORYX.Core.Math.getTranslatedPoint({x:bb.x, y:bb.y}, matrix);
-	var ll = ORYX.Core.Math.getTranslatedPoint({x:bb.x, y:bb.y+bb.height}, matrix);
-	var ur = ORYX.Core.Math.getTranslatedPoint({x:bb.x+bb.width, y:bb.y}, matrix);
-	var lr = ORYX.Core.Math.getTranslatedPoint({x:bb.x+bb.width, y:bb.y+bb.height}, matrix);
+	const matrix = node.getCTM();
+	const bb = node.getBBox();
+	const ul = ORYX.Core.Math.getTranslatedPoint({x:bb.x, y:bb.y}, matrix);
+	const ll = ORYX.Core.Math.getTranslatedPoint({x:bb.x, y:bb.y+bb.height}, matrix);
+	const ur = ORYX.Core.Math.getTranslatedPoint({x:bb.x+bb.width, y:bb.y}, matrix);
+	const lr = ORYX.Core.Math.getTranslatedPoint({x:bb.x+bb.width, y:bb.y+bb.height}, matrix);
 
-	var minPoint = {
+	const minPoint = {
 	    x: Math.min(ul.x, ll.x, ur.x, lr.x),
 	    y: Math.min(ul.y, ll.y, ur.y, lr.y)
 	}
-	var maxPoint = {
+	const maxPoint = {
 	    x: Math.max(ul.x, ll.x, ur.x, lr.x),
 	    y: Math.max(ul.y, ll.y, ur.y, lr.y)
 	}
@@ -5619,7 +5619,7 @@ ORYX.Core.Math.getAngle = function(p1, p2){
 	if(p1.x == p2.x && p1.y == p2.y)
 		return 0;
 
-	var angle = Math.asin(Math.sqrt(Math.pow(p1.y-p2.y, 2))
+	const angle = Math.asin(Math.sqrt(Math.pow(p1.y-p2.y, 2))
 				/(Math.sqrt(Math.pow(p2.x-p1.x, 2)+Math.pow(p1.y-p2.y, 2))))
 				*180/Math.PI;
 
@@ -5639,10 +5639,10 @@ ORYX.Core.Math.getAngle = function(p1, p2){
  */
 new function(){
 
-	var RIGHT = 2, TOP = 8,  BOTTOM = 4, LEFT = 1;
+	const RIGHT = 2, TOP = 8,  BOTTOM = 4, LEFT = 1;
 
  	function computeOutCode (x, y, xmin, ymin, xmax, ymax) {
-		var code = 0;
+		let code = 0;
 		if (y > ymax)
 		    code |= TOP;
 		else if (y < ymin)
@@ -5684,8 +5684,8 @@ new function(){
 	 */
 	ORYX.Core.Math.clipLineOnRect = function(x1, y1, x2, y2, xmin, ymin, xmax, ymax){
         //Outcodes for P0, P1, and whatever point lies outside the clip rectangle
-        var outcode0, outcode1, outcodeOut, hhh = 0;
-        var accept = false, done = false;
+        let outcode0, outcode1, outcodeOut, hhh = 0;
+        let accept = false, done = false;
 
         //compute outcodes
         outcode0 = computeOutCode(x1, y1, xmin, ymin, xmax, ymax);
@@ -5700,7 +5700,7 @@ new function(){
             } else {
                 //failed both tests, so calculate the line segment to clip
                 //from an outside point to an intersection with clip edge
-                var x = 0, y = 0;
+                let x = 0, y = 0;
                 //At least one endpoint is outside the clip rectangle; pick it.
                 outcodeOut = outcode0 != 0 ? outcode0: outcode1;
                 //Now find the intersection point;
@@ -5861,12 +5861,12 @@ ORYX.Core.StencilSet.Stencil = {
 
 		//TODO does not work correctly, if the url does not exist
 		//How to guarantee that the view is loaded correctly before leaving the constructor???
-		var url = source + "view/" + jsonStencil.view;
+		const url = source + "view/" + jsonStencil.view;
 		// override content type when this is webkit.
 
 		if(this._jsonStencil.view.trim().match(/</)) {
-			var parser	= new DOMParser();
-			var xml 	= parser.parseFromString( this._jsonStencil.view ,"text/xml");
+			const parser	= new DOMParser();
+			const xml 	= parser.parseFromString( this._jsonStencil.view ,"text/xml");
 
 			//check if result is a SVG document
 			if( ORYX.Editor.checkClassType( xml.documentElement, SVGSVGElement )) {
@@ -5892,12 +5892,12 @@ ORYX.Core.StencilSet.Stencil = {
 		if(this._jsonStencil.propertyPackages && this._jsonStencil.propertyPackages instanceof Array) {
 
 			this._jsonStencil.propertyPackages.each((function(ppId) {
-				var pp = this._propertyPackages[ppId];
+				const pp = this._propertyPackages[ppId];
 
 				if(pp) {
 					pp.each((function(prop){
-						var oProp = new ORYX.Core.StencilSet.Property(prop, this._namespace, this);
-						this._properties[oProp.prefix() + "-" + oProp.id()] = oProp;
+						const oProp = new ORYX.Core.StencilSet.Property(prop, this._namespace, this);
+						this._properties[`${oProp.prefix()  }-${  oProp.id()}`] = oProp;
 
 					}).bind(this));
 				}
@@ -5907,8 +5907,8 @@ ORYX.Core.StencilSet.Stencil = {
 		// init properties
 		if(this._jsonStencil.properties && this._jsonStencil.properties instanceof Array) {
 			this._jsonStencil.properties.each((function(prop) {
-				var oProp = new ORYX.Core.StencilSet.Property(prop, this._namespace, this);
-				this._properties[oProp.prefix() + "-" + oProp.id()] = oProp;
+				const oProp = new ORYX.Core.StencilSet.Property(prop, this._namespace, this);
+				this._properties[`${oProp.prefix()  }-${  oProp.id()}`] = oProp;
 			}).bind(this));
 		}
 
@@ -6018,24 +6018,24 @@ ORYX.Core.StencilSet.Stencil = {
 
 	addProperty: function(property, namespace) {
 		if(property && namespace) {
-			var oProp = new ORYX.Core.StencilSet.Property(property, namespace, this);
-			this._properties[oProp.prefix() + "-" + oProp.id()] = oProp;
+			const oProp = new ORYX.Core.StencilSet.Property(property, namespace, this);
+			this._properties[`${oProp.prefix()  }-${  oProp.id()}`] = oProp;
 		}
 	},
 
 	removeProperty: function(propertyId) {
 		if(propertyId) {
-			var oProp = this._properties.values().find(function(prop) {
+			const oProp = this._properties.values().find(function(prop) {
 				return (propertyId == prop.id());
 			});
 			if(oProp)
-				delete this._properties[oProp.prefix() + "-" + oProp.id()];
+				delete this._properties[`${oProp.prefix()  }-${  oProp.id()}`];
 		}
 	},
 
 	_loadSVGOnSuccess: function(result) {
 
-		var xml = null;
+		let xml = null;
 
 		/*
 		 * We want to get a dom object for the requested file. Unfortunately,
@@ -6069,7 +6069,7 @@ ORYX.Core.StencilSet.Stencil = {
 		throw "ORYX.Core.StencilSet.Stencil(_loadSVGOnFailure): Loading SVG document failed."
 	},
 
-	toString: function() { return "Stencil " + this.title() + " (" + this.id() + ")"; }
+	toString: function() { return `Stencil ${  this.title()  } (${  this.id()  })`; }
 };
 
 ORYX.Core.StencilSet.Stencil = Clazz.extend(ORYX.Core.StencilSet.Stencil);
@@ -6088,13 +6088,13 @@ function _evenMoreEvilHack(str, contentType) {
 	 */
 
 	if (window.ActiveXObject) {
-		var d = new ActiveXObject("MSXML.DomDocument");
+		const d = new ActiveXObject("MSXML.DomDocument");
 		d.loadXML(str);
 		return d;
 	} else if (window.XMLHttpRequest) {
-		var req = new XMLHttpRequest;
-		req.open("GET", "data:" + (contentType || "application/xml") +
-						";charset=utf-8," + encodeURIComponent(str), false);
+		const req = new XMLHttpRequest;
+		req.open("GET", `data:${  contentType || "application/xml" 
+						};charset=utf-8,${  encodeURIComponent(str)}`, false);
 		if (req.overrideMimeType) {
 			req.overrideMimeType(contentType);
 		}
@@ -6120,12 +6120,12 @@ function _evilSafariHack(serializedXML) {
 	 *  the best compromise for the time being.
 	 */
 
-	var xml = serializedXML;
-	var url = "data:text/xml;charset=utf-8," + encodeURIComponent(xml);
-	var dom = null;
+	const xml = serializedXML;
+	const url = "data:text/xml;charset=utf-8," + encodeURIComponent(xml);
+	let dom = null;
 
 	// your standard AJAX stuff
-	var req = new XMLHttpRequest();
+	const req = new XMLHttpRequest();
 	req.open("GET", url);
 	req.onload = function() { dom = req.responseXML; }
 	req.send(null);
@@ -6209,14 +6209,14 @@ ORYX.Core.StencilSet.Property = Clazz.extend({
             this._jsonProp.refToView = [];
         }
 
-		var globalMin = this.getMinForType(jsonProp.type);
+		const globalMin = this.getMinForType(jsonProp.type);
         if (jsonProp.min === undefined || jsonProp.min === null) {
             jsonProp.min =globalMin;
         } else if (jsonProp.min < globalMin) {
 			jsonProp.min = globalMin;
 		}
 
-		var globalMax = this.getMaxForType(jsonProp.type);
+		const globalMax = this.getMaxForType(jsonProp.type);
         if (jsonProp.max === undefined || jsonProp.max === null) {
             jsonProp.max = globalMax;
         } else if (jsonProp.max > globalMax) {
@@ -6227,7 +6227,7 @@ ORYX.Core.StencilSet.Property = Clazz.extend({
             jsonProp.fillOpacity = false;
         }
 
-		if ("number" != typeof jsonProp.lightness) {
+		if (typeof jsonProp.lightness != "number") {
 			jsonProp.lightness = 1;
 		} else {
 			jsonProp.lightness = Math.max(0, Math.min(1, jsonProp.lightness));
@@ -6314,14 +6314,14 @@ ORYX.Core.StencilSet.Property = Clazz.extend({
 
 	getMinForType : function(type) {
 		if (type.toLowerCase() == ORYX.CONFIG.TYPE_INTEGER) {
-			return -Math.pow(2,31)
+			return -(2 ** 31)
 		} else {
 			return -Number.MAX_VALUE+1;
 		}
 	},
 	getMaxForType : function(type) {
 		if (type.toLowerCase() == ORYX.CONFIG.TYPE_INTEGER) {
-			return Math.pow(2,31)-1
+			return 2 ** 31-1
 		} else {
 			return Number.MAX_VALUE;
 		}
@@ -6534,7 +6534,7 @@ ORYX.Core.StencilSet.Property = Clazz.extend({
     },
 
     toString: function(){
-        return "Property " + this.title() + " (" + this.id() + ")";
+        return `Property ${  this.title()  } (${  this.id()  })`;
     },
 
     complexItems: function(){
@@ -6681,10 +6681,10 @@ ORYX.Core.StencilSet.PropertyItem = Clazz.extend({
 	},
 
 	icon: function() {
-		return (this._jsonItem.icon) ? this.property().stencil()._source + "icons/" + this._jsonItem.icon : "";
+		return (this._jsonItem.icon) ? `${this.property().stencil()._source  }icons/${  this._jsonItem.icon}` : "";
 	},
 
-	toString: function() { return "PropertyItem " + this.property() + " (" + this.value() + ")"; }
+	toString: function() { return `PropertyItem ${  this.property()  } (${  this.value()  })`; }
 });/*
  * Copyright 2005-2014 Alfresco Software, Ltd. All rights reserved.
  * License rights for this program may be obtained from Alfresco Software, Ltd.
@@ -6871,12 +6871,12 @@ ORYX.Core.StencilSet.Rules = {
 	 */
 	initializeRules: function(stencilSet) {
 
-		var existingSS = this._stencilSets.find(function(ss) {
+		const existingSS = this._stencilSets.find(function(ss) {
 							return (ss.namespace() == stencilSet.namespace());
 						});
 		if (existingSS) {
 			// reinitialize all rules
-			var stencilsets = this._stencilSets.clone();
+			let stencilsets = this._stencilSets.clone();
 			stencilsets = stencilsets.without(existingSS);
 			stencilsets.push(stencilSet);
 
@@ -6906,9 +6906,9 @@ ORYX.Core.StencilSet.Rules = {
 		else {
 			this._stencilSets.push(stencilSet);
 
-			var jsonRules = new Hash(stencilSet.jsonRules());
-			var namespace = stencilSet.namespace();
-			var stencils = stencilSet.stencils();
+			const jsonRules = new Hash(stencilSet.jsonRules());
+			const namespace = stencilSet.namespace();
+			let stencils = stencilSet.stencils();
 
 			stencilSet.extensions().values().each(function(extension) {
 				if(extension.rules) {
@@ -6928,7 +6928,7 @@ ORYX.Core.StencilSet.Rules = {
 			this._stencils = this._stencils.concat(stencilSet.stencils());
 
 			// init connection rules
-			var cr = this._connectionRules;
+			const cr = this._connectionRules;
 			if (jsonRules.connectionRules) {
 				jsonRules.connectionRules.each((function(rules){
 					if (this._isRoleOfOtherNamespace(rules.role)) {
@@ -6942,7 +6942,7 @@ ORYX.Core.StencilSet.Rules = {
 					}
 
 					rules.connects.each((function(connect){
-						var toRoles = [];
+						const toRoles = [];
 						if (connect.to) {
 							if (!(connect.to instanceof Array)) {
 								connect.to = [connect.to];
@@ -6957,7 +6957,7 @@ ORYX.Core.StencilSet.Rules = {
 							}).bind(this));
 						}
 
-						var role, from;
+						let role, from;
 						if (this._isRoleOfOtherNamespace(rules.role))
 							role = rules.role;
 						else
@@ -6978,10 +6978,10 @@ ORYX.Core.StencilSet.Rules = {
 			}
 
 			// init cardinality rules
-			var cardr = this._cardinalityRules;
+			const cardr = this._cardinalityRules;
 			if (jsonRules.cardinalityRules) {
 				jsonRules.cardinalityRules.each((function(rules){
-					var cardrKey;
+					let cardrKey;
 					if (this._isRoleOfOtherNamespace(rules.role)) {
 						cardrKey = rules.role;
 					}
@@ -6996,7 +6996,7 @@ ORYX.Core.StencilSet.Rules = {
 						}
 					}
 
-					var oe = new Hash();
+					const oe = new Hash();
 					if (rules.outgoingEdges) {
 						rules.outgoingEdges.each((function(rule){
 							if (this._isRoleOfOtherNamespace(rule.role)) {
@@ -7008,7 +7008,7 @@ ORYX.Core.StencilSet.Rules = {
 						}).bind(this));
 					}
 					cardr[cardrKey].outgoingEdges = oe;
-					var ie = new Hash();
+					const ie = new Hash();
 					if (rules.incomingEdges) {
 						rules.incomingEdges.each((function(rule){
 							if (this._isRoleOfOtherNamespace(rule.role)) {
@@ -7024,10 +7024,10 @@ ORYX.Core.StencilSet.Rules = {
 			}
 
 			// init containment rules
-			var conr = this._containmentRules;
+			const conr = this._containmentRules;
 			if (jsonRules.containmentRules) {
 				jsonRules.containmentRules.each((function(rules){
-					var conrKey;
+					let conrKey;
 					if (this._isRoleOfOtherNamespace(rules.role)) {
 						conrKey = rules.role;
 					}
@@ -7050,10 +7050,10 @@ ORYX.Core.StencilSet.Rules = {
 			}
 
 			// init morphing rules
-			var morphr = this._morphingRules;
+			const morphr = this._morphingRules;
 			if (jsonRules.morphingRules) {
 				jsonRules.morphingRules.each((function(rules){
-					var morphrKey;
+					let morphrKey;
 					if (this._isRoleOfOtherNamespace(rules.role)) {
 						morphrKey = rules.role;
 					}
@@ -7067,7 +7067,7 @@ ORYX.Core.StencilSet.Rules = {
 						rules.preserveBounds = false;
 					}
 					rules.baseMorphs.each((function(baseMorphStencilId){
-						var morphStencil = this._getStencilById(namespace + baseMorphStencilId);
+						const morphStencil = this._getStencilById(namespace + baseMorphStencilId);
 						if(morphStencil) {
 							morphr[morphrKey].push(morphStencil);
 						}
@@ -7076,10 +7076,10 @@ ORYX.Core.StencilSet.Rules = {
 			}
 
 			// init layouting rules
-			var layoutRules = this._layoutRules;
+			const layoutRules = this._layoutRules;
 			if (jsonRules.layoutRules) {
 
-				var getDirections = function(o){
+				const getDirections = function(o){
 					return {
 							"edgeRole":o.edgeRole||undefined,
 							"t": o["t"]||1,
@@ -7090,7 +7090,7 @@ ORYX.Core.StencilSet.Rules = {
 				}
 
 				jsonRules.layoutRules.each(function(rules){
-					var layoutKey;
+					let layoutKey;
 					if (this._isRoleOfOtherNamespace(rules.role)) {
 						layoutKey = rules.role;
 					}
@@ -7134,7 +7134,7 @@ ORYX.Core.StencilSet.Rules = {
 				this._cachedConnectSET[args.sourceStencil.id()] = source;
 			}
 
-			var edge = source[args.edgeStencil.id()];
+			let edge = source[args.edgeStencil.id()];
 
 			if(!edge) {
 				edge = new Hash();
@@ -7154,7 +7154,7 @@ ORYX.Core.StencilSet.Rules = {
 			source[args.edgeStencil.id()] = result;
 
 		} else {
-			var target = this._cachedConnectTE[args.targetStencil.id()];
+			let target = this._cachedConnectTE[args.targetStencil.id()];
 
 			if(!target) {
 				target = new Hash();
@@ -7170,7 +7170,7 @@ ORYX.Core.StencilSet.Rules = {
 	_cacheCard: function(args) {
 
 		if(args.sourceStencil) {
-			var source = this._cachedCardSE[args.sourceStencil.id()]
+			let source = this._cachedCardSE[args.sourceStencil.id()]
 
 			if(!source) {
 				source = new Hash();
@@ -7185,7 +7185,7 @@ ORYX.Core.StencilSet.Rules = {
 		}
 
 		if(args.targetStencil) {
-			var target = this._cachedCardTE[args.targetStencil.id()]
+			let target = this._cachedCardTE[args.targetStencil.id()]
 
 			if(!target) {
 				target = new Hash();
@@ -7202,13 +7202,13 @@ ORYX.Core.StencilSet.Rules = {
 
 	_cacheContain: function(args) {
 
-		var result = [this._canContain(args),
+		const result = [this._canContain(args),
 					  this._getMaximumOccurrence(args.containingStencil, args.containedStencil)]
 
 		if(result[1] == undefined)
 			result[1] = -1;
 
-		var children = this._cachedContainPC[args.containingStencil.id()];
+		let children = this._cachedContainPC[args.containingStencil.id()];
 
 		if(!children) {
 			children = new Hash();
@@ -7226,7 +7226,7 @@ ORYX.Core.StencilSet.Rules = {
 	 */
 	_cacheMorph: function(role) {
 
-		var morphs = this._cachedMorphRS[role];
+		let morphs = this._cachedMorphRS[role];
 
 		if(!morphs) {
 			morphs = [];
@@ -7266,12 +7266,12 @@ ORYX.Core.StencilSet.Rules = {
 			args.sourceStencil = args.sourceShape.getStencil();
 		}
 
-		var _edges = [];
+		const _edges = [];
 
 		// test each edge, if it can connect to source
 		this._stencils.each((function(stencil) {
 			if(stencil.type() === "edge") {
-				var newArgs = Object.clone(args);
+				const newArgs = Object.clone(args);
 				newArgs.edgeStencil = stencil;
 				if(this.canConnect(newArgs)) {
 					_edges.push(stencil);
@@ -7304,12 +7304,12 @@ ORYX.Core.StencilSet.Rules = {
 			args.targetStencil = args.targetShape.getStencil();
 		}
 
-		var _edges = [];
+		const _edges = [];
 
 		// test each edge, if it can connect to source
 		this._stencils.each((function(stencil) {
 			if(stencil.type() === "edge") {
-				var newArgs = Object.clone(args);
+				const newArgs = Object.clone(args);
 				newArgs.edgeStencil = stencil;
 				if(this.canConnect(newArgs)) {
 					_edges.push(stencil);
@@ -7349,11 +7349,11 @@ ORYX.Core.StencilSet.Rules = {
 			args.edgeStencil = args.edgeShape.getStencil();
 		}
 
-		var _sources = [];
+		const _sources = [];
 
 		// check each stencil, if it can be a source
 		this._stencils.each((function(stencil) {
-			var newArgs = Object.clone(args);
+			const newArgs = Object.clone(args);
 			newArgs.sourceStencil = stencil;
 			if(this.canConnect(newArgs)) {
 				_sources.push(stencil);
@@ -7392,11 +7392,11 @@ ORYX.Core.StencilSet.Rules = {
 			args.edgeStencil = args.edgeShape.getStencil();
 		}
 
-		var _targets = [];
+		const _targets = [];
 
 		// check stencil, if it can be a target
 		this._stencils.each((function(stencil) {
-			var newArgs = Object.clone(args);
+			const newArgs = Object.clone(args);
 			newArgs.targetStencil = stencil;
 			if(this.canConnect(newArgs)) {
 				_targets.push(stencil);
@@ -7440,7 +7440,7 @@ ORYX.Core.StencilSet.Rules = {
 			args.edgeStencil = args.edgeShape.getStencil();
 		}
 
-		var result;
+		let result;
 
 		if(args.sourceStencil && args.targetStencil) {
 			var source = this._cachedConnectSET[args.sourceStencil.id()];
@@ -7589,10 +7589,10 @@ ORYX.Core.StencilSet.Rules = {
 		}
 
 		// 1. check connection rules
-		var resultCR;
+		let resultCR;
 
 		// get all connection rules for this edge
-		var edgeRules = this._getConnectionRulesOfEdgeStencil(args.edgeStencil);
+		const edgeRules = this._getConnectionRulesOfEdgeStencil(args.edgeStencil);
 
 		// check connection rules, if the source can be connected to the target
 		// with the specified edge.
@@ -7601,7 +7601,7 @@ ORYX.Core.StencilSet.Rules = {
 		} else {
 			if(args.sourceStencil) {
 				resultCR = args.sourceStencil.roles().any(function(sourceRole) {
-					var targetRoles = edgeRules[sourceRole];
+					const targetRoles = edgeRules[sourceRole];
 
 					if(!targetRoles) {return false;}
 
@@ -7662,9 +7662,9 @@ ORYX.Core.StencilSet.Rules = {
 		if(args.containedStencil.type() == 'edge')
 			return false;
 
-		var childValues;
+		let childValues;
 
-		var parent = this._cachedContainPC[args.containingStencil.id()];
+		const parent = this._cachedContainPC[args.containingStencil.id()];
 
 		if(!parent)
 			childValues = this._cacheContain(args);
@@ -7681,7 +7681,7 @@ ORYX.Core.StencilSet.Rules = {
 			return true;
 		else {
 			if(args.containingShape) {
-				var max = childValues[1];
+				let max = childValues[1];
 				return args.containingShape.getChildShapes(false).all(function(as) {
 					if(as.getStencil().id() === args.containedStencil.id()) {
 						max--;
@@ -7727,11 +7727,11 @@ ORYX.Core.StencilSet.Rules = {
 //		}
 
 
-		var result;
+		let result;
 
 		// check containment rules
 		result = args.containingStencil.roles().any((function(role) {
-			var roles = this._containmentRules[role];
+			const roles = this._containmentRules[role];
 			if(roles) {
 				return roles.any(function(role) {
 					return args.containedStencil.roles().member(role);
@@ -7772,7 +7772,7 @@ ORYX.Core.StencilSet.Rules = {
 			args.stencil = args.shape.getStencil();
 		}
 
-		var _morphStencils = [];
+		let _morphStencils = [];
 		args.stencil.roles().each(function(role) {
 			this._cacheMorph(role).each(function(stencil) {
 				_morphStencils.push(stencil);
@@ -7780,9 +7780,9 @@ ORYX.Core.StencilSet.Rules = {
 		}.bind(this));
 
 
-		var baseMorphs = this.baseMorphs();
+		const baseMorphs = this.baseMorphs();
 		// BaseMorphs should be in the front of the array
-		_morphStencils = _morphStencils.uniq().sort(function(a,b){ return baseMorphs.include(a)&&!baseMorphs.include(b) ? -1 : (baseMorphs.include(b)&&!baseMorphs.include(a) ? 1 : 0)})
+		_morphStencils = _morphStencils.uniq().toSorted(function(a,b){ return baseMorphs.include(a)&&!baseMorphs.include(b) ? -1 : (baseMorphs.include(b)&&!baseMorphs.include(a) ? 1 : 0)})
 		return _morphStencils;
 	},
 
@@ -7790,7 +7790,7 @@ ORYX.Core.StencilSet.Rules = {
 	 * @return {Array} An array of all base morph stencils
 	 */
 	baseMorphs: function() {
-		var _baseMorphs = [];
+		const _baseMorphs = [];
 		this._morphingRules.each(function(pair) {
 			pair.value.each(function(baseMorph) {
 				_baseMorphs.push(baseMorph);
@@ -7840,11 +7840,11 @@ ORYX.Core.StencilSet.Rules = {
 			args.targetStencil = args.targetShape.getStencil();
 		}
 
-		var incoming = this.incomingEdgeStencils(args);
-		var outgoing = this.outgoingEdgeStencils(args);
+		const incoming = this.incomingEdgeStencils(args);
+		const outgoing = this.outgoingEdgeStencils(args);
 
-		var edgeStencils = incoming.select(function(e) { return outgoing.member(e); }); // intersection of sets
-		var baseEdgeStencils = this.baseMorphs().select(function(e) { return edgeStencils.member(e); }); // again: intersection of sets
+		const edgeStencils = incoming.select(function(e) { return outgoing.member(e); }); // intersection of sets
+		const baseEdgeStencils = this.baseMorphs().select(function(e) { return edgeStencils.member(e); }); // again: intersection of sets
 
 		if(baseEdgeStencils.size()>0)
 			return baseEdgeStencils[0]; // return any of the possible base morphs
@@ -7896,9 +7896,9 @@ ORYX.Core.StencilSet.Rules = {
 
 		if (!shape||!(shape instanceof ORYX.Core.Shape)){ return }
 
-		var layout = {"in":{},"out":{}};
+		const layout = {"in":{},"out":{}};
 
-		var parseValues = function(o, v){
+		const parseValues = function(o, v){
 			if (o && o[v]){
 				["t","r","b","l"].each(function(d){
 					layout[v][d]=Math.max(o[v][d],layout[v][d]||0);
@@ -7948,7 +7948,7 @@ ORYX.Core.StencilSet.Rules = {
 	 */
 	_hasRole: function(shape, role){
 		if (!(shape instanceof ORYX.Core.Shape)||!role){ return }
-		var isRole = shape.getStencil().roles().any(function(r){ return r == role});
+		const isRole = shape.getStencil().roles().any(function(r){ return r == role});
 
 		return isRole || shape.getStencil().id() == (shape.getStencil().namespace()+role);
 	},
@@ -8005,9 +8005,9 @@ ORYX.Core.StencilSet.Rules = {
 	 *          stencil's type inside the parent.
 	 */
 	_getMaximumOccurrence: function(parent, child) {
-		var max;
+		let max;
 		child.roles().each((function(role) {
-			var cardRule = this._cardinalityRules[role];
+			const cardRule = this._cardinalityRules[role];
 			if(cardRule && cardRule.maximumOccurrence) {
 				if(max) {
 					max = Math.min(max, cardRule.maximumOccurrence);
@@ -8037,13 +8037,13 @@ ORYX.Core.StencilSet.Rules = {
 		   	return false;
 		}
 
-		var max;
+		let max;
 		args.sourceStencil.roles().each((function(role) {
-			var cardRule = this._cardinalityRules[role];
+			const cardRule = this._cardinalityRules[role];
 
 			if(cardRule && cardRule.outgoingEdges) {
 				args.edgeStencil.roles().each(function(edgeRole) {
-					var oe = cardRule.outgoingEdges[edgeRole];
+					const oe = cardRule.outgoingEdges[edgeRole];
 
 					if(oe && oe.maximum) {
 						if(max) {
@@ -8075,12 +8075,12 @@ ORYX.Core.StencilSet.Rules = {
 		   	return false;
 		}
 
-		var max;
+		let max;
 		args.targetStencil.roles().each((function(role) {
-			var cardRule = this._cardinalityRules[role];
+			const cardRule = this._cardinalityRules[role];
 			if(cardRule && cardRule.incomingEdges) {
 				args.edgeStencil.roles().each(function(edgeRole) {
-					var ie = cardRule.incomingEdges[edgeRole];
+					const ie = cardRule.incomingEdges[edgeRole];
 					if(ie && ie.maximum) {
 						if(max) {
 							max = Math.min(max, ie.maximum);
@@ -8104,7 +8104,7 @@ ORYX.Core.StencilSet.Rules = {
 	 *         edgeStencil.
 	 */
 	_getConnectionRulesOfEdgeStencil: function(edgeStencil) {
-		var edgeRules = new Hash();
+		const edgeRules = new Hash();
 		edgeStencil.roles().each((function(role) {
 			if(this._connectionRules[role]) {
 				this._connectionRules[role].each(function(cr) {
@@ -8187,11 +8187,11 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
 			this._baseUrl = "editor/stencilsets/bpmn2.0/";
 			this._source = "stencilsets/bpmn2.0/bpmn2.0.json";
 
-      var headers = {}
-      var token = EDITOR.UTIL.getParameterByName('token')
+      const headers = {}
+      let token = EDITOR.UTIL.getParameterByName('token')
       token = token && token.replace(/^"|"$/g, '')
       headers[ACTIVITI.CONFIG.token] = token
-			new Ajax.Request(ACTIVITI.CONFIG.contextRoot + '/auth/workflow/model/stencilset?version=' + Date.now(), {
+			new Ajax.Request(`${ACTIVITI.CONFIG.contextRoot  }/auth/workflow/model/stencilset?version=${  Date.now()}`, {
 	            asynchronous: false,
 	            method: 'get',
               requestHeaders: headers,
@@ -8209,7 +8209,7 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
 		}
 
         if (this.errornous)
-            throw "Loading stencil set " + source + " failed.";
+            throw `Loading stencil set ${  source  } failed.`;
     },
 
     /**
@@ -8220,7 +8220,7 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
     findRootStencilName: function(){
 
         // find any stencil that may be root.
-        var rootStencil = this._stencils.values().find(function(stencil){
+        let rootStencil = this._stencils.values().find(function(stencil){
             return stencil._jsonStencil.mayBeRoot
         });
 
@@ -8249,23 +8249,23 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
 	 */
     stencils: function(rootStencil, rules, sortByGroup){
 		if(rootStencil && rules) {
-			var stencils = this._availableStencils.values();
-			var containers = [rootStencil];
-			var checkedContainers = [];
+			const stencils = this._availableStencils.values();
+			const containers = [rootStencil];
+			const checkedContainers = [];
 
-			var result = [];
+			let result = [];
 
 			while (containers.size() > 0) {
-				var container = containers.pop();
+				const container = containers.pop();
 				checkedContainers.push(container);
-				var children = stencils.findAll(function(stencil){
+				const children = stencils.findAll(function(stencil){
 					var args = {
 						containingStencil: container,
 						containedStencil: stencil
 					};
 					return rules.canContain(args);
 				});
-				for(var i = 0; i < children.size(); i++) {
+				for(let i = 0; i < children.size(); i++) {
 					if (!checkedContainers.member(children[i])) {
 						containers.push(children[i]);
 					}
@@ -8285,7 +8285,7 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
 				});
 			}
 
-			var edges = stencils.findAll(function(stencil) {
+			const edges = stencils.findAll(function(stencil) {
 				return stencil.type() == "edge";
 			});
 			result = result.concat(edges);
@@ -8352,10 +8352,10 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
 				this.addExtensionDirectly(transport.responseText);
 			}).bind(this),
 			onFailure: (function(transport) {
-				ORYX.Log.debug("Loading stencil set extension file failed. The request returned an error." + transport);
+				ORYX.Log.debug(`Loading stencil set extension file failed. The request returned an error.${  transport}`);
 			}).bind(this),
 			onException: (function(transport) {
-				ORYX.Log.debug("Loading stencil set extension file failed. The request returned an error." + transport);
+				ORYX.Log.debug(`Loading stencil set extension file failed. The request returned an error.${  transport}`);
 			}).bind(this)
 
 		});
@@ -8364,7 +8364,7 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
 	addExtensionDirectly: function(str){
 
 		try {
-			eval("var jsonExtension = " + str);
+			eval(`var jsonExtension = ${  str}`);
 
 			if(!(jsonExtension["extends"].endsWith("#")))
 					jsonExtension["extends"] += "#";
@@ -8372,12 +8372,12 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
 			if(jsonExtension["extends"] == this.namespace()) {
 				this._extensions[jsonExtension.namespace] = jsonExtension;
 
-				var defaultPosition = this._stencils.keys().size();
+				let defaultPosition = this._stencils.keys().size();
 				//load new stencils
 				if(jsonExtension.stencils) {
 					$A(jsonExtension.stencils).each(function(stencil) {
 						defaultPosition++;
-						var oStencil = new ORYX.Core.StencilSet.Stencil(stencil, this.namespace(), this._baseUrl, this, undefined, defaultPosition);
+						const oStencil = new ORYX.Core.StencilSet.Stencil(stencil, this.namespace(), this._baseUrl, this, undefined, defaultPosition);
 						this._stencils[oStencil.id()] = oStencil;
 						this._availableStencils[oStencil.id()] = oStencil;
 					}.bind(this));
@@ -8385,10 +8385,10 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
 
 				//load additional properties
 				if (jsonExtension.properties) {
-					var stencils = this._stencils.values();
+					const stencils = this._stencils.values();
 
 					stencils.each(function(stencil){
-						var roles = stencil.roles();
+						const roles = stencil.roles();
 
 						jsonExtension.properties.each(function(prop){
 							prop.roles.any(function(role){
@@ -8410,7 +8410,7 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
 				//remove stencil properties
 				if(jsonExtension.removeproperties) {
 					jsonExtension.removeproperties.each(function(remprop) {
-						var stencil = this.stencil(jsonExtension["extends"] + remprop.stencil);
+						const stencil = this.stencil(jsonExtension["extends"] + remprop.stencil);
 						if(stencil) {
 							remprop.properties.each(function(propId) {
 								stencil.removeProperty(propId);
@@ -8427,18 +8427,18 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
 				}
 			}
 		} catch (e) {
-			ORYX.Log.debug("StencilSet.addExtension: Something went wrong when initialising the stencil set extension. " + e);
+			ORYX.Log.debug(`StencilSet.addExtension: Something went wrong when initialising the stencil set extension. ${  e}`);
 		}
 	},
 
 	removeExtension: function(namespace) {
-		var jsonExtension = this._extensions[namespace];
+		const jsonExtension = this._extensions[namespace];
 		if(jsonExtension) {
 
 			//unload extension's stencils
 			if(jsonExtension.stencils) {
 				$A(jsonExtension.stencils).each(function(stencil) {
-					var oStencil = new ORYX.Core.StencilSet.Stencil(stencil, this.namespace(), this._baseUrl, this);
+					const oStencil = new ORYX.Core.StencilSet.Stencil(stencil, this.namespace(), this._baseUrl, this);
 					delete this._stencils[oStencil.id()]; // maybe not ??
 					delete this._availableStencils[oStencil.id()];
 				}.bind(this));
@@ -8446,10 +8446,10 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
 
 			//unload extension's properties
 			if (jsonExtension.properties) {
-				var stencils = this._stencils.values();
+				const stencils = this._stencils.values();
 
 				stencils.each(function(stencil){
-					var roles = stencil.roles();
+					const roles = stencil.roles();
 
 					jsonExtension.properties.each(function(prop){
 						prop.roles.any(function(role){
@@ -8471,11 +8471,11 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
 			//restore removed stencil properties
 			if(jsonExtension.removeproperties) {
 				jsonExtension.removeproperties.each(function(remprop) {
-					var stencil = this.stencil(jsonExtension["extends"] + remprop.stencil);
+					const stencil = this.stencil(jsonExtension["extends"] + remprop.stencil);
 					if(stencil) {
-						var stencilJson = $A(this._jsonObject.stencils).find(function(s) { return s.id == stencil.id() });
+						const stencilJson = $A(this._jsonObject.stencils).find(function(s) { return s.id == stencil.id() });
 						remprop.properties.each(function(propId) {
-							var propertyJson = $A(stencilJson.properties).find(function(p) { return p.id == propId });
+							const propertyJson = $A(stencilJson.properties).find(function(p) { return p.id == propId });
 							stencil.addProperty(propertyJson, this.namespace());
 						}.bind(this));
 					}
@@ -8485,7 +8485,7 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
 			//restore removed stencils
 			if(jsonExtension.removestencils) {
 				$A(jsonExtension.removestencils).each(function(remstencil) {
-					var sId = jsonExtension["extends"] + remstencil;
+					const sId = jsonExtension["extends"] + remstencil;
 					this._availableStencils[sId] = this._stencils[sId];
 				}.bind(this));
 			}
@@ -8498,10 +8498,10 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
         try {
             // using eval instead of prototype's parsing,
             // since there are functions in this JSON.
-            eval("this._jsonObject =" + response.responseText);
+            eval(`this._jsonObject =${  response.responseText}`);
         }
         catch (e) {
-            throw "Stenciset corrupt: " + e;
+            throw `Stenciset corrupt: ${  e}`;
         }
 
         // assert it was parsed.
@@ -8520,7 +8520,7 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
 
             // assert namespace ends with '#'.
             if (!namespace.endsWith("#"))
-                namespace = namespace + "#";
+                namespace = `${namespace  }#`;
 
             // assert title and description are strings.
             if (!title)
@@ -8542,7 +8542,7 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
         // init and check consistency.
         this.__handleStencilset(response);
 
-		var pps = new Hash();
+		const pps = new Hash();
 
 		// init property packages
 		if(this._jsonObject.propertyPackages) {
@@ -8551,14 +8551,14 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
 			}).bind(this));
 		}
 
-		var defaultPosition = 0;
+		let defaultPosition = 0;
 
         // init each stencil
         $A(this._jsonObject.stencils).each((function(stencil){
         	defaultPosition++;
 
             // instantiate normally.
-            var oStencil = new ORYX.Core.StencilSet.Stencil(stencil, this.namespace(), this._baseUrl, this, pps, defaultPosition);
+            const oStencil = new ORYX.Core.StencilSet.Stencil(stencil, this.namespace(), this._baseUrl, this, pps, defaultPosition);
 			this._stencils[oStencil.id()] = oStencil;
 			this._availableStencils[oStencil.id()] = oStencil;
 
@@ -8570,7 +8570,7 @@ ORYX.Core.StencilSet.StencilSet = Clazz.extend({
     },
 
     toString: function(){
-        return "StencilSet " + this.title() + " (" + this.namespace() + ")";
+        return `StencilSet ${  this.title()  } (${  this.namespace()  })`;
     }
 });
 /*
@@ -8617,11 +8617,11 @@ ORYX.Core.StencilSet._rulesByEditorInstance = new Hash();
  * 					the editor with the editorId.
  */
 ORYX.Core.StencilSet.stencilSets = function(editorId) {
-	var stencilSetNSs = ORYX.Core.StencilSet._StencilSetNSByEditorInstance[editorId];
-	var stencilSets = new Hash();
+	const stencilSetNSs = ORYX.Core.StencilSet._StencilSetNSByEditorInstance[editorId];
+	const stencilSets = new Hash();
 	if(stencilSetNSs) {
 		stencilSetNSs.each(function(stencilSetNS) {
-			var stencilSet = ORYX.Core.StencilSet.stencilSet(stencilSetNS)
+			const stencilSet = ORYX.Core.StencilSet.stencilSet(stencilSetNS)
 			stencilSets[stencilSet.namespace()] = stencilSet;
 		});
 	}
@@ -8642,10 +8642,10 @@ ORYX.Core.StencilSet.stencilSets = function(editorId) {
  */
 ORYX.Core.StencilSet.stencilSet = function(namespace) {
 	ORYX.Log.trace("Getting stencil set %0", namespace);
-	var splitted = namespace.split("#", 1);
+	const splitted = namespace.split("#", 1);
 	if(splitted.length === 1) {
 		ORYX.Log.trace("Getting stencil set %0", splitted[0]);
-		return ORYX.Core.StencilSet._stencilSetsByNamespace[splitted[0] + "#"];
+		return ORYX.Core.StencilSet._stencilSetsByNamespace[`${splitted[0]  }#`];
 	} else {
 		return undefined;
 	}
@@ -8662,7 +8662,7 @@ ORYX.Core.StencilSet.stencilSet = function(namespace) {
  */
 ORYX.Core.StencilSet.stencil = function(id) {
 	ORYX.Log.trace("Getting stencil for %0", id);
-	var ss = ORYX.Core.StencilSet.stencilSet(id);
+	const ss = ORYX.Core.StencilSet.stencilSet(id);
 	if(ss) {
 		return ss.stencil(id);
 	} else {
@@ -8712,7 +8712,7 @@ ORYX.Core.StencilSet.loadStencilSet = function(url, modelMetaData, editorId) {
 		ORYX.Core.StencilSet._stencilSetsByUrl[url] = stencilSet;
 	//}
 
-	var namespace = stencilSet.namespace();
+	const namespace = stencilSet.namespace();
 
 	//store which editorInstance loads the stencil set
 	if(ORYX.Core.StencilSet._StencilSetNSByEditorInstance[editorId]) {
@@ -8725,7 +8725,7 @@ ORYX.Core.StencilSet.loadStencilSet = function(url, modelMetaData, editorId) {
 	if(ORYX.Core.StencilSet._rulesByEditorInstance[editorId]) {
 		ORYX.Core.StencilSet._rulesByEditorInstance[editorId].initializeRules(stencilSet);
 	} else {
-		var rules = new ORYX.Core.StencilSet.Rules();
+		const rules = new ORYX.Core.StencilSet.Rules();
 		rules.initializeRules(stencilSet);
 		ORYX.Core.StencilSet._rulesByEditorInstance[editorId] = rules;
 	}
@@ -8736,14 +8736,14 @@ ORYX.Core.StencilSet.loadStencilSet = function(url, modelMetaData, editorId) {
  * according to navigator.language
  */
 ORYX.Core.StencilSet.getTranslation = function(jsonObject, name) {
-	var lang = ORYX.I18N.Language.toLowerCase();
+	const lang = ORYX.I18N.Language.toLowerCase();
 
-	var result = jsonObject[name + "_" + lang];
+	let result = jsonObject[name + "_" + lang];
 
 	if(result)
 		return result;
 
-	result = jsonObject[name + "_" + lang.substr(0, 2)];
+	result = jsonObject[`${name  }_${  lang.substr(0, 2)}`];
 
 	if(result)
 		return result;
@@ -8860,7 +8860,7 @@ ORYX.Core.Bounds = {
 	 */
 	set: function() {
 
-		var changed = false;
+		let changed = false;
 
 		switch (arguments.length) {
 
@@ -8944,7 +8944,7 @@ ORYX.Core.Bounds = {
 	 */
 	moveTo: function() {
 
-		var currentPosition = this.upperLeft();
+		const currentPosition = this.upperLeft();
 		switch (arguments.length) {
 			case 1:
 				this.moveBy({
@@ -8973,11 +8973,11 @@ ORYX.Core.Bounds = {
 	 *
 	 */
 	moveBy: function() {
-		var changed = false;
+		let changed = false;
 
 		switch (arguments.length) {
 			case 1:
-				var p = arguments[0];
+				const p = arguments[0];
 				if(p.x !== 0 || p.y !== 0) {
 					changed = true;
 					this.a.x += p.x;
@@ -8987,8 +8987,8 @@ ORYX.Core.Bounds = {
 				}
 				break;
 			case 2:
-				var x = arguments[0];
-				var y = arguments[1];
+				const x = arguments[0];
+				const y = arguments[1];
 				if(x !== 0 || y !== 0) {
 					changed = true;
 					this.a.x += x;
@@ -9017,11 +9017,11 @@ ORYX.Core.Bounds = {
 			return b;
 		};
 
-		var cx = Math.min(this.a.x,b.a.x);
-		var cy = Math.min(this.a.y,b.a.y);
+		const cx = Math.min(this.a.x,b.a.x);
+		const cy = Math.min(this.a.y,b.a.y);
 
-		var dx = Math.max(this.b.x,b.b.x);
-		var dy = Math.max(this.b.y,b.b.y);
+		const dx = Math.max(this.b.x,b.b.x);
+		const dy = Math.max(this.b.y,b.b.y);
 
 
 		this.set(cx, cy, dx, dy);
@@ -9065,7 +9065,7 @@ ORYX.Core.Bounds = {
 	 * bound delimiter points.
 	 */
 	upperLeft: function() {
-		var result = {};
+		const result = {};
 		result.x = this.a.x;
 		result.y = this.a.y;
 		return result;
@@ -9076,7 +9076,7 @@ ORYX.Core.Bounds = {
 	 * bound delimiter points.
 	 */
 	lowerRight: function() {
-		var result = {};
+		const result = {};
 		result.x = this.b.x;
 		result.y = this.b.y;
 		return result;
@@ -9100,7 +9100,7 @@ ORYX.Core.Bounds = {
 	 * @return {Point} The center point of this bounds.
 	 */
 	center: function() {
-		var center = {};
+		const center = {};
 		center.x =(this.a.x + this.b.x)/2.0;
 		center.y =(this.a.y + this.b.y)/2.0;
 		return center;
@@ -9112,7 +9112,7 @@ ORYX.Core.Bounds = {
 	 */
 	midPoint: function() {
 
-		var midpoint = {};
+		const midpoint = {};
 		midpoint.x = (this.b.x - this.a.x)/2.0;
 		midpoint.y = (this.b.y - this.a.y)/2.0;
 		return midpoint;
@@ -9126,7 +9126,7 @@ ORYX.Core.Bounds = {
 	 * @param y {Number}
 	 */
 	centerMoveTo: function() {
-		var currentPosition = this.center();
+		const currentPosition = this.center();
 
 		switch (arguments.length) {
 
@@ -9144,7 +9144,7 @@ ORYX.Core.Bounds = {
 
 	isIncluded: function(point, offset) {
 
-		var pointX, pointY, offset;
+		let pointX, pointY, offset;
 
 		// Get the the two Points
 		switch(arguments.length) {
@@ -9174,8 +9174,8 @@ ORYX.Core.Bounds = {
 				throw "isIncluded needs one, two or three arguments";
 		}
 
-		var ul = this.upperLeft();
-		var lr = this.lowerRight();
+		const ul = this.upperLeft();
+		const lr = this.lowerRight();
 
 		if(pointX >= ul.x - offset
 			&& pointX <= lr.x + offset && pointY >= ul.y - offset
@@ -9197,12 +9197,12 @@ ORYX.Core.Bounds = {
 
 	toString: function() {
 
-		return "( "+this.a.x+" | "+this.a.y+" )/( "+this.b.x+" | "+this.b.y+" )";
+		return `( ${this.a.x} | ${this.a.y} )/( ${this.b.x} | ${this.b.y} )`;
 	},
 
 	serializeForERDF: function() {
 
-		return this.a.x+","+this.a.y+","+this.b.x+","+this.b.y;
+		return `${this.a.x},${this.a.y},${this.b.x},${this.b.y}`;
 	}
  };
 
@@ -9298,8 +9298,8 @@ ORYX.Core.UIObject = {
 	 * @return {Array} Array of all parent UIObjects.
 	 */
 	getParents: function(){
-		var parents = [];
-		var parent = this.parent;
+		const parents = [];
+		let parent = this.parent;
 		while(parent){
 			parents.push(parent);
 			parent = parent.parent;
@@ -9313,7 +9313,7 @@ ORYX.Core.UIObject = {
 	 * @return {Boolean}
 	 */
 	isParent: function(parent){
-		var cparent = this;
+		let cparent = this;
 		while(cparent){
 			if (cparent === parent){
 				return true;
@@ -9343,7 +9343,7 @@ ORYX.Core.UIObject = {
 				return uiObj;
 			} else {
 				if(deep) {
-					var obj = uiObj.getChildById(id, deep);
+					const obj = uiObj.getChildById(id, deep);
 					if(obj) {
 						return obj;
 					}
@@ -9414,7 +9414,7 @@ ORYX.Core.UIObject = {
 	 */
 	absoluteBounds: function() {
 		if(this.parent) {
-			var absUL = this.absoluteXY();
+			const absUL = this.absoluteXY();
 			return new ORYX.Core.Bounds(absUL.x, absUL.y,
 							absUL.x + this.bounds.width(),
 							absUL.y + this.bounds.height());
@@ -9428,7 +9428,7 @@ ORYX.Core.UIObject = {
 	 */
 	absoluteXY: function() {
 		if(this.parent) {
-			var pXY = this.parent.absoluteXY();
+			const pXY = this.parent.absoluteXY();
 			var result = {};
 			result.x = pXY.x + this.bounds.upperLeft().x;
 			result.y = pXY.y + this.bounds.upperLeft().y;
@@ -9446,7 +9446,7 @@ ORYX.Core.UIObject = {
 	 */
 	absoluteCenterXY: function() {
 		if(this.parent) {
-			var pXY = this.parent.absoluteXY();
+			const pXY = this.parent.absoluteXY();
 			var result = {};
 			result.x = pXY.x + this.bounds.center().x;
 			result.y = pXY.y + this.bounds.center().y;
@@ -9500,7 +9500,7 @@ ORYX.Core.UIObject = {
 		}
 	},
 
-	toString: function() { return "UIObject " + this.id }
+	toString: function() { return `UIObject ${  this.id}` }
  };
  ORYX.Core.UIObject = Clazz.extend(ORYX.Core.UIObject);/*
  * Copyright 2005-2014 Alfresco Software, Ltd. All rights reserved.
@@ -9557,7 +9557,7 @@ ORYX.Core.AbstractShape = ORYX.Core.UIObject.extend(
 
 		//Initialization of property map and initial value.
 		this._stencil.properties().each((function(property) {
-			var key = property.prefix() + "-" + property.id();
+			const key = property.prefix() + "-" + property.id();
 			this.properties[key] = property.value();
 			this.propertiesChanged[key] = true;
 		}).bind(this));
@@ -9565,9 +9565,9 @@ ORYX.Core.AbstractShape = ORYX.Core.UIObject.extend(
 		// if super stencil was defined, also regard stencil's properties:
 		if (stencil._jsonStencil.superId) {
 			stencil.properties().each((function(property) {
-				var key = property.prefix() + "-" + property.id();
-				var value = property.value();
-				var oldValue = this.properties[key];
+				const key = property.prefix() + "-" + property.id();
+				const value = property.value();
+				const oldValue = this.properties[key];
 				this.properties[key] = value;
 				this.propertiesChanged[key] = true;
 
@@ -9618,7 +9618,7 @@ ORYX.Core.AbstractShape = ORYX.Core.UIObject.extend(
 	 * @param {Object} iterator
 	 */
 	getChildShapes: function(deep, iterator) {
-		var result = [];
+		let result = [];
 
 		this.children.each(function(uiObject) {
 			if(uiObject instanceof ORYX.Core.Shape && uiObject.isVisible ) {
@@ -9651,7 +9651,7 @@ ORYX.Core.AbstractShape = ORYX.Core.UIObject.extend(
 	 * @param {Object} iterator
 	 */
 	getChildNodes: function(deep, iterator) {
-		var result = [];
+		let result = [];
 
 		this.children.each(function(uiObject) {
 			if(uiObject instanceof ORYX.Core.Node && uiObject.isVisible) {
@@ -9676,7 +9676,7 @@ ORYX.Core.AbstractShape = ORYX.Core.UIObject.extend(
 	 * @param {Object} iterator
 	 */
 	getChildEdges: function(deep, iterator) {
-		var result = [];
+		let result = [];
 
 		this.children.each(function(uiObject) {
 			if(uiObject instanceof ORYX.Core.Edge && uiObject.isVisible) {
@@ -9701,7 +9701,7 @@ ORYX.Core.AbstractShape = ORYX.Core.UIObject.extend(
 	 */
 	//TODO deep iterator
 	getAbstractShapesAtPosition: function() {
-		var x, y;
+		let x, y;
 		switch (arguments.length) {
 			case 1:
 				x = arguments[0].x;
@@ -9717,29 +9717,29 @@ ORYX.Core.AbstractShape = ORYX.Core.UIObject.extend(
 
 		if(this.isPointIncluded(x, y)) {
 
-			var result = [];
+			let result = [];
 			result.push(this);
 
 			//check, if one child is at that position
 
 
-			var childNodes = this.getChildNodes();
-			var childEdges = this.getChildEdges();
+			const childNodes = this.getChildNodes();
+			const childEdges = this.getChildEdges();
 
 			[childNodes, childEdges].each(function(ne){
-				var nodesAtPosition = new Hash();
+				const nodesAtPosition = new Hash();
 
 				ne.each(function(node) {
 					if(!node.isVisible){ return }
-					var candidates = node.getAbstractShapesAtPosition( x , y );
+					const candidates = node.getAbstractShapesAtPosition( x , y );
 					if(candidates.length > 0) {
-						var nodesInZOrder = $A(node.node.parentNode.childNodes);
-						var zOrderIndex = nodesInZOrder.indexOf(node.node);
+						const nodesInZOrder = $A(node.node.parentNode.childNodes);
+						const zOrderIndex = nodesInZOrder.indexOf(node.node);
 						nodesAtPosition[zOrderIndex] = candidates;
 					}
 				});
 
-				nodesAtPosition.keys().sort().each(function(key) {
+				nodesAtPosition.keys().toSorted().each(function(key) {
 					result = result.concat(nodesAtPosition[key]);
 				});
  			});
@@ -9757,7 +9757,7 @@ ORYX.Core.AbstractShape = ORYX.Core.UIObject.extend(
 	 * @param value {Object} Can be of type String or Number according to property type.
 	 */
 	setProperty: function(key, value, force) {
-		var oldValue = this.properties[key];
+		const oldValue = this.properties[key];
 		if(oldValue !== value || force === true) {
 			this.properties[key] = value;
 			this.propertiesChanged[key] = true;
@@ -9802,7 +9802,7 @@ ORYX.Core.AbstractShape = ORYX.Core.UIObject.extend(
 			delete this.hiddenProperties[key];
 			return;
 		}
-		var oldValue = this.hiddenProperties[key];
+		const oldValue = this.hiddenProperties[key];
 		if (oldValue !== value) {
 			this.hiddenProperties[key] = value;
 		}
@@ -9812,7 +9812,7 @@ ORYX.Core.AbstractShape = ORYX.Core.UIObject.extend(
 	 * @param {Point}
 	 */
 	isPointIncluded: function(pointX, pointY, absoluteBounds) {
-		var absBounds = absoluteBounds ? absoluteBounds : this.absoluteBounds();
+		const absBounds = absoluteBounds ? absoluteBounds : this.absoluteBounds();
 		return absBounds.isIncluded(pointX, pointY);
 
 	},
@@ -9825,7 +9825,7 @@ ORYX.Core.AbstractShape = ORYX.Core.UIObject.extend(
 	 * 		Properties
 	 */
 	serialize: function() {
-		var serializedObject = [];
+		const serializedObject = [];
 
 		// Add the type
 		serializedObject.push({name: 'type', prefix:'oryx', value: this.getStencil().id(), type: 'literal'});
@@ -9838,11 +9838,11 @@ ORYX.Core.AbstractShape = ORYX.Core.UIObject.extend(
 		// Add all properties
 		this.getStencil().properties().each((function(property){
 
-			var prefix = property.prefix();	// Get prefix
-			var name = property.id();		// Get name
+			const prefix = property.prefix();	// Get prefix
+			const name = property.id();		// Get name
 
 			//if(typeof this.properties[prefix+'-'+name] == 'boolean' || this.properties[prefix+'-'+name] != "")
-				serializedObject.push({name: name, prefix: prefix, value: this.properties[prefix+'-'+name], type: 'literal'});
+				serializedObject.push({name: name, prefix: prefix, value: this.properties[`${prefix}-${name}`], type: 'literal'});
 
 		}).bind(this));
 
@@ -9852,27 +9852,27 @@ ORYX.Core.AbstractShape = ORYX.Core.UIObject.extend(
 
 	deserialize: function(serialize){
 		// Search in Serialize
-		var initializedDocker = 0;
+		const initializedDocker = 0;
 
 		// Sort properties so that the hidden properties are first in the list
-		serialize = serialize.sort(function(a,b){ a = Number(this.properties.keys().member(a.prefix+"-"+a.name)); b = Number(this.properties.keys().member(b.prefix+"-"+b.name)); return a > b ? 1 : (a < b ? -1 : 0) }.bind(this));
+		serialize = serialize.toSorted(function(a,b){ a = Number(this.properties.keys().member(`${a.prefix}-${a.name}`)); b = Number(this.properties.keys().member(`${b.prefix}-${b.name}`)); return a > b ? 1 : (a < b ? -1 : 0) }.bind(this));
 
 		serialize.each((function(obj){
 
-			var name 	= obj.name;
-			var prefix 	= obj.prefix;
-			var value 	= obj.value;
+			const name 	= obj.name;
+			const prefix 	= obj.prefix;
+			let value 	= obj.value;
 
             // Complex properties can be real json objects, encode them to a string
             if (Object.prototype.toString.call(value) === "Object") value = JSON.stringify(value);
 
-			switch(prefix + "-" + name){
+			switch(`${prefix  }-${  name}`){
 				case 'raziel-parent':
 							// Set parent
 							if(!this.parent) {break};
 
 							// Set outgoing Shape
-							var parent = this.getCanvas().getChildShapeByResourceId(value);
+							const parent = this.getCanvas().getChildShapeByResourceId(value);
 							if(parent) {
 								parent.add(this);
 							}
@@ -9880,32 +9880,32 @@ ORYX.Core.AbstractShape = ORYX.Core.UIObject.extend(
 							break;
 				default:
 							// If list, eval as an array
-							var prop = this.getStencil().property(prefix+"-"+name);
+							const prop = this.getStencil().property(prefix+"-"+name);
 							if (prop && prop.isList() && typeof value === "string"){
 								if ((value||"").strip()&&!value.startsWith("[")&&!value.startsWith("]"))
-									value = "[\""+value.strip()+"\"]";
+									value = `["${value.strip()}"]`;
 								value = ((value||"").strip()||"[]").evalJSON();
 							}
 
 							// Set property
-							if(this.properties.keys().member(prefix+"-"+name)) {
-								this.setProperty(prefix+"-"+name, value);
+							if(this.properties.keys().member(`${prefix}-${name}`)) {
+								this.setProperty(`${prefix}-${name}`, value);
 							} else if(!(name === "bounds"||name === "parent"||name === "target"||name === "dockers"||name === "docker"||name === "outgoing"||name === "incoming")) {
-								this.setHiddenProperty(prefix+"-"+name, value);
+								this.setHiddenProperty(`${prefix}-${name}`, value);
 							}
 
 			}
 		}).bind(this));
 	},
 
-	toString: function() { return "ORYX.Core.AbstractShape " + this.id },
+	toString: function() { return `ORYX.Core.AbstractShape ${  this.id}` },
 
     /**
      * Converts the shape to a JSON representation.
      * @return {Object} A JSON object with included ORYX.Core.AbstractShape.JSONHelper and getShape() method.
      */
     toJSON: function(){
-        var json = {
+        const json = {
             resourceId: this.resourceId,
             properties: jQuery.extend({}, this.properties, this.hiddenProperties).inject({}, function(props, prop){
               var key = prop[0];
@@ -9957,7 +9957,7 @@ ORYX.Core.AbstractShape = ORYX.Core.UIObject.extend(
 
         if(this.dockers){
             json.dockers = this.dockers.map(function(docker){
-                var d = docker.getDockedShape() && docker.referencePoint ? docker.referencePoint : docker.bounds.center();
+                const d = docker.getDockedShape() && docker.referencePoint ? docker.referencePoint : docker.bounds.center();
                 d.getDocker = function(){return docker;};
                 return d;
             });
@@ -9996,13 +9996,13 @@ ORYX.Core.AbstractShape.JSONHelper = {
      eachChild: function(iterator, deep, modify){
          if(!this.childShapes) return;
 
-         var newChildShapes = []; //needed if modify = true
+         const newChildShapes = []; //needed if modify = true
 
          this.childShapes.each(function(shape){
 		 	 if (!(shape.eachChild instanceof Function)){
 		 		jQuery.extend(shape, ORYX.Core.AbstractShape.JSONHelper);
 			 }
-             var res = iterator(shape, this);
+             const res = iterator(shape, this);
              if(res) newChildShapes.push(res); //if false is returned, and modify = true, current shape is deleted.
 
              if(deep) shape.eachChild(iterator, deep, modify);
@@ -10015,7 +10015,7 @@ ORYX.Core.AbstractShape.JSONHelper = {
 	 	return null;
 	 },
      getChildShapes: function(deep){
-         var allShapes = this.childShapes;
+         let allShapes = this.childShapes;
 
          if(deep){
              this.eachChild(function(shape){
@@ -10226,7 +10226,7 @@ ORYX.Core.Canvas = ORYX.Core.AbstractShape.extend({
 		// (needed for row layouting of xforms)
 		//this.getStencil().layout(this);
 
-		var layoutEvents = this.getStencil().layout();
+		const layoutEvents = this.getStencil().layout();
 
 		if(layoutEvents) {
 			layoutEvents.each(function(event) {
@@ -10252,7 +10252,7 @@ ORYX.Core.Canvas = ORYX.Core.AbstractShape.extend({
 	},
 
 	_traverseForUpdate: function(shape) {
-		var childRet = shape.isChanged;
+		let childRet = shape.isChanged;
 		shape.getChildNodes(false, function(child) {
 			if(this._traverseForUpdate(child)) {
 				childRet = true;
@@ -10282,7 +10282,7 @@ ORYX.Core.Canvas = ORYX.Core.AbstractShape.extend({
 		if(!deep && !iterator) {
 			return this.nodes.clone();
 		} else {
-			var result = [];
+			let result = [];
 			this.nodes.each(function(uiObject) {
 				if(iterator) {
 					iterator(uiObject);
@@ -10371,7 +10371,7 @@ ORYX.Core.Canvas = ORYX.Core.AbstractShape.extend({
 		//if uiObject is a child of this object, remove it.
 		if (this.children.member(uiObject)) {
 			//remove uiObject from children
-			var parent = uiObject.parent;
+			const parent = uiObject.parent;
 
 			this.children = this.children.without(uiObject);
 
@@ -10432,7 +10432,7 @@ ORYX.Core.Canvas = ORYX.Core.AbstractShape.extend({
           and the creation phase (where the outgoings are evaluated). This must be reflected
           in code to provide a nicer API/ implementation!!! */
 
-        var addShape = function(shape, parent){
+        const addShape = function(shape, parent){
             // Create a new Stencil
             var stencil = ORYX.Core.StencilSet.stencil(this.getStencil().namespace() + shape.stencil.id );
 
@@ -10463,7 +10463,7 @@ ORYX.Core.Canvas = ORYX.Core.AbstractShape.extend({
         /** Builds up recursively a flatted array of shapes, including a javascript object and json representation
          * @param {Object} shape Any object that has Object#childShapes
          */
-        var addChildShapesRecursively = function(shape){
+        const addChildShapesRecursively = function(shape){
             var addedShapes = [];
 
             if (shape.childShapes && shape.childShapes.constructor == String)
@@ -10479,7 +10479,7 @@ ORYX.Core.Canvas = ORYX.Core.AbstractShape.extend({
             return addedShapes;
         }.bind(this);
 
-        var shapes = addChildShapesRecursively({
+        const shapes = addChildShapesRecursively({
             childShapes: shapeObjects,
             resourceId: this.resourceId
         });
@@ -10488,7 +10488,7 @@ ORYX.Core.Canvas = ORYX.Core.AbstractShape.extend({
         // prepare deserialisation parameter
         shapes.each(
             function(shape){
-            	var properties = [];
+            	const properties = [];
                 for(field in shape.json.properties){
                     properties.push({
                       prefix: 'oryx',
@@ -10502,7 +10502,7 @@ ORYX.Core.Canvas = ORYX.Core.AbstractShape.extend({
                     properties.push({
                       prefix: 'raziel',
                       name: 'outgoing',
-                      value: "#"+out.resourceId
+                      value: `#${out.resourceId}`
                     });
                   });
 
@@ -10510,12 +10510,12 @@ ORYX.Core.Canvas = ORYX.Core.AbstractShape.extend({
                   // (because of a bug, the first outgoing is taken when there is no target,
                   // can be removed after some time)
                   if(shape.object instanceof ORYX.Core.Edge) {
-	                  var target = shape.json.target || shape.json.outgoing[0];
+	                  const target = shape.json.target || shape.json.outgoing[0];
 	                  if(target){
 	                    properties.push({
 	                      prefix: 'raziel',
 	                      name: 'target',
-	                      value: "#"+target.resourceId
+	                      value: `#${target.resourceId}`
 	                    });
 	                  }
                   }
@@ -10525,7 +10525,7 @@ ORYX.Core.Canvas = ORYX.Core.AbstractShape.extend({
                       properties.push({
                           prefix: 'oryx',
                           name: 'bounds',
-                          value: shape.json.bounds.upperLeft.x + "," + shape.json.bounds.upperLeft.y + "," + shape.json.bounds.lowerRight.x + "," + shape.json.bounds.lowerRight.y
+                          value: `${shape.json.bounds.upperLeft.x  },${  shape.json.bounds.upperLeft.y  },${  shape.json.bounds.lowerRight.x  },${  shape.json.bounds.lowerRight.y}`
                       });
                   }
 
@@ -10534,9 +10534,9 @@ ORYX.Core.Canvas = ORYX.Core.AbstractShape.extend({
                     properties.push({
                       prefix: 'oryx',
                       name: 'dockers',
-                      value: shape.json.dockers.inject("", function(dockersStr, docker){
+                      value: `${shape.json.dockers.inject("", function(dockersStr, docker){
                         return dockersStr + docker.x + " " + docker.y + " ";
-                      }) + " #"
+                      })  } #`
                     });
                   }
 
@@ -10579,11 +10579,11 @@ ORYX.Core.Canvas = ORYX.Core.AbstractShape.extend({
      */
     updateSize: function(){
         // Check the size for the canvas
-        var maxWidth    = 0;
-        var maxHeight   = 0;
-        var offset      = 100;
+        let maxWidth    = 0;
+        let maxHeight   = 0;
+        const offset      = 100;
         this.getChildShapes(true, function(shape){
-            var b = shape.bounds;
+            const b = shape.bounds;
             maxWidth    = Math.max( maxWidth, b.lowerRight().x + offset)
             maxHeight   = Math.max( maxHeight, b.lowerRight().y + offset)
         });
@@ -10621,7 +10621,7 @@ ORYX.Core.Canvas = ORYX.Core.AbstractShape.extend({
 		if(elements.length == 1) { return elements;}
 
 		return elements.findAll(function(value){
-			var parentShape = value.parent;
+			let parentShape = value.parent;
 			while(parentShape){
 				if(elements.member(parentShape)) return false;
 				parentShape = parentShape.parent;
@@ -10635,8 +10635,8 @@ ORYX.Core.Canvas = ORYX.Core.AbstractShape.extend({
 		if(!size || !size.width || !size.height){return;};
 
 		if(this.rootNode.parentNode){
-			this.rootNode.parentNode.style.width = size.width + 'px';
-			this.rootNode.parentNode.style.height = size.height + 'px';
+			this.rootNode.parentNode.style.width = `${size.width  }px`;
+			this.rootNode.parentNode.style.height = `${size.height  }px`;
 		}
 
 		this.rootNode.setAttributeNS(null, 'width', size.width);
@@ -10655,15 +10655,15 @@ ORYX.Core.Canvas = ORYX.Core.AbstractShape.extend({
 	 */
 	getSVGRepresentation: function(escapeText) {
 		// Get the serialized svg image source
-        var svgClone = this.getRootNode().cloneNode(true);
+        const svgClone = this.getRootNode().cloneNode(true);
 
 		this._removeInvisibleElements(svgClone);
 
-		var x1, y1, x2, y2;
+		let x1, y1, x2, y2;
 		this.getChildShapes(true).each(function(shape) {
-			var absBounds = shape.absoluteBounds();
-			var ul = absBounds.upperLeft();
-			var lr = absBounds.lowerRight();
+			const absBounds = shape.absoluteBounds();
+			const ul = absBounds.upperLeft();
+			const lr = absBounds.lowerRight();
 			if(x1 == undefined) {
 				x1 = ul.x;
 				y1 = ul.y;
@@ -10677,8 +10677,8 @@ ORYX.Core.Canvas = ORYX.Core.AbstractShape.extend({
 			}
 		});
 
-		var margin = 50;
-		var width, height, tx, ty;
+		const margin = 50;
+		let width, height, tx, ty;
 		if(x1 == undefined) {
 			width = 0;
 			height = 0;
@@ -10699,7 +10699,7 @@ ORYX.Core.Canvas = ORYX.Core.AbstractShape.extend({
 		svgClone.childNodes[1].removeAttributeNS(null, 'transform');
 
 		try{
-			var svgCont = svgClone.childNodes[1].childNodes[1];
+			const svgCont = svgClone.childNodes[1].childNodes[1];
 			svgCont.parentNode.removeChild(svgCont);
 		} catch(e) {}
 
@@ -10716,10 +10716,10 @@ ORYX.Core.Canvas = ORYX.Core.AbstractShape.extend({
 
 		// generating absolute urls for the pdf-exporter
 		$A(svgClone.getElementsByTagNameNS(ORYX.CONFIG.NAMESPACE_SVG, 'image')).each(function(elem) {
-			var href = elem.getAttributeNS("http://www.w3.org/1999/xlink","href");
+			let href = elem.getAttributeNS("http://www.w3.org/1999/xlink","href");
 
 			if(!href.match("^(http|https)://")) {
-				href = window.location.protocol + "//" + window.location.host + href;
+				href = `${window.location.protocol  }//${  window.location.host  }${href}`;
 				elem.setAttributeNS("http://www.w3.org/1999/xlink", "href", href);
 			}
 		});
@@ -10738,9 +10738,9 @@ ORYX.Core.Canvas = ORYX.Core.AbstractShape.extend({
 	* attribute visibility set to "hidden"
 	*/
 	_removeInvisibleElements: function(element) {
-		var index = 0;
+		let index = 0;
 		while(index < element.childNodes.length) {
-			var child = element.childNodes[index];
+			const child = element.childNodes[index];
 			if(child.getAttributeNS &&
 				child.getAttributeNS(null, "visibility") === "hidden") {
 				element.removeChild(child);
@@ -10796,13 +10796,13 @@ ORYX.Core.Canvas = ORYX.Core.AbstractShape.extend({
 		}
 	},
 
-	toString: function() { return "Canvas " + this.id },
+	toString: function() { return `Canvas ${  this.id}` },
 
     /**
      * Calls {@link ORYX.Core.AbstractShape#toJSON} and adds some stencil set information.
      */
     toJSON: function() {
-        var json = arguments.callee.$.toJSON.apply(this, arguments);
+        const json = arguments.callee.$.toJSON.apply(this, arguments);
 
 //		if(ORYX.CONFIG.STENCILSET_HANDLER.length > 0) {
 //			json.stencilset = {
@@ -10824,8 +10824,8 @@ ORYX.Core.Canvas = ORYX.Core.AbstractShape.extend({
  * pursuant to a written agreement and any use of this program without such an
  * agreement is prohibited.
  */
-var idCounter = 0;
-var ID_PREFIX = "resource";
+const idCounter = 0;
+const ID_PREFIX = "resource";
 
 /**
  * Main initialization method. To be called when loading
@@ -10844,8 +10844,8 @@ function init() {
     }
     // Else fetch the model from server and display editor
     else {
-		var modelId = window.location.search.substring(4);
-		var modelUrl = "./service/model/" + modelId + "/json";
+		const modelId = window.location.search.substring(4);
+		const modelUrl = "./service/model/" + modelId + "/json";
 
         ORYX.Editor.createByUrl(modelUrl);
     }
@@ -10892,7 +10892,7 @@ ORYX.Editor = {
 
 		this.modelMetaData = config;
 
-		var model = config;
+		let model = config;
 
 		this.id = model.modelId;
 
@@ -10929,9 +10929,9 @@ ORYX.Editor = {
 		this._generateGUI();
 
 		// Initializing of a callback to check loading ends
-		var loadPluginFinished 	= false;
-		var loadContentFinished = false;
-		var initFinished = function(){
+		let loadPluginFinished 	= false;
+		let loadContentFinished = false;
+		const initFinished = function(){
 			if( !loadPluginFinished || !loadContentFinished ){ return }
 			this._finishedLoading();
 		}.bind(this)
@@ -10985,8 +10985,8 @@ ORYX.Editor = {
 	_generateGUI: function() {
 
 		// Defines the layout height if it's NOT fullscreen
-		var layoutHeight 	= ORYX.CONFIG.WINDOW_HEIGHT;
-		var canvasParent	= this.getCanvas().rootNode.parentNode;
+		const layoutHeight 	= ORYX.CONFIG.WINDOW_HEIGHT;
+		const canvasParent	= this.getCanvas().rootNode.parentNode;
 
 		jQuery("#canvasSection").append(canvasParent);
 
@@ -11001,7 +11001,7 @@ ORYX.Editor = {
 	},
 
 	getAvailablePlugins: function(){
-		var curAvailablePlugins=ORYX.availablePlugins.clone();
+		const curAvailablePlugins=ORYX.availablePlugins.clone();
 		curAvailablePlugins.each(function(plugin){
 			if(this.loadedPlugins.find(function(loadedPlugin){
 				return loadedPlugin.type==this.name;
@@ -11015,7 +11015,7 @@ ORYX.Editor = {
 	},
 
 	loadScript: function (url, callback){
-	    var script = document.createElement("script")
+	    const script = document.createElement("script")
 	    script.type = "text/javascript";
 	    if (script.readyState){  //IE
 	        script.onreadystatechange = function(){
@@ -11042,12 +11042,12 @@ ORYX.Editor = {
 	 */
 	activatePluginByName: function(name, callback, loadTry){
 
-		var match=this.getAvailablePlugins().find(function(value){return value.name==name});
+		const match=this.getAvailablePlugins().find(function(value){return value.name==name});
 		if(match && (!match.engaged || (match.engaged==='false'))){
-				var loadedStencilSetsNamespaces = this.getStencilSets().keys();
-				var facade = this._getPluginFacade();
-				var newPlugin;
-				var me=this;
+				const loadedStencilSetsNamespaces = this.getStencilSets().keys();
+				const facade = this._getPluginFacade();
+				let newPlugin;
+				const me=this;
 				ORYX.Log.debug("Initializing plugin '%0'", match.name);
 
 					if (!match.requires 	|| !match.requires.namespaces 	|| match.requires.namespaces.any(function(req){ return loadedStencilSetsNamespaces.indexOf(req) >= 0 }) ){
@@ -11055,8 +11055,8 @@ ORYX.Editor = {
 
 					try {
 
-						var className 	= eval(match.name);
-							var newPlugin = new className(facade, match);
+						const className 	= eval(match.name);
+							const newPlugin = new className(facade, match);
 							newPlugin.type = match.name;
 
 							// If there is an GUI-Plugin, they get all Plugins-Offer-Meta-Data
@@ -11079,7 +11079,7 @@ ORYX.Editor = {
 							callback(false,"INITFAILED");
 							return;
 						}
-						this.loadScript("plugins/scripts/"+match.source, this.activatePluginByName.bind(this,match.name,callback,true));
+						this.loadScript(`plugins/scripts/${match.source}`, this.activatePluginByName.bind(this,match.name,callback,true));
 					}
 					}else{
 						callback(false,"NOTUSEINSTENCILSET");
@@ -11110,14 +11110,14 @@ ORYX.Editor = {
 			return;
 		}*/
 
-		var me = this;
-		var newPlugins = [];
+		const me = this;
+		const newPlugins = [];
 
 
-		var loadedStencilSetsNamespaces = this.getStencilSets().keys();
+		const loadedStencilSetsNamespaces = this.getStencilSets().keys();
 
 		// Available Plugins will be initalize
-		var facade = this._getPluginFacade();
+		const facade = this._getPluginFacade();
 
 		// If there is an Array where all plugins are described, than only take those
 		// (that comes from the usage of oryx with a mashup api)
@@ -11145,9 +11145,9 @@ ORYX.Editor = {
 					(value.engaged || (value.engaged===undefined)) ){
 
 				try {
-					var className 	= eval(value.name);
+					const className 	= eval(value.name);
 					if( className ){
-						var plugin		= new className(facade, value);
+						const plugin		= new className(facade, value);
 						plugin.type		= value.name;
 						newPlugins.push( plugin );
 						plugin.engaged=true;
@@ -11198,14 +11198,14 @@ ORYX.Editor = {
         }
 
 		// get the stencil associated with the type
-		var canvasStencil = ORYX.Core.StencilSet.stencil(stencilType);
+		const canvasStencil = ORYX.Core.StencilSet.stencil(stencilType);
 
 		if (!canvasStencil)
 			ORYX.Log.fatal("Initialisation failed, because the stencil with the type %0 is not part of one of the loaded stencil sets.", stencilType);
 
 		// create all dom
 		// TODO fix border, so the visible canvas has a double border and some spacing to the scrollbars
-		var div = ORYX.Editor.graft("http://www.w3.org/1999/xhtml", null, ['div']);
+		const div = ORYX.Editor.graft("http://www.w3.org/1999/xhtml", null, ['div']);
 		// set class for custom styling
 		div.addClassName("ORYX_Editor");
 
@@ -11221,7 +11221,7 @@ ORYX.Editor = {
         if (canvasConfig) {
           // Migrate canvasConfig to an RDF-like structure
           //FIXME this isn't nice at all because we don't want rdf any longer
-          var properties = [];
+          const properties = [];
           for(field in canvasConfig){
             properties.push({
               prefix: 'oryx',
@@ -11317,7 +11317,7 @@ ORYX.Editor = {
 
 		// Iterate over all commands
 		while(this.commandStack.length > 0){
-			var command = this.commandStack.shift();
+			const command = this.commandStack.shift();
 			// and execute it
 			command.execute();
 			this.commandStackExecuted.push(command);
@@ -11345,7 +11345,7 @@ ORYX.Editor = {
      */
     getJSON: function(){
     	delete Array.prototype.toJSON;
-        var canvasJSON = this.getCanvas().toJSON();
+        const canvasJSON = this.getCanvas().toJSON();
         canvasJSON.ssextensions = this.getStencilSets().values()[0].extensions().keys().findAll(function(sse){ return !sse.endsWith('/meta#') });
         return canvasJSON;
     },
@@ -11377,7 +11377,7 @@ ORYX.Editor = {
 			alert(String.format(ORYX.I18N.JSONImport.wrongSS, jsonObject.stencilset.namespace, this.getCanvas().getStencil().stencilSet().namespace()));
 			return null;
 		} else {
-			var commandClass = ORYX.Core.Command.extend({
+			const commandClass = ORYX.Core.Command.extend({
 			construct: function(jsonObject, loadSerializedCB, noSelectionAfterImport, facade){
 				this.jsonObject = jsonObject;
 				this.noSelection = noSelectionAfterImport;
@@ -11456,7 +11456,7 @@ ORYX.Editor = {
 				}
 			})
 
-			var command = new commandClass(jsonObject,
+			const command = new commandClass(jsonObject,
 											this.loadSerialized.bind(this),
 											noSelectionAfterImport,
 											this._getPluginFacade());
@@ -11491,18 +11491,18 @@ ORYX.Editor = {
         }
 
         // collect all resourceIds recursively
-        var collectResourceIds = function(shapes){
+        const collectResourceIds = function(shapes){
             if(!shapes) return [];
 
             return shapes.map(function(shape){
                 return collectResourceIds(shape.childShapes).concat(shape.resourceId);
             }).flatten();
         }
-        var resourceIds = collectResourceIds(jsonObject.childShapes);
+        const resourceIds = collectResourceIds(jsonObject.childShapes);
 
         // Replace each resource id by a new one
         resourceIds.each(function(oldResourceId){
-            var newResourceId = ORYX.Editor.provideId();
+            const newResourceId = ORYX.Editor.provideId();
             serJsonObject = serJsonObject.replace(new RegExp(oldResourceId, 'g'), newResourceId);
         });
 
@@ -11546,7 +11546,7 @@ ORYX.Editor = {
      * @methodOf ORYX.Editor.prototype
      */
     loadSerialized: function(model, requestMeta){
-        var canvas  = this.getCanvas();
+        const canvas  = this.getCanvas();
 
         // Bugfix (cf. http://code.google.com/p/oryx-editor/issues/detail?id=240)
         // Deserialize the canvas' stencil set extensions properties first!
@@ -11555,22 +11555,22 @@ ORYX.Editor = {
 		// Load Meta Data Extension if available
 		// #Signavio
 		if (requestMeta === true) {
-			var metaDataExtension = this.getExtensionForMetaData();
+			const metaDataExtension = this.getExtensionForMetaData();
 			if (metaDataExtension) {
 				this.loadSSExtension(metaDataExtension);
 			}
 		}
 
-        var shapes = this.getCanvas().addShapeObjects(model.childShapes, this.handleEvents.bind(this));
+        const shapes = this.getCanvas().addShapeObjects(model.childShapes, this.handleEvents.bind(this));
 
         if(model.properties) {
         	for(key in model.properties) {
-        		var value = model.properties[key];
-				var prop = this.getCanvas().getStencil().property("oryx-"+key);
+        		let value = model.properties[key];
+				const prop = this.getCanvas().getStencil().property("oryx-"+key);
         		if (!(typeof value === "string") && (!prop || !prop.isList())) {
         			value = JSON.stringify(value);
         		}
-            	this.getCanvas().setProperty("oryx-" + key, value);
+            	this.getCanvas().setProperty(`oryx-${  key}`, value);
             }
         }
 
@@ -11595,8 +11595,8 @@ ORYX.Editor = {
 			return null;
 		}
 
-		var stencilsets = this.getStencilSets();
-		var extension = this.ss_extensions_def.extensions.find(function(ex){
+		const stencilsets = this.getStencilSets();
+		const extension = this.ss_extensions_def.extensions.find(function(ex){
 				return !!stencilsets[ex["extends"]] && ex.namespace.endsWith("/meta#");
 			});
 
@@ -11623,7 +11623,7 @@ ORYX.Editor = {
 	loadSSExtension: function(ss_extension_namespace) {
 
 		if (this.ss_extensions_def) {
-			var extension = this.ss_extensions_def.extensions.find(function(ex){
+			const extension = this.ss_extensions_def.extensions.find(function(ex){
 				return (ex.namespace == ss_extension_namespace);
 			});
 
@@ -11631,7 +11631,7 @@ ORYX.Editor = {
 				return;
 			}
 
-			var stencilset = this.getStencilSets()[extension["extends"]];
+			const stencilset = this.getStencilSets()[extension["extends"]];
 
 			if (!stencilset) {
 				return;
@@ -11662,8 +11662,8 @@ ORYX.Editor = {
 			this._keyupEnabled = false;
 		}
 		if(this.DOMEventListeners.keys().member(eventType)) {
-			var value = this.DOMEventListeners.remove(eventType);
-			this.DOMEventListeners['disable_' + eventType] = value;
+			const value = this.DOMEventListeners.remove(eventType);
+			this.DOMEventListeners[`disable_${  eventType}`] = value;
 		}
 	},
 
@@ -11676,8 +11676,8 @@ ORYX.Editor = {
 			this._keyupEnabled = true;
 		}
 
-		if(this.DOMEventListeners.keys().member("disable_" + eventType)) {
-			var value = this.DOMEventListeners.remove("disable_" + eventType);
+		if(this.DOMEventListeners.keys().member(`disable_${  eventType}`)) {
+			const value = this.DOMEventListeners.remove("disable_" + eventType);
 			this.DOMEventListeners[eventType] = value;
 		}
 	},
@@ -11719,7 +11719,7 @@ ORYX.Editor = {
 			ORYX.Core.StencilSet.loadStencilSet(source, this.modelMetaData, this.id);
 			this.handleEvents({type:ORYX.CONFIG.EVENT_STENCIL_SET_LOADED});
 		} catch (e) {
-			ORYX.Log.warn("Requesting stencil set file failed. (" + e + ")");
+			ORYX.Log.warn(`Requesting stencil set file failed. (${  e  })`);
 		}
 	},
 
@@ -11743,34 +11743,34 @@ ORYX.Editor = {
 			if(pluginData.keyCodes) {
 
 				pluginData.keyCodes.each(function(keyComb) {
-					var eventName = "key.event";
+					let eventName = "key.event";
 
 					/* Include key action */
-					eventName += '.' + keyComb.keyAction;
+					eventName += `.${  keyComb.keyAction}`;
 
 					if(keyComb.metaKeys) {
 						/* Register on ctrl or apple meta key as meta key */
 						if(keyComb.metaKeys.
 							indexOf(ORYX.CONFIG.META_KEY_META_CTRL) > -1) {
-								eventName += "." + ORYX.CONFIG.META_KEY_META_CTRL;
+								eventName += `.${  ORYX.CONFIG.META_KEY_META_CTRL}`;
 						}
 
 						/* Register on alt key as meta key */
 						if(keyComb.metaKeys.
 							indexOf(ORYX.CONFIG.META_KEY_ALT) > -1) {
-								eventName += '.' + ORYX.CONFIG.META_KEY_ALT;
+								eventName += `.${  ORYX.CONFIG.META_KEY_ALT}`;
 						}
 
 						/* Register on shift key as meta key */
 						if(keyComb.metaKeys.
 							indexOf(ORYX.CONFIG.META_KEY_SHIFT) > -1) {
-								eventName += '.' + ORYX.CONFIG.META_KEY_SHIFT;
+								eventName += `.${  ORYX.CONFIG.META_KEY_SHIFT}`;
 						}
 					}
 
 					/* Register on the actual key */
 					if(keyComb.keyCode)	{
-						eventName += '.' + keyComb.keyCode;
+						eventName += `.${  keyComb.keyCode}`;
 					}
 
 					/* Register the event */
@@ -11846,8 +11846,8 @@ ORYX.Editor = {
 
 		if(option && option.serialize && option.serialize instanceof Array){
 
-			var type = option.serialize.find(function(obj){return (obj.prefix+"-"+obj.name) == "oryx-type"});
-			var stencil = ORYX.Core.StencilSet.stencil(type.value);
+			const type = option.serialize.find(function(obj){return (obj.prefix+"-"+obj.name) == "oryx-type"});
+			const stencil = ORYX.Core.StencilSet.stencil(type.value);
 
 			if(stencil.type() == 'node'){
 				var newShapeObject = new ORYX.Core.Node({'eventHandlerCallback':this.handleEvents.bind(this)}, stencil, this._getPluginFacade());
@@ -11864,14 +11864,14 @@ ORYX.Editor = {
 		// If there is no argument, throw an exception
 		if(!option || !option.type || !option.namespace) { throw "To create a new shape you have to give an argument with type and namespace";}
 
-		var canvas = this.getCanvas();
-		var newShapeObject;
+		const canvas = this.getCanvas();
+		let newShapeObject;
 
 		// Get the shape type
-		var shapetype = option.type;
+		const shapetype = option.type;
 
 		// Get the stencil set
-		var sset = ORYX.Core.StencilSet.stencilSet(option.namespace);
+		const sset = ORYX.Core.StencilSet.stencilSet(option.namespace);
 		// Create an New Shape, dependents on an Edge or a Node
 		if(sset.stencil(shapetype).type() == "node") {
 			newShapeObject = new ORYX.Core.Node({'eventHandlerCallback':this.handleEvents.bind(this)}, sset.stencil(shapetype), this._getPluginFacade())
@@ -11895,10 +11895,10 @@ ORYX.Editor = {
 
 
 		// Set the position
-		var point = option.position ? option.position : {x:100, y:200};
+		const point = option.position ? option.position : {x:100, y:200};
 
 
-		var con;
+		let con;
 		// If there is create a shape and in the argument there is given an ConnectingType and is instance of an edge
 		if(option.connectingType && option.connectedShape && !(newShapeObject instanceof ORYX.Core.Edge)) {
 
@@ -11908,8 +11908,8 @@ ORYX.Editor = {
 			// And both endings dockers will be referenced to the both shapes
 			con.dockers.first().setDockedShape(option.connectedShape);
 
-			var magnet = option.connectedShape.getDefaultMagnet()
-			var cPoint = magnet ? magnet.bounds.center() : option.connectedShape.bounds.midPoint();
+			const magnet = option.connectedShape.getDefaultMagnet()
+			const cPoint = magnet ? magnet.bounds.center() : option.connectedShape.bounds.midPoint();
 			con.dockers.first().setReferencePoint( cPoint );
 			con.dockers.last().setDockedShape(newShapeObject);
 			con.dockers.last().setReferencePoint(newShapeObject.getDefaultMagnet().bounds.center());
@@ -11932,14 +11932,14 @@ ORYX.Editor = {
 				newShapeObject.dockers.first().setReferencePoint(option.connectedShape.bounds.midPoint());
 			}
 
-			var start = newShapeObject.dockers.first();
-        	var end = newShapeObject.dockers.last();
+			const start = newShapeObject.dockers.first();
+        	const end = newShapeObject.dockers.last();
 
         	if(start.getDockedShape() && end.getDockedShape()) {
-        		var startPoint = start.getAbsoluteReferencePoint();
-        		var endPoint = end.getAbsoluteReferencePoint();
+        		const startPoint = start.getAbsoluteReferencePoint();
+        		const endPoint = end.getAbsoluteReferencePoint();
 
-        		var docker = newShapeObject.createDocker();
+        		const docker = newShapeObject.createDocker();
         		docker.bounds.centerMoveTo({
         			x: startPoint.x + (endPont.x - startPoint.x) / 2,
         			y: startPoint.y + (endPont.y - startPoint.y) / 2
@@ -11948,17 +11948,17 @@ ORYX.Editor = {
 
 		} else {
 
-			var b = newShapeObject.bounds
+			let b = newShapeObject.bounds
 			if( newShapeObject instanceof ORYX.Core.Node && newShapeObject.dockers.length == 1){
 				b = newShapeObject.dockers.first().bounds
 			}
 
 			b.centerMoveTo(point);
 
-			var upL = b.upperLeft();
+			const upL = b.upperLeft();
 			b.moveBy( -Math.min(upL.x, 0) , -Math.min(upL.y, 0) )
 
-			var lwR = b.lowerRight();
+			const lwR = b.lowerRight();
 			b.moveBy( -Math.max(lwR.x-canvas.bounds.width(), 0) , -Math.max(lwR.y-canvas.bounds.height(), 0) )
 
 		}
@@ -11993,7 +11993,7 @@ ORYX.Editor = {
 
 		//delete references to outgoing edges
 		shape.getOutgoingShapes().each(function(os) {
-			var docker = os.getDockers().first();
+			const docker = os.getDockers().first();
 			if(docker && docker.getDockedShape() == shape) {
 				docker.setDockedShape(undefined);
 			}
@@ -12001,7 +12001,7 @@ ORYX.Editor = {
 
 		//delete references to incoming edges
 		shape.getIncomingShapes().each(function(is) {
-			var docker = is.getDockers().last();
+			const docker = is.getDockers().last();
 			if(docker && docker.getDockedShape() == shape) {
 				docker.setDockedShape(undefined);
 			}
@@ -12042,7 +12042,7 @@ ORYX.Editor = {
 	_executeEvents: function() {
 		this._queueRunning = true;
 		while(this._eventsQueue.length > 0) {
-			var val = this._eventsQueue.shift();
+			const val = this._eventsQueue.shift();
 			this._executeEventImmediately(val);
 		}
 		this._queueRunning = false;
@@ -12092,8 +12092,8 @@ ORYX.Editor = {
 
 	isValidEvent: function(e){
 		try {
-			var isInput = ["INPUT", "TEXTAREA"].include(e.target.tagName.toUpperCase());
-			var gridHasFocus = e.target.className.include("x-grid3-focus") && !e.target.className.include("x-grid3-focus-canvas");
+			const isInput = ["INPUT", "TEXTAREA"].include(e.target.tagName.toUpperCase());
+			const gridHasFocus = e.target.className.include("x-grid3-focus") && !e.target.className.include("x-grid3-focus-canvas");
 			return !isInput && !gridHasFocus;
 		} catch(e){
 			return false;
@@ -12114,7 +12114,7 @@ ORYX.Editor = {
 		}
 
 		/* Create key up event type */
-		var keyUpEvent = this.createKeyCombEvent(event,	ORYX.CONFIG.KEY_ACTION_UP);
+		const keyUpEvent = this.createKeyCombEvent(event,	ORYX.CONFIG.KEY_ACTION_UP);
 
 		ORYX.Log.debug("Key Event to handle: %0", keyUpEvent);
 
@@ -12155,7 +12155,7 @@ ORYX.Editor = {
 		}
 
 		/* Create key up event type */
-		var keyDownEvent = this.createKeyCombEvent(event, ORYX.CONFIG.KEY_ACTION_DOWN);
+		const keyDownEvent = this.createKeyCombEvent(event, ORYX.CONFIG.KEY_ACTION_DOWN);
 
 		ORYX.Log.debug("Key Event to handle: %0", keyDownEvent);
 
@@ -12172,55 +12172,55 @@ ORYX.Editor = {
 	createKeyCombEvent: function(keyEvent, keyAction) {
 
 		/* Get the currently pressed key code. */
-        var pressedKey = keyEvent.which || keyEvent.keyCode;
+        const pressedKey = keyEvent.which || keyEvent.keyCode;
 		//this.__currentKey = pressedKey;
 
 		/* Event name */
-		var eventName = "key.event";
+		let eventName = "key.event";
 
 		/* Key action */
 		if(keyAction) {
-			eventName += "." + keyAction;
+			eventName += `.${  keyAction}`;
 		}
 
 		/* Ctrl or apple meta key is pressed */
 		if(keyEvent.ctrlKey || keyEvent.metaKey) {
-			eventName += "." + ORYX.CONFIG.META_KEY_META_CTRL;
+			eventName += `.${  ORYX.CONFIG.META_KEY_META_CTRL}`;
 		}
 
 		/* Alt key is pressed */
 		if(keyEvent.altKey) {
-			eventName += "." + ORYX.CONFIG.META_KEY_ALT;
+			eventName += `.${  ORYX.CONFIG.META_KEY_ALT}`;
 		}
 
 		/* Alt key is pressed */
 		if(keyEvent.shiftKey) {
-			eventName += "." + ORYX.CONFIG.META_KEY_SHIFT;
+			eventName += `.${  ORYX.CONFIG.META_KEY_SHIFT}`;
 		}
 
 		/* Return the composed event name */
-		return  eventName + "." + pressedKey;
+		return  `${eventName  }.${  pressedKey}`;
 	},
 
 	_handleMouseDown: function(event, uiObj) {
 
 		// get canvas.
-		var canvas = this.getCanvas();
+		const canvas = this.getCanvas();
 		// Try to get the focus
 		canvas.focus()
 
 		// find the shape that is responsible for this element's id.
-		var element = event.currentTarget;
-		var elementController = uiObj;
+		const element = event.currentTarget;
+		const elementController = uiObj;
 
 		// gather information on selection.
-		var currentIsSelectable = (elementController !== null) &&
+		const currentIsSelectable = (elementController !== null) &&
 			(elementController !== undefined) && (elementController.isSelectable);
-		var currentIsMovable = (elementController !== null) &&
+		const currentIsMovable = (elementController !== null) &&
 			(elementController !== undefined) && (elementController.isMovable);
-		var modifierKeyPressed = event.shiftKey || event.ctrlKey;
-		var noObjectsSelected = this.selection.length === 0;
-		var currentIsSelected = this.selection.member(elementController);
+		const modifierKeyPressed = event.shiftKey || event.ctrlKey;
+		const noObjectsSelected = this.selection.length === 0;
+		const currentIsSelected = this.selection.member(elementController);
 
 
 		// Rule #1: When there is nothing selected, select the clicked object.
@@ -12316,13 +12316,13 @@ ORYX.Editor = {
 
 	_handleMouseUp: function(event, uiObj) {
 		// get canvas.
-		var canvas = this.getCanvas();
+		const canvas = this.getCanvas();
 
 		// find the shape that is responsible for this elemement's id.
-		var elementController = uiObj;
+		const elementController = uiObj;
 
 		//get event position
-		var evPos = this.eventCoordinates(event);
+		const evPos = this.eventCoordinates(event);
 
 		//Event.stop(event);
 	},
@@ -12342,18 +12342,18 @@ ORYX.Editor = {
 	 */
 	eventCoordinates: function(event) {
 
-		var canvas = this.getCanvas();
+		const canvas = this.getCanvas();
 
-		var svgPoint = canvas.node.ownerSVGElement.createSVGPoint();
+		const svgPoint = canvas.node.ownerSVGElement.createSVGPoint();
 		svgPoint.x = event.clientX;
 		svgPoint.y = event.clientY;
 
-		var additionalIEZoom = 1;
+		let additionalIEZoom = 1;
         if (!isNaN(screen.logicalXDPI) && !isNaN(screen.systemXDPI)) {
-            var ua = navigator.userAgent;
+            const ua = navigator.userAgent;
             if (ua.indexOf('MSIE') >= 0) {
                 //IE 10 and below
-                var zoom = Math.round((screen.deviceXDPI / screen.logicalXDPI) * 100);
+                const zoom = Math.round((screen.deviceXDPI / screen.logicalXDPI) * 100);
                 if (zoom !== 100) {
                     additionalIEZoom = zoom / 100
                 }
@@ -12365,24 +12365,24 @@ ORYX.Editor = {
             svgPoint.y = svgPoint.y * additionalIEZoom;
         }
 
-		var matrix = canvas.node.getScreenCTM();
+		const matrix = canvas.node.getScreenCTM();
 		return svgPoint.matrixTransform(matrix.inverse());
 	},
 
 	eventCoordinatesXY: function(x, y) {
 
-		var canvas = this.getCanvas();
+		const canvas = this.getCanvas();
 
-		var svgPoint = canvas.node.ownerSVGElement.createSVGPoint();
+		const svgPoint = canvas.node.ownerSVGElement.createSVGPoint();
 		svgPoint.x = x;
 		svgPoint.y = y;
 
-		var additionalIEZoom = 1;
+		let additionalIEZoom = 1;
         if (!isNaN(screen.logicalXDPI) && !isNaN(screen.systemXDPI)) {
-            var ua = navigator.userAgent;
+            const ua = navigator.userAgent;
             if (ua.indexOf('MSIE') >= 0) {
                 //IE 10 and below
-                var zoom = Math.round((screen.deviceXDPI / screen.logicalXDPI) * 100);
+                const zoom = Math.round((screen.deviceXDPI / screen.logicalXDPI) * 100);
                 if (zoom !== 100) {
                     additionalIEZoom = zoom / 100
                 }
@@ -12394,7 +12394,7 @@ ORYX.Editor = {
             svgPoint.y = svgPoint.y * additionalIEZoom;
         }
 
-		var matrix = canvas.node.getScreenCTM();
+		const matrix = canvas.node.getScreenCTM();
 		return svgPoint.matrixTransform(matrix.inverse());
 	}
 };
@@ -12409,7 +12409,7 @@ ORYX.Editor.createByUrl = function(modelUrl){
     new Ajax.Request(modelUrl, {
       method: 'GET',
       onSuccess: function(transport) {
-    	var editorConfig = JSON.parse(transport.responseText);
+    	const editorConfig = JSON.parse(transport.responseText);
         new ORYX.Editor(editorConfig);
       }.bind(this)
     });
@@ -12436,16 +12436,16 @@ ORYX.Editor.createByUrl = function(modelUrl){
 ORYX.Editor.graft = function(namespace, parent, t, doc) {
 
     doc = (doc || (parent && parent.ownerDocument) || document);
-    var e;
+    let e;
     if(t === undefined) {
         throw "Can't graft an undefined value";
     } else if(t.constructor == String) {
         e = doc.createTextNode( t );
     } else {
-        for(var i = 0; i < t.length; i++) {
+        for(let i = 0; i < t.length; i++) {
             if( i === 0 && t[i].constructor == String ) {
-                var snared;
-                snared = t[i].match( /^([a-z][a-z0-9]*)\.([^\s\.]+)$/i );
+                let snared;
+                snared = t[i].match( /^([a-z][a-z0-9]*)\.([^\s.]+)$/i );
                 if( snared ) {
                     e = doc.createElementNS(namespace, snared[1] );
                     e.setAttributeNS(null, 'class', snared[2] );
@@ -12470,7 +12470,7 @@ ORYX.Editor.graft = function(namespace, parent, t, doc) {
                 this.graft(namespace, e, t[i].toString(), doc );
             } else if(  t[i].constructor == Object ) {
                 // hash's properties => element's attributes
-                for(var k in t[i]) { e.setAttributeNS(null, k, t[i][k] ); }
+                for(let k in t[i]) { e.setAttributeNS(null, k, t[i][k] ); }
             } else {
 
 			}
@@ -12485,7 +12485,7 @@ ORYX.Editor.graft = function(namespace, parent, t, doc) {
 };
 
 ORYX.Editor.provideId = function() {
-	var res = [], hex = '0123456789ABCDEF';
+	const res = [], hex = '0123456789ABCDEF';
 
 	for (var i = 0; i < 36; i++) res[i] = Math.floor(Math.random()*0x10);
 
@@ -12496,7 +12496,7 @@ ORYX.Editor.provideId = function() {
 
 	res[8] = res[13] = res[18] = res[23] = '-';
 
-	return "oryx_" + res.join('');
+	return `oryx_${  res.join('')}`;
 };
 
 /**
@@ -12532,7 +12532,7 @@ ORYX.Editor.Cookie = {
 			return;
 		}
 
-		var currentString = document.cookie;
+		let currentString = document.cookie;
 
 		this.pe = new PeriodicalExecuter( function(){
 
@@ -12553,9 +12553,9 @@ ORYX.Editor.Cookie = {
 	},
 
 	getParams: function(){
-		var res = {};
+		const res = {};
 
-		var p = document.cookie;
+		const p = document.cookie;
 		p.split("; ").each(function(param){ res[param.split("=")[0]] = param.split("=")[1];});
 
 		return res;
@@ -12625,9 +12625,9 @@ new function(){
 	ORYX.Core.UIEnableDrag = function(event, uiObj, option) {
 
 		this.uiObj = uiObj;
-		var upL = uiObj.bounds.upperLeft();
+		const upL = uiObj.bounds.upperLeft();
 
-		var a = uiObj.node.getScreenCTM();
+		const a = uiObj.node.getScreenCTM();
 		this.faktorXY= {x: a.a, y: a.d};
 
 		this.scrollNode = uiObj.node.ownerSVGElement.parentNode.parentNode;
@@ -12651,7 +12651,7 @@ new function(){
 
 	ORYX.Core.UIDragCallback = function(event) {
 
-		var position = {
+		const position = {
 			x: Event.pointerX(event) - this.offSetPosition.x,
 			y: Event.pointerY(event) - this.offSetPosition.y}
 
@@ -12708,7 +12708,7 @@ new function(){
 			}
 
 			this.dockers.values().each(function(docker){
-				var edge = docker.docker.parent;
+				const edge = docker.docker.parent;
 				if (!edge){ return }
 
 				if (!this.changes[edge.getId()]) {
@@ -12737,7 +12737,7 @@ new function(){
 				this.removeAllDocker(change.edge);
 				change.dockerPositions.each(function(pos, i){
 					if (i==0||i==change.dockerPositions.length-1){ return }
-					var docker = change.edge.createDocker(undefined, pos);
+					const docker = change.edge.createDocker(undefined, pos);
 					docker.bounds.centerMoveTo(pos);
 					docker.update();
 				}.bind(this));
@@ -12750,7 +12750,7 @@ new function(){
 				this.removeAllDocker(change.edge);
 				change.oldDockerPositions.each(function(pos, i){
 					if (i==0||i==change.oldDockerPositions.length-1){ return }
-					var docker = change.edge.createDocker(undefined, pos);
+					const docker = change.edge.createDocker(undefined, pos);
 					docker.bounds.centerMoveTo(pos);
 					docker.update();
 				}.bind(this));
@@ -12813,7 +12813,7 @@ ORYX.Core.Shape = {
 		// create SVG node
 		this.node = ORYX.Editor.graft("http://www.w3.org/2000/svg",
 			null,
-			['g', {id:"svg-" + this.resourceId},
+			['g', {id:`svg-${  this.resourceId}`},
 				['g', {"class": "stencils"},
 					['g', {"class": "me"}],
 					['g', {"class": "children", style:"overflow:hidden"}],
@@ -12852,11 +12852,11 @@ ORYX.Core.Shape = {
 
 		if(this.node.ownerDocument) {
 			//adjust SVG to properties' values
-			var me = this;
+			const me = this;
 			this.propertiesChanged.each((function(propChanged) {
 				if(propChanged.value) {
-					var prop = this.properties[propChanged.key];
-					var property = this.getStencil().property(propChanged.key);
+					let prop = this.properties[propChanged.key];
+					const property = this.getStencil().property(propChanged.key);
 					if (property != undefined) {
 						this.propertiesChanged[propChanged.key] = false;
 
@@ -12866,7 +12866,7 @@ ORYX.Core.Shape = {
 							property.refToView().each((function(ref) {
 								//if property is referencing a label, update the label
 								if(ref !== "") {
-									var label = this._labels[this.id + ref];
+									const label = this._labels[this.id + ref];
 									if (label && property.item(prop)) {
 										label.text(property.item(prop).title());
 									}
@@ -12876,12 +12876,12 @@ ORYX.Core.Shape = {
 							//if the choice's items are referencing SVG elements
 							// show the selected and hide all other referenced SVG
 							// elements
-							var refreshedSvgElements = new Hash();
+							const refreshedSvgElements = new Hash();
 							property.items().each((function(item) {
 								item.refToView().each((function(itemRef) {
 									if(itemRef == "") { return; }
 
-									var svgElem = this.node.ownerDocument.getElementById(this.id + itemRef);
+									const svgElem = this.node.ownerDocument.getElementById(this.id + itemRef);
 
 									if(!svgElem) { return; }
 
@@ -12907,13 +12907,13 @@ ORYX.Core.Shape = {
 
 								if(ref === "") { return; }
 
-								var refId = this.id + ref;
+								const refId = this.id + ref;
 
 								if (property.type() === ORYX.CONFIG.TYPE_KISBPM_MULTIINSTANCE)
 								{
 									if (ref === "multiinstance") {
 
-										var svgElemParallel = this.node.ownerDocument.getElementById(this.id + 'parallel');
+										const svgElemParallel = this.node.ownerDocument.getElementById(this.id + 'parallel');
 										if(svgElemParallel)
 										{
 											if (prop === 'Parallel')
@@ -12926,7 +12926,7 @@ ORYX.Core.Shape = {
 											}
 										}
 
-										var svgElemSequential = this.node.ownerDocument.getElementById(this.id + 'sequential');
+										const svgElemSequential = this.node.ownerDocument.getElementById(this.id + 'sequential');
 
 										if(svgElemSequential)
 										{
@@ -12945,8 +12945,8 @@ ORYX.Core.Shape = {
 								}
 								else if (property.type() === "cancelactivity")
 								{
-									var svgElemFrame = this.node.ownerDocument.getElementById(this.id + 'frame');
-									var svgElemFrame2 = this.node.ownerDocument.getElementById(this.id + 'frame2');
+									const svgElemFrame = this.node.ownerDocument.getElementById(this.id + 'frame');
+									const svgElemFrame2 = this.node.ownerDocument.getElementById(this.id + 'frame2');
 
 									if (prop === 'true')
 									{
@@ -12961,7 +12961,7 @@ ORYX.Core.Shape = {
 								}
 
 								//get the SVG element
-								var svgElem = this.node.ownerDocument.getElementById(refId);
+								let svgElem = this.node.ownerDocument.getElementById(refId);
 
 								//if the SVG element can not be found
 								if(!svgElem || !(svgElem.ownerSVGElement)) {
@@ -12969,7 +12969,7 @@ ORYX.Core.Shape = {
 									// be found with getElementById (Firefox bug).
 									// this is a work around
 									if(property.type() === ORYX.CONFIG.TYPE_URL || property.type() === ORYX.CONFIG.TYPE_DIAGRAM_LINK) {
-										var svgElems = this.node.ownerDocument.getElementsByTagNameNS('http://www.w3.org/2000/svg', 'a');
+										const svgElems = this.node.ownerDocument.getElementsByTagNameNS('http://www.w3.org/2000/svg', 'a');
 
 										svgElem = $A(svgElems).find(function(elem) {
 											return elem.getAttributeNS(null, 'id') === refId;
@@ -12987,7 +12987,7 @@ ORYX.Core.Shape = {
 									if (label) {
 										try {
 									    	propJson = prop.evalJSON();
-									    	var value = propJson[property.complexAttributeToView()]
+									    	const value = propJson[property.complexAttributeToView()]
 									    	label.text(value ? value : prop);
 									    } catch (e) {
 									    	label.text(prop);
@@ -12997,7 +12997,7 @@ ORYX.Core.Shape = {
 								} else {
 									switch (property.type()) {
 										case ORYX.CONFIG.TYPE_BOOLEAN:
-										    if (typeof prop == "string")
+										    if (typeof prop === "string")
 												prop = prop === "true"
 
 											svgElem.setAttributeNS(null, 'display', (!(prop === property.inverseBoolean())) ? 'inherit' : 'none');
@@ -13075,13 +13075,13 @@ ORYX.Core.Shape = {
 
 										case ORYX.CONFIG.TYPE_FORM_LINK:
 	  										if (ref == "pimg") {
-	  											var onclickAttr = svgElem.getAttributeNodeNS('', 'onclick');
+	  											const onclickAttr = svgElem.getAttributeNodeNS('', 'onclick');
 	  											if(onclickAttr) {
-	  												if(prop && ("" + prop).length > 0) {
-	  													onclickAttr.textContent = "window.location = '../service/editor?id=" + prop + "_form'";
+	  												if(prop && (`${  prop}`).length > 0) {
+	  													onclickAttr.textContent = `window.location = '../service/editor?id=${  prop  }_form'`;
 	  							    	   			} else {
 	  							    	   				newFormFacade = this.facade;
-	  							    	   				onclickAttr.textContent = "displayNewFormDialog('" + this.resourceId + "');";
+	  							    	   				onclickAttr.textContent = `displayNewFormDialog('${  this.resourceId  }');`;
 	  							    		        }
 	  											}
 	  										} else if (ref == "linkIndicator") {
@@ -13095,7 +13095,7 @@ ORYX.Core.Shape = {
 										case ORYX.CONFIG.TYPE_URL:
 										case ORYX.CONFIG.TYPE_DIAGRAM_LINK:
 											//TODO what is the dafault path?
-											var hrefAttr = svgElem.getAttributeNodeNS('http://www.w3.org/1999/xlink', 'xlink:href');
+											const hrefAttr = svgElem.getAttributeNodeNS('http://www.w3.org/1999/xlink', 'xlink:href');
 											if(hrefAttr) {
 												hrefAttr.textContent = prop;
 											} else {
@@ -13123,7 +13123,7 @@ ORYX.Core.Shape = {
 
 	layout: function() {
 		//this.getStencil().layout(this)
-		var layoutEvents = this.getStencil().layout()
+		const layoutEvents = this.getStencil().layout()
 		if (layoutEvents) {
 			layoutEvents.each(function(event) {
 
@@ -13171,7 +13171,7 @@ ORYX.Core.Shape = {
 	 *
 	 */
 	showLabels: function(){
-		var labels = this.getLabels();
+		const labels = this.getLabels();
 		labels.invoke("show");
 		labels.each(function(label) {
 				label.update();
@@ -13180,7 +13180,7 @@ ORYX.Core.Shape = {
 
 	setOpacity: function(value, animate){
 
-		value = Math.max(Math.min((typeof value == "number" ? value : 1.0), 1.0), 0.0);
+		value = Math.max(Math.min((typeof value === "number" ? value : 1.0), 1.0), 0.0);
 
 		if (value !== 1.0){
 			value = String(value);
@@ -13226,7 +13226,7 @@ ORYX.Core.Shape = {
 
 	getIncomingNodes: function(iterator) {
         return this.incoming.select(function(incoming){
-            var isNode = (incoming instanceof ORYX.Core.Node);
+            const isNode = (incoming instanceof ORYX.Core.Node);
             if(isNode && iterator) iterator(incoming);
             return isNode;
         });
@@ -13242,14 +13242,14 @@ ORYX.Core.Shape = {
 
     getOutgoingNodes: function(iterator) {
         return this.outgoing.select(function(out){
-            var isNode = (out instanceof ORYX.Core.Node);
+            const isNode = (out instanceof ORYX.Core.Node);
             if(isNode && iterator) iterator(out);
             return isNode;
         });
     },
 
 	getAllDockedShapes: function(iterator) {
-		var result = this.incoming.concat(this.outgoing);
+		const result = this.incoming.concat(this.outgoing);
 		if(iterator) {
 			result.each(iterator);
 		}
@@ -13275,7 +13275,7 @@ ORYX.Core.Shape = {
 		if(!deep && !iterator) {
 			return this.nodes.clone();
 		} else {
-			var result = [];
+			let result = [];
 			this.nodes.each(function(uiObject) {
 				if(!uiObject.isVisible){return}
 				if(iterator) {
@@ -13319,12 +13319,12 @@ ORYX.Core.Shape = {
 				uiObject.parent = this;
 
 				//add uiObject.node to this.node depending on the type of uiObject
-				var parent;
+				let parent;
 				if(uiObject instanceof ORYX.Core.Node) {
 					parent = this.node.childNodes[0].childNodes[1];
 					this.nodes.push(uiObject);
 				} else if(uiObject instanceof ORYX.Core.Controls.Control) {
-					var ctrls = this.node.childNodes[1];
+					const ctrls = this.node.childNodes[1];
 					if(uiObject instanceof ORYX.Core.Controls.Docker) {
 						parent = ctrls.childNodes[0];
 						if (this.dockers.length >= 2){
@@ -13372,7 +13372,7 @@ ORYX.Core.Shape = {
 		//if uiObject is a child of this object, remove it.
 		if (this.children.member(uiObject)) {
 			//remove uiObject from children
-			var parent = uiObject.parent;
+			const parent = uiObject.parent;
 
 			this.children = this.children.without(uiObject);
 
@@ -13418,7 +13418,7 @@ ORYX.Core.Shape = {
 	 */
 	getIntersectionPoint: function() {
 
-		var pointAX, pointAY, pointBX, pointBY;
+		let pointAX, pointAY, pointBX, pointBY;
 
 		// Get the the two Points
 		switch(arguments.length) {
@@ -13441,9 +13441,9 @@ ORYX.Core.Shape = {
 
 
 		// Defined an include and exclude point
-		var includePointX, includePointY, excludePointX, excludePointY;
+		let includePointX, includePointY, excludePointX, excludePointY;
 
-		var bounds = this.absoluteBounds();
+		const bounds = this.absoluteBounds();
 
 		if(this.isPointIncluded(pointAX, pointAY, bounds)){
 			includePointX = pointAX;
@@ -13466,22 +13466,22 @@ ORYX.Core.Shape = {
 			return undefined;
 		}
 
-		var midPointX = 0;
-		var midPointY = 0;
+		const midPointX = 0;
+		const midPointY = 0;
 
-		var refPointX, refPointY;
+		let refPointX, refPointY;
 
-		var minDifferent = 1;
+		const minDifferent = 1;
 		// Get the UpperLeft and LowerRight
 		//var ul = bounds.upperLeft();
 		//var lr = bounds.lowerRight();
 
-		var i = 0;
+		const i = 0;
 
 		while(true) {
 			// Calculate the midpoint of the current to points
-			var midPointX = Math.min(includePointX, excludePointX) + ((Math.max(includePointX, excludePointX) - Math.min(includePointX, excludePointX)) / 2.0);
-			var midPointY = Math.min(includePointY, excludePointY) + ((Math.max(includePointY, excludePointY) - Math.min(includePointY, excludePointY)) / 2.0);
+			const midPointX = Math.min(includePointX, excludePointX) + ((Math.max(includePointX, excludePointX) - Math.min(includePointX, excludePointX)) / 2.0);
+			const midPointY = Math.min(includePointY, excludePointY) + ((Math.max(includePointY, excludePointY) - Math.min(includePointY, excludePointY)) / 2.0);
 
 
 			// Set the new midpoint by the means of the include of the bounds
@@ -13494,7 +13494,7 @@ ORYX.Core.Shape = {
 			}
 
 			// Calc the length of the line
-			var length = Math.sqrt(Math.pow(includePointX - excludePointX, 2) + Math.pow(includePointY - excludePointY, 2))
+			const length = Math.sqrt(Math.pow(includePointX - excludePointX, 2) + Math.pow(includePointY - excludePointY, 2))
 			// Calc a point one step from the include point
 			refPointX = includePointX + ((excludePointX - includePointX) / length),
 			refPointY = includePointY + ((excludePointY - includePointY) / length)
@@ -13531,7 +13531,7 @@ ORYX.Core.Shape = {
 	 *
 	 */
 	containsNode: function(node){
-		var me = this.node.firstChild.firstChild;
+		const me = this.node.firstChild.firstChild;
 		while(node){
 			if (node == me){
 				return true;
@@ -13558,7 +13558,7 @@ ORYX.Core.Shape = {
 	 *
 	 */
 	createDocker: function(index, position) {
-		var docker = new ORYX.Core.Controls.Docker({eventHandlerCallback: this.eventHandlerCallback});
+		const docker = new ORYX.Core.Controls.Docker({eventHandlerCallback: this.eventHandlerCallback});
 		docker.bounds.registerCallback(this._dockerChangedCallback);
 		if (position) {
 			docker.bounds.centerMoveTo(position);
@@ -13577,19 +13577,19 @@ ORYX.Core.Shape = {
 	 * 		Parent
 	 */
 	serialize: function() {
-		var serializedObject = arguments.callee.$.serialize.apply(this);
+		const serializedObject = arguments.callee.$.serialize.apply(this);
 
 		// Add the bounds
 		serializedObject.push({name: 'bounds', prefix:'oryx', value: this.bounds.serializeForERDF(), type: 'literal'});
 
 		// Add the outgoing shapes
 		this.getOutgoingShapes().each((function(followingShape){
-			serializedObject.push({name: 'outgoing', prefix:'raziel', value: '#'+ERDF.__stripHashes(followingShape.resourceId), type: 'resource'});
+			serializedObject.push({name: 'outgoing', prefix:'raziel', value: `#${ERDF.__stripHashes(followingShape.resourceId)}`, type: 'resource'});
 		}).bind(this));
 
 		// Add the parent shape, if the parent not the canvas
 		//if(this.parent instanceof ORYX.Core.Shape){
-			serializedObject.push({name: 'parent', prefix:'raziel', value: '#'+ERDF.__stripHashes(this.parent.resourceId), type: 'resource'});
+			serializedObject.push({name: 'parent', prefix:'raziel', value: `#${ERDF.__stripHashes(this.parent.resourceId)}`, type: 'resource'});
 		//}
 
 		return serializedObject;
@@ -13600,9 +13600,9 @@ ORYX.Core.Shape = {
 		arguments.callee.$.deserialize.apply(this, arguments);
 
 		// Set the Bounds
-		var bounds = serialize.find(function(ser){ return 'oryx-bounds' === (ser.prefix+"-"+ser.name) });
+		const bounds = serialize.find(function(ser){ return 'oryx-bounds' === (ser.prefix+"-"+ser.name) });
 		if (bounds) {
-			var b = bounds.value.replace(/,/g, " ").split(" ").without("");
+			const b = bounds.value.replace(/,/g, " ").split(" ").without("");
 			if (this instanceof ORYX.Core.Edge) {
 				if (!this.dockers.first().isChanged)
 					this.dockers.first().bounds.centerMoveTo(parseFloat(b[0]), parseFloat(b[1]));
@@ -13615,7 +13615,7 @@ ORYX.Core.Shape = {
 
 		if (json && json.labels instanceof Array){
 			json.labels.each(function(slabel){
-				var label = this.getLabel(slabel.ref);
+				const label = this.getLabel(slabel.ref);
 				if (label){
 					label.deserialize(slabel, this);
 				}
@@ -13624,11 +13624,11 @@ ORYX.Core.Shape = {
 	},
 
 	toJSON: function(){
-		var json = arguments.callee.$.toJSON.apply(this, arguments);
+		const json = arguments.callee.$.toJSON.apply(this, arguments);
 
-		var labels = [], id = this.id;
+		const labels = [], id = this.id;
 		this._labels.each(function(obj){
-			var slabel = obj.value.serialize();
+			const slabel = obj.value.serialize();
 			if (slabel){
 				slabel.ref = obj.key.replace(id, '');
 				labels.push(slabel);
@@ -13658,23 +13658,23 @@ ORYX.Core.Shape = {
 
 	_adjustIds: function(element, idIndex) {
 		if(element instanceof Element) {
-			var eid = element.getAttributeNS(null, 'id');
+			const eid = element.getAttributeNS(null, 'id');
 			if(eid && eid !== "") {
 				element.setAttributeNS(null, 'id', this.id + eid);
 			} else {
-				element.setAttributeNS(null, 'id', this.id + "_" + this.id + "_" + idIndex);
+				element.setAttributeNS(null, 'id', `${this.id  }_${  this.id  }_${  idIndex}`);
 				idIndex++;
 			}
 
 			// Replace URL in fill attribute
-			var fill = element.getAttributeNS(null, 'fill');
+			let fill = element.getAttributeNS(null, 'fill');
 			if (fill&&fill.include("url(#")){
-				fill = fill.replace(/url\(#/g, 'url(#'+this.id);
+				fill = fill.replace(/url\(#/g, `url(#${this.id}`);
 				element.setAttributeNS(null, 'fill', fill);
 			}
 
 			if(element.hasChildNodes()) {
-				for(var i = 0; i < element.childNodes.length; i++) {
+				for(let i = 0; i < element.childNodes.length; i++) {
 					idIndex = this._adjustIds(element.childNodes[i], idIndex);
 				}
 			}
@@ -13682,7 +13682,7 @@ ORYX.Core.Shape = {
 		return idIndex;
 	},
 
-	toString: function() { return "ORYX.Core.Shape " + this.getId() }
+	toString: function() { return `ORYX.Core.Shape ${  this.getId()}` }
 };
 ORYX.Core.Shape = ORYX.Core.AbstractShape.extend(ORYX.Core.Shape);/*
  * Copyright 2005-2014 Alfresco Software, Ltd. All rights reserved.
@@ -13707,7 +13707,7 @@ if(!ORYX.Core.Controls) {ORYX.Core.Controls = {};}
  */
 ORYX.Core.Controls.Control = ORYX.Core.UIObject.extend({
 
-	toString: function() { return "Control " + this.id; }
+	toString: function() { return `Control ${  this.id}`; }
  });/*
  * Copyright 2005-2014 Alfresco Software, Ltd. All rights reserved.
  * License rights for this program may be obtained from Alfresco Software, Ltd.
@@ -13787,14 +13787,14 @@ ORYX.Core.Controls.Docker = ORYX.Core.Controls.Control.extend({
 		if(this._dockedShape) {
 			if(this._dockedShapeBounds && this._dockedShape instanceof ORYX.Core.Node) {
 				// Calc the delta of width and height of the lastBounds and the current Bounds
-				var dswidth = this._dockedShapeBounds.width();
-				var dsheight = this._dockedShapeBounds.height();
+				let dswidth = this._dockedShapeBounds.width();
+				let dsheight = this._dockedShapeBounds.height();
 				if(!dswidth)
 					dswidth = 1;
 				if(!dsheight)
 					dsheight = 1;
-				var widthDelta = 	this._dockedShape.bounds.width() 	/ dswidth;
-				var heightDelta = 	this._dockedShape.bounds.height() 	/ dsheight;
+				const widthDelta = 	this._dockedShape.bounds.width() 	/ dswidth;
+				const heightDelta = 	this._dockedShape.bounds.height() 	/ dsheight;
 
 				// If there is an different
 				if(widthDelta !== 1.0 || heightDelta !== 1.0) {
@@ -13808,21 +13808,21 @@ ORYX.Core.Controls.Docker = ORYX.Core.Controls.Control.extend({
 			}
 
 			// Get the first and the last Docker of the parent Shape
-			var dockerIndex = this.parent.dockers.indexOf(this)
-			var dock1 = this;
-			var dock2 = this.parent.dockers.length > 1 ?
+			const dockerIndex = this.parent.dockers.indexOf(this)
+			const dock1 = this;
+			const dock2 = this.parent.dockers.length > 1 ?
 							(dockerIndex === 0?							// If there is the first element
 							 	this.parent.dockers[dockerIndex + 1]:	// then take the next docker
 								this.parent.dockers[dockerIndex - 1]):  // if not, then take the docker before
 							undefined;
 
 			// Calculate the first absolute Refenzpoint
-			var absoluteReferenzPoint1 = dock1.getDockedShape() ?
+			const absoluteReferenzPoint1 = dock1.getDockedShape() ?
 				dock1.getAbsoluteReferencePoint() :
 				dock1.bounds.center();
 
 			// Calculate the last absolute Refenzpoint
-			var absoluteReferenzPoint2 = dock2 && dock2.getDockedShape() ?
+			let absoluteReferenzPoint2 = dock2 && dock2.getDockedShape() ?
 				dock2.getAbsoluteReferencePoint() :
 				dock2 ?
 					dock2.bounds.center() :
@@ -13831,15 +13831,15 @@ ORYX.Core.Controls.Docker = ORYX.Core.Controls.Control.extend({
 			// If there is no last absolute Referenzpoint
 			if(!absoluteReferenzPoint2) {
 				// Calculate from the middle of the DockedShape
-				var center = this._dockedShape.absoluteCenterXY();
-				var minDimension = this._dockedShape.bounds.width() * this._dockedShape.bounds.height();
+				const center = this._dockedShape.absoluteCenterXY();
+				const minDimension = this._dockedShape.bounds.width() * this._dockedShape.bounds.height();
 				absoluteReferenzPoint2 = {
 					x: absoluteReferenzPoint1.x + (center.x - absoluteReferenzPoint1.x) * -minDimension,
 					y: absoluteReferenzPoint1.y + (center.y - absoluteReferenzPoint1.y) * -minDimension
 				}
 			}
 
-			var newPoint = undefined;
+			let newPoint = undefined;
 
 			/*if (!this._oldRefPoint1 || !this._oldRefPoint2 ||
 				absoluteReferenzPoint1.x !== this._oldRefPoint1.x ||
@@ -13856,7 +13856,7 @@ ORYX.Core.Controls.Docker = ORYX.Core.Controls.Control.extend({
 				}
 
 				if(this.parent && this.parent.parent) {
-					var grandParentPos = this.parent.parent.absoluteXY();
+					const grandParentPos = this.parent.parent.absoluteXY();
 					newPoint.x -= grandParentPos.x;
 					newPoint.y -= grandParentPos.y;
 				}
@@ -13885,14 +13885,14 @@ ORYX.Core.Controls.Docker = ORYX.Core.Controls.Control.extend({
 		arguments.callee.$.refresh.apply(this, arguments);
 
 		// Refresh the dockers node
-		var p = this.bounds.upperLeft();
-		this._dockerNode.setAttributeNS(null, 'transform','translate(' + p.x + ', ' + p.y + ')');
+		let p = this.bounds.upperLeft();
+		this._dockerNode.setAttributeNS(null, 'transform',`translate(${  p.x  }, ${  p.y  })`);
 
 		// Refresh the referencepoints node
 		p = Object.clone(this.referencePoint);
 
 		if(p && this._dockedShape){
-			var upL
+			let upL
 			if(this.parent instanceof ORYX.Core.Edge) {
 				upL = this._dockedShape.absoluteXY();
 			} else {
@@ -13904,7 +13904,7 @@ ORYX.Core.Controls.Docker = ORYX.Core.Controls.Control.extend({
 			p = this.bounds.center();
 		}
 
-		this._referencePointNode.setAttributeNS(null, 'transform','translate(' + p.x + ', ' + p.y + ')');
+		this._referencePointNode.setAttributeNS(null, 'transform',`translate(${  p.x  }, ${  p.y  })`);
 	},
 
 	/**
@@ -13935,7 +13935,7 @@ ORYX.Core.Controls.Docker = ORYX.Core.Controls.Control.extend({
 		if(!this.referencePoint || !this._dockedShape) {
 			return undefined;
 		} else {
-			var absUL = this._dockedShape.absoluteXY();
+			const absUL = this._dockedShape.absoluteXY();
 			return {
 						x: this.referencePoint.x + absUL.x,
 						y: this.referencePoint.y + absUL.y
@@ -13974,7 +13974,7 @@ ORYX.Core.Controls.Docker = ORYX.Core.Controls.Control.extend({
 		// Set the new Shape
 		this._dockedShape = shape;
 		this._dockedShapeBounds = undefined;
-		var referencePoint = undefined;
+		let referencePoint = undefined;
 
 		// If there is an Shape, register the updateCallback if there are changes in the shape bounds
 		if(this._dockedShape) {
@@ -13995,8 +13995,8 @@ ORYX.Core.Controls.Docker = ORYX.Core.Controls.Control.extend({
 			}
 
 			// Get the bounds and set the new referencepoint
-			var bounds = this.bounds;
-			var absUL = shape.absoluteXY();
+			const bounds = this.bounds;
+			const absUL = shape.absoluteXY();
 
 			/*if(shape.parent){
 				var b = shape.parent.bounds.upperLeft();
@@ -14088,7 +14088,7 @@ ORYX.Core.Controls.Docker = ORYX.Core.Controls.Control.extend({
 		});
 	},
 
-	toString: function() { return "Docker " + this.id }
+	toString: function() { return `Docker ${  this.id}` }
 });/*
  * Copyright 2005-2014 Alfresco Software, Ltd. All rights reserved.
  * License rights for this program may be obtained from Alfresco Software, Ltd.
@@ -14154,14 +14154,14 @@ ORYX.Core.Controls.Magnet = ORYX.Core.Controls.Control.extend({
 	refresh: function() {
 		arguments.callee.$.refresh.apply(this, arguments);
 
-		var p = this.bounds.upperLeft();
+		const p = this.bounds.upperLeft();
 		/*if(this.parent) {
 			var parentPos = this.parent.bounds.upperLeft();
 			p.x += parentPos.x;
 			p.y += parentPos.y;
 		}*/
 
-		this.node.setAttributeNS(null, 'transform','translate(' + p.x + ', ' + p.y + ')');
+		this.node.setAttributeNS(null, 'transform',`translate(${  p.x  }, ${  p.y  })`);
 	},
 
 	show: function() {
@@ -14170,7 +14170,7 @@ ORYX.Core.Controls.Magnet = ORYX.Core.Controls.Control.extend({
 	},
 
 	toString: function() {
-		return "Magnet " + this.id;
+		return `Magnet ${  this.id}`;
 	}
 });
 /*
@@ -14240,13 +14240,13 @@ ORYX.Core.Node = {
 		this.dockers.invoke("update");
 		if (this.isChanged) {
 
-			var bounds = this.bounds;
-            var oldBounds = this._oldBounds;
+			const bounds = this.bounds;
+            const oldBounds = this._oldBounds;
 
 			if (this.isResized) {
 
-				var widthDelta = bounds.width() / oldBounds.width();
-				var heightDelta = bounds.height() / oldBounds.height();
+				const widthDelta = bounds.width() / oldBounds.width();
+				const heightDelta = bounds.height() / oldBounds.height();
 
 				//iterate over all relevant svg elements and resize them
 				this._svgShapes.each(function(svgShape){
@@ -14260,9 +14260,9 @@ ORYX.Core.Node = {
 					}
 
 					//check, if anchors are set
-					var anchorOffset;
-					var leftIncluded = svgShape.anchorLeft;
-					var rightIncluded = svgShape.anchorRight;
+					let anchorOffset;
+					const leftIncluded = svgShape.anchorLeft;
+					const rightIncluded = svgShape.anchorRight;
 
 					if (rightIncluded) {
 						anchorOffset = oldBounds.width() - (svgShape.oldX + svgShape.oldWidth);
@@ -14281,8 +14281,8 @@ ORYX.Core.Node = {
 							}
 						}
 
-					var topIncluded = svgShape.anchorTop;
-					var bottomIncluded = svgShape.anchorBottom;
+					const topIncluded = svgShape.anchorTop;
+					const bottomIncluded = svgShape.anchorBottom;
 
 					if (bottomIncluded) {
 						anchorOffset = oldBounds.height() - (svgShape.oldY + svgShape.oldHeight);
@@ -14306,7 +14306,7 @@ ORYX.Core.Node = {
 				});
 
 				//check, if the current bounds is unallowed horizontally or vertically resized
-				var p = {
+				let p = {
 					x: 0,
 					y: 0
 				};
@@ -14325,7 +14325,7 @@ ORYX.Core.Node = {
 					x: 0,
 					y: 0
 				};
-				var widthDifference, heightDifference;
+				let widthDifference, heightDifference;
 				if (this.minimumSize) {
 
 					ORYX.Log.debug("Shape (%0)'s min size: (%1x%2)", this, this.minimumSize.width, this.minimumSize.height);
@@ -14356,10 +14356,10 @@ ORYX.Core.Node = {
 
 				//update magnets
 
-				var widthDelta = bounds.width() / oldBounds.width();
-				var heightDelta = bounds.height() / oldBounds.height();
+				const widthDelta = bounds.width() / oldBounds.width();
+				const heightDelta = bounds.height() / oldBounds.height();
 
-				var leftIncluded, rightIncluded, topIncluded, bottomIncluded, center, newX, newY;
+				let leftIncluded, rightIncluded, topIncluded, bottomIncluded, center, newX, newY;
 
 				this.magnets.each(function(magnet){
 					leftIncluded = magnet.anchorLeft;
@@ -14435,7 +14435,7 @@ ORYX.Core.Node = {
 				});
 
 				//update docker
-				var docker = this.dockers[0];
+				const docker = this.dockers[0];
 				if (docker) {
 					docker.bounds.unregisterCallback(this._dockerChangedCallback);
 					if (!this._dockerUpdated) {
@@ -14487,13 +14487,13 @@ ORYX.Core.Node = {
         arguments.callee.$.refresh.apply(this, arguments);
 
         /** Movement */
-        var x = this.bounds.upperLeft().x;
-        var y = this.bounds.upperLeft().y;
+        const x = this.bounds.upperLeft().x;
+        const y = this.bounds.upperLeft().y;
 
 		// Move owner element
-		this.node.firstChild.setAttributeNS(null, "transform", "translate(" + x + ", " + y + ")");
+		this.node.firstChild.setAttributeNS(null, "transform", `translate(${  x  }, ${  y  })`);
 		// Move magnets
-		this.node.childNodes[1].childNodes[1].setAttributeNS(null, "transform", "translate(" + x + ", " + y + ")");
+		this.node.childNodes[1].childNodes[1].setAttributeNS(null, "transform", `translate(${  x  }, ${  y  })`);
 
         /** Resize */
 
@@ -14504,7 +14504,7 @@ ORYX.Core.Node = {
     },
 
     _dockerChanged: function(){
-		var docker = this.dockers[0];
+		const docker = this.dockers[0];
 
         //set the bounds of the the association
         this.bounds.centerMoveTo(docker.bounds.center());
@@ -14522,9 +14522,9 @@ ORYX.Core.Node = {
      * @return {Array} Array of SVGShape objects
      */
     _initSVGShapes: function(svgNode){
-        var svgShapes = [];
+        let svgShapes = [];
         try {
-            var svgShape = new ORYX.Core.SVG.SVGShape(svgNode);
+            const svgShape = new ORYX.Core.SVG.SVGShape(svgNode);
             svgShapes.push(svgShape);
         }
         catch (e) {
@@ -14532,7 +14532,7 @@ ORYX.Core.Node = {
         }
 
         if (svgNode.hasChildNodes()) {
-            for (var i = 0; i < svgNode.childNodes.length; i++) {
+            for (let i = 0; i < svgNode.childNodes.length; i++) {
                 svgShapes = svgShapes.concat(this._initSVGShapes(svgNode.childNodes[i]));
             }
         }
@@ -14548,7 +14548,7 @@ ORYX.Core.Node = {
      */
     isPointIncluded: function(pointX, pointY, absoluteBounds){
         // If there is an arguments with the absoluteBounds
-        var absBounds = absoluteBounds && absoluteBounds instanceof ORYX.Core.Bounds ? absoluteBounds : this.absoluteBounds();
+        const absBounds = absoluteBounds && absoluteBounds instanceof ORYX.Core.Bounds ? absoluteBounds : this.absoluteBounds();
 
         if (!absBounds.isIncluded(pointX, pointY)) {
 			return false;
@@ -14558,11 +14558,11 @@ ORYX.Core.Node = {
 
 
         //point = Object.clone(point);
-        var ul = absBounds.upperLeft();
-        var x = pointX - ul.x;
-        var y = pointY - ul.y;
+        const ul = absBounds.upperLeft();
+        const x = pointX - ul.x;
+        const y = pointY - ul.y;
 
-		var i=0;
+		let i=0;
 		do {
 			var isPointIncluded = this._svgShapes[i++].isPointIncluded( x, y );
 		} while( !isPointIncluded && i < this._svgShapes.length)
@@ -14580,12 +14580,12 @@ ORYX.Core.Node = {
      * @param {Point}
      */
     isPointOverOffset: function( pointX, pointY ){
-		var isOverEl = arguments.callee.$.isPointOverOffset.apply( this , arguments );
+		const isOverEl = arguments.callee.$.isPointOverOffset.apply( this , arguments );
 
 		if (isOverEl) {
 
 	        // If there is an arguments with the absoluteBounds
-	        var absBounds = this.absoluteBounds();
+	        const absBounds = this.absoluteBounds();
 	        absBounds.widen( - ORYX.CONFIG.BORDER_OFFSET );
 
 	        if ( !absBounds.isIncluded( pointX, pointY )) {
@@ -14598,13 +14598,13 @@ ORYX.Core.Node = {
 	},
 
     serialize: function(){
-        var result = arguments.callee.$.serialize.apply(this);
+        let result = arguments.callee.$.serialize.apply(this);
 
         // Add the docker's bounds
         // nodes only have at most one docker!
         this.dockers.each((function(docker){
 			if (docker.getDockedShape()) {
-				var center = docker.referencePoint;
+				let center = docker.referencePoint;
 				center = center ? center : docker.bounds.center();
 				result.push({
 					name: 'docker',
@@ -14619,7 +14619,7 @@ ORYX.Core.Node = {
         try {
             //result = this.getStencil().serialize(this, result);
 
-			var serializeEvent = this.getStencil().serialize();
+			const serializeEvent = this.getStencil().serialize();
 
 			/*
 			 * call serialize callback by reference, result should be found
@@ -14649,7 +14649,7 @@ ORYX.Core.Node = {
 	    try {
             //data = this.getStencil().deserialize(this, data);
 
-			var deserializeEvent = this.getStencil().deserialize();
+			const deserializeEvent = this.getStencil().deserialize();
 
 			/*
 			 * call serialize callback by reference, result should be found
@@ -14671,13 +14671,13 @@ ORYX.Core.Node = {
         }
 
 		// Set the outgoing shapes
-		var outgoing = data.findAll(function(ser){ return (ser.prefix+"-"+ser.name) == 'raziel-outgoing'});
+		const outgoing = data.findAll(function(ser){ return (ser.prefix+"-"+ser.name) == 'raziel-outgoing'});
 		outgoing.each((function(obj){
 			// TODO: Look at Canvas
 			if(!this.parent) {return};
 
 			// Set outgoing Shape
-			var next = this.getCanvas().getChildShapeByResourceId(obj.value);
+			const next = this.getCanvas().getChildShapeByResourceId(obj.value);
 
 			if(next){
 				if(next instanceof ORYX.Core.Edge) {
@@ -14693,13 +14693,13 @@ ORYX.Core.Node = {
 		}).bind(this));
 
         if (this.dockers.length === 1) {
-            var dockerPos;
+            let dockerPos;
             dockerPos = data.find(function(entry){
-                return (entry.prefix + "-" + entry.name === "oryx-dockers");
+                return (`${entry.prefix  }-${  entry.name}` === "oryx-dockers");
             });
 
             if (dockerPos) {
-                var points = dockerPos.value.replace(/,/g, " ").split(" ").without("").without("#");
+                const points = dockerPos.value.replace(/,/g, " ").split(" ").without("").without("#");
 				if (points.length === 2 && this.dockers[0].getDockedShape()) {
                     this.dockers[0].setReferencePoint({
                         x: parseFloat(points[0]),
@@ -14724,28 +14724,28 @@ ORYX.Core.Node = {
     _init: function(svgDocument){
         arguments.callee.$._init.apply(this, arguments);
 
-        var svgNode = svgDocument.getElementsByTagName("g")[0]; //outer most g node
+        let svgNode = svgDocument.getElementsByTagName("g")[0]; //outer most g node
         // set all required attributes
-        var attributeTitle = svgDocument.ownerDocument.createAttribute("title");
+        const attributeTitle = svgDocument.ownerDocument.createAttribute("title");
         attributeTitle.nodeValue = this.getStencil().title();
         svgNode.setAttributeNode(attributeTitle);
 
-        var attributeId = svgDocument.ownerDocument.createAttribute("id");
+        const attributeId = svgDocument.ownerDocument.createAttribute("id");
         attributeId.nodeValue = this.id;
         svgNode.setAttributeNode(attributeId);
 
         //
-        var stencilTargetNode = this.node.childNodes[0].childNodes[0]; //<g class=me>"
+        const stencilTargetNode = this.node.childNodes[0].childNodes[0]; //<g class=me>"
         svgNode = stencilTargetNode.appendChild(svgNode);
 
         // Add to the EventHandler
         this.addEventHandlers(svgNode.parentNode);
 
         /**set minimum and maximum size*/
-        var minSizeAttr = svgNode.getAttributeNS(ORYX.CONFIG.NAMESPACE_ORYX, "minimumSize");
+        let minSizeAttr = svgNode.getAttributeNS(ORYX.CONFIG.NAMESPACE_ORYX, "minimumSize");
         if (minSizeAttr) {
             minSizeAttr = minSizeAttr.replace("/,/g", " ");
-            var minSizeValues = minSizeAttr.split(" ");
+            let minSizeValues = minSizeAttr.split(" ");
             minSizeValues = minSizeValues.without("");
 
             if (minSizeValues.length > 1) {
@@ -14763,10 +14763,10 @@ ORYX.Core.Node = {
             }
         }
 
-        var maxSizeAttr = svgNode.getAttributeNS(ORYX.CONFIG.NAMESPACE_ORYX, "maximumSize");
+        let maxSizeAttr = svgNode.getAttributeNS(ORYX.CONFIG.NAMESPACE_ORYX, "maximumSize");
         if (maxSizeAttr) {
             maxSizeAttr = maxSizeAttr.replace("/,/g", " ");
-            var maxSizeValues = maxSizeAttr.split(" ");
+            let maxSizeValues = maxSizeAttr.split(" ");
             maxSizeValues = maxSizeValues.without("");
 
             if (maxSizeValues.length > 1) {
@@ -14782,7 +14782,7 @@ ORYX.Core.Node = {
         this.minimumSize.height > this.maximumSize.height)) {
 
             //TODO wird verschluckt!!!
-            throw this + ": Minimum Size must be greater than maxiumSize.";
+            throw `${this  }: Minimum Size must be greater than maxiumSize.`;
         }
 
         /**get current bounds and adjust it to upperLeft == (0,0)*/
@@ -14790,15 +14790,15 @@ ORYX.Core.Node = {
         this._svgShapes = this._initSVGShapes(svgNode);
 
         //get upperLeft and lowerRight of stencil
-        var upperLeft = {
+        const upperLeft = {
             x: undefined,
             y: undefined
         };
-        var lowerRight = {
+        const lowerRight = {
             x: undefined,
             y: undefined
         };
-        var me = this;
+        const me = this;
         this._svgShapes.each(function(svgShape){
             upperLeft.x = (upperLeft.x !== undefined) ? Math.min(upperLeft.x, svgShape.x) : svgShape.x;
             upperLeft.y = (upperLeft.y !== undefined) ? Math.min(upperLeft.y, svgShape.y) : svgShape.y;
@@ -14834,8 +14834,8 @@ ORYX.Core.Node = {
 
         //set bounds of shape
         //the offsets are also needed for positioning the magnets and the docker
-        var offsetX = upperLeft.x;
-        var offsetY = upperLeft.y;
+        const offsetX = upperLeft.x;
+        const offsetY = upperLeft.y;
 
         lowerRight.x -= offsetX;
         lowerRight.y -= offsetY;
@@ -14855,7 +14855,7 @@ ORYX.Core.Node = {
 
         /**initialize magnets */
 
-        var magnets = svgDocument.getElementsByTagNameNS(ORYX.CONFIG.NAMESPACE_ORYX, "magnets");
+        let magnets = svgDocument.getElementsByTagNameNS(ORYX.CONFIG.NAMESPACE_ORYX, "magnets");
 
         if (magnets && magnets.length > 0) {
 
@@ -14863,22 +14863,22 @@ ORYX.Core.Node = {
 
             var me = this;
             magnets.each(function(magnetElem){
-                var magnet = new ORYX.Core.Controls.Magnet({
+                const magnet = new ORYX.Core.Controls.Magnet({
                     eventHandlerCallback: me.eventHandlerCallback
                 });
-                var cx = parseFloat(magnetElem.getAttributeNS(ORYX.CONFIG.NAMESPACE_ORYX, "cx"));
-                var cy = parseFloat(magnetElem.getAttributeNS(ORYX.CONFIG.NAMESPACE_ORYX, "cy"));
+                const cx = parseFloat(magnetElem.getAttributeNS(ORYX.CONFIG.NAMESPACE_ORYX, "cx"));
+                const cy = parseFloat(magnetElem.getAttributeNS(ORYX.CONFIG.NAMESPACE_ORYX, "cy"));
                 magnet.bounds.centerMoveTo({
                     x: cx - offsetX,
                     y: cy - offsetY
                 });
 
                 //get anchors
-                var anchors = magnetElem.getAttributeNS(ORYX.CONFIG.NAMESPACE_ORYX, "anchors");
+                let anchors = magnetElem.getAttributeNS(ORYX.CONFIG.NAMESPACE_ORYX, "anchors");
                 if (anchors) {
                     anchors = anchors.replace("/,/g", " ");
                     anchors = anchors.split(" ").without("");
-                    for(var i = 0; i < anchors.length; i++) {
+                    for(let i = 0; i < anchors.length; i++) {
 						switch(anchors[i].toLowerCase()) {
 							case "left":
 								magnet.anchorLeft = true;
@@ -14900,7 +14900,7 @@ ORYX.Core.Node = {
 
                 //check, if magnet is default magnet
                 if (!this._defaultMagnet) {
-                    var defaultAttr = magnetElem.getAttributeNS(ORYX.CONFIG.NAMESPACE_ORYX, "default");
+                    const defaultAttr = magnetElem.getAttributeNS(ORYX.CONFIG.NAMESPACE_ORYX, "default");
                     if (defaultAttr && defaultAttr.toLowerCase() === "yes") {
                         me._defaultMagnet = magnet;
                     }
@@ -14909,31 +14909,31 @@ ORYX.Core.Node = {
         }
         else {
             // Add a Magnet in the Center of Shape
-            var magnet = new ORYX.Core.Controls.Magnet();
+            const magnet = new ORYX.Core.Controls.Magnet();
             magnet.bounds.centerMoveTo(this.bounds.width() / 2, this.bounds.height() / 2);
             this.add(magnet);
         }
 
         /**initialize docker */
-        var dockerElem = svgDocument.getElementsByTagNameNS(ORYX.CONFIG.NAMESPACE_ORYX, "docker");
+        let dockerElem = svgDocument.getElementsByTagNameNS(ORYX.CONFIG.NAMESPACE_ORYX, "docker");
 
         if (dockerElem && dockerElem.length > 0) {
             dockerElem = dockerElem[0];
-            var docker = this.createDocker();
-            var cx = parseFloat(dockerElem.getAttributeNS(ORYX.CONFIG.NAMESPACE_ORYX, "cx"));
-            var cy = parseFloat(dockerElem.getAttributeNS(ORYX.CONFIG.NAMESPACE_ORYX, "cy"));
+            const docker = this.createDocker();
+            const cx = parseFloat(dockerElem.getAttributeNS(ORYX.CONFIG.NAMESPACE_ORYX, "cx"));
+            const cy = parseFloat(dockerElem.getAttributeNS(ORYX.CONFIG.NAMESPACE_ORYX, "cy"));
             docker.bounds.centerMoveTo({
                 x: cx - offsetX,
                 y: cy - offsetY
             });
 
             //get anchors
-            var anchors = dockerElem.getAttributeNS(ORYX.CONFIG.NAMESPACE_ORYX, "anchors");
+            let anchors = dockerElem.getAttributeNS(ORYX.CONFIG.NAMESPACE_ORYX, "anchors");
             if (anchors) {
                 anchors = anchors.replace("/,/g", " ");
                 anchors = anchors.split(" ").without("");
 
-				for(var i = 0; i < anchors.length; i++) {
+				for(let i = 0; i < anchors.length; i++) {
 					switch(anchors[i].toLowerCase()) {
 						case "left":
 							docker.anchorLeft = true;
@@ -14953,9 +14953,9 @@ ORYX.Core.Node = {
         }
 
         /**initialize labels*/
-        var textElems = svgNode.getElementsByTagNameNS(ORYX.CONFIG.NAMESPACE_SVG, 'text');
+        const textElems = svgNode.getElementsByTagNameNS(ORYX.CONFIG.NAMESPACE_SVG, 'text');
         $A(textElems).each((function(textElem){
-            var label = new ORYX.Core.SVG.Label({
+            const label = new ORYX.Core.SVG.Label({
                 textElement: textElem,
 				shapeId: this.id
             });
@@ -14974,21 +14974,21 @@ ORYX.Core.Node = {
     },
 
     fitToLabels: function() {
-    	var y = 0;
+    	let y = 0;
 
     	this.getLabels().each(function(label){
-    		var lr = label.getY() + label.getHeight();
+    		const lr = label.getY() + label.getHeight();
     		if(lr > y) {
     			y = lr;
     		}
     	});
 
-    	var bounds = this.bounds;
-    	var boundsChanged = false;
+    	const bounds = this.bounds;
+    	let boundsChanged = false;
 
     	if(this.minimumSize) {
     		// Check if y-value exceeds the min-value. If not, stick to this value.
-    		var minHeight = this.minimumSize.height;
+    		const minHeight = this.minimumSize.height;
     		if(y < minHeight && bounds.height() > minHeight && minHeight > this.forcedHeight) {
     			bounds.set(bounds.upperLeft().x, bounds.upperLeft().y, bounds.lowerRight().x, bounds.upperLeft().y + minHeight);
     			boundsChanged = true;
@@ -15009,7 +15009,7 @@ ORYX.Core.Node = {
 
     		// Re-select if needed to force the select
     		if(this.facade.getSelection().member(this)) {
-    			var selectedNow = this.facade.getSelection();
+    			const selectedNow = this.facade.getSelection();
     			this.facade.setSelection([]);
     			this.facade.setSelection(selectedNow);
     		}
@@ -15021,7 +15021,7 @@ ORYX.Core.Node = {
 	 *
 	 */
 	createDocker: function() {
-		var docker = new ORYX.Core.Controls.Docker({eventHandlerCallback: this.eventHandlerCallback});
+		const docker = new ORYX.Core.Controls.Docker({eventHandlerCallback: this.eventHandlerCallback});
 		docker.bounds.registerCallback(this._dockerChangedCallback);
 
 		this.dockers.push( docker );
@@ -15032,7 +15032,7 @@ ORYX.Core.Node = {
 	},
 
     toString: function(){
-        return this._stencil.title() + " " + this.id
+        return `${this._stencil.title()  } ${  this.id}`
     }
 };
 ORYX.Core.Node = ORYX.Core.Shape.extend(ORYX.Core.Node);
@@ -15096,7 +15096,7 @@ ORYX.Core.Edge = {
 		this.attachedNodePositionData = new Hash();
 
         //TODO was muss hier initial erzeugt werden?
-        var stencilNode = this.node.childNodes[0].childNodes[0];
+        let stencilNode = this.node.childNodes[0].childNodes[0];
         stencilNode = ORYX.Editor.graft("http://www.w3.org/2000/svg", stencilNode, ['g', {
             "pointer-events": "painted"
         }]);
@@ -15122,8 +15122,8 @@ ORYX.Core.Edge = {
 			this.dockers.invoke("update");
 
 	        if (false && (this.bounds.width() === 0 || this.bounds.height() === 0)) {
-				var width = this.bounds.width();
-				var height = this.bounds.height();
+				const width = this.bounds.width();
+				const height = this.bounds.height();
 	            this.bounds.extend({
 	                x: width === 0 ? 2 : 0,
 	                y: height === 0 ? 2 : 0
@@ -15136,14 +15136,14 @@ ORYX.Core.Edge = {
 	        }
 
 	        // TODO: Bounds muss abhaengig des Eltern-Shapes gesetzt werden
-	        var upL = this.bounds.upperLeft();
-	        var oldUpL = this._oldBounds.upperLeft();
-	        var oldWidth = this._oldBounds.width() === 0 ? this.bounds.width() : this._oldBounds.width();
-	        var oldHeight = this._oldBounds.height() === 0 ? this.bounds.height() : this._oldBounds.height();
-	        var diffX = upL.x - oldUpL.x;
-	        var diffY = upL.y - oldUpL.y;
-	        var diffWidth = (this.bounds.width() / oldWidth) || 1;
-	        var diffHeight = (this.bounds.height() / oldHeight) || 1;
+	        let upL = this.bounds.upperLeft();
+	        let oldUpL = this._oldBounds.upperLeft();
+	        const oldWidth = this._oldBounds.width() === 0 ? this.bounds.width() : this._oldBounds.width();
+	        const oldHeight = this._oldBounds.height() === 0 ? this.bounds.height() : this._oldBounds.height();
+	        let diffX = upL.x - oldUpL.x;
+	        let diffY = upL.y - oldUpL.y;
+	        let diffWidth = (this.bounds.width() / oldWidth) || 1;
+	        let diffHeight = (this.bounds.height() / oldHeight) || 1;
 
 	        this.dockers.each((function(docker){
 	            // Unregister on BoundsChangedCallback
@@ -15155,8 +15155,8 @@ ORYX.Core.Edge = {
 	                docker.bounds.moveBy(diffX, diffY);
 
 	                if (diffWidth !== 1 || diffHeight !== 1) {
-	                    var relX = docker.bounds.upperLeft().x - upL.x;
-	                    var relY = docker.bounds.upperLeft().y - upL.y;
+	                    const relX = docker.bounds.upperLeft().x - upL.x;
+	                    const relY = docker.bounds.upperLeft().y - upL.y;
 
 	                    docker.bounds.moveTo(upL.x + relX * diffWidth, upL.y + relY * diffHeight);
 	                }
@@ -15168,11 +15168,11 @@ ORYX.Core.Edge = {
 	        }).bind(this));
 
 	        if (this._dockerUpdated) {
-	            var a = this.dockers.first().bounds.center();
-	            var b = this.dockers.first().bounds.center();
+	            const a = this.dockers.first().bounds.center();
+	            const b = this.dockers.first().bounds.center();
 
 	            this.dockers.each((function(docker){
-	                var center = docker.bounds.center();
+	                const center = docker.bounds.center();
 	                a.x = Math.min(a.x, center.x);
 	                a.y = Math.min(a.y, center.y);
 	                b.x = Math.max(b.x, center.x);
@@ -15191,13 +15191,13 @@ ORYX.Core.Edge = {
 			this.getLabels().each(function(label) {
 
 				if (label.getReferencePoint()){
-					var ref = label.getReferencePoint();
-					var from = ref.segment.from, to = ref.segment.to;
+					const ref = label.getReferencePoint();
+					const from = ref.segment.from, to = ref.segment.to;
 					if (!from || !from.parent || !to || !to.parent) {
 						return;
 					}
 
-					var fromPosition = from.bounds.center(), toPosition = to.bounds.center();
+					const fromPosition = from.bounds.center(), toPosition = to.bounds.center();
 
 					if (fromPosition.x === ref.segment.fromPosition.x && fromPosition.y === ref.segment.fromPosition.y &&
 						toPosition.x === ref.segment.toPosition.x && toPosition.y === ref.segment.toPosition.y && !ref.dirty){
@@ -15205,19 +15205,19 @@ ORYX.Core.Edge = {
 					}
 
 					if (!this.parent.initializingShapes) {
-						var oldDistance = ORYX.Core.Math.getDistanceBetweenTwoPoints(ref.segment.fromPosition, ref.segment.toPosition, ref.intersection);
-						var newIntersection = ORYX.Core.Math.getPointBetweenTwoPoints(fromPosition, toPosition, isNaN(oldDistance) ? 0.5 : oldDistance);
+						const oldDistance = ORYX.Core.Math.getDistanceBetweenTwoPoints(ref.segment.fromPosition, ref.segment.toPosition, ref.intersection);
+						const newIntersection = ORYX.Core.Math.getPointBetweenTwoPoints(fromPosition, toPosition, isNaN(oldDistance) ? 0.5 : oldDistance);
 
 						/**
 						 * Set position
 						 */
 						// Get the orthogonal identity vector of the current segment
 						var oiv = ORYX.Core.Math.getOrthogonalIdentityVector(fromPosition, toPosition);
-						var isHor = Math.abs(oiv.y)===1, isVer = Math.abs(oiv.x)===1;
+						const isHor = Math.abs(oiv.y)===1, isVer = Math.abs(oiv.x)===1;
 						oiv.x *= ref.distance; oiv.y *= ref.distance; 				// vector * distance
 						oiv.x += newIntersection.x; oiv.y += newIntersection.y; 	// vector + the intersection point
-						var mx = isHor && ref.orientation && (ref.iorientation||ref.orientation).endsWith("r") ? -label.getWidth() : 0;
-						var my = isVer && ref.orientation && (ref.iorientation||ref.orientation).startsWith("l") ? -label.getHeight()+2 : 0;
+						const mx = isHor && ref.orientation && (ref.iorientation||ref.orientation).endsWith("r") ? -label.getWidth() : 0;
+						const my = isVer && ref.orientation && (ref.iorientation||ref.orientation).startsWith("l") ? -label.getHeight()+2 : 0;
 						label.setX(oiv.x+mx); label.setY(oiv.y+my);
 
 						// Update the reference point
@@ -15235,12 +15235,12 @@ ORYX.Core.Edge = {
 
 				// Update label position if no reference point is set
 				if (label.position && !this.parent.initializingShapes){
-					var x = label.position.x + (diffX * (diffWidth||1));
+					let x = label.position.x + (diffX * (diffWidth||1));
 					if (x > this.bounds.lowerRight().x){
 						x += this.bounds.width()-(this.bounds.width()/(diffWidth||1));
 					}
 
-					var y = label.position.y + (diffY * (diffHeight||1));
+					let y = label.position.y + (diffY * (diffHeight||1));
 					if (y > this.bounds.lowerRight().y){
 						y += this.bounds.height()-(this.bounds.height()/(diffHeight||1));
 					}
@@ -15446,7 +15446,7 @@ ORYX.Core.Edge = {
 
 
   	    // IE10 specific fix, start and end-markes get left behind when moving path
-		var userAgent = navigator.userAgent;
+		const userAgent = navigator.userAgent;
 		if (navigator.appVersion.indexOf("MSIE 10") !== -1 || (userAgent.indexOf('Trident') !== -1 && userAgent.indexOf('rv:11') !== -1))
 		{
 			this.node.parentNode.insertBefore(this.node, this.node);
@@ -15471,12 +15471,12 @@ ORYX.Core.Edge = {
 	 */
 	refreshAttachedNodes: function() {
 		this.attachedNodePositionData.values().each(function(nodeData) {
-			var startPoint = nodeData.segment.docker1.bounds.center();
-			var endPoint = nodeData.segment.docker2.bounds.center();
+			const startPoint = nodeData.segment.docker1.bounds.center();
+			const endPoint = nodeData.segment.docker2.bounds.center();
 			this.relativizePoint(startPoint);
 			this.relativizePoint(endPoint);
 
-			var newNodePosition = new Object();
+			const newNodePosition = new Object();
 
 			/* Calculate new x-coordinate */
 			newNodePosition.x = startPoint.x
@@ -15509,7 +15509,7 @@ ORYX.Core.Edge = {
 	 */
 	calculatePositionOfAttachedChildNode: function(node) {
 		/* Initialize position */
-		var position = new Object();
+		const position = new Object();
 		position.x = 0;
 		position.y = 0;
 
@@ -15537,17 +15537,17 @@ ORYX.Core.Edge = {
 	 * 		The concerning node
 	 */
 	findEdgeSegmentForNode: function(node) {
-		var length = this.dockers.length;
-		var smallestDistance = undefined;
+		const length = this.dockers.length;
+		let smallestDistance = undefined;
 
 		for(i=1;i<length;i++) {
-			var lineP1 = this.dockers[i-1].bounds.center();
-			var lineP2 = this.dockers[i].bounds.center();
+			const lineP1 = this.dockers[i-1].bounds.center();
+			const lineP2 = this.dockers[i].bounds.center();
 			this.relativizePoint(lineP1);
 			this.relativizePoint(lineP2);
 
-			var nodeCenterPoint = node.bounds.center();
-			var distance = ORYX.Core.Math.distancePointLinie(
+			const nodeCenterPoint = node.bounds.center();
+			const distance = ORYX.Core.Math.distancePointLinie(
 															lineP1,
 															lineP2,
 															nodeCenterPoint,
@@ -15601,18 +15601,18 @@ ORYX.Core.Edge = {
 	 */
  	findSegment: function(node){
 
-		var length = this.dockers.length;
-		var result;
+		const length = this.dockers.length;
+		let result;
 
-		var nodeCenterPoint = node instanceof ORYX.Core.UIObject ? node.bounds.center() : node;
+		const nodeCenterPoint = node instanceof ORYX.Core.UIObject ? node.bounds.center() : node;
 
 		for (i = 1; i < length; i++) {
-			var lineP1 = this.dockers[i - 1].bounds.center();
-			var lineP2 = this.dockers[i].bounds.center();
+			const lineP1 = this.dockers[i - 1].bounds.center();
+			const lineP2 = this.dockers[i].bounds.center();
 
-			var distance = ORYX.Core.Math.distancePointLinie(lineP1, lineP2, nodeCenterPoint, true);
+			const distance = ORYX.Core.Math.distancePointLinie(lineP1, lineP2, nodeCenterPoint, true);
 
-			if (typeof distance == "number" && (result === undefined || distance < result.distance)) {
+			if (typeof distance === "number" && (result === undefined || distance < result.distance)) {
 				result = {
 					distance: distance,
 					fromDocker: this.dockers[i - 1],
@@ -15639,12 +15639,12 @@ ORYX.Core.Edge = {
 	 * 		The scalar value to determine the position on the line
 	 */
 	getLineParameterForPosition: function(docker1, docker2, node) {
-		var dockerPoint1 = docker1.bounds.center();
-		var dockerPoint2 = docker2.bounds.center();
+		const dockerPoint1 = docker1.bounds.center();
+		const dockerPoint2 = docker2.bounds.center();
 		this.relativizePoint(dockerPoint1);
 		this.relativizePoint(dockerPoint2);
 
-		var intersectionPoint = ORYX.Core.Math.getPointOfIntersectionPointLine(
+		const intersectionPoint = ORYX.Core.Math.getPointOfIntersectionPointLine(
 									dockerPoint1,
 									dockerPoint2,
 									node.bounds.center(), true);
@@ -15652,7 +15652,7 @@ ORYX.Core.Edge = {
 			return 0;
 		}
 
-		var relativeDistance =
+		const relativeDistance =
 			ORYX.Core.Math.getDistancePointToPoint(intersectionPoint, dockerPoint1) /
 			ORYX.Core.Math.getDistancePointToPoint(dockerPoint1, dockerPoint2);
 
@@ -15678,7 +15678,7 @@ ORYX.Core.Edge = {
 	 */
 	optimizedUpdate: function(){
 
-		var updateDocker = function(docker){
+		const updateDocker = function(docker){
 			if (!docker._dockedShape || !docker._dockedShapeBounds)
 				return;
 			var off = {
@@ -15700,25 +15700,25 @@ ORYX.Core.Edge = {
         arguments.callee.$.refresh.apply(this, arguments);
 
         //TODO consider points for marker mids
-        var lastPoint;
+        let lastPoint;
         this._paths.each((function(path, index){
-            var dockers = this._dockersByPath[path.id];
-            var c = undefined;
-			var d = undefined;
+            const dockers = this._dockersByPath[path.id];
+            let c = undefined;
+			let d = undefined;
             if (lastPoint) {
-                d = "M" + lastPoint.x + " " + lastPoint.y;
+                d = `M${  lastPoint.x  } ${  lastPoint.y}`;
             }
             else {
                 c = dockers[0].bounds.center();
                 lastPoint = c;
 
-                d = "M" + c.x + " " + c.y;
+                d = `M${  c.x  } ${  c.y}`;
             }
 
-            for (var i = 1; i < dockers.length; i++) {
+            for (let i = 1; i < dockers.length; i++) {
                 // for each docker, draw a line to the center
                 c = dockers[i].bounds.center();
-                d = d + "L" + c.x + " " + c.y + " ";
+                d = `${d  }L${  c.x  } ${  c.y  } `;
                 lastPoint = c;
             }
 
@@ -15730,10 +15730,10 @@ ORYX.Core.Edge = {
 
 		/* move child shapes of an edge */
 		if(this.getChildNodes().length > 0) {
-	        var x = this.bounds.upperLeft().x;
-	        var y = this.bounds.upperLeft().y;
+	        const x = this.bounds.upperLeft().x;
+	        const y = this.bounds.upperLeft().y;
 
-			this.node.firstChild.childNodes[1].setAttributeNS(null, "transform", "translate(" + x + ", " + y + ")");
+			this.node.firstChild.childNodes[1].setAttributeNS(null, "transform", `translate(${  x  }, ${  y  })`);
 		}
 
     },
@@ -15745,7 +15745,7 @@ ORYX.Core.Edge = {
      */
     getIntersectionPoint: function(){
 
-        var length = Math.floor(this.dockers.length / 2)
+        const length = Math.floor(this.dockers.length / 2)
 
         return ORYX.Core.Math.midPoint(this.dockers[length - 1].bounds.center(), this.dockers[length].bounds.center())
     },
@@ -15756,11 +15756,11 @@ ORYX.Core.Edge = {
      *
      */
     isBoundsIncluded: function(bounds){
-		var dockers = this.dockers, size = dockers.length;
+		const dockers = this.dockers, size = dockers.length;
 		return dockers.any(function(docker, i){
 			if (i == size-1){ return false; }
-			var a = docker.bounds.center();
-			var b = dockers[i+1].bounds.center();
+			const a = docker.bounds.center();
+			const b = dockers[i+1].bounds.center();
 
 			return ORYX.Core.Math.isRectOverLine(a.x, a.y, b.x, b.y, bounds.a.x, bounds.a.y, bounds.b.x, bounds.b.y);
 		});
@@ -15773,15 +15773,15 @@ ORYX.Core.Edge = {
      */
     isPointIncluded: function(pointX, pointY){
 
-        var isbetweenAB = this.absoluteBounds().isIncluded(pointX, pointY,
+        const isbetweenAB = this.absoluteBounds().isIncluded(pointX, pointY,
 												ORYX.CONFIG.OFFSET_EDGE_BOUNDS);
 
-		var isPointIncluded = undefined;
+		let isPointIncluded = undefined;
 
         if (isbetweenAB && this.dockers.length > 0) {
 
-			var i = 0;
-			var point1, point2;
+			let i = 0;
+			let point1, point2;
 
 
 			do {
@@ -15831,8 +15831,8 @@ ORYX.Core.Edge = {
 	* (0 - 359.99999999)
 	*/
 	_getAngle: function(docker1, docker2) {
-		var p1 = docker1 instanceof ORYX.Core.Controls.Docker ? docker1.absoluteCenterXY() : docker1;
-		var p2 = docker2 instanceof ORYX.Core.Controls.Docker ? docker2.absoluteCenterXY() : docker2;
+		const p1 = docker1 instanceof ORYX.Core.Controls.Docker ? docker1.absoluteCenterXY() : docker1;
+		const p2 = docker2 instanceof ORYX.Core.Controls.Docker ? docker2.absoluteCenterXY() : docker2;
 
 		return ORYX.Core.Math.getAngle(p1, p2);
 	},
@@ -15840,16 +15840,16 @@ ORYX.Core.Edge = {
     alignDockers: function(){
         this._update(true);
 
-        var firstPoint = this.dockers.first().bounds.center();
-        var lastPoint = this.dockers.last().bounds.center();
+        const firstPoint = this.dockers.first().bounds.center();
+        const lastPoint = this.dockers.last().bounds.center();
 
-        var deltaX = lastPoint.x - firstPoint.x;
-        var deltaY = lastPoint.y - firstPoint.y;
+        const deltaX = lastPoint.x - firstPoint.x;
+        const deltaY = lastPoint.y - firstPoint.y;
 
-        var numOfDockers = this.dockers.length - 1;
+        const numOfDockers = this.dockers.length - 1;
 
         this.dockers.each((function(docker, index){
-            var part = index / numOfDockers;
+            const part = index / numOfDockers;
             docker.bounds.unregisterCallback(this._dockerChangedCallback);
             docker.bounds.moveTo(firstPoint.x + part * deltaX, firstPoint.y + part * deltaY);
             docker.bounds.registerCallback(this._dockerChangedCallback);
@@ -15864,7 +15864,7 @@ ORYX.Core.Edge = {
 		// If the new shape is a Docker which is not contained
 		if (shape instanceof ORYX.Core.Controls.Docker && this.dockers.include(shape)){
 			// Add it to the dockers list ordered by paths
-			var pathArray = this._dockersByPath.values()[0];
+			const pathArray = this._dockersByPath.values()[0];
 			if (pathArray) {
 				pathArray.splice(this.dockers.indexOf(shape), 0, shape);
 			}
@@ -15882,32 +15882,32 @@ ORYX.Core.Edge = {
 	 */
 	handleChildShapesAfterAddDocker: function(docker) {
 		/* Ensure type of Docker */
-		if(!docker instanceof ORYX.Core.Controls.Docker) {return undefined;}
+		if(!(docker instanceof ORYX.Core.Controls.Docker)) {return undefined;}
 
-		var index = this.dockers.indexOf(docker);
-		if(!(0 < index && index < this.dockers.length - 1)) {
+		const index = this.dockers.indexOf(docker);
+		if(!(index > 0 && index < this.dockers.length - 1)) {
 		/* Exception: Expect added docker between first and last node of the edge */
 			return undefined;
 		}
 
 		/* Get child nodes concerning the segment of the new docker */
-		var startDocker = this.dockers[index-1];
-		var endDocker = this.dockers[index+1];
+		const startDocker = this.dockers[index-1];
+		const endDocker = this.dockers[index+1];
 
 		/* Adjust the position of edge's child nodes */
-		var segmentElements =
+		const segmentElements =
 			this.getAttachedNodePositionDataForSegment(startDocker, endDocker);
 
-		var lengthSegmentPart1 = ORYX.Core.Math.getDistancePointToPoint(
+		const lengthSegmentPart1 = ORYX.Core.Math.getDistancePointToPoint(
 										startDocker.bounds.center(),
 										docker.bounds.center());
-		var lengthSegmentPart2 = ORYX.Core.Math.getDistancePointToPoint(
+		const lengthSegmentPart2 = ORYX.Core.Math.getDistancePointToPoint(
 										endDocker.bounds.center(),
 										docker.bounds.center());
 
 		if(!(lengthSegmentPart1 + lengthSegmentPart2)) {return;}
 
-		var relativDockerPosition = lengthSegmentPart1 / (lengthSegmentPart1 + lengthSegmentPart2);
+		const relativDockerPosition = lengthSegmentPart1 / (lengthSegmentPart1 + lengthSegmentPart2);
 
 		segmentElements.each(function(nodePositionData) {
 			/* Assign child node to the new segment */
@@ -15919,8 +15919,8 @@ ORYX.Core.Edge = {
 			} else {
 				/* Case: after added Docker */
 				nodePositionData.value.segment.docker1 = docker;
-				var newFullDistance = 1 - relativDockerPosition;
-				var relativPartOfSegment =
+				const newFullDistance = 1 - relativDockerPosition;
+				const relativPartOfSegment =
 							nodePositionData.value.relativDistanceFromDocker1
 							- relativDockerPosition;
 
@@ -15934,23 +15934,23 @@ ORYX.Core.Edge = {
 		// Update all labels reference points
 		this.getLabels().each(function(label){
 
-			var ref = label.getReferencePoint();
+			const ref = label.getReferencePoint();
 			if (!ref) {
 				return;
 			}
-			var index = this.dockers.indexOf(docker);
+			const index = this.dockers.indexOf(docker);
 			if (index >= ref.segment.fromIndex && index <= ref.segment.toIndex){
 
-				var segment = this.findSegment(ref.intersection);
+				const segment = this.findSegment(ref.intersection);
 				if (!segment){
 					// Choose whether the first of the last segment
 					segment.fromDocker = ref.segment.fromIndex >= (this.dockers.length/2) ? this.dockers[0] : this.dockers[this.dockers.length-2];
 					segment.toDocker = this.dockers[this.dockers.indexOf(from)+1]; // The next one if the to docker
 				}
 
-				var fromPosition = segment.fromDocker.bounds.center(), toPosition = segment.toDocker.bounds.center();
+				const fromPosition = segment.fromDocker.bounds.center(), toPosition = segment.toDocker.bounds.center();
 
-				var intersection = ORYX.Core.Math.getPointOfIntersectionPointLine(
+				const intersection = ORYX.Core.Math.getPointOfIntersectionPointLine(
 										fromPosition, 		// P1 - Center of the first docker
 										toPosition, 		// P2 - Center of the second docker
 										ref.intersection, 	// P3 - Center of the label
@@ -15987,7 +15987,7 @@ ORYX.Core.Edge = {
 			}
 
 		/* Get elements of the segment */
-		var elementsOfSegment =
+		const elementsOfSegment =
 			this.attachedNodePositionData.findAll(function(nodePositionData) {
 				return nodePositionData.value.segment.docker1 === startDocker &&
 						nodePositionData.value.segment.docker2 === endDocker;
@@ -16020,11 +16020,11 @@ ORYX.Core.Edge = {
 			return;
 		}
 
-		var ref = label.getReferencePoint();
+		const ref = label.getReferencePoint();
 
 		//
 		if (ref.orientation && ref.orientation !== "ce"){
-			var angle = this._getAngle(from, to);
+			const angle = this._getAngle(from, to);
 			if (ref.distance >= 0){
 				if(angle == 0){
 					label.horizontalAlign("left");//ref.orientation == "lr" ? "right" : "left");
@@ -16123,18 +16123,18 @@ ORYX.Core.Edge = {
 		// Update all labels reference points
 		this.getLabels().each(function(label){
 
-			var ref = label.getReferencePoint();
+			const ref = label.getReferencePoint();
 			if (!ref) {
 				return;
 			}
-			var from = ref.segment.from;
-			var to = ref.segment.to;
+			let from = ref.segment.from;
+			let to = ref.segment.to;
 
 			if (from !== docker && to !== docker){
 				return;
 			}
 
-			var segment = this.findSegment(ref.intersection);
+			const segment = this.findSegment(ref.intersection);
 			if (!segment){
 				from = segment.fromDocker;
 				to = segment.toDocker;
@@ -16143,7 +16143,7 @@ ORYX.Core.Edge = {
 				to = this.dockers[this.dockers.indexOf(from)+1];
 			}
 
-			var intersection = ORYX.Core.Math.getPointOfIntersectionPointLine(from.bounds.center(), to.bounds.center(), ref.intersection, true);
+			const intersection = ORYX.Core.Math.getPointOfIntersectionPointLine(from.bounds.center(), to.bounds.center(), ref.intersection, true);
 			// Update the reference point
 			this.updateReferencePointOfLabel(label, intersection, from, to, true);
 		}.bind(this));
@@ -16156,8 +16156,8 @@ ORYX.Core.Edge = {
      *@deprecated Use the .createDocker() Method and set the point via the bounds
      */
     addDocker: function(position, exDocker){
-        var lastDocker;
-		var result;
+        let lastDocker;
+		let result;
         this._dockersByPath.any((function(pair){
             return pair.value.any((function(docker, index){
                 if (!lastDocker) {
@@ -16165,15 +16165,15 @@ ORYX.Core.Edge = {
                     return false;
                 }
                 else {
-                    var point1 = lastDocker.bounds.center();
-                    var point2 = docker.bounds.center();
+                    const point1 = lastDocker.bounds.center();
+                    const point2 = docker.bounds.center();
 
-                    var additionalIEZoom = 1;
+                    let additionalIEZoom = 1;
                     if (!isNaN(screen.logicalXDPI) && !isNaN(screen.systemXDPI)) {
-                        var ua = navigator.userAgent;
+                        const ua = navigator.userAgent;
                         if (ua.indexOf('MSIE') >= 0) {
                             //IE 10 and below
-                            var zoom = Math.round((screen.deviceXDPI / screen.logicalXDPI) * 100);
+                            const zoom = Math.round((screen.deviceXDPI / screen.logicalXDPI) * 100);
                             if (zoom !== 100) {
                                 additionalIEZoom = zoom / 100
                             }
@@ -16186,17 +16186,17 @@ ORYX.Core.Edge = {
                     }
 
                     if (ORYX.Core.Math.isPointInLine(position.x, position.y, point1.x, point1.y, point2.x, point2.y, 10)) {
-                        var path = this._paths.find(function(path){
+                        const path = this._paths.find(function(path){
                             return path.id === pair.key;
                         });
                         if (path) {
-                            var allowAttr = path.getAttributeNS(NAMESPACE_ORYX, 'allowDockers');
+                            const allowAttr = path.getAttributeNS(NAMESPACE_ORYX, 'allowDockers');
                             if (allowAttr && allowAttr.toLowerCase() === "no") {
                                 return true;
                             }
                         }
 
-                        var newDocker = (exDocker) ? exDocker : this.createDocker(this.dockers.indexOf(lastDocker) + 1, position);
+                        const newDocker = (exDocker) ? exDocker : this.createDocker(this.dockers.indexOf(lastDocker) + 1, position);
 						newDocker.bounds.centerMoveTo(position);
                         if(exDocker)
 							this.add(newDocker, this.dockers.indexOf(lastDocker) + 1);
@@ -16240,21 +16240,21 @@ ORYX.Core.Edge = {
 	 * (key is the removed position of the docker, value is docker themselve)
 	 */
 	removeUnusedDockers:function(){
-		var marked = $H({});
+		const marked = $H({});
 
 		this.dockers.each(function(docker, i){
 			if (i==0||i==this.dockers.length-1){ return }
-			var previous = this.dockers[i-1];
+			let previous = this.dockers[i-1];
 
 			/* Do not consider already removed dockers */
 			if(marked.values().indexOf(previous) != -1 && this.dockers[i-2]) {
 				previous = this.dockers[i-2];
 			}
-			var next = this.dockers[i+1];
+			const next = this.dockers[i+1];
 
-			var cp = previous.getDockedShape() && previous.referencePoint ? previous.getAbsoluteReferencePoint() : previous.bounds.center();
-			var cn = next.getDockedShape() && next.referencePoint ? next.getAbsoluteReferencePoint() : next.bounds.center();
-			var cd = docker.bounds.center();
+			const cp = previous.getDockedShape() && previous.referencePoint ? previous.getAbsoluteReferencePoint() : previous.bounds.center();
+			const cn = next.getDockedShape() && next.referencePoint ? next.getAbsoluteReferencePoint() : next.bounds.center();
+			const cd = docker.bounds.center();
 
 			if (ORYX.Core.Math.isPointInLine(cd.x, cd.y, cp.x, cp.y, cn.x, cn.y, 1)){
 				marked[i] = docker;
@@ -16279,21 +16279,21 @@ ORYX.Core.Edge = {
     _init: function(svgDocument){
         arguments.callee.$._init.apply(this, arguments);
 
-        var minPointX, minPointY, maxPointX, maxPointY;
+        let minPointX, minPointY, maxPointX, maxPointY;
 
         //init markers
-        var defs = svgDocument.getElementsByTagNameNS(NAMESPACE_SVG, "defs");
+        let defs = svgDocument.getElementsByTagNameNS(NAMESPACE_SVG, "defs");
         if (defs.length > 0) {
             defs = defs[0];
-            var markerElements = $A(defs.getElementsByTagNameNS(NAMESPACE_SVG, "marker"));
-            var marker;
-            var me = this;
+            const markerElements = $A(defs.getElementsByTagNameNS(NAMESPACE_SVG, "marker"));
+            let marker;
+            const me = this;
             markerElements.each(function(markerElement){
                 try {
                     marker = new ORYX.Core.SVG.SVGMarker(markerElement.cloneNode(true));
                     me._markers[marker.id] = marker;
-                    var textElements = $A(marker.element.getElementsByTagNameNS(NAMESPACE_SVG, "text"));
-                    var label;
+                    const textElements = $A(marker.element.getElementsByTagNameNS(NAMESPACE_SVG, "text"));
+                    let label;
                     textElements.each(function(textElement){
                         label = new ORYX.Core.SVG.Label({
                             textElement: textElement,
@@ -16308,35 +16308,35 @@ ORYX.Core.Edge = {
         }
 
 
-        var gs = svgDocument.getElementsByTagNameNS(NAMESPACE_SVG, "g");
+        const gs = svgDocument.getElementsByTagNameNS(NAMESPACE_SVG, "g");
         if (gs.length <= 0) {
             throw "Edge: No g element found.";
         }
-        var g = gs[0];
+        const g = gs[0];
 
 
         g.setAttributeNS(null, "id", null);
 
-        var isFirst = true;
+        let isFirst = true;
 
         $A(g.childNodes).each((function(path, index){
             if (ORYX.Editor.checkClassType(path, SVGPathElement)) {
                 path = path.cloneNode(false);
 
-                var pathId = this.id + "_" + index;
+                const pathId = this.id + "_" + index;
                 path.setAttributeNS(null, "id", pathId);
                 this._paths.push(path);
 
                 //check, if markers are set and update the id
-                var markersByThisPath = [];
-                var markerUrl = path.getAttributeNS(null, "marker-start");
+                const markersByThisPath = [];
+                let markerUrl = path.getAttributeNS(null, "marker-start");
 
                 if (markerUrl && markerUrl !== "") {
                     markerUrl = markerUrl.strip();
                     markerUrl = markerUrl.replace(/^url\(#/, '');
 
-                    var markerStartId = this.getValidMarkerId(markerUrl);
-                    path.setAttributeNS(null, "marker-start", "url(#" + markerStartId + ")");
+                    const markerStartId = this.getValidMarkerId(markerUrl);
+                    path.setAttributeNS(null, "marker-start", `url(#${  markerStartId  })`);
 
                     markersByThisPath.push(this._markers[markerStartId]);
                 }
@@ -16346,8 +16346,8 @@ ORYX.Core.Edge = {
                 if (markerUrl && markerUrl !== "") {
                     markerUrl = markerUrl.strip();
                     markerUrl = markerUrl.replace(/^url\(#/, '');
-                    var markerMidId = this.getValidMarkerId(markerUrl);
-                    path.setAttributeNS(null, "marker-mid", "url(#" + markerMidId + ")");
+                    const markerMidId = this.getValidMarkerId(markerUrl);
+                    path.setAttributeNS(null, "marker-mid", `url(#${  markerMidId  })`);
 
                     markersByThisPath.push(this._markers[markerMidId]);
                 }
@@ -16357,8 +16357,8 @@ ORYX.Core.Edge = {
                 if (markerUrl && markerUrl !== "") {
                     markerUrl = markerUrl.strip();
 
-                    var markerEndId = this.getValidMarkerId(markerUrl);
-                    path.setAttributeNS(null, "marker-end", "url(#" + markerEndId + ")");
+                    const markerEndId = this.getValidMarkerId(markerUrl);
+                    path.setAttributeNS(null, "marker-end", `url(#${  markerEndId  })`);
 
                     markersByThisPath.push(this._markers[markerEndId]);
                 }
@@ -16366,8 +16366,8 @@ ORYX.Core.Edge = {
                 this._markersByPath[pathId] = markersByThisPath;
 
                 //init dockers
-                var parser = new PathParser();
-                var handler = new ORYX.Core.SVG.PointsPathHandler();
+                const parser = new PathParser();
+                const handler = new ORYX.Core.SVG.PointsPathHandler();
                 parser.setHandler(handler);
                 parser.parsePath(path);
 
@@ -16377,12 +16377,12 @@ ORYX.Core.Edge = {
 
                 this._dockersByPath[pathId] = [];
 
-				for (var i = 0; i < handler.points.length; i += 2) {
+				for (let i = 0; i < handler.points.length; i += 2) {
 					//handler.points.each((function(point, pIndex){
-					var x = handler.points[i];
-					var y = handler.points[i+1];
+					const x = handler.points[i];
+					const y = handler.points[i+1];
 					if (isFirst || i > 0) {
-						var docker = new ORYX.Core.Controls.Docker({
+						const docker = new ORYX.Core.Controls.Docker({
 							eventHandlerCallback: this.eventHandlerCallback
 						});
 						docker.bounds.centerMoveTo(x,y);
@@ -16419,8 +16419,8 @@ ORYX.Core.Edge = {
         this.bounds.set(minPointX, minPointY, maxPointX, maxPointY);
 
         if (false&&(this.bounds.width() === 0 || this.bounds.height() === 0)) {
-			var width = this.bounds.width();
-			var height = this.bounds.height();
+			const width = this.bounds.width();
+			const height = this.bounds.height();
 
             this.bounds.extend({
                 x: width === 0 ? 2 : 0,
@@ -16438,7 +16438,7 @@ ORYX.Core.Edge = {
 
         //add paths to this.node
         this._paths.reverse();
-        var paths = [];
+        const paths = [];
         this._paths.each((function(path){
             paths.push(this.node.childNodes[0].childNodes[0].childNodes[0].appendChild(path));
         }).bind(this));
@@ -16447,7 +16447,7 @@ ORYX.Core.Edge = {
 
         //init interaction path
         this._paths.each((function(path){
-            var iPath = path.cloneNode(false);
+            const iPath = path.cloneNode(false);
 			iPath.setAttributeNS(null, "id", undefined);
             iPath.setAttributeNS(null, "stroke-width", 10);
             iPath.setAttributeNS(null, "visibility", "hidden");
@@ -16462,10 +16462,10 @@ ORYX.Core.Edge = {
         this._interactionPaths.reverse();
 
 		/**initialize labels*/
-        var textElems = svgDocument.getElementsByTagNameNS(ORYX.CONFIG.NAMESPACE_SVG, 'text');
+        const textElems = svgDocument.getElementsByTagNameNS(ORYX.CONFIG.NAMESPACE_SVG, 'text');
 
 		$A(textElems).each((function(textElem){
-            var label = new ORYX.Core.SVG.Label({
+            const label = new ORYX.Core.SVG.Label({
                 textElement: textElem,
 				shapeId: this.id
             });
@@ -16493,7 +16493,7 @@ ORYX.Core.Edge = {
     getValidMarkerId: function(markerUrl) {
     	if(markerUrl.indexOf("url(\"#") >= 0) {
             // Fix for IE9, additional quotes are added to the <id
-            var rawId = markerUrl.replace(/^url\(\"#/, "").replace(/\"\)$/, '');
+            const rawId = markerUrl.replace(/^url\(\"#/, "").replace(/\"\)$/, '');
             return this.id + rawId;
           } else {
             markerUrl = markerUrl.replace(/^url\(#/, '');
@@ -16518,13 +16518,13 @@ ORYX.Core.Edge = {
      * Has to be called, while this.node is part of DOM.
      */
     removeMarkers: function(){
-        var svgElement = this.node.ownerSVGElement;
+        const svgElement = this.node.ownerSVGElement;
         if (svgElement) {
-            var defs = svgElement.getElementsByTagNameNS(NAMESPACE_SVG, "defs");
+            let defs = svgElement.getElementsByTagNameNS(NAMESPACE_SVG, "defs");
             if (defs.length > 0) {
                 defs = defs[0];
                 this._markers.each(function(marker){
-                    var foundMarker = defs.ownerDocument.getElementById(marker.value.id);
+                    const foundMarker = defs.ownerDocument.getElementById(marker.value.id);
                     if (foundMarker) {
                         marker.value.element = defs.removeChild(marker.value.element);
                     }
@@ -16544,14 +16544,14 @@ ORYX.Core.Edge = {
     },
 
     serialize: function(){
-        var result = arguments.callee.$.serialize.apply(this);
+        let result = arguments.callee.$.serialize.apply(this);
 
         //add dockers triple
-        var value = "";
+        let value = "";
         this._dockersByPath.each((function(pair){
             pair.value.each(function(docker){
-                var position = docker.getDockedShape() && docker.referencePoint ? docker.referencePoint : docker.bounds.center();
-                value = value.concat(position.x + " " + position.y + " ");
+                const position = docker.getDockedShape() && docker.referencePoint ? docker.referencePoint : docker.bounds.center();
+                value = value.concat(`${position.x  } ${  position.y  } `);
             });
 
             value += " # ";
@@ -16615,22 +16615,22 @@ ORYX.Core.Edge = {
         //}
 
 		//serialize target and source
-		var lastDocker = this.dockers.last();
+		const lastDocker = this.dockers.last();
 
-		var target = lastDocker.getDockedShape();
+		const target = lastDocker.getDockedShape();
 
 		if(target) {
 			result.push({
 				name: 'target',
 				prefix: 'raziel',
-				value: '#' + ERDF.__stripHashes(target.resourceId),
+				value: `#${  ERDF.__stripHashes(target.resourceId)}`,
 				type: 'resource'
 			});
 		}
 
         try {
             //result = this.getStencil().serialize(this, result);
-			var serializeEvent = this.getStencil().serialize();
+			const serializeEvent = this.getStencil().serialize();
 
 			/*
 			 * call serialize callback by reference, result should be found
@@ -16658,7 +16658,7 @@ ORYX.Core.Edge = {
         try {
             //data = this.getStencil().deserialize(this, data);
 
-			var deserializeEvent = this.getStencil().deserialize();
+			const deserializeEvent = this.getStencil().deserialize();
 
 			/*
 			 * call serialize callback by reference, result should be found
@@ -16680,19 +16680,19 @@ ORYX.Core.Edge = {
         }
 
 		// Set the outgoing shapes
-		var target = data.find(function(ser) {return (ser.prefix+"-"+ser.name) == 'raziel-target'});
-		var targetShape;
+		const target = data.find(function(ser) {return (ser.prefix+"-"+ser.name) == 'raziel-target'});
+		let targetShape;
 		if(target) {
 			targetShape = this.getCanvas().getChildShapeByResourceId(target.value);
 		}
 
-		var outgoing = data.findAll(function(ser){ return (ser.prefix+"-"+ser.name) == 'raziel-outgoing'});
+		const outgoing = data.findAll(function(ser){ return (ser.prefix+"-"+ser.name) == 'raziel-outgoing'});
 		outgoing.each((function(obj){
 			// TODO: Look at Canvas
 			if(!this.parent) {return};
 
 			// Set outgoing Shape
-			var next = this.getCanvas().getChildShapeByResourceId(obj.value);
+			const next = this.getCanvas().getChildShapeByResourceId(obj.value);
 
 			if(next){
 				if(next == targetShape) {
@@ -16712,20 +16712,20 @@ ORYX.Core.Edge = {
 		}).bind(this));
 
 
-        var oryxDockers = data.find(function(obj){
+        const oryxDockers = data.find(function(obj){
             return (obj.prefix === "oryx" &&
             obj.name === "dockers");
         });
 
         if (oryxDockers) {
-            var dataByPath = oryxDockers.value.split("#").without("").without(" ");
+            const dataByPath = oryxDockers.value.split("#").without("").without(" ");
 
             dataByPath.each((function(data, index){
-                var values = data.replace(/,/g, " ").split(" ").without("");
+                const values = data.replace(/,/g, " ").split(" ").without("");
 
                 //for each docker two values must be defined
                 if (values.length % 2 === 0) {
-                    var path = this._paths[index];
+                    const path = this._paths[index];
 
                     if (path) {
                         if (index === 0) {
@@ -16739,7 +16739,7 @@ ORYX.Core.Edge = {
                             }
                         }
 
-                        var dockersByPath = this._dockersByPath[path.id];
+                        const dockersByPath = this._dockersByPath[path.id];
 
                         if (index === 0) {
                             //set position of first docker
@@ -16771,11 +16771,11 @@ ORYX.Core.Edge = {
                         }
 
                         //add additional dockers
-                        for (var i = 0; i < values.length; i++) {
+                        for (let i = 0; i < values.length; i++) {
                             x = parseFloat(values[i]);
                             y = parseFloat(values[++i]);
 
-                            var newDocker = this.createDocker();
+                            const newDocker = this.createDocker();
                             newDocker.bounds.centerMoveTo(x, y);
 
                             //this.dockers = this.dockers.without(newDocker);
@@ -16795,7 +16795,7 @@ ORYX.Core.Edge = {
     },
 
     toString: function(){
-        return this.getStencil().title() + " " + this.id;
+        return `${this.getStencil().title()  } ${  this.id}`;
     },
 
     /**
@@ -16818,7 +16818,7 @@ ORYX.Core.Edge = {
 	 * @return {boolean} True if edge is docked
 	 */
 	isDocked: function() {
-		var isDocked = false;
+		let isDocked = false;
 		this.dockers.each(function(docker) {
 			if(docker.isDocked()) {
 				isDocked = true;
@@ -16832,7 +16832,7 @@ ORYX.Core.Edge = {
      * Calls {@link ORYX.Core.AbstractShape#toJSON} and add a some stencil set information.
      */
     toJSON: function() {
-        var json = arguments.callee.$.toJSON.apply(this, arguments);
+        const json = arguments.callee.$.toJSON.apply(this, arguments);
 
         if(this.getTarget()) {
             json.target = {
@@ -16929,8 +16929,8 @@ ORYX.Plugins.AbstractPlugin = Clazz.extend({
 
 		// Define Shapes
 		shapes = shapes.map(function(shape){
-			var el = shape;
-			if( typeof shape == "string" ){
+			let el = shape;
+			if( typeof shape === "string" ){
 				el = this.facade.getCanvas().getChildShapeByResourceId( shape );
 				el = el || this.facade.getCanvas().getChildById( shape, true );
 			}
@@ -16976,8 +16976,8 @@ ORYX.Plugins.AbstractPlugin = Clazz.extend({
 			return ""
 		}
 
-        var parser 		= new DOMParser();
-        var parsedData 	= parser.parseFromString(data, "text/xml");
+        const parser 		= new DOMParser();
+        const parsedData 	= parser.parseFromString(data, "text/xml");
 		source=stylesheet;
 		new Ajax.Request(source, {
 			asynchronous: false,
@@ -16986,21 +16986,21 @@ ORYX.Plugins.AbstractPlugin = Clazz.extend({
 				xsl = transport.responseText
 			}.bind(this),
 			onFailure: (function(transport){
-				ORYX.Log.error("XSL load failed" + transport);
+				ORYX.Log.error(`XSL load failed${  transport}`);
 			}).bind(this)
 		});
-        var xsltProcessor = new XSLTProcessor();
-		var domParser = new DOMParser();
-		var xslObject = domParser.parseFromString(xsl, "text/xml");
+        const xsltProcessor = new XSLTProcessor();
+		const domParser = new DOMParser();
+		const xslObject = domParser.parseFromString(xsl, "text/xml");
         xsltProcessor.importStylesheet(xslObject);
 
         try {
 
-            var newData 		= xsltProcessor.transformToFragment(parsedData, document);
-            var serializedData 	= (new XMLSerializer()).serializeToString(newData);
+            const newData 		= xsltProcessor.transformToFragment(parsedData, document);
+            let serializedData 	= (new XMLSerializer()).serializeToString(newData);
 
            	/* Firefox 2 to 3 problem?! */
-            serializedData = !serializedData.startsWith("<?xml") ? "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + serializedData : serializedData;
+            serializedData = !serializedData.startsWith("<?xml") ? `<?xml version="1.0" encoding="UTF-8"?>${  serializedData}` : serializedData;
 
             return serializedData;
 
@@ -17018,7 +17018,7 @@ ORYX.Plugins.AbstractPlugin = Clazz.extend({
 	 * openDownloadWindow( "my.xml", "<exampleXML />" );
 	 */
 	openXMLWindow: function(content) {
-		var win = window.open(
+		const win = window.open(
 		   'data:application/xml,' + encodeURIComponent(
 		     content
 		   ),
@@ -17033,14 +17033,14 @@ ORYX.Plugins.AbstractPlugin = Clazz.extend({
      * @param {String} content The content to download
      */
 	openDownloadWindow: function(filename, content) {
-		var win = window.open("");
+		const win = window.open("");
 		if (win != null) {
 			win.document.open();
 			win.document.write("<html><body>");
-			var submitForm = win.document.createElement("form");
+			const submitForm = win.document.createElement("form");
 			win.document.body.appendChild(submitForm);
 
-			var createHiddenElement = function(name, value) {
+			const createHiddenElement = function(name, value) {
 				var newElement = document.createElement("input");
 				newElement.name=name;
 				newElement.type="hidden";
@@ -17055,7 +17055,7 @@ ORYX.Plugins.AbstractPlugin = Clazz.extend({
 			submitForm.method = "POST";
 			win.document.write("</body></html>");
 			win.document.close();
-			submitForm.action= ORYX.PATH + "/download";
+			submitForm.action= `${ORYX.PATH  }/download`;
 			submitForm.submit();
 		}
 	},
@@ -17067,27 +17067,27 @@ ORYX.Plugins.AbstractPlugin = Clazz.extend({
      */
     getSerializedDOM: function(){
         // Force to set all resource IDs
-        var serializedDOM = DataManager.serializeDOM( this.facade );
+        let serializedDOM = DataManager.serializeDOM( this.facade );
 
         //add namespaces
-        serializedDOM = '<?xml version="1.0" encoding="utf-8"?>' +
-        '<html xmlns="http://www.w3.org/1999/xhtml" ' +
-        'xmlns:b3mn="http://b3mn.org/2007/b3mn" ' +
-        'xmlns:ext="http://b3mn.org/2007/ext" ' +
-        'xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" ' +
-        'xmlns:atom="http://b3mn.org/2007/atom+xhtml">' +
-        '<head profile="http://purl.org/NET/erdf/profile">' +
-        '<link rel="schema.dc" href="http://purl.org/dc/elements/1.1/" />' +
-        '<link rel="schema.dcTerms" href="http://purl.org/dc/terms/ " />' +
-        '<link rel="schema.b3mn" href="http://b3mn.org" />' +
-        '<link rel="schema.oryx" href="http://oryx-editor.org/" />' +
-        '<link rel="schema.raziel" href="http://raziel.org/" />' +
-        '<base href="' +
-        location.href.split("?")[0] +
-        '" />' +
-        '</head><body>' +
-        serializedDOM +
-        '</body></html>';
+        serializedDOM = `<?xml version="1.0" encoding="utf-8"?>` +
+        `<html xmlns="http://www.w3.org/1999/xhtml" ` +
+        `xmlns:b3mn="http://b3mn.org/2007/b3mn" ` +
+        `xmlns:ext="http://b3mn.org/2007/ext" ` +
+        `xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" ` +
+        `xmlns:atom="http://b3mn.org/2007/atom+xhtml">` +
+        `<head profile="http://purl.org/NET/erdf/profile">` +
+        `<link rel="schema.dc" href="http://purl.org/dc/elements/1.1/" />` +
+        `<link rel="schema.dcTerms" href="http://purl.org/dc/terms/ " />` +
+        `<link rel="schema.b3mn" href="http://b3mn.org" />` +
+        `<link rel="schema.oryx" href="http://oryx-editor.org/" />` +
+        `<link rel="schema.raziel" href="http://raziel.org/" />` +
+        `<base href="${ 
+        location.href.split("?")[0] 
+        }" />` +
+        `</head><body>${ 
+        serializedDOM 
+        }</body></html>`;
 
         return serializedDOM;
     },
@@ -17132,8 +17132,8 @@ ORYX.Plugins.AbstractPlugin = Clazz.extend({
     getRDFFromDOM: function(){
         //convert to RDF
 		try {
-			var xsl = "";
-			source=ORYX.PATH + "lib/extract-rdf.xsl";
+			let xsl = "";
+			source=`${ORYX.PATH  }lib/extract-rdf.xsl`;
 			new Ajax.Request(source, {
 				asynchronous: false,
 				method: 'get',
@@ -17141,22 +17141,22 @@ ORYX.Plugins.AbstractPlugin = Clazz.extend({
 					xsl = transport.responseText
 				}.bind(this),
 				onFailure: (function(transport){
-					ORYX.Log.error("XSL load failed" + transport);
+					ORYX.Log.error(`XSL load failed${  transport}`);
 				}).bind(this)
 			});
 
-			var domParser = new DOMParser();
-			var xmlObject = domParser.parseFromString(this.getSerializedDOM(), "text/xml");
-			var xslObject = domParser.parseFromString(xsl, "text/xml");
-			var xsltProcessor = new XSLTProcessor();
+			const domParser = new DOMParser();
+			const xmlObject = domParser.parseFromString(this.getSerializedDOM(), "text/xml");
+			const xslObject = domParser.parseFromString(xsl, "text/xml");
+			const xsltProcessor = new XSLTProcessor();
 			xsltProcessor.importStylesheet(xslObject);
-			var result = xsltProcessor.transformToFragment(xmlObject, document);
+			const result = xsltProcessor.transformToFragment(xmlObject, document);
 
-			var serializer = new XMLSerializer();
+			const serializer = new XMLSerializer();
 
 			return serializer.serializeToString(result);
 		} catch(e){
-			console.log("error serializing " + e);
+			console.log(`error serializing ${  e}`);
 			return "";
 		}
 
@@ -17216,7 +17216,7 @@ ORYX.Plugins.AbstractPlugin = Clazz.extend({
 
 		if (!this.facade.isExecutingCommands()){ return }
 
-		var Command = ORYX.Core.Command.extend({
+		const Command = ORYX.Core.Command.extend({
 			construct: function(edges, node, offset, plugin){
 				this.edges = edges;
 				this.node = node;
@@ -17450,7 +17450,7 @@ ORYX.Plugins.AbstractLayouter = ORYX.Plugins.AbstractPlugin.extend({
 		// Return TRUE if there is any correlation between
 		// the 'layouted' attribute and the shape themselve.
 		return this.layouted.any(function(s){
-			if (typeof s == "string") {
+			if (typeof s === "string") {
 				return shape.getStencil().id().include(s);
 			} else {
 				return shape instanceof s;
@@ -17467,10 +17467,10 @@ ORYX.Plugins.AbstractLayouter = ORYX.Plugins.AbstractPlugin.extend({
 	_initLayout: function(event){
 
 		// Get the shapes
-		var shapes = [event.shapes].flatten().compact();
+		const shapes = [event.shapes].flatten().compact();
 
 		// Find all shapes which should be layouted
-		var toLayout = shapes.findAll(function(shape){
+		const toLayout = shapes.findAll(function(shape){
 			return this.isIncludedInLayout(shape)
 		}.bind(this))
 
@@ -17514,7 +17514,7 @@ ORYX.Plugins.Edit = Clazz.extend({
         this.facade.offer({
          name: ORYX.I18N.Edit.cut,
          description: ORYX.I18N.Edit.cutDesc,
-         icon: ORYX.PATH + "images/cut.png",
+         icon: `${ORYX.PATH  }images/cut.png`,
 		 keyCodes: [{
 				metaKeys: [ORYX.CONFIG.META_KEY_META_CTRL],
 				keyCode: 88,
@@ -17530,7 +17530,7 @@ ORYX.Plugins.Edit = Clazz.extend({
         this.facade.offer({
          name: ORYX.I18N.Edit.copy,
          description: ORYX.I18N.Edit.copyDesc,
-         icon: ORYX.PATH + "images/page_copy.png",
+         icon: `${ORYX.PATH  }images/page_copy.png`,
 		 keyCodes: [{
 				metaKeys: [ORYX.CONFIG.META_KEY_META_CTRL],
 				keyCode: 67,
@@ -17546,7 +17546,7 @@ ORYX.Plugins.Edit = Clazz.extend({
         this.facade.offer({
          name: ORYX.I18N.Edit.paste,
          description: ORYX.I18N.Edit.pasteDesc,
-         icon: ORYX.PATH + "images/page_paste.png",
+         icon: `${ORYX.PATH  }images/page_paste.png`,
 		 keyCodes: [{
 				metaKeys: [ORYX.CONFIG.META_KEY_META_CTRL],
 				keyCode: 86,
@@ -17564,7 +17564,7 @@ ORYX.Plugins.Edit = Clazz.extend({
         this.facade.offer({
             name: ORYX.I18N.Edit.del,
             description: ORYX.I18N.Edit.delDesc,
-            icon: ORYX.PATH + "images/cross.png",
+            icon: `${ORYX.PATH  }images/cross.png`,
 			keyCodes: [{
 					metaKeys: [ORYX.CONFIG.META_KEY_META_CTRL],
 					keyCode: 8,
@@ -17667,8 +17667,8 @@ ORYX.Plugins.Edit = Clazz.extend({
      * If one of the given shape is a child of another given shape, it is not put into the result.
      */
     getAllShapesToConsider: function(shapes){
-        var shapesToConsider = []; // only top-level shapes
-        var childShapesToConsider = []; // all child shapes of top-level shapes
+        let shapesToConsider = []; // only top-level shapes
+        let childShapesToConsider = []; // all child shapes of top-level shapes
 
         shapes.each(function(shape){
             //Throw away these shapes which have a parent in given shapes
@@ -17681,7 +17681,7 @@ ORYX.Plugins.Edit = Clazz.extend({
             shapesToConsider.push(shape);
             // Consider attached nodes (e.g. intermediate events)
             if (shape instanceof ORYX.Core.Node) {
-				var attached = shape.getOutgoingNodes();
+				let attached = shape.getOutgoingNodes();
 				attached = attached.findAll(function(a){ return !shapes.include(a) });
                 shapesToConsider = shapesToConsider.concat(attached);
             }
@@ -17691,7 +17691,7 @@ ORYX.Plugins.Edit = Clazz.extend({
 
         // All edges between considered child shapes should be considered
         // Look for these edges having incoming and outgoing in childShapesToConsider
-        var edgesToConsider = this.facade.getCanvas().getChildEdges().select(function(edge){
+        const edgesToConsider = this.facade.getCanvas().getChildEdges().select(function(edge){
             // Ignore if already added
             if(shapesToConsider.include(edge)) return false;
             // Ignore if there are no docked shapes
@@ -17725,7 +17725,7 @@ ORYX.Plugins.Edit = Clazz.extend({
      * @param {Object} will_not_update ??
      */
     editCopy: function( will_update, useNoOffset ){
-        var selection = this.facade.getSelection();
+        const selection = this.facade.getSelection();
 
         //if the selection is empty, do not remove the previously copied elements
         if(selection.length == 0) return;
@@ -17741,7 +17741,7 @@ ORYX.Plugins.Edit = Clazz.extend({
     editPaste: function(){
         // Create a new canvas with childShapes
 		//and stencilset namespace to be JSON Import conform
-		var canvas = {
+		const canvas = {
             childShapes: this.clipboard.shapesAsJson,
 			stencilset:{
 				namespace:this.clipboard.SSnamespace
@@ -17750,8 +17750,8 @@ ORYX.Plugins.Edit = Clazz.extend({
         // Apply json helper to iterate over json object
 		jQuery.extend(canvas, ORYX.Core.AbstractShape.JSONHelper);
 
-        var childShapeResourceIds = canvas.getChildShapes(true).pluck("resourceId");
-        var outgoings = {};
+        const childShapeResourceIds = canvas.getChildShapes(true).pluck("resourceId");
+        const outgoings = {};
         // Iterate over all shapes
         canvas.eachChild(function(shape, parent){
             // Throw away these references where referenced shape isn't copied
@@ -17880,12 +17880,12 @@ ORYX.Plugins.Edit = Clazz.extend({
      * Performs the delete operation. No more asking.
      */
     editDelete: function(){
-        var selection = this.facade.getSelection();
+        const selection = this.facade.getSelection();
 
-        var clipboard = new ORYX.Plugins.Edit.ClipBoard();
+        const clipboard = new ORYX.Plugins.Edit.ClipBoard();
         clipboard.refresh(selection, this.getAllShapesToConsider(selection));
 
-		var command = new ORYX.Plugins.Edit.DeleteCommand(clipboard , this.facade);
+		const command = new ORYX.Plugins.Edit.DeleteCommand(clipboard , this.facade);
 
 		this.facade.executeCommands([command]);
     }
@@ -17911,7 +17911,7 @@ ORYX.Plugins.Edit.ClipBoard = Clazz.extend({
         this.useOffset = useNoOffset !== true;
 
         this.shapesAsJson = shapes.map(function(shape){
-            var s = shape.toJSON();
+            const s = shape.toJSON();
             s.parent = {resourceId : shape.getParentShape().resourceId};
             s.parentIndex = shape.getParentShape().getChildShapes().indexOf(shape)
             return s;
@@ -17927,10 +17927,10 @@ ORYX.Plugins.Edit.DeleteCommand = ORYX.Core.Command.extend({
 
         // Store dockers of deleted shapes to restore connections
         this.dockers            = this.shapesAsJson.map(function(shapeAsJson) {
-            var shape = shapeAsJson.getShape();
-            var incomingDockers = shape.getIncomingShapes().map(function(s){return s.getDockers().last();});
-            var outgoingDockers = shape.getOutgoingShapes().map(function(s){return s.getDockers().first();});
-            var dockers = shape.getDockers().concat(incomingDockers, outgoingDockers).compact().map(function(docker){
+            const shape = shapeAsJson.getShape();
+            const incomingDockers = shape.getIncomingShapes().map(function(s){return s.getDockers().last();});
+            const outgoingDockers = shape.getOutgoingShapes().map(function(s){return s.getDockers().first();});
+            const dockers = shape.getDockers().concat(incomingDockers, outgoingDockers).compact().map(function(docker){
                 return {
                     object: docker,
                     referencePoint: docker.referencePoint,
@@ -17953,8 +17953,8 @@ ORYX.Plugins.Edit.DeleteCommand = ORYX.Core.Command.extend({
     },
     rollback: function(){
         this.shapesAsJson.each(function(shapeAsJson) {
-            var shape = shapeAsJson.getShape();
-            var parent = this.facade.getCanvas().getChildShapeByResourceId(shapeAsJson.parent.resourceId) || this.facade.getCanvas();
+            const shape = shapeAsJson.getShape();
+            const parent = this.facade.getCanvas().getChildShapeByResourceId(shapeAsJson.parent.resourceId) || this.facade.getCanvas();
             parent.add(shape, shape.parentIndex);
         }.bind(this));
 
@@ -18023,7 +18023,7 @@ ORYX.Plugins.View = {
 			'name':ORYX.I18N.View.zoomIn,
 			'functionality': this.zoom.bind(this, [1.0 + ORYX.CONFIG.ZOOM_OFFSET]),
 			'group': ORYX.I18N.View.group,
-			'icon': ORYX.PATH + "images/magnifier_zoom_in.png",
+			'icon': `${ORYX.PATH  }images/magnifier_zoom_in.png`,
 			'description': ORYX.I18N.View.zoomInDesc,
 			'index': 1,
 			'minShape': 0,
@@ -18035,7 +18035,7 @@ ORYX.Plugins.View = {
 			'name':ORYX.I18N.View.zoomOut,
 			'functionality': this.zoom.bind(this, [1.0 - ORYX.CONFIG.ZOOM_OFFSET]),
 			'group': ORYX.I18N.View.group,
-			'icon': ORYX.PATH + "images/magnifier_zoom_out.png",
+			'icon': `${ORYX.PATH  }images/magnifier_zoom_out.png`,
 			'description': ORYX.I18N.View.zoomOutDesc,
 			'index': 2,
 			'minShape': 0,
@@ -18047,7 +18047,7 @@ ORYX.Plugins.View = {
 			'name':ORYX.I18N.View.zoomStandard,
 			'functionality': this.setAFixZoomLevel.bind(this, 1),
 			'group': ORYX.I18N.View.group,
-			'icon': ORYX.PATH + "images/zoom_standard.png",
+			'icon': `${ORYX.PATH  }images/zoom_standard.png`,
 			'cls' : 'icon-large',
 			'description': ORYX.I18N.View.zoomStandardDesc,
 			'index': 3,
@@ -18061,7 +18061,7 @@ ORYX.Plugins.View = {
 			'name':ORYX.I18N.View.zoomFitToModel,
 			'functionality': this.zoomFitToModel.bind(this),
 			'group': ORYX.I18N.View.group,
-			'icon': ORYX.PATH + "images/image.png",
+			'icon': `${ORYX.PATH  }images/image.png`,
 			'description': ORYX.I18N.View.zoomFitToModelDesc,
 			'index': 4,
 			'minShape': 0,
@@ -18092,27 +18092,27 @@ ORYX.Plugins.View = {
 		// TODO: Zoomen auf allen Objekten im SVG-DOM
 
 		this.zoomLevel *= factor;
-		var scrollNode 	= this.facade.getCanvas().getHTMLContainer().parentNode.parentNode;
-		var canvas 		= this.facade.getCanvas();
-		var newWidth 	= canvas.bounds.width()  * this.zoomLevel;
-		var newHeight 	= canvas.bounds.height() * this.zoomLevel;
+		const scrollNode 	= this.facade.getCanvas().getHTMLContainer().parentNode.parentNode;
+		const canvas 		= this.facade.getCanvas();
+		const newWidth 	= canvas.bounds.width()  * this.zoomLevel;
+		const newHeight 	= canvas.bounds.height() * this.zoomLevel;
 
 		/* Set new top offset */
-		var offsetTop = (canvas.node.parentNode.parentNode.parentNode.offsetHeight - newHeight) / 2.0;
+		let offsetTop = (canvas.node.parentNode.parentNode.parentNode.offsetHeight - newHeight) / 2.0;
 		offsetTop = offsetTop > 20 ? offsetTop - 20 : 0;
-		canvas.node.parentNode.parentNode.style.marginTop = offsetTop + "px";
+		canvas.node.parentNode.parentNode.style.marginTop = `${offsetTop  }px`;
 		offsetTop += 5;
-		canvas.getHTMLContainer().style.top = offsetTop + "px";
+		canvas.getHTMLContainer().style.top = `${offsetTop  }px`;
 
 		/*readjust scrollbar*/
-		var newScrollTop=	scrollNode.scrollTop - Math.round((canvas.getHTMLContainer().parentNode.getHeight()-newHeight) / 2)+this.diff;
-		var newScrollLeft=	scrollNode.scrollLeft - Math.round((canvas.getHTMLContainer().parentNode.getWidth()-newWidth) / 2)+this.diff;
+		const newScrollTop=	scrollNode.scrollTop - Math.round((canvas.getHTMLContainer().parentNode.getHeight()-newHeight) / 2)+this.diff;
+		const newScrollLeft=	scrollNode.scrollLeft - Math.round((canvas.getHTMLContainer().parentNode.getWidth()-newWidth) / 2)+this.diff;
 
 		/* Set new Zoom-Level */
 		canvas.setSize({width: newWidth, height: newHeight}, true);
 
 		/* Set Scale-Factor */
-		canvas.node.setAttributeNS(null, "transform", "scale(" +this.zoomLevel+ ")");
+		canvas.node.setAttributeNS(null, "transform", `scale(${ this.zoomLevel })`);
 
 		/* Refresh the Selection */
 		this.facade.updateSelection();
@@ -18133,29 +18133,29 @@ ORYX.Plugins.View = {
 	zoomFitToModel: function() {
 
 		/* Get the size of the visible area of the canvas */
-		var scrollNode 	= this.facade.getCanvas().getHTMLContainer().parentNode.parentNode;
-		var visibleHeight = scrollNode.getHeight() - 30;
-		var visibleWidth = scrollNode.getWidth() - 30;
+		const scrollNode 	= this.facade.getCanvas().getHTMLContainer().parentNode.parentNode;
+		const visibleHeight = scrollNode.getHeight() - 30;
+		const visibleWidth = scrollNode.getWidth() - 30;
 
-		var nodes = this.facade.getCanvas().getChildShapes();
+		const nodes = this.facade.getCanvas().getChildShapes();
 
 		if(!nodes || nodes.length < 1) {
 			return false;
 		}
 
 		/* Calculate size of canvas to fit the model */
-		var bounds = nodes[0].absoluteBounds().clone();
+		const bounds = nodes[0].absoluteBounds().clone();
 		nodes.each(function(node) {
 			bounds.include(node.absoluteBounds().clone());
 		});
 
 
 		/* Set new Zoom Level */
-		var scaleFactorWidth =  visibleWidth / bounds.width();
-		var scaleFactorHeight = visibleHeight / bounds.height();
+		const scaleFactorWidth =  visibleWidth / bounds.width();
+		const scaleFactorHeight = visibleHeight / bounds.height();
 
 		/* Choose the smaller zoom level to fit the whole model */
-		var zoomFactor = scaleFactorHeight < scaleFactorWidth ? scaleFactorHeight : scaleFactorWidth;
+		let zoomFactor = scaleFactorHeight < scaleFactorWidth ? scaleFactorHeight : scaleFactorWidth;
 
 		/*Test if maximum zoom is reached*/
 		if(zoomFactor>this.maxFitToScreenLevel){zoomFactor=this.maxFitToScreenLevel}
@@ -18175,9 +18175,9 @@ ORYX.Plugins.View = {
 	 * @private
 	 */
 	_checkSize:function(){
-		var canvasParent=this.facade.getCanvas().getHTMLContainer().parentNode;
-		var minForCanvas= Math.min((canvasParent.parentNode.getWidth()/canvasParent.getWidth()),(canvasParent.parentNode.getHeight()/canvasParent.getHeight()));
-		return 1.05 > minForCanvas;
+		const canvasParent=this.facade.getCanvas().getHTMLContainer().parentNode;
+		const minForCanvas= Math.min((canvasParent.parentNode.getWidth()/canvasParent.getWidth()),(canvasParent.parentNode.getHeight()/canvasParent.getHeight()));
+		return minForCanvas < 1.05;
 
 	},
 	/**
@@ -18248,7 +18248,7 @@ new function() {
 	 *
 	 */
 	ORYX.Editor.provideId = function() {
-		var res = [], hex = '0123456789ABCDEF';
+		const res = [], hex = '0123456789ABCDEF';
 
 		for (var i = 0; i < 36; i++) res[i] = Math.floor(Math.random()*0x10);
 
@@ -18259,7 +18259,7 @@ new function() {
 
 		res[8] = res[13] = res[18] = res[23] = '-';
 
-		return "sid-" + res.join('');
+		return `sid-${  res.join('')}`;
 	};
 
 
@@ -18305,17 +18305,17 @@ ORYX.Plugins.Loading = {
 
     enableLoading: function(options){
 		if(options.text)
-			this.node.innerHTML = options.text + "...";
+			this.node.innerHTML = `${options.text  }...`;
 		else
 			this.node.innerHTML = ORYX.I18N.Loading.waiting;
 		this.node.removeClassName('StatusIndicator');
 		this.node.addClassName('LoadingIndicator');
         this.node.style.display = "block";
 
-		var pos = this.facade.getCanvas().rootNode.parentNode.parentNode.parentNode.parentNode;
+		const pos = this.facade.getCanvas().rootNode.parentNode.parentNode.parentNode.parentNode;
 
-		this.node.style.top 		= pos.offsetTop + 'px';
-		this.node.style.left 		= pos.offsetLeft +'px';
+		this.node.style.top 		= `${pos.offsetTop  }px`;
+		this.node.style.left 		= `${pos.offsetLeft }px`;
 
     },
 
@@ -18330,12 +18330,12 @@ ORYX.Plugins.Loading = {
 			this.node.removeClassName('LoadingIndicator');
 			this.node.style.display = 'block';
 
-			var pos = this.facade.getCanvas().rootNode.parentNode.parentNode.parentNode.parentNode;
+			const pos = this.facade.getCanvas().rootNode.parentNode.parentNode.parentNode.parentNode;
 
-			this.node.style.top 	= pos.offsetTop + 'px';
-			this.node.style.left 	= pos.offsetLeft +'px';
+			this.node.style.top 	= `${pos.offsetTop  }px`;
+			this.node.style.left 	= `${pos.offsetLeft }px`;
 
-			var tout = options.timeout ? options.timeout : 2000;
+			const tout = options.timeout ? options.timeout : 2000;
 
 			window.setTimeout((function(){
 
@@ -18383,9 +18383,9 @@ ORYX.Plugins.CanvasResize = Clazz.extend({
     resize: function( position, shrink ){
 
     	resizeCanvas = function(position, extentionSize, facade) {
-        	var canvas 		= facade.getCanvas();
-    		var b 			= canvas.bounds;
-    		var scrollNode 	= facade.getCanvas().getHTMLContainer().parentNode.parentNode;
+        	const canvas 		= facade.getCanvas();
+    		const b 			= canvas.bounds;
+    		const scrollNode 	= facade.getCanvas().getHTMLContainer().parentNode.parentNode;
 
     		if( position == "E" || position == "W"){
     			canvas.setSize({width: (b.width() + extentionSize)*canvas.zoomLevel, height: (b.height())*canvas.zoomLevel})
@@ -18396,13 +18396,13 @@ ORYX.Plugins.CanvasResize = Clazz.extend({
 
     		if( position == "N" || position == "W"){
 
-    			var move = position == "N" ? {x: 0, y: extentionSize}: {x: extentionSize, y: 0 };
+    			const move = position == "N" ? {x: 0, y: extentionSize}: {x: extentionSize, y: 0 };
 
     			// Move all children
     			canvas.getChildNodes(false, function(shape){ shape.bounds.moveBy(move) })
     			// Move all dockers, when the edge has at least one docked shape
-    			var edges = canvas.getChildEdges().findAll(function(edge){ return edge.getAllDockedShapes().length > 0})
-    			var dockers = edges.collect(function(edge){ return edge.dockers.findAll(function(docker){ return !docker.getDockedShape() })}).flatten();
+    			const edges = canvas.getChildEdges().findAll(function(edge){ return edge.getAllDockedShapes().length > 0})
+    			const dockers = edges.collect(function(edge){ return edge.dockers.findAll(function(docker){ return !docker.getDockedShape() })}).flatten();
     			dockers.each(function(docker){ docker.bounds.moveBy(move)})
     		} else if( position == "S" ){
     			scrollNode.scrollTop += extentionSize;
@@ -18416,7 +18416,7 @@ ORYX.Plugins.CanvasResize = Clazz.extend({
     		facade.updateSelection();
         }
 
-		var commandClass = ORYX.Core.Command.extend({
+		const commandClass = ORYX.Core.Command.extend({
 			construct: function(position, extentionSize, facade){
 				this.position = position;
 				this.extentionSize = extentionSize;
@@ -18432,9 +18432,9 @@ ORYX.Plugins.CanvasResize = Clazz.extend({
 			}
 		});
 
-		var extentionSize = ORYX.CONFIG.CANVAS_RESIZE_INTERVAL;
+		let extentionSize = ORYX.CONFIG.CANVAS_RESIZE_INTERVAL;
 		if(shrink) extentionSize = -extentionSize;
-		var command = new commandClass(position, extentionSize, this.facade);
+		const command = new commandClass(position, extentionSize, this.facade);
 
 		this.facade.executeCommands([command]);
 
@@ -18447,17 +18447,17 @@ ORYX.Plugins.CanvasResizeButton = Clazz.extend({
 
 	construct: function(canvas, position, callback){
 		this.canvas = canvas;
-		var parentNode = canvas.getHTMLContainer().parentNode;
+		const parentNode = canvas.getHTMLContainer().parentNode;
 
 		window.myParent=parentNode;
 
-		var actualScrollNode = jQuery('#canvasSection')[0];
-		var scrollNode 	= actualScrollNode;
-		var canvasNode = jQuery('#canvasSection').find(".ORYX_Editor")[0];
-		var svgRootNode = canvasNode.children[0];
+		const actualScrollNode = jQuery('#canvasSection')[0];
+		const scrollNode 	= actualScrollNode;
+		const canvasNode = jQuery('#canvasSection').find(".ORYX_Editor")[0];
+		const svgRootNode = canvasNode.children[0];
 
-		var iconClass = 'glyphicon glyphicon-chevron-';
-		var iconClassShrink = 'glyphicon glyphicon-chevron-';
+		let iconClass = 'glyphicon glyphicon-chevron-';
+		let iconClassShrink = 'glyphicon glyphicon-chevron-';
 		if(position == 'N') {
 			iconClass += 'up';
 			iconClassShrink += 'down';
@@ -18473,20 +18473,20 @@ ORYX.Plugins.CanvasResizeButton = Clazz.extend({
 		}
 
 		// The buttons
-		var idGrow = 'canvas-shrink-' + position;
-		var idShrink = 'canvas-grow-' + position;
+		const idGrow = 'canvas-shrink-' + position;
+		const idShrink = 'canvas-grow-' + position;
 
-		var buttonGrow 	= ORYX.Editor.graft("http://www.w3.org/1999/xhtml", parentNode, ['div', {'class': 'canvas_resize_indicator canvas_resize_indicator_grow' + ' ' + position, 'id': idGrow ,'title':ORYX.I18N.RESIZE.tipGrow+ORYX.I18N.RESIZE[position]},
+		const buttonGrow 	= ORYX.Editor.graft("http://www.w3.org/1999/xhtml", parentNode, ['div', {'class': 'canvas_resize_indicator canvas_resize_indicator_grow' + ' ' + position, 'id': idGrow ,'title':ORYX.I18N.RESIZE.tipGrow+ORYX.I18N.RESIZE[position]},
              ['i', {'class' : iconClass}]
 		]);
-		var buttonShrink 	= ORYX.Editor.graft("http://www.w3.org/1999/xhtml", parentNode, ['div', {'class': 'canvas_resize_indicator canvas_resize_indicator_shrink' + ' ' + position, 'id': idShrink ,'title':ORYX.I18N.RESIZE.tipGrow+ORYX.I18N.RESIZE[position]},
+		const buttonShrink 	= ORYX.Editor.graft("http://www.w3.org/1999/xhtml", parentNode, ['div', {'class': 'canvas_resize_indicator canvas_resize_indicator_shrink' + ' ' + position, 'id': idShrink ,'title':ORYX.I18N.RESIZE.tipGrow+ORYX.I18N.RESIZE[position]},
              ['i', {'class' : iconClassShrink}]
 		]);
 		// Defines a callback which gives back
 		// a boolean if the current mouse event
 		// is over the particular button area
-		var offSetWidth = 60;
-		var isOverOffset = function(event) {
+		const offSetWidth = 60;
+		const isOverOffset = function(event) {
 
 			var isOverButton = event.target.id.indexOf("canvas-shrink") != -1
 				|| event.target.id.indexOf("canvas-grow") != -1
@@ -18532,7 +18532,7 @@ ORYX.Plugins.CanvasResizeButton = Clazz.extend({
 			return false;
 		};
 
-		var showButtons = (function() {
+		const showButtons = (function() {
 			buttonGrow.show();
 
 			var w = canvas.bounds.width();
@@ -18547,7 +18547,7 @@ ORYX.Plugins.CanvasResizeButton = Clazz.extend({
 
 		}).bind(this);
 
-		var hideButtons = function() {
+		const hideButtons = function() {
 			buttonGrow.hide();
 			buttonShrink.hide();
 		};
@@ -18615,7 +18615,7 @@ ORYX.Plugins.RenameShapes = Clazz.extend({
 	 * up and the editing of title/name of it gets started.
 	 */
 	renamePerF2 : function() {
-		var selectedShapes = this.facade.getSelection();
+		const selectedShapes = this.facade.getSelection();
 		this.actOnDBLClick(undefined, selectedShapes.first());
 	},
 
@@ -18627,7 +18627,7 @@ ORYX.Plugins.RenameShapes = Clazz.extend({
 		this.destroy();
 
 		// Get all properties which where at least one ref to view is set
-		var props = shape.getStencil().properties().findAll(function(item){
+		let props = shape.getStencil().properties().findAll(function(item){
 			return (item.refToView()
 					&&  item.refToView().length > 0
 					&&	item.directlyEditable());
@@ -18636,27 +18636,27 @@ ORYX.Plugins.RenameShapes = Clazz.extend({
 		props = props.findAll(function(item){ return !item.readonly() &&  (item.type() == ORYX.CONFIG.TYPE_STRING || item.type() == ORYX.CONFIG.TYPE_EXPRESSION || item.type() == ORYX.CONFIG.TYPE_DATASOURCE); });
 
 		// Get all ref ids
-		var allRefToViews	= props.collect(function(prop){ return prop.refToView(); }).flatten().compact();
+		const allRefToViews	= props.collect(function(prop){ return prop.refToView(); }).flatten().compact();
 		// Get all labels from the shape with the ref ids
-		var labels			= shape.getLabels().findAll(function(label){ return allRefToViews.any(function(toView){ return label.id.endsWith(toView); }); });
+		const labels			= shape.getLabels().findAll(function(label){ return allRefToViews.any(function(toView){ return label.id.endsWith(toView); }); });
 
 		// If there are no referenced labels --> return
 		if( labels.length == 0 ){ return; }
 
 		// Define the nearest label
-		var nearestLabel 	= labels.length <= 1 ? labels[0] : null;
+		let nearestLabel 	= labels.length <= 1 ? labels[0] : null;
 		if( !nearestLabel ){
 			nearestLabel = labels.find(function(label){ return label.node == evt.target || label.node == evt.target.parentNode; });
 			if( !nearestLabel ){
 
-				var evtCoord 	= this.facade.eventCoordinates(evt);
+				const evtCoord 	= this.facade.eventCoordinates(evt);
 
-				var additionalIEZoom = 1;
+				let additionalIEZoom = 1;
                 if (!isNaN(screen.logicalXDPI) && !isNaN(screen.systemXDPI)) {
-                    var ua = navigator.userAgent;
+                    const ua = navigator.userAgent;
                     if (ua.indexOf('MSIE') >= 0) {
                         //IE 10 and below
-                        var zoom = Math.round((screen.deviceXDPI / screen.logicalXDPI) * 100);
+                        const zoom = Math.round((screen.deviceXDPI / screen.logicalXDPI) * 100);
                         if (zoom !== 100) {
                             additionalIEZoom = zoom / 100
                         }
@@ -18676,11 +18676,11 @@ ORYX.Plugins.RenameShapes = Clazz.extend({
 
 				evtCoord.x -= $("canvasSection").scrollLeft;
 
-				var trans		= this.facade.getCanvas().rootNode.lastChild.getScreenCTM();
+				const trans		= this.facade.getCanvas().rootNode.lastChild.getScreenCTM();
 				evtCoord.x		*= trans.a;
 				evtCoord.y		*= trans.d;
 
-				var diff = labels.collect(function(label){
+				const diff = labels.collect(function(label){
 							var center 	= this.getCenterPosition( label.node );
 							var len 	= Math.sqrt( Math.pow(center.x - evtCoord.x, 2) + Math.pow(center.y - evtCoord.y, 2));
 							return {diff: len, label: label};
@@ -18693,19 +18693,19 @@ ORYX.Plugins.RenameShapes = Clazz.extend({
 			}
 		}
 		// Get the particular property for the label
-		var prop 			= props.find(function(item){ return item.refToView().any(function(toView){ return nearestLabel.id == shape.id + toView; });});
+		const prop 			= props.find(function(item){ return item.refToView().any(function(toView){ return nearestLabel.id == shape.id + toView; });});
 
 		// Get the center position from the nearest label
-		var width		= Math.min(Math.max(100, shape.bounds.width()), 200);
-		var center 		= this.getCenterPosition( nearestLabel.node, shape );
+		const width		= Math.min(Math.max(100, shape.bounds.width()), 200);
+		const center 		= this.getCenterPosition( nearestLabel.node, shape );
 		center.x		-= (width/2);
-		var propId		= prop.prefix() + "-" + prop.id();
-		var textInput = document.createElement("textarea");
+		const propId		= prop.prefix() + "-" + prop.id();
+		const textInput = document.createElement("textarea");
 		textInput.id = 'shapeTextInput';
 		textInput.style.position = 'absolute';
-		textInput.style.width = width + 'px';
-		textInput.style.left = (center.x < 10) ? 10 : center.x + 'px';
-		textInput.style.top = (center.y - 15) + 'px';
+		textInput.style.width = `${width  }px`;
+		textInput.style.left = (center.x < 10) ? 10 : `${center.x  }px`;
+		textInput.style.top = `${center.y - 15  }px`;
 		textInput.className = 'x-form-textarea x-form-field x_form_text_set_absolute';
 		textInput.value = shape.properties[propId];
 		this.oldValueText = shape.properties[propId];
@@ -18715,12 +18715,12 @@ ORYX.Plugins.RenameShapes = Clazz.extend({
 
 		// Value change listener needs to be defined now since we reference it in the text field
 		this.updateValueFunction = function(newValue, oldValue) {
-			var currentEl 	= shape;
-			var facade		= this.facade;
+			const currentEl 	= shape;
+			const facade		= this.facade;
 
 			if (oldValue != newValue) {
 				// Implement the specific command for property change
-				var commandClass = ORYX.Core.Command.extend({
+				const commandClass = ORYX.Core.Command.extend({
 					construct: function(){
 						this.el = currentEl;
 						this.propId = propId;
@@ -18744,7 +18744,7 @@ ORYX.Plugins.RenameShapes = Clazz.extend({
 					}
 				});
 				// Instantiated the class
-				var command = new commandClass();
+				const command = new commandClass();
 
 				// Execute the command
 				this.facade.executeCommands([command]);
@@ -18764,11 +18764,11 @@ ORYX.Plugins.RenameShapes = Clazz.extend({
 
 		if (!svgNode) { return {x:0, y:0}; }
 
-		var scale = this.facade.getCanvas().node.getScreenCTM();
-		var absoluteXY = shape.bounds.upperLeft();
+		const scale = this.facade.getCanvas().node.getScreenCTM();
+		const absoluteXY = shape.bounds.upperLeft();
 
-		var hasParent = true;
-		var searchShape = shape;
+		let hasParent = true;
+		let searchShape = shape;
 		while (hasParent)
 		{
 			if (searchShape.getParentShape().getStencil().idWithoutNs() === 'BPMNDiagram')
@@ -18777,26 +18777,26 @@ ORYX.Plugins.RenameShapes = Clazz.extend({
 			}
 			else
 			{
-				var parentXY = searchShape.getParentShape().bounds.upperLeft();
+				const parentXY = searchShape.getParentShape().bounds.upperLeft();
 				absoluteXY.x += parentXY.x;
 				absoluteXY.y += parentXY.y;
 				searchShape = searchShape.getParentShape();
 			}
 		}
 
-		var center = shape.bounds.midPoint();
+		const center = shape.bounds.midPoint();
 		center.x += absoluteXY.x + scale.e;
 		center.y += absoluteXY.y + scale.f;
 
 		center.x *= scale.a;
 		center.y *= scale.d;
 
-		var additionalIEZoom = 1;
+		let additionalIEZoom = 1;
         if (!isNaN(screen.logicalXDPI) && !isNaN(screen.systemXDPI)) {
-            var ua = navigator.userAgent;
+            const ua = navigator.userAgent;
             if (ua.indexOf('MSIE') >= 0) {
                 //IE 10 and below
-                var zoom = Math.round((screen.deviceXDPI / screen.logicalXDPI) * 100);
+                const zoom = Math.round((screen.deviceXDPI / screen.logicalXDPI) * 100);
                 if (zoom !== 100) {
                     additionalIEZoom = zoom / 100
                 }
@@ -18808,12 +18808,12 @@ ORYX.Plugins.RenameShapes = Clazz.extend({
              center.x -= jQuery("#canvasSection").offset().left;
 
         } else {
-             var canvasOffsetLeft = jQuery("#canvasSection").offset().left;
-             var canvasScrollLeft = jQuery("#canvasSection").scrollLeft();
-             var canvasScrollTop = jQuery("#canvasSection").scrollTop();
+             const canvasOffsetLeft = jQuery("#canvasSection").offset().left;
+             const canvasScrollLeft = jQuery("#canvasSection").scrollLeft();
+             const canvasScrollTop = jQuery("#canvasSection").scrollTop();
 
-             var offset = scale.e - (canvasOffsetLeft * additionalIEZoom);
-             var additionaloffset = 0;
+             const offset = scale.e - (canvasOffsetLeft * additionalIEZoom);
+             let additionaloffset = 0;
              if (offset > 10) {
                  additionaloffset = (offset / additionalIEZoom) - offset;
              }
@@ -18827,7 +18827,7 @@ ORYX.Plugins.RenameShapes = Clazz.extend({
 
 	hide: function(e){
 		if (this.shownTextField && (!e || e.target !== this.shownTextField)) {
-			var newValue = this.shownTextField.value;
+			const newValue = this.shownTextField.value;
 			if (newValue !== this.oldValueText)
 			{
 				this.updateValueFunction(newValue, this.oldValueText);
@@ -18843,7 +18843,7 @@ ORYX.Plugins.RenameShapes = Clazz.extend({
 	},
 
 	destroy: function(e){
-		var textInputComp = jQuery("#shapeTextInput");
+		const textInputComp = jQuery("#shapeTextInput");
 		if( textInputComp ){
 			textInputComp.remove();
 			delete this.shownTextField;
@@ -18893,7 +18893,7 @@ ORYX.Plugins.ProcessLink = Clazz.extend({
 	 */
 	propertyChanged: function( option, node){
 
-		if( option.name !== "oryx-refuri" || !node instanceof ORYX.Core.Node ){ return }
+		if( option.name !== "oryx-refuri" || !(node instanceof ORYX.Core.Node) ){ return }
 
 
 		if( option.value && option.value.length > 0 && option.value != "undefined"){
@@ -18918,7 +18918,7 @@ ORYX.Plugins.ProcessLink = Clazz.extend({
 
 
 		// Generate the svg-representation of a link
-		var link  = ORYX.Editor.graft("http://www.w3.org/2000/svg", null ,
+		const link  = ORYX.Editor.graft("http://www.w3.org/2000/svg", null ,
 					[ 'a',
 						{'target': '_blank'},
 						['path',
@@ -18926,7 +18926,7 @@ ORYX.Plugins.ProcessLink = Clazz.extend({
 						]
 					]);
 
-		var link  = ORYX.Editor.graft("http://www.w3.org/2000/svg", null ,
+		const link  = ORYX.Editor.graft("http://www.w3.org/2000/svg", null ,
 						[ 'a',
 							{'target': '_blank'},
 							['path', { "style": "fill:#92BFFC;stroke:#000000;stroke-linecap:round;stroke-linejoin:round;stroke-width:0.72", "d": "M0 1.44 L0 15.05 L11.91 15.05 L11.91 5.98 L7.37 1.44 L0 1.44 Z"}],
@@ -18956,7 +18956,7 @@ ORYX.Plugins.ProcessLink = Clazz.extend({
 		// Shows the link in the overlay
 		this.facade.raiseEvent({
 					type: 			ORYX.CONFIG.EVENT_OVERLAY_SHOW,
-					id: 			"arissupport.urlref_" + shape.id,
+					id: 			`arissupport.urlref_${  shape.id}`,
 					shapes: 		[shape],
 					node:			link,
 					nodePosition:	"SE"
@@ -18973,7 +18973,7 @@ ORYX.Plugins.ProcessLink = Clazz.extend({
 
 		this.facade.raiseEvent({
 					type: 			ORYX.CONFIG.EVENT_OVERLAY_HIDE,
-					id: 			"arissupport.urlref_" + shape.id
+					id: 			`arissupport.urlref_${  shape.id}`
 				});
 
 	}
@@ -18991,9 +18991,9 @@ Array.prototype.insertFrom = function(from, to){
 	to 			= Math.max(0, to);
 	from 		= Math.min( Math.max(0, from), this.length-1 );
 
-	var el 		= this[from];
-	var old 	= this.without(el);
-	var newA 	= old.slice(0, to);
+	const el 		= this[from];
+	const old 	= this.without(el);
+	let newA 	= old.slice(0, to);
 	newA.push(el);
 	if(old.length > to ){
 		newA 	= newA.concat(old.slice(to))
@@ -19095,7 +19095,7 @@ ORYX.Plugins.Arrangement = ORYX.Plugins.AbstractPlugin.extend({
 			'name':ORYX.I18N.Arrangement.am,
 			'functionality': this.alignShapes.bind(this, [ORYX.CONFIG.EDITOR_ALIGN_MIDDLE]),
 			'group': ORYX.I18N.Arrangement.groupA,
-			'icon': ORYX.PATH + "images/shape_align_middle.png",
+			'icon': `${ORYX.PATH  }images/shape_align_middle.png`,
 			'description': ORYX.I18N.Arrangement.amDesc,
 			'index': 1,
 			'minShape': 2});
@@ -19104,7 +19104,7 @@ ORYX.Plugins.Arrangement = ORYX.Plugins.AbstractPlugin.extend({
 			'name':ORYX.I18N.Arrangement.ac,
 			'functionality': this.alignShapes.bind(this, [ORYX.CONFIG.EDITOR_ALIGN_CENTER]),
 			'group': ORYX.I18N.Arrangement.groupA,
-			'icon': ORYX.PATH + "images/shape_align_center.png",
+			'icon': `${ORYX.PATH  }images/shape_align_center.png`,
 			'description': ORYX.I18N.Arrangement.acDesc,
 			'index': 2,
 			'minShape': 2});
@@ -19114,7 +19114,7 @@ ORYX.Plugins.Arrangement = ORYX.Plugins.AbstractPlugin.extend({
 			'name':ORYX.I18N.Arrangement.as,
 			'functionality': this.alignShapes.bind(this, [ORYX.CONFIG.EDITOR_ALIGN_SIZE]),
 			'group': ORYX.I18N.Arrangement.groupA,
-			'icon': ORYX.PATH + "images/shape_align_size.png",
+			'icon': `${ORYX.PATH  }images/shape_align_size.png`,
 			'description': ORYX.I18N.Arrangement.asDesc,
 			'index': 3,
 			'minShape': 2});
@@ -19130,7 +19130,7 @@ ORYX.Plugins.Arrangement = ORYX.Plugins.AbstractPlugin.extend({
 	},
 
 	onSelectionChanged: function(elemnt){
-		var selection = this.facade.getSelection();
+		const selection = this.facade.getSelection();
 		if (selection.length === 1 && selection[0] instanceof ORYX.Core.Edge) {
 			this.setToTop(selection);
 		}
@@ -19139,7 +19139,7 @@ ORYX.Plugins.Arrangement = ORYX.Plugins.AbstractPlugin.extend({
 	setZLevel:function(callback, event){
 
 		//Command-Pattern for dragging one docker
-		var zLevelCommand = ORYX.Core.Command.extend({
+		const zLevelCommand = ORYX.Core.Command.extend({
 			construct: function(callback, elements, facade){
 				this.callback 	= callback;
 				this.elements 	= elements;
@@ -19179,7 +19179,7 @@ ORYX.Plugins.Arrangement = ORYX.Plugins.AbstractPlugin.extend({
 		});
 
 		// Instanziate the dockCommand
-		var command = new zLevelCommand(callback, this.facade.getSelection(), this.facade);
+		const command = new zLevelCommand(callback, this.facade.getSelection(), this.facade);
 		if( event.excludeCommand ){
 			command.execute();
 		} else {
@@ -19191,13 +19191,13 @@ ORYX.Plugins.Arrangement = ORYX.Plugins.AbstractPlugin.extend({
 	setToTop: function(elements) {
 
 		// Sortieren des Arrays nach dem Index des SVGKnotens im Bezug auf dem Elternknoten.
-		var tmpElem =  elements.sortBy( function(value, index) {
+		const tmpElem =  elements.sortBy( function(value, index) {
 			var t = $A(value.node.parentNode.childNodes);
 			return t.indexOf(value.node);
 		});
 		// Sortiertes Array wird nach oben verschoben.
 		tmpElem.each( function(value) {
-			var p = value.parent;
+			const p = value.parent;
 			if (p.children.last() === value){
 				return;
 			}
@@ -19209,16 +19209,16 @@ ORYX.Plugins.Arrangement = ORYX.Plugins.AbstractPlugin.extend({
 
 	setToBack: function(elements) {
 		// Sortieren des Arrays nach dem Index des SVGKnotens im Bezug auf dem Elternknoten.
-		var tmpElem =  elements.sortBy( function(value, index) {
+		let tmpElem =  elements.sortBy( function(value, index) {
 			var t = $A(value.node.parentNode.childNodes);
 			return t.indexOf(value.node);
 		});
 
-		tmpElem = tmpElem.reverse();
+		tmpElem = tmpElem.toReversed();
 
 		// Sortiertes Array wird nach unten verschoben.
 		tmpElem.each( function(value) {
-			var p = value.parent
+			const p = value.parent
 			p.children = p.children.without( value )
 			p.children.unshift( value );
 			value.node.parentNode.insertBefore(value.node, value.node.parentNode.firstChild);
@@ -19229,22 +19229,22 @@ ORYX.Plugins.Arrangement = ORYX.Plugins.AbstractPlugin.extend({
 
 	setBackward: function(elements) {
 		// Sortieren des Arrays nach dem Index des SVGKnotens im Bezug auf dem Elternknoten.
-		var tmpElem =  elements.sortBy( function(value, index) {
+		let tmpElem =  elements.sortBy( function(value, index) {
 			var t = $A(value.node.parentNode.childNodes);
 			return t.indexOf(value.node);
 		});
 
 		// Reverse the elements
-		tmpElem = tmpElem.reverse();
+		tmpElem = tmpElem.toReversed();
 
 		// Delete all Nodes who are the next Node in the nodes-Array
-		var compactElem = tmpElem.findAll(function(el) {return !tmpElem.some(function(checkedEl){ return checkedEl.node == el.node.previousSibling})});
+		const compactElem = tmpElem.findAll(function(el) {return !tmpElem.some(function(checkedEl){ return checkedEl.node == el.node.previousSibling})});
 
 		// Sortiertes Array wird nach eine Ebene nach oben verschoben.
 		compactElem.each( function(el) {
 			if(el.node.previousSibling === null) { return; }
-			var p 		= el.parent;
-			var index 	= p.children.indexOf(el);
+			const p 		= el.parent;
+			const index 	= p.children.indexOf(el);
 			p.children 	= p.children.insertFrom(index, index-1)
 			el.node.parentNode.insertBefore(el.node, el.node.previousSibling);
 		});
@@ -19254,22 +19254,22 @@ ORYX.Plugins.Arrangement = ORYX.Plugins.AbstractPlugin.extend({
 
 	setForward: function(elements) {
 		// Sortieren des Arrays nach dem Index des SVGKnotens im Bezug auf dem Elternknoten.
-		var tmpElem =  elements.sortBy( function(value, index) {
+		const tmpElem =  elements.sortBy( function(value, index) {
 			var t = $A(value.node.parentNode.childNodes);
 			return t.indexOf(value.node);
 		});
 
 
 		// Delete all Nodes who are the next Node in the nodes-Array
-		var compactElem = tmpElem.findAll(function(el) {return !tmpElem.some(function(checkedEl){ return checkedEl.node == el.node.nextSibling})});
+		const compactElem = tmpElem.findAll(function(el) {return !tmpElem.some(function(checkedEl){ return checkedEl.node == el.node.nextSibling})});
 
 
 		// Sortiertes Array wird eine Ebene nach unten verschoben.
 		compactElem.each( function(el) {
-			var nextNode = el.node.nextSibling
+			const nextNode = el.node.nextSibling
 			if(nextNode === null) { return; }
-			var index 	= el.parent.children.indexOf(el);
-			var p 		= el.parent;
+			const index 	= el.parent.children.indexOf(el);
+			const p 		= el.parent;
 			p.children 	= p.children.insertFrom(index, index+1)
 			el.node.parentNode.insertBefore(nextNode, el.node);
 		});
@@ -19278,7 +19278,7 @@ ORYX.Plugins.Arrangement = ORYX.Plugins.AbstractPlugin.extend({
 
 	alignShapes: function(way) {
 
-		var elements = this.facade.getSelection();
+		let elements = this.facade.getSelection();
 
 		// Set the elements to all Top-Level elements
 		elements = this.facade.getCanvas().getShapesWithSharedParent(elements);
@@ -19288,26 +19288,26 @@ ORYX.Plugins.Arrangement = ORYX.Plugins.AbstractPlugin.extend({
 		});
 		// Delete all attached intermediate events from the array
 		elements = elements.findAll(function(value) {
-			var d = value.getIncomingShapes()
+			const d = value.getIncomingShapes()
 			return d.length == 0 || !elements.include(d[0])
 		});
 		if(elements.length < 2) { return; }
 
 		// get bounds of all shapes.
-		var bounds = elements[0].absoluteBounds().clone();
+		const bounds = elements[0].absoluteBounds().clone();
 		elements.each(function(shape) {
 		        bounds.include(shape.absoluteBounds().clone());
 		});
 
 		// get biggest width and heigth
-		var maxWidth = 0;
-		var maxHeight = 0;
+		let maxWidth = 0;
+		let maxHeight = 0;
 		elements.each(function(shape){
 			maxWidth = Math.max(shape.bounds.width(), maxWidth);
 			maxHeight = Math.max(shape.bounds.height(), maxHeight);
 		});
 
-		var commandClass = ORYX.Core.Command.extend({
+		const commandClass = ORYX.Core.Command.extend({
 			construct: function(elements, bounds, maxHeight, maxWidth, way, plugin){
 				this.elements = elements;
 				this.bounds = bounds;
@@ -19436,7 +19436,7 @@ ORYX.Plugins.Arrangement = ORYX.Plugins.AbstractPlugin.extend({
 			}
 		})
 
-		var command = new commandClass(elements, bounds, maxHeight, maxWidth, parseInt(way), this);
+		const command = new commandClass(elements, bounds, maxHeight, maxWidth, parseInt(way), this);
 
 		this.facade.executeCommands([command]);
 	}
@@ -19492,12 +19492,12 @@ ORYX.Plugins.Save = Clazz.extend({
 
 	updateTitle: function(){
 
-		var value = window.document.title || document.getElementsByTagName("title")[0].childNodes[0].nodeValue;
+		const value = window.document.title || document.getElementsByTagName("title")[0].childNodes[0].nodeValue;
 
 		if (this.changeDifference === 0 && value.startsWith(this.changeSymbol)){
 			window.document.title = value.slice(1);
 		} else if (this.changeDifference !== 0 && !value.startsWith(this.changeSymbol)){
-			window.document.title = this.changeSymbol + "" + value;
+			window.document.title = `${this.changeSymbol  }${  value}`;
 		}
 	},
 
@@ -19552,7 +19552,7 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 		this.callbackMouseUp	= this.handleMouseUp.bind(this);
 
 		// Get the SVG-Containernode
-		var containerNode = this.facade.getCanvas().getSvgContainer();
+		let containerNode = this.facade.getCanvas().getSvgContainer();
 
 		// Create the Selected Rectangle in the SVG
 		this.selectedRect = new ORYX.Plugins.SelectedRect(containerNode);
@@ -19600,15 +19600,15 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 		this.edgesMovable = true;
 
 		// Calculate the current zoom factor
-		var a = this.facade.getCanvas().node.getScreenCTM();
+		const a = this.facade.getCanvas().node.getScreenCTM();
 		this.faktorXY.x = a.a;
 		this.faktorXY.y = a.d;
 
-		var eventX = Event.pointerX(event);
-		var eventY = Event.pointerY(event);
+		const eventX = Event.pointerX(event);
+		const eventY = Event.pointerY(event);
 
 		// Set the offset position of dragging
-		var upL = this.dragBounds.upperLeft();
+		const upL = this.dragBounds.upperLeft();
 		this.offSetPosition =  {
 			x: eventX - (upL.x * this.faktorXY.x),
 			y: eventY - (upL.y * this.faktorXY.y)};
@@ -19655,13 +19655,13 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 						this.toMoveShapes[0].dockers.length > 0) {
 
 					// Get the position and the docker
-					var position 	= this.facade.eventCoordinates( event );
-					var docker 		= this.toMoveShapes[0].dockers[0];
+					const position 	= this.facade.eventCoordinates( event );
+					const docker 		= this.toMoveShapes[0].dockers[0];
 
 
 
 					//Command-Pattern for dragging several Shapes
-					var dockCommand = ORYX.Core.Command.extend({
+					const dockCommand = ORYX.Core.Command.extend({
 						construct: function(docker, position, newDockedShape, facade){
 							this.docker 		= docker;
 							this.newPosition	= position;
@@ -19706,7 +19706,7 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 					});
 
 					// Instanziate the dockCommand
-					var commands = [new dockCommand(docker, position, this.containmentParentNode, this.facade)];
+					const commands = [new dockCommand(docker, position, this.containmentParentNode, this.facade)];
 					this.facade.executeCommands(commands);
 
 
@@ -19774,7 +19774,7 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 
 
 		// Calculate the new position
-		var position = {
+		let position = {
 			x: Event.pointerX(event) - this.offSetPosition.x,
 			y: Event.pointerY(event) - this.offSetPosition.y}
 
@@ -19782,7 +19782,7 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 		position.y 	-= this.offsetScroll.y - this.scrollNode.scrollTop;
 
 		// If not the Control-Key are pressed
-		var modifierKeyPressed = event.shiftKey || event.ctrlKey;
+		const modifierKeyPressed = event.shiftKey || event.ctrlKey;
 		if(ORYX.CONFIG.GRID_ENABLED && !modifierKeyPressed) {
 			// Snap the current position to the nearest Snap-Point
 			position = this.snapToGrid(position);
@@ -19802,7 +19802,7 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 		position.y = Math.max( 0 , position.y)
 
 		// Set that the position is not bigger than the canvas
-		var c = this.facade.getCanvas();
+		const c = this.facade.getCanvas();
 		position.x = Math.min( c.bounds.width() - this.dragBounds.width(), 		position.x)
 		position.y = Math.min( c.bounds.height() - this.dragBounds.height(), 	position.y)
 
@@ -19817,14 +19817,14 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 		this.isAttachingAllowed = false;
 
 		//check, if a node can be added to the underlying node
-		var eventCoordinates = this.facade.eventCoordinates(event);
+		const eventCoordinates = this.facade.eventCoordinates(event);
 
-		var additionalIEZoom = 1;
+		let additionalIEZoom = 1;
         if (!isNaN(screen.logicalXDPI) && !isNaN(screen.systemXDPI)) {
-            var ua = navigator.userAgent;
+            const ua = navigator.userAgent;
             if (ua.indexOf('MSIE') >= 0) {
                 //IE 10 and below
-                var zoom = Math.round((screen.deviceXDPI / screen.logicalXDPI) * 100);
+                const zoom = Math.round((screen.deviceXDPI / screen.logicalXDPI) * 100);
                 if (zoom !== 100) {
                     additionalIEZoom = zoom / 100
                 }
@@ -19836,9 +19836,9 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
              eventCoordinates.y = eventCoordinates.y / additionalIEZoom;
         }
 
-		var underlyingNodes = $A(this.facade.getCanvas().getAbstractShapesAtPosition(eventCoordinates));
+		const underlyingNodes = $A(this.facade.getCanvas().getAbstractShapesAtPosition(eventCoordinates));
 
-		var checkIfAttachable = this.toMoveShapes.length == 1 && this.toMoveShapes[0] instanceof ORYX.Core.Node && this.toMoveShapes[0].dockers.length > 0
+		let checkIfAttachable = this.toMoveShapes.length == 1 && this.toMoveShapes[0] instanceof ORYX.Core.Node && this.toMoveShapes[0].dockers.length > 0
 		checkIfAttachable	= checkIfAttachable && underlyingNodes.length != 1
 
 
@@ -19856,7 +19856,7 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 		} else {
 
 			/* Check the containment and connection rules */
-			var options = {
+			const options = {
 				event : event,
 				underlyingNodes : underlyingNodes,
 				checkIfAttachable : checkIfAttachable
@@ -19865,7 +19865,7 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 
 		}
 
-		this._currentUnderlyingNodes = underlyingNodes.reverse();
+		this._currentUnderlyingNodes = underlyingNodes.toReversed();
 
 		//visualize the containment result
 		if( this.isAttachingAllowed ) {
@@ -19932,15 +19932,15 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 	 *  Checks the containment and connection rules for the selected shapes.
 	 */
 	checkRules : function(options) {
-		var event = options.event;
-		var underlyingNodes = options.underlyingNodes;
-		var checkIfAttachable = options.checkIfAttachable;
-		var noEdges = options.noEdges;
+		const event = options.event;
+		const underlyingNodes = options.underlyingNodes;
+		const checkIfAttachable = options.checkIfAttachable;
+		const noEdges = options.noEdges;
 
 		//get underlying node that is not the same than one of the currently selected shapes or
 		// a child of one of the selected shapes with the highest z Order.
 		// The result is a shape or the canvas
-		this.containmentParentNode = underlyingNodes.reverse().find((function(node) {
+		this.containmentParentNode = underlyingNodes.toReversed().find((function(node) {
 			return (node instanceof ORYX.Core.Canvas) ||
 					(((node instanceof ORYX.Core.Node) || ((node instanceof ORYX.Core.Edge) && !noEdges))
 					&& (!(this.currentShapes.member(node) ||
@@ -19958,7 +19958,7 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 												});
 
 			if ( this.isAttachingAllowed	) {
-				var point = this.facade.eventCoordinates(event);
+				const point = this.facade.eventCoordinates(event);
 				this.isAttachingAllowed	= this.containmentParentNode.isPointOverOffset( point.x, point.y );
 			}
 		}
@@ -20001,14 +20001,14 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 		if(!this.dragBounds) {return}
 
 		// Calculate the offset between the bounds and the old bounds
-		var upL = this.dragBounds.upperLeft();
-		var oldUpL = this.oldDragBounds.upperLeft();
-		var offset = {
+		const upL = this.dragBounds.upperLeft();
+		const oldUpL = this.oldDragBounds.upperLeft();
+		const offset = {
 			x: upL.x - oldUpL.x,
 			y: upL.y - oldUpL.y };
 
 		// Instanciate the dragCommand
-		var commands = [new ORYX.Core.Command.Move(this.toMoveShapes, offset, this.containmentParentNode, this.currentShapes, this)];
+		const commands = [new ORYX.Core.Command.Move(this.toMoveShapes, offset, this.containmentParentNode, this.currentShapes, this)];
 		// If the undocked edges command is setted, add this command
 		if( this._undockedEdgesCommand instanceof ORYX.Core.Command ){
 			commands.unshift( this._undockedEdgesCommand );
@@ -20050,7 +20050,7 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 		// If Resizing finished, the Shapes will be resize
 		if(this.isResizing) {
 
-			var commandClass = ORYX.Core.Command.extend({
+			const commandClass = ORYX.Core.Command.extend({
 				construct: function(shape, newBounds, plugin){
 					this.shape = shape;
 					this.oldBounds = shape.bounds.clone();
@@ -20093,15 +20093,15 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 				}
 			});
 
-			var bounds = this.dragBounds.clone();
-			var shape = this.currentShapes[0];
+			const bounds = this.dragBounds.clone();
+			const shape = this.currentShapes[0];
 
 			if(shape.parent) {
-				var parentPosition = shape.parent.absoluteXY();
+				const parentPosition = shape.parent.absoluteXY();
 				bounds.moveBy(-parentPosition.x, -parentPosition.y);
 			}
 
-			var command = new commandClass(shape, bounds, this);
+			const command = new commandClass(shape, bounds, this);
 
 			this.facade.executeCommands([command]);
 
@@ -20118,7 +20118,7 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 	 */
 	beforeDrag: function(){
 
-		var undockEdgeCommand = ORYX.Core.Command.extend({
+		const undockEdgeCommand = ORYX.Core.Command.extend({
 			construct: function(moveShapes){
 				this.dockers = moveShapes.collect(function(shape){ return shape instanceof ORYX.Core.Controls.Docker ? {docker:shape, dockedShape:shape.getDockedShape(), refPoint:shape.referencePoint} : undefined }).compact();
 			},
@@ -20149,7 +20149,7 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 			});
 			// Hide all labels from docked shapes
 			shape.getAllDockedShapes().each(function(dockedShape) {
-				var labels = dockedShape.getLabels();
+				const labels = dockedShape.getLabels();
 				if(labels.length > 0) {
 					labels.each(function(label) {
 						label.hide();
@@ -20182,15 +20182,15 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 			// Show the label of these shape
 			//shape.getLabels().each(function(label) {
 			for(var i=0; i<shape.length ;i++){
-				var label = shape[i];
+				const label = shape[i];
 				label.show();
 			}//);
 			// Show all labels at docked shapes
 			//shape.getAllDockedShapes().each(function(dockedShape) {
-			var allDockedShapes = shape.getAllDockedShapes()
+			const allDockedShapes = shape.getAllDockedShapes()
 			for(var i=0; i<allDockedShapes.length ;i++){
-				var dockedShape = allDockedShapes[i];
-				var labels = dockedShape.getLabels();
+				const dockedShape = allDockedShapes[i];
+				const labels = dockedShape.getLabels();
 				if(labels.length > 0) {
 					labels.each(function(label) {
 						label.show();
@@ -20201,7 +20201,7 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 			// Do this recursive
 			//shape.children.each((function(value) {
 			for(var i=0; i<shape.children.length ;i++){
-				var value = shape.children[i];
+				const value = shape.children[i];
 				if(value instanceof ORYX.Core.Shape)
 					this.showAllLabels(value);
 			}//).bind(this));
@@ -20223,7 +20223,7 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 	 *
 	 */
 	onSelectionChanged: function(event) {
-		var elements = event.elements;
+		const elements = event.elements;
 
 		// Reset the drag-variables
 		this.dragEnable = false;
@@ -20245,7 +20245,7 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 			this.currentShapes = elements;
 
 			// Get all shapes with the highest parent in object hierarchy (canvas is the top most parent)
-			var topLevelElements = this.facade.getCanvas().getShapesWithSharedParent(elements);
+			const topLevelElements = this.facade.getCanvas().getShapesWithSharedParent(elements);
 			this.toMoveShapes = topLevelElements;
 
 			this.toMoveShapes = this.toMoveShapes.findAll( function(shape) { return shape instanceof ORYX.Core.Node &&
@@ -20254,10 +20254,10 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 			elements.each((function(shape){
 				if(!(shape instanceof ORYX.Core.Edge)) {return;}
 
-				var dks = shape.getDockers();
+				const dks = shape.getDockers();
 
-				var hasF = elements.member(dks.first().getDockedShape());
-				var hasL = elements.member(dks.last().getDockedShape());
+				const hasF = elements.member(dks.first().getDockedShape());
+				const hasL = elements.member(dks.last().getDockedShape());
 
 //				if(!hasL) {
 //					this.toMoveShapes.push(dks.last());
@@ -20267,7 +20267,7 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 //				}
 				/* Enable movement of undocked edges */
 				if(!hasF && !hasL) {
-					var isUndocked = !dks.first().getDockedShape() && !dks.last().getDockedShape();
+					const isUndocked = !dks.first().getDockedShape() && !dks.last().getDockedShape();
 					if(isUndocked) {
 						this.toMoveShapes = this.toMoveShapes.concat(dks);
 					}
@@ -20280,9 +20280,9 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 			}).bind(this));
 
 			// Calculate the new area-bounds of the selection
-			var newBounds = undefined;
+			let newBounds = undefined;
 			this.toMoveShapes.each(function(value) {
-				var shape = value;
+				let shape = value;
 				if(value instanceof ORYX.Core.Controls.Docker) {
 					/* Get the Shape */
 					shape = value.parent;
@@ -20316,7 +20316,7 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 
 			// Show the resize button, if there is only one element and this is resizeable
 			if(elements.length == 1 && elements[0].isResizable) {
-				var aspectRatio = elements[0].getStencil().fixedAspectRatio() ? elements[0].bounds.width() / elements[0].bounds.height() : undefined;
+				const aspectRatio = elements[0].getStencil().fixedAspectRatio() ? elements[0].bounds.width() / elements[0].bounds.height() : undefined;
 				this.resizerSE.setBounds(this.dragBounds, elements[0].minimumSize, elements[0].maximumSize, aspectRatio);
 				this.resizerSE.show();
 				this.resizerNW.setBounds(this.dragBounds, elements[0].minimumSize, elements[0].maximumSize, aspectRatio);
@@ -20338,7 +20338,7 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 				this.distPointTimeout = window.setTimeout(function(){
 					// Get all the shapes, there will consider at snapping
 					// Consider only those elements who shares the same parent element
-					var distShapes = this.facade.getCanvas().getChildShapes(true).findAll(function(value){
+					const distShapes = this.facade.getCanvas().getChildShapes(true).findAll(function(value){
 						var parentShape = value.parent;
 						while(parentShape){
 							if(elements.member(parentShape)) return false;
@@ -20355,9 +20355,9 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 					// For all these shapes
 					distShapes.each((function(value) {
 						if(!(value instanceof ORYX.Core.Edge)) {
-							var ul = value.absoluteXY();
-							var width = value.bounds.width();
-							var height = value.bounds.height();
+							const ul = value.absoluteXY();
+							const width = value.bounds.width();
+							const height = value.bounds.height();
 
 							// Add the upperLeft, center and lowerRight - Point to the distancePoints
 							this.distPoints.push({
@@ -20391,27 +20391,27 @@ ORYX.Plugins.DragDropResize = ORYX.Plugins.AbstractPlugin.extend({
 	snapToGrid: function(position) {
 
 		// Get the current Bounds
-		var bounds = this.dragBounds;
+		const bounds = this.dragBounds;
 
-		var point = {};
+		const point = {};
 
-		var ulThres = 6;
-		var cThres = 10;
-		var lrThres = 6;
+		const ulThres = 6;
+		const cThres = 10;
+		const lrThres = 6;
 
-		var scale = this.vLine ? this.vLine.getScale() : 1;
+		const scale = this.vLine ? this.vLine.getScale() : 1;
 
-		var ul = { x: (position.x/scale), y: (position.y/scale)};
-		var c = { x: (position.x/scale) + (bounds.width()/2), y: (position.y/scale) + (bounds.height()/2)};
-		var lr = { x: (position.x/scale) + (bounds.width()), y: (position.y/scale) + (bounds.height())};
+		const ul = { x: (position.x/scale), y: (position.y/scale)};
+		const c = { x: (position.x/scale) + (bounds.width()/2), y: (position.y/scale) + (bounds.height()/2)};
+		const lr = { x: (position.x/scale) + (bounds.width()), y: (position.y/scale) + (bounds.height())};
 
-		var offsetX, offsetY;
-		var gridX, gridY;
+		let offsetX, offsetY;
+		let gridX, gridY;
 
 		// For each distant point
 		this.distPoints.each(function(value) {
 
-			var x, y, gx, gy;
+			let x, y, gx, gy;
 			if (Math.abs(value.c.x-c.x) < cThres){
 				x = value.c.x-c.x;
 				gx = value.c.x;
@@ -20519,13 +20519,13 @@ ORYX.Plugins.SelectedRect = Clazz.extend({
 	},
 
 	resize: function(bounds) {
-		var upL = bounds.upperLeft();
+		const upL = bounds.upperLeft();
 
-		var padding = ORYX.CONFIG.SELECTED_AREA_PADDING;
+		const padding = ORYX.CONFIG.SELECTED_AREA_PADDING;
 
 		this.dashedArea.setAttributeNS(null, 'width', bounds.width() + 2*padding);
 		this.dashedArea.setAttributeNS(null, 'height', bounds.height() + 2*padding);
-		this.node.setAttributeNS(null, 'transform', "translate("+ (upL.x - padding) +", "+ (upL.y - padding) +")");
+		this.node.setAttributeNS(null, 'transform', `translate(${ upL.x - padding }, ${ upL.y - padding })`);
 	}
 
 
@@ -20576,13 +20576,13 @@ ORYX.Plugins.GridLine = Clazz.extend({
 	update: function(pos) {
 
 		if (this.direction === ORYX.Plugins.GridLine.DIR_HORIZONTAL) {
-			var y = pos instanceof Object ? pos.y : pos;
-			var cWidth = this.parent.parentNode.parentNode.width.baseVal.value/this.getScale();
-			this.line.setAttributeNS(null, 'd', 'M 0 '+y+ ' L '+cWidth+' '+y);
+			const y = pos instanceof Object ? pos.y : pos;
+			const cWidth = this.parent.parentNode.parentNode.width.baseVal.value/this.getScale();
+			this.line.setAttributeNS(null, 'd', `M 0 ${y } L ${cWidth} ${y}`);
 		} else {
-			var x = pos instanceof Object ? pos.x : pos;
-			var cHeight = this.parent.parentNode.parentNode.height.baseVal.value/this.getScale();
-			this.line.setAttributeNS(null, 'd', 'M'+x+ ' 0 L '+x+' '+cHeight);
+			const x = pos instanceof Object ? pos.x : pos;
+			const cHeight = this.parent.parentNode.parentNode.height.baseVal.value/this.getScale();
+			this.line.setAttributeNS(null, 'd', `M${x } 0 L ${x} ${cHeight}`);
 		}
 
 		this.show();
@@ -20603,7 +20603,7 @@ ORYX.Plugins.Resizer = Clazz.extend({
 		this.facade			= facade;
 
 		this.node = ORYX.Editor.graft("http://www.w3.org/1999/xhtml", $('canvasSection'),
-			['div', {'class': 'resizer_'+ this.orientation, style:'left:0px; top:0px;position:absolute;'}]);
+			['div', {'class': `resizer_${ this.orientation}`, style:'left:0px; top:0px;position:absolute;'}]);
 
 		this.node.addEventListener(ORYX.CONFIG.EVENT_MOUSEDOWN, this.handleMouseDown.bind(this), true);
 		document.documentElement.addEventListener(ORYX.CONFIG.EVENT_MOUSEUP, 	this.handleMouseUp.bind(this), 		true);
@@ -20663,7 +20663,7 @@ ORYX.Plugins.Resizer = Clazz.extend({
 			this.aspectRatio = undefined;
 		}
 
-		var position = {
+		const position = {
 			x: Event.pointerX(event) - this.offSetPosition.x,
 			y: Event.pointerY(event) - this.offSetPosition.y};
 
@@ -20674,7 +20674,7 @@ ORYX.Plugins.Resizer = Clazz.extend({
 		position.x  = Math.min( position.x, this.facade.getCanvas().bounds.width());
 		position.y  = Math.min( position.y, this.facade.getCanvas().bounds.height());
 
-		var offset = {
+		const offset = {
 			x: position.x - this.position.x,
 			y: position.y - this.position.y
 		};
@@ -20818,24 +20818,24 @@ ORYX.Plugins.Resizer = Clazz.extend({
 	update: function() {
 		if(!this.bounds) { return; }
 
-		var upL = this.bounds.upperLeft();
+		const upL = this.bounds.upperLeft();
 
 		if(this.bounds.width() < this.minSize.width)	{ this.bounds.set(upL.x, upL.y, upL.x + this.minSize.width, upL.y + this.bounds.height());};
 		if(this.bounds.height() < this.minSize.height)	{ this.bounds.set(upL.x, upL.y, upL.x + this.bounds.width(), upL.y + this.minSize.height);};
 		if(this.bounds.width() > this.maxSize.width)	{ this.bounds.set(upL.x, upL.y, upL.x + this.maxSize.width, upL.y + this.bounds.height());};
 		if(this.bounds.height() > this.maxSize.height)	{ this.bounds.set(upL.x, upL.y, upL.x + this.bounds.width(), upL.y + this.maxSize.height);};
 
-		var a = this.canvasNode.getScreenCTM();
+		const a = this.canvasNode.getScreenCTM();
 
 		upL.x *= a.a;
 		upL.y *= a.d;
 
-		var additionalIEZoom = 1;
+		let additionalIEZoom = 1;
         if (!isNaN(screen.logicalXDPI) && !isNaN(screen.systemXDPI)) {
-            var ua = navigator.userAgent;
+            const ua = navigator.userAgent;
             if (ua.indexOf('MSIE') >= 0) {
                 //IE 10 and below
-                var zoom = Math.round((screen.deviceXDPI / screen.logicalXDPI) * 100);
+                const zoom = Math.round((screen.deviceXDPI / screen.logicalXDPI) * 100);
                 if (zoom !== 100) {
                     additionalIEZoom = zoom / 100
                 }
@@ -20847,12 +20847,12 @@ ORYX.Plugins.Resizer = Clazz.extend({
              upL.x = upL.x - jQuery("#canvasSection").offset().left + a.e;
 
         } else {
-             var canvasOffsetLeft = jQuery("#canvasSection").offset().left;
-             var canvasScrollLeft = jQuery("#canvasSection").scrollLeft();
-             var canvasScrollTop = jQuery("#canvasSection").scrollTop();
+             const canvasOffsetLeft = jQuery("#canvasSection").offset().left;
+             const canvasScrollLeft = jQuery("#canvasSection").scrollLeft();
+             const canvasScrollTop = jQuery("#canvasSection").scrollTop();
 
-             var offset = a.e - (canvasOffsetLeft * additionalIEZoom);
-             var additionaloffset = 0;
+             const offset = a.e - (canvasOffsetLeft * additionalIEZoom);
+             let additionaloffset = 0;
              if (offset > 10) {
                  additionaloffset = (offset / additionalIEZoom) - offset;
              }
@@ -20870,8 +20870,8 @@ ORYX.Plugins.Resizer = Clazz.extend({
 
 		this.position = upL;
 
-		this.node.style.left = this.position.x + "px";
-		this.node.style.top = this.position.y + "px";
+		this.node.style.left = `${this.position.x  }px`;
+		this.node.style.top = `${this.position.y  }px`;
 	}
 });
 
@@ -20905,7 +20905,7 @@ ORYX.Core.Command.Move = ORYX.Core.Command.extend({
 	},
 	rollback: function(){
 		// Moves by the inverted offset
-		var offset = { x:-this.offset.x, y:-this.offset.y };
+		const offset = { x:-this.offset.x, y:-this.offset.y };
 		this.move( offset );
 		// Addes to the old parents
 		this.addShapeToParent( this.oldParents );
@@ -20920,8 +20920,8 @@ ORYX.Core.Command.Move = ORYX.Core.Command.extend({
 	move:function(offset, doLayout){
 
 		// Move all Shapes by these offset
-		for(var i=0; i<this.moveShapes.length ;i++){
-			var value = this.moveShapes[i];
+		for(let i=0; i<this.moveShapes.length ;i++){
+			const value = this.moveShapes[i];
 			value.bounds.moveBy(offset);
 
 			if (value instanceof ORYX.Core.Node) {
@@ -20946,7 +20946,7 @@ ORYX.Core.Command.Move = ORYX.Core.Command.extend({
 				}*/
 
 
-				var allEdges = [].concat(value.getIncomingShapes())
+				const allEdges = [].concat(value.getIncomingShapes())
 					.concat(value.getOutgoingShapes())
 					// Remove all edges which are included in the selection from the list
 					.findAll(function(r){ return	r instanceof ORYX.Core.Edge && !this.moveShapes.any(function(d){ return d == r || (d instanceof ORYX.Core.Controls.Docker && d.parent == r)}) }.bind(this))
@@ -20958,16 +20958,16 @@ ORYX.Core.Command.Move = ORYX.Core.Command.extend({
 				this.plugin.layoutEdges(value, allEdges, offset);
 
 
-				var allSameEdges = [].concat(value.getIncomingShapes())
+				const allSameEdges = [].concat(value.getIncomingShapes())
 					.concat(value.getOutgoingShapes())
 					// Remove all edges which are included in the selection from the list
 					.findAll(function(r){ return r instanceof ORYX.Core.Edge && r.dockers.first().isDocked() && r.dockers.last().isDocked() && !this.moveShapes.include(r) && !this.moveShapes.any(function(d){ return d == r || (d instanceof ORYX.Core.Controls.Docker && d.parent == r)}) }.bind(this))
 					// Remove all edges which are included in the selection from the list
 					.findAll(function(r){ return this.moveShapes.indexOf(r.dockers.first().getDockedShape()) > i ||  this.moveShapes.indexOf(r.dockers.last().getDockedShape()) > i}.bind(this))
 
-				for (var j = 0; j < allSameEdges.length; j++) {
-					for (var k = 1; k < allSameEdges[j].dockers.length-1; k++) {
-						var docker = allSameEdges[j].dockers[k];
+				for (let j = 0; j < allSameEdges.length; j++) {
+					for (let k = 1; k < allSameEdges[j].dockers.length-1; k++) {
+						const docker = allSameEdges[j].dockers[k];
 						if (!docker.getDockedShape() && !this.moveShapes.include(docker)) {
 							docker.bounds.moveBy(offset);
 						}
@@ -20992,8 +20992,8 @@ ORYX.Core.Command.Move = ORYX.Core.Command.extend({
 	},
 	dockAllShapes: function(shouldDocked){
 		// Undock all Nodes
-		for (var i = 0; i < this.dockedNodes.length; i++) {
-			var docker = this.dockedNodes[i].docker;
+		for (let i = 0; i < this.dockedNodes.length; i++) {
+			const docker = this.dockedNodes[i].docker;
 
 			docker.setDockedShape( shouldDocked ? this.dockedNodes[i].dockedShape : undefined )
 			if (docker.getDockedShape()) {
@@ -21006,16 +21006,16 @@ ORYX.Core.Command.Move = ORYX.Core.Command.extend({
 	addShapeToParent:function( parents ){
 
 		// For every Shape, add this and reset the position
-		for(var i=0; i<this.moveShapes.length ;i++){
-			var currentShape = this.moveShapes[i];
+		for(let i=0; i<this.moveShapes.length ;i++){
+			const currentShape = this.moveShapes[i];
 			if(currentShape instanceof ORYX.Core.Node &&
 			   currentShape.parent !== parents[i]) {
 
 				// Calc the new position
-				var unul = parents[i].absoluteXY();
-				var csul = currentShape.absoluteXY();
-				var x = csul.x - unul.x;
-				var y = csul.y - unul.y;
+				const unul = parents[i].absoluteXY();
+				const csul = currentShape.absoluteXY();
+				let x = csul.x - unul.x;
+				let y = csul.y - unul.y;
 
 				// Add the shape to the new contained shape
 				parents[i].add(currentShape);
@@ -21028,7 +21028,7 @@ ORYX.Core.Command.Move = ORYX.Core.Command.extend({
 
 				// Set the new position
 				if(currentShape instanceof ORYX.Core.Node && currentShape.dockers.length == 1){
-					var b = currentShape.bounds;
+					const b = currentShape.bounds;
 					x += b.width()/2;y += b.height()/2
 					currentShape.dockers.first().bounds.centerMoveTo(x, y);
 				} else {
@@ -21188,13 +21188,13 @@ ORYX.Plugins.DragDocker = Clazz.extend({
 				label.hide();
 			});
 
-			var eventCoordinates = this.facade.eventCoordinates(event);
-			var additionalIEZoom = 1;
+			const eventCoordinates = this.facade.eventCoordinates(event);
+			let additionalIEZoom = 1;
             if (!isNaN(screen.logicalXDPI) && !isNaN(screen.systemXDPI)) {
-                var ua = navigator.userAgent;
+                const ua = navigator.userAgent;
                 if (ua.indexOf('MSIE') >= 0) {
                     //IE 10 and below
-                    var zoom = Math.round((screen.deviceXDPI / screen.logicalXDPI) * 100);
+                    const zoom = Math.round((screen.deviceXDPI / screen.logicalXDPI) * 100);
                     if (zoom !== 100) {
                         additionalIEZoom = zoom / 100
                     }
@@ -21217,7 +21217,7 @@ ORYX.Plugins.DragDocker = Clazz.extend({
 				this.outerDockerNotMoved = true;
 			}
 
-			var option = {movedCallback: this.dockerMoved.bind(this), upCallback: this.dockerMovedFinished.bind(this)};
+			const option = {movedCallback: this.dockerMoved.bind(this), upCallback: this.dockerMovedFinished.bind(this)};
 
 			this.startEventPos = eventCoordinates;
 
@@ -21232,20 +21232,20 @@ ORYX.Plugins.DragDocker = Clazz.extend({
 	 */
 	dockerMoved: function(event) {
 		this.outerDockerNotMoved = false;
-		var snapToMagnet = undefined;
+		let snapToMagnet = undefined;
 
 		if (this.docker.parent) {
 			if (this.isStartDocker || this.isEndDocker) {
 
 				// Get the EventPosition and all Shapes on these point
-				var evPos = this.facade.eventCoordinates(event);
+				const evPos = this.facade.eventCoordinates(event);
 
-				var additionalIEZoom = 1;
+				let additionalIEZoom = 1;
 	            if (!isNaN(screen.logicalXDPI) && !isNaN(screen.systemXDPI)) {
-	                var ua = navigator.userAgent;
+	                const ua = navigator.userAgent;
 	                if (ua.indexOf('MSIE') >= 0) {
 	                    //IE 10 and below
-	                    var zoom = Math.round((screen.deviceXDPI / screen.logicalXDPI) * 100);
+	                    const zoom = Math.round((screen.deviceXDPI / screen.logicalXDPI) * 100);
 	                    if (zoom !== 100) {
 	                        additionalIEZoom = zoom / 100
 	                    }
@@ -21259,7 +21259,7 @@ ORYX.Plugins.DragDocker = Clazz.extend({
 
 				if(this.docker.isDocked()) {
 					/* Only consider start/end dockers if they are moved over a treshold */
-					var distanceDockerPointer =
+					const distanceDockerPointer =
 						ORYX.Core.Math.getDistancePointToPoint(evPos, this.initialDockerPosition);
 					if(distanceDockerPointer < this.undockTreshold) {
 						this.outerDockerNotMoved = true;
@@ -21273,10 +21273,10 @@ ORYX.Plugins.DragDocker = Clazz.extend({
 					this.dockerParent._update();
 				}
 
-				var shapes = this.facade.getCanvas().getAbstractShapesAtPosition(evPos);
+				const shapes = this.facade.getCanvas().getAbstractShapesAtPosition(evPos);
 
 				// Get the top level Shape on these, but not the same as Dockers parent
-				var uiObj = shapes.pop();
+				let uiObj = shapes.pop();
 				if (this.docker.parent === uiObj) {
 					uiObj = shapes.pop();
 				}
@@ -21293,7 +21293,7 @@ ORYX.Plugins.DragDocker = Clazz.extend({
 						// Ask by the StencilSet if the source, the edge and the target valid connections.
 						if (this.docker.parent instanceof ORYX.Core.Edge) {
 
-							var highestParent = this.getHighestParentBeforeCanvas(uiObj);
+							const highestParent = this.getHighestParentBeforeCanvas(uiObj);
 							/* Ensure that the shape to dock is not a child shape
 							 * of the same edge.
 							 */
@@ -21304,7 +21304,7 @@ ORYX.Plugins.DragDocker = Clazz.extend({
 								return;
 							}
 							this.isValid = false;
-							var curObj = uiObj, orgObj = uiObj;
+							let curObj = uiObj, orgObj = uiObj;
 							while (!this.isValid && curObj && !(curObj instanceof ORYX.Core.Canvas))
 							{
 								uiObj = curObj;
@@ -21378,11 +21378,11 @@ ORYX.Plugins.DragDocker = Clazz.extend({
 		}
 		// Snap to on the nearest Docker of the same parent
 		if(!(event.shiftKey || event.ctrlKey) && !snapToMagnet) {
-			var minOffset = ORYX.CONFIG.DOCKER_SNAP_OFFSET;
-			var nearestX = minOffset + 1;
-			var nearestY = minOffset + 1;
+			const minOffset = ORYX.CONFIG.DOCKER_SNAP_OFFSET;
+			let nearestX = minOffset + 1;
+			let nearestY = minOffset + 1;
 
-			var dockerCenter = this.docker.bounds.center();
+			const dockerCenter = this.docker.bounds.center();
 
 			if (this.docker.parent) {
 
@@ -21391,7 +21391,7 @@ ORYX.Plugins.DragDocker = Clazz.extend({
 						return
 					};
 
-					var center = docker.referencePoint ? docker.getAbsoluteReferencePoint() : docker.bounds.center();
+					const center = docker.referencePoint ? docker.getAbsoluteReferencePoint() : docker.bounds.center();
 
 					nearestX = Math.abs(nearestX) > Math.abs(center.x - dockerCenter.x) ? center.x - dockerCenter.x : nearestX;
 					nearestY = Math.abs(nearestY) > Math.abs(center.y - dockerCenter.y) ? center.y - dockerCenter.y : nearestY;
@@ -21409,21 +21409,21 @@ ORYX.Plugins.DragDocker = Clazz.extend({
 
 
 
-					var previous = this.docker.parent.dockers[Math.max(this.docker.parent.dockers.indexOf(this.docker)-1, 0)];
-					var next = this.docker.parent.dockers[Math.min(this.docker.parent.dockers.indexOf(this.docker)+1, this.docker.parent.dockers.length-1)];
+					const previous = this.docker.parent.dockers[Math.max(this.docker.parent.dockers.indexOf(this.docker)-1, 0)];
+					const next = this.docker.parent.dockers[Math.min(this.docker.parent.dockers.indexOf(this.docker)+1, this.docker.parent.dockers.length-1)];
 
 					if (previous && next && previous !== this.docker && next !== this.docker){
-						var cp = previous.bounds.center();
-						var cn = next.bounds.center();
-						var cd = this.docker.bounds.center();
+						const cp = previous.bounds.center();
+						const cn = next.bounds.center();
+						const cd = this.docker.bounds.center();
 
 						// Checks if the point is on the line between previous and next
 						if (ORYX.Core.Math.isPointInLine(cd.x, cd.y, cp.x, cp.y, cn.x, cn.y, 10)) {
 							// Get the rise
-							var raise = (Number(cn.y)-Number(cp.y))/(Number(cn.x)-Number(cp.x));
+							const raise = (Number(cn.y)-Number(cp.y))/(Number(cn.x)-Number(cp.x));
 							// Calculate the intersection point
-							var intersecX = ((cp.y-(cp.x*raise))-(cd.y-(cd.x*(-Math.pow(raise,-1)))))/((-Math.pow(raise,-1))-raise);
-							var intersecY = (cp.y-(cp.x*raise))+(raise*intersecX);
+							const intersecX = ((cp.y-(cp.x*raise))-(cd.y-(cd.x*(-Math.pow(raise,-1)))))/((-Math.pow(raise,-1))-raise);
+							const intersecY = (cp.y-(cp.x*raise))+(raise*intersecX);
 
 							if(isNaN(intersecX) || isNaN(intersecY)) {return;}
 
@@ -21479,18 +21479,18 @@ ORYX.Plugins.DragDocker = Clazz.extend({
 
 		if(this.outerDockerNotMoved) {
 			// Get the EventPosition and all Shapes on these point
-			var evPos = this.facade.eventCoordinates(event);
-			var shapes = this.facade.getCanvas().getAbstractShapesAtPosition(evPos);
+			const evPos = this.facade.eventCoordinates(event);
+			let shapes = this.facade.getCanvas().getAbstractShapesAtPosition(evPos);
 
 			/* Remove edges from selection */
-			var shapeWithoutEdges = shapes.findAll(function(node) {
+			const shapeWithoutEdges = shapes.findAll(function(node) {
 				return node instanceof ORYX.Core.Node;
 			});
 			shapes = shapeWithoutEdges.length ? shapeWithoutEdges : shapes;
 			this.facade.setSelection(shapes);
 		} else {
 			//Command-Pattern for dragging one docker
-			var dragDockerCommand = ORYX.Core.Command.extend({
+			const dragDockerCommand = ORYX.Core.Command.extend({
 				construct: function(docker, newPos, oldPos, newDockedShape, oldDockedShape, facade){
 					this.docker 		= docker;
 					this.index			= docker.parent.dockers.indexOf(docker);
@@ -21538,7 +21538,7 @@ ORYX.Plugins.DragDocker = Clazz.extend({
 
 			if (this.docker.parent){
 				// Instanziate the dockCommand
-				var command = new dragDockerCommand(this.docker, this.docker.getDockedShape() ? this.docker.referencePoint : this.docker.bounds.center(), this._commandArg.refPoint, this.docker.getDockedShape(), this._commandArg.dockedShape, this.facade);
+				const command = new dragDockerCommand(this.docker, this.docker.getDockedShape() ? this.docker.referencePoint : this.docker.bounds.center(), this._commandArg.refPoint, this.docker.getDockedShape(), this._commandArg.dockedShape, this.facade);
 				this.facade.executeCommands( [command] );
 			}
 		}
@@ -21590,7 +21590,7 @@ ORYX.Plugins.DragDocker = Clazz.extend({
 	getHighestParentBeforeCanvas: function(shape) {
 		if(!(shape instanceof ORYX.Core.Shape)) {return undefined;}
 
-		var parent = shape.parent;
+		let parent = shape.parent;
 		while(parent && !(parent.parent instanceof ORYX.Core.Canvas)) {
 			parent = parent.parent;
 		}
@@ -21684,7 +21684,7 @@ ORYX.Plugins.AddDocker = Clazz.extend({
         if(!options.edge)
             return;
 
-        var commandClass = ORYX.Core.Command.extend({
+        const commandClass = ORYX.Core.Command.extend({
             construct: function(addEnabled, deleteEnabled, edge, docker, pos, facade){
                 this.addEnabled = addEnabled;
                 this.deleteEnabled = deleteEnabled;
@@ -21726,7 +21726,7 @@ ORYX.Plugins.AddDocker = Clazz.extend({
             }
         })
 
-        var command = new commandClass(this.enabledAdd(), this.enabledRemove(), options.edge, options.docker, options.position, this.facade);
+        const command = new commandClass(this.enabledAdd(), this.enabledRemove(), options.edge, options.docker, options.position, this.facade);
 
         this.facade.executeCommands([command]);
     }
@@ -21773,9 +21773,9 @@ if(!ORYX.Plugins)
 		// If there is the Canvas
 		if( uiObj instanceof ORYX.Core.Canvas ) {
 			// Calculate the Offset
-			var scrollNode = uiObj.rootNode.parentNode.parentNode;
+			const scrollNode = uiObj.rootNode.parentNode.parentNode;
 
-			var a = this.facade.getCanvas().node.getScreenCTM();
+			const a = this.facade.getCanvas().node.getScreenCTM();
 			this.offsetPosition = {
 				x: a.e,
 				y: a.f
@@ -21814,25 +21814,25 @@ if(!ORYX.Plugins)
 
 			this.moveCallback = undefined;
 
-			var corrSVG = this.facade.getCanvas().node.getScreenCTM();
+			const corrSVG = this.facade.getCanvas().node.getScreenCTM();
 
 			// Calculate the positions of the Frame
-			var a = {
+			const a = {
 				x: this.size.width > 0 ? this.position.x : this.position.x + this.size.width,
 				y: this.size.height > 0 ? this.position.y : this.position.y + this.size.height
 			};
 
-			var b = {
+			const b = {
 				x: a.x + Math.abs(this.size.width),
 				y: a.y + Math.abs(this.size.height)
 			};
 
-			var additionalIEZoom = 1;
+			let additionalIEZoom = 1;
             if (!isNaN(screen.logicalXDPI) && !isNaN(screen.systemXDPI)) {
-                var ua = navigator.userAgent;
+                const ua = navigator.userAgent;
                 if (ua.indexOf('MSIE') >= 0) {
                     //IE 10 and below
-                    var zoom = Math.round((screen.deviceXDPI / screen.logicalXDPI) * 100);
+                    const zoom = Math.round((screen.deviceXDPI / screen.logicalXDPI) * 100);
                     if (zoom !== 100) {
                         additionalIEZoom = zoom / 100
                     }
@@ -21846,12 +21846,12 @@ if(!ORYX.Plugins)
                 b.y = b.y - (corrSVG.f - jQuery("#canvasSection").offset().top);
 
             } else {
-                 var canvasOffsetLeft = jQuery("#canvasSection").offset().left;
-                 var canvasScrollLeft = jQuery("#canvasSection").scrollLeft();
-                 var canvasScrollTop = jQuery("#canvasSection").scrollTop();
+                 const canvasOffsetLeft = jQuery("#canvasSection").offset().left;
+                 const canvasScrollLeft = jQuery("#canvasSection").scrollLeft();
+                 const canvasScrollTop = jQuery("#canvasSection").scrollTop();
 
-                 var offset = a.e - (canvasOffsetLeft * additionalIEZoom);
-                 var additionaloffset = 0;
+                 const offset = a.e - (canvasOffsetLeft * additionalIEZoom);
+                 let additionaloffset = 0;
                  if (offset > 10) {
                      additionaloffset = (offset / additionalIEZoom) - offset;
                  }
@@ -21869,7 +21869,7 @@ if(!ORYX.Plugins)
 			b.x /= corrSVG.a; b.y /= corrSVG.d;
 
 			// Calculate the elements from the childs of the canvas
-			var elements = this.facade.getCanvas().getChildShapes(true).findAll(function(value) {
+			const elements = this.facade.getCanvas().getChildShapes(true).findAll(function(value) {
 				var absBounds = value.absoluteBounds();
 
 				var bA = absBounds.upperLeft();
@@ -21887,12 +21887,12 @@ if(!ORYX.Plugins)
 
 	handleMouseMove: function(event) {
 		// Calculate the size
-		var size = {
+		const size = {
 			width	: Event.pointerX(event) - this.position.x - jQuery("#canvasSection").offset().left,
 			height	: Event.pointerY(event) - this.position.y - jQuery("#canvasSection").offset().top + 5
 		};
 
-		var scrollNode 	= this.facade.getCanvas().rootNode.parentNode.parentNode;
+		const scrollNode 	= this.facade.getCanvas().rootNode.parentNode.parentNode;
 		size.width 		-= this.offsetScroll.x - scrollNode.scrollLeft;
 		size.height 	-= this.offsetScroll.y - scrollNode.scrollTop;
 
@@ -21912,8 +21912,8 @@ if(!ORYX.Plugins)
 
 	setPos: function(pos) {
 		// Set the Position
-		this.node.style.top = pos.y + "px";
-		this.node.style.left = pos.x + "px";
+		this.node.style.top = `${pos.y  }px`;
+		this.node.style.left = `${pos.x  }px`;
 		this.position = pos;
 	},
 
@@ -21924,17 +21924,17 @@ if(!ORYX.Plugins)
 		this.size = Object.clone(size);
 
 		if(size.width < 0) {
-			this.node.style.left = (this.position.x + size.width) + "px";
+			this.node.style.left = `${this.position.x + size.width  }px`;
 			size.width = - size.width;
 		}
 		if(size.height < 0) {
-			this.node.style.top = (this.position.y + size.height) + "px";
+			this.node.style.top = `${this.position.y + size.height  }px`;
 			size.height = - size.height;
 		}
 
 		// Set the size
-		this.node.style.width = size.width + "px";
-		this.node.style.height = size.height + "px";
+		this.node.style.width = `${size.width  }px`;
+		this.node.style.height = `${size.height  }px`;
 	}
 
 });
@@ -21972,7 +21972,7 @@ ORYX.Plugins.ShapeHighlighting = Clazz.extend({
 
 	setHighlight: function(options) {
 		if(options && options.highlightId){
-			var node = this.highlightNodes[options.highlightId];
+			let node = this.highlightNodes[options.highlightId];
 
 			if(!node){
 				node= ORYX.Editor.graft("http://www.w3.org/2000/svg", this.node,
@@ -22017,9 +22017,9 @@ ORYX.Plugins.ShapeHighlighting = Clazz.extend({
 		if( options.style && options.style == ORYX.CONFIG.SELECTION_HIGHLIGHT_STYLE_RECTANGLE ){
 
 			// Set like this
-			var bo = options.elements[0].absoluteBounds();
+			const bo = options.elements[0].absoluteBounds();
 
-			var strWidth = options.strokewidth ? options.strokewidth 	: ORYX.CONFIG.BORDER_OFFSET
+			const strWidth = options.strokewidth ? options.strokewidth 	: ORYX.CONFIG.BORDER_OFFSET
 
 			node.setAttributeNS(null, "d", this.getPathRectangle( bo.a, bo.b , strWidth ) );
 			node.setAttributeNS(null, "stroke", 		options.color 		? options.color 		: ORYX.CONFIG.SELECTION_HIGHLIGHT_COLOR);
@@ -22058,18 +22058,18 @@ ORYX.Plugins.ShapeHighlighting = Clazz.extend({
 		if(!elements || elements.length <= 0) {return undefined}
 
 		// Get the padding and the size
-		var padding = ORYX.CONFIG.SELECTED_AREA_PADDING;
+		const padding = ORYX.CONFIG.SELECTED_AREA_PADDING;
 
-		var path = ""
+		let path = ""
 
 		// Get thru all Elements
 		elements.each((function(element) {
 			if(!element) {return}
 			// Get the absolute Bounds and the two Points
-			var bounds = element.absoluteBounds();
+			const bounds = element.absoluteBounds();
 			bounds.widen(padding)
-			var a = bounds.upperLeft();
-			var b = bounds.lowerRight();
+			const a = bounds.upperLeft();
+			const b = bounds.lowerRight();
 
 			path = path + this.getPath(a ,b);
 
@@ -22087,47 +22087,47 @@ ORYX.Plugins.ShapeHighlighting = Clazz.extend({
 
 	getPathCorners: function(a, b){
 
-		var size = ORYX.CONFIG.SELECTION_HIGHLIGHT_SIZE;
+		const size = ORYX.CONFIG.SELECTION_HIGHLIGHT_SIZE;
 
-		var path = ""
+		let path = ""
 
 		// Set: Upper left
-		path = path + "M" + a.x + " " + (a.y + size) + " l0 -" + size + " l" + size + " 0 ";
+		path = `${path  }M${  a.x  } ${  a.y + size  } l0 -${  size  } l${  size  } 0 `;
 		// Set: Lower left
-		path = path + "M" + a.x + " " + (b.y - size) + " l0 " + size + " l" + size + " 0 ";
+		path = `${path  }M${  a.x  } ${  b.y - size  } l0 ${  size  } l${  size  } 0 `;
 		// Set: Lower right
-		path = path + "M" + b.x + " " + (b.y - size) + " l0 " + size + " l-" + size + " 0 ";
+		path = `${path  }M${  b.x  } ${  b.y - size  } l0 ${  size  } l-${  size  } 0 `;
 		// Set: Upper right
-		path = path + "M" + b.x + " " + (a.y + size) + " l0 -" + size + " l-" + size + " 0 ";
+		path = `${path  }M${  b.x  } ${  a.y + size  } l0 -${  size  } l-${  size  } 0 `;
 
 		return path;
 	},
 
 	getPathRectangle: function(a, b, strokeWidth){
 
-		var size = ORYX.CONFIG.SELECTION_HIGHLIGHT_SIZE;
+		const size = ORYX.CONFIG.SELECTION_HIGHLIGHT_SIZE;
 
-		var path 	= ""
-		var offset 	= strokeWidth / 2.0;
+		let path 	= ""
+		const offset 	= strokeWidth / 2.0;
 
 		// Set: Upper left
-		path = path + "M" + (a.x + offset) + " " + (a.y);
-		path = path + " L" + (a.x + offset) + " " + (b.y - offset);
-		path = path + " L" + (b.x - offset) + " " + (b.y - offset);
-		path = path + " L" + (b.x - offset) + " " + (a.y + offset);
-		path = path + " L" + (a.x + offset) + " " + (a.y + offset);
+		path = `${path  }M${  a.x + offset  } ${  a.y}`;
+		path = `${path  } L${  a.x + offset  } ${  b.y - offset}`;
+		path = `${path  } L${  b.x - offset  } ${  b.y - offset}`;
+		path = `${path  } L${  b.x - offset  } ${  a.y + offset}`;
+		path = `${path  } L${  a.x + offset  } ${  a.y + offset}`;
 
 		return path;
 	},
 
 	getPathEdge: function(edgeDockers) {
-		var length = edgeDockers.length;
-		var path = "M" + edgeDockers[0].bounds.center().x + " "
+		const length = edgeDockers.length;
+		let path = "M" + edgeDockers[0].bounds.center().x + " "
 					+  edgeDockers[0].bounds.center().y;
 
 		for(i=1; i<length; i++) {
-			var dockerPoint = edgeDockers[i].bounds.center();
-			path = path + " L" + dockerPoint.x + " " +  dockerPoint.y;
+			const dockerPoint = edgeDockers[i].bounds.center();
+			path = `${path  } L${  dockerPoint.x  } ${   dockerPoint.y}`;
 		}
 
 		return path;
@@ -22228,8 +22228,8 @@ ORYX.Plugins.Overlay = Clazz.extend({
 
 		// Checks if all arguments are available
 		if( 	!options ||
-				!options.shapes || !options.shapes instanceof Array ||
-				!options.id	|| !options.id instanceof String || options.id.length == 0) {
+				!options.shapes || !(options.shapes instanceof Array) ||
+				!options.id	|| !(options.id instanceof String) || options.id.length == 0) {
 
 					return
 
@@ -22247,7 +22247,7 @@ ORYX.Plugins.Overlay = Clazz.extend({
 			options.shapes.each(function(el){
 
 				// Checks if the node is a Shape
-				if( !el instanceof ORYX.Core.Shape){ return }
+				if( !(el instanceof ORYX.Core.Shape)){ return }
 
 				this.setAttributes( el.node , options.attributes )
 
@@ -22255,7 +22255,7 @@ ORYX.Plugins.Overlay = Clazz.extend({
 
 		}
 
-		var isSVG = true
+		let isSVG = true
 		try {
 			isSVG = options.node && options.node instanceof SVGElement;
 		} catch(e){}
@@ -22269,9 +22269,9 @@ ORYX.Plugins.Overlay = Clazz.extend({
 			options.shapes.each(function(el, index){
 
 				// Checks if the node is a Shape
-				if( !el instanceof ORYX.Core.Shape){ return }
+				if( !(el instanceof ORYX.Core.Shape)){ return }
 
-				var _temp = {}
+				const _temp = {}
 				_temp.svg = options.dontCloneNode ? options.node : options.node.cloneNode( true );
 
 				// Add the svg node to the ORYX-Shape
@@ -22285,8 +22285,8 @@ ORYX.Plugins.Overlay = Clazz.extend({
 				// If the node position is setted, it has to be transformed
 				if( options.nodePosition ){
 
-					var b = el.bounds;
-					var p = options.nodePosition.toUpperCase();
+					let b = el.bounds;
+					let p = options.nodePosition.toUpperCase();
 
 					// Check the values of START and END
 					if( el instanceof ORYX.Core.Node && p == "START"){
@@ -22303,7 +22303,7 @@ ORYX.Plugins.Overlay = Clazz.extend({
 					// depending on the position string
 					_temp.callback = function(){
 
-						var x = 0; var y = 0;
+						let x = 0; let y = 0;
 
 						if( p == "NW" ){
 							// Do Nothing
@@ -22331,7 +22331,7 @@ ORYX.Plugins.Overlay = Clazz.extend({
 							x  += b.upperLeft().x ; y  += b.upperLeft().y ;
 						}
 
-						_temp.svg.setAttributeNS(null, "transform", "translate(" + x + ", " + y + ")")
+						_temp.svg.setAttributeNS(null, "transform", `translate(${  x  }, ${  y  })`)
 
 					}.bind(this)
 
@@ -22369,7 +22369,7 @@ ORYX.Plugins.Overlay = Clazz.extend({
 
 		// Checks if all arguments are available
 		if( 	!options ||
-				!options.id	|| !options.id instanceof String || options.id.length == 0 ||
+				!options.id	|| !(options.id instanceof String) || options.id.length == 0 ||
 				!this.changes[options.id]) {
 
 					return
@@ -22384,7 +22384,7 @@ ORYX.Plugins.Overlay = Clazz.extend({
 			option.shapes.each(function(el, index){
 
 				// Checks if the node is a Shape
-				if( !el instanceof ORYX.Core.Shape){ return }
+				if( !(el instanceof ORYX.Core.Shape)){ return }
 
 				this.deleteAttributes( el.node )
 
@@ -22428,9 +22428,9 @@ ORYX.Plugins.Overlay = Clazz.extend({
 
 
 		// Get all the childs from ME
-		var childs = this.getAllChilds( node.firstChild.firstChild )
+		const childs = this.getAllChilds( node.firstChild.firstChild )
 
-		var ids = []
+		let ids = []
 
 		// Add all Attributes which have relation to another node in this document and concate the pure id out of it
 		// This is for example important for the markers of a edge
@@ -22440,23 +22440,23 @@ ORYX.Plugins.Overlay = Clazz.extend({
 		ids = ids.collect(function(s){return s.slice(5, s.length-1)})
 
 		// Add the node ID to the id
-		ids.unshift( node.id + ' .me')
+		ids.unshift( `${node.id  } .me`)
 
-		var attr				= $H(attributes);
-        var attrValue			= attr.toJSON().gsub(',', ';').gsub('"', '');
-        var attrMarkerValue		= attributes.stroke ? attrValue.slice(0, attrValue.length-1) + "; fill:" + attributes.stroke + ";}" : attrValue;
-        var attrTextValue;
+		const attr				= $H(attributes);
+        const attrValue			= attr.toJSON().gsub(',', ';').gsub('"', '');
+        const attrMarkerValue		= attributes.stroke ? attrValue.slice(0, attrValue.length-1) + "; fill:" + attributes.stroke + ";}" : attrValue;
+        let attrTextValue;
         if( attributes.fill ){
-            var copyAttr        = Object.clone(attributes);
+            const copyAttr        = Object.clone(attributes);
         	copyAttr.fill		= "black";
         	attrTextValue		= $H(copyAttr).toJSON().gsub(',', ';').gsub('"', '');
         }
 
         // Create the CSS-Tags Style out of the ids and the attributes
-        csstags = ids.collect(function(s, i){return "#" + s + " * " + (!i? attrValue : attrMarkerValue) + "" + (attrTextValue ? " #" + s + " text * " + attrTextValue : "") })
+        csstags = ids.collect(function(s, i){return `#${  s  } * ${  !i? attrValue : attrMarkerValue  }${  attrTextValue ? " #" + s + " text * " + attrTextValue : ""}` })
 
 		// Join all the tags
-		var s = csstags.join(" ") + "\n"
+		const s = csstags.join(" ") + "\n"
 
 		// And add to the end of the style tag
 		this.styleNode.appendChild(document.createTextNode(s));
@@ -22472,7 +22472,7 @@ ORYX.Plugins.Overlay = Clazz.extend({
 	deleteAttributes: function( node ) {
 
 		// Get all children which contains the node id
-		var delEl = $A(this.styleNode.childNodes)
+		const delEl = $A(this.styleNode.childNodes)
 					 .findAll(function(e){ return e.textContent.include( '#' + node.id ) });
 
 		// Remove all of them
@@ -22483,7 +22483,7 @@ ORYX.Plugins.Overlay = Clazz.extend({
 
 	getAllChilds: function( node ){
 
-		var childs = $A(node.childNodes)
+		const childs = $A(node.childNodes)
 
 		$A(node.childNodes).each(function( e ){
 		        childs.push( this.getAllChilds( e ) )
@@ -22630,10 +22630,10 @@ ORYX.Plugins.KeysMove = ORYX.Plugins.AbstractPlugin.extend({
     	Event.stop(e.event);
 
 		// calculate the distance to move the objects and get the selection.
-		var distance = far? 20 : 5;
-		var selection = this.facade.getSelection();
-		var currentSelection = this.facade.getSelection();
-		var p = {x: 0, y: 0};
+		const distance = far? 20 : 5;
+		let selection = this.facade.getSelection();
+		const currentSelection = this.facade.getSelection();
+		const p = {x: 0, y: 0};
 
 		// switch on the key pressed and populate the point to move by.
 		switch(key) {
@@ -22660,7 +22660,7 @@ ORYX.Plugins.KeysMove = ORYX.Plugins.AbstractPlugin.extend({
 			}
 
 			// Check if any of the parent shape is included in the selection
-			var s = shape.parent;
+			let s = shape.parent;
 			do{
 				if(selection.include(s)){
 					return false
@@ -22675,8 +22675,8 @@ ORYX.Plugins.KeysMove = ORYX.Plugins.AbstractPlugin.extend({
 		/* Edges must not be movable, if only edges are selected and at least
 		 * one of them is docked.
 		 */
-		var edgesMovable = true;
-		var onlyEdgesSelected = selection.all(function(shape) {
+		let edgesMovable = true;
+		const onlyEdgesSelected = selection.all(function(shape) {
 			if(shape instanceof ORYX.Core.Edge) {
 				if(shape.isDocked()) {
 					edgesMovable = false;
@@ -22700,7 +22700,7 @@ ORYX.Plugins.KeysMove = ORYX.Plugins.AbstractPlugin.extend({
 				//}
 			} else if( shape instanceof ORYX.Core.Edge ) {
 
-				var dockers = shape.dockers;
+				let dockers = shape.dockers;
 
 				if( selection.include( shape.dockers.first().getDockedShape() ) ){
 					dockers = dockers.without( shape.dockers.first() )
@@ -22721,7 +22721,7 @@ ORYX.Plugins.KeysMove = ORYX.Plugins.AbstractPlugin.extend({
 		if (selection.size() > 0) {
 
 			//Stop moving at canvas borders
-			var selectionBounds = [ this.facade.getCanvas().bounds.lowerRight().x,
+			const selectionBounds = [ this.facade.getCanvas().bounds.lowerRight().x,
 			                        this.facade.getCanvas().bounds.lowerRight().y,
 			                        0,
 			                        0 ];
@@ -22742,7 +22742,7 @@ ORYX.Plugins.KeysMove = ORYX.Plugins.AbstractPlugin.extend({
 
 			if(p.x!=0 || p.y!=0) {
 				// Instantiate the moveCommand
-				var commands = [new ORYX.Core.Command.Move(selection, p, null, currentSelection, this)];
+				const commands = [new ORYX.Core.Command.Move(selection, p, null, currentSelection, this)];
 				// Execute the commands
 				this.facade.executeCommands(commands);
 			}
@@ -22752,7 +22752,7 @@ ORYX.Plugins.KeysMove = ORYX.Plugins.AbstractPlugin.extend({
 
 	getUndockedCommant: function(shapes){
 
-		var undockEdgeCommand = ORYX.Core.Command.extend({
+		const undockEdgeCommand = ORYX.Core.Command.extend({
 			construct: function(moveShapes){
 				this.dockers = moveShapes.collect(function(shape){ return shape instanceof ORYX.Core.Controls.Docker ? {docker:shape, dockedShape:shape.getDockedShape(), refPoint:shape.referencePoint} : undefined }).compact();
 			},
@@ -22861,13 +22861,13 @@ new function(){
 		 */
 		doLayout: function(edge){
 			// Get from and to node
-			var from 	= edge.getIncomingNodes()[0];
-			var to 		= edge.getOutgoingNodes()[0];
+			const from 	= edge.getIncomingNodes()[0];
+			const to 		= edge.getOutgoingNodes()[0];
 
 			// Return if one is null
 			if (!from || !to) { return }
 
-			var positions = this.getPositions(from, to, edge);
+			const positions = this.getPositions(from, to, edge);
 
 			if (positions.length > 0){
 				this.setDockers(edge, positions[0].a, positions[0].b);
@@ -22885,22 +22885,22 @@ new function(){
 		getPositions : function(from, to, edge){
 
 			// Get absolute bounds
-			var ab = from.absoluteBounds();
-			var bb = to.absoluteBounds();
+			const ab = from.absoluteBounds();
+			const bb = to.absoluteBounds();
 
 			// Get center from and to
-			var a = ab.center();
-			var b = bb.center();
+			const a = ab.center();
+			const b = bb.center();
 
-			var am = ab.midPoint();
-			var bm = bb.midPoint();
+			const am = ab.midPoint();
+			const bm = bb.midPoint();
 
 			// Get first and last reference point
-			var first = Object.clone(edge.dockers.first().referencePoint);
-			var last = Object.clone(edge.dockers.last().referencePoint);
+			const first = Object.clone(edge.dockers.first().referencePoint);
+			const last = Object.clone(edge.dockers.last().referencePoint);
 			// Get the absolute one
-			var aFirst = edge.dockers.first().getAbsoluteReferencePoint();
-			var aLast = edge.dockers.last().getAbsoluteReferencePoint();
+			const aFirst = edge.dockers.first().getAbsoluteReferencePoint();
+			const aLast = edge.dockers.last().getAbsoluteReferencePoint();
 
 			// IF ------>
 			// or  |
@@ -22912,7 +22912,7 @@ new function(){
 
 			// Calc center position, between a and b
 			// depending on there weight
-			var m = {}
+			const m = {}
 			m.x = a.x < b.x ?
 					(((b.x - bb.width()/2) - (a.x + ab.width()/2))/2) + (a.x + ab.width()/2):
 					(((a.x - ab.width()/2) - (b.x + bb.width()/2))/2) + (b.x + bb.width()/2);
@@ -22926,8 +22926,8 @@ new function(){
 			ab.widen(5); // Wide the from less than
 			bb.widen(20);// the to because of the arrow from the edge
 
-			var positions = [];
-			var off = this.getOffset.bind(this);
+			const positions = [];
+			const off = this.getOffset.bind(this);
 
 			// Checks ----+
 			//            |
@@ -22972,7 +22972,7 @@ new function(){
 			}
 
 			// Sort DESC of weights
-			return positions.sort(function(a,b){ return a.z < b.z ? 1 : (a.z == b.z ? -1 : -1)});
+			return positions.toSorted(function(a,b){ return a.z < b.z ? 1 : (a.z == b.z ? -1 : -1)});
 		},
 
 		/**
@@ -23012,13 +23012,13 @@ new function(){
 			}
 
 
-			var weight = 0;
+			const weight = 0;
 			// Get rules for from "out" and to "in"
-			var dr1 = this.facade.getRules().getLayoutingRules(from, edge)["out"];
-			var dr2 = this.facade.getRules().getLayoutingRules(to, edge)["in"];
+			const dr1 = this.facade.getRules().getLayoutingRules(from, edge)["out"];
+			const dr2 = this.facade.getRules().getLayoutingRules(to, edge)["in"];
 
-			var fromWeight = dr1[d1];
-			var toWeight = dr2[d2];
+			const fromWeight = dr1[d1];
+			const toWeight = dr2[d2];
 
 
 			/**
@@ -23027,7 +23027,7 @@ new function(){
 			 * @param {Object} center1
 			 * @param {Object} center2
 			 */
-			var sameDirection = function(direction, center1, center2){
+			const sameDirection = function(direction, center1, center2){
 				switch(direction){
 					case "t": return Math.abs(center1.x - center2.x) < 2 && center1.y < center2.y
 					case "r": return center1.x > center2.x && Math.abs(center1.y - center2.y) < 2
@@ -23038,7 +23038,7 @@ new function(){
 			}
 
 			// Check if there are same incoming edges from 'from'
-			var sameIncomingFrom = from
+			const sameIncomingFrom = from
 								.getIncomingShapes()
 								.findAll(function(a){ return a instanceof ORYX.Core.Edge})
 								.any(function(e){
@@ -23046,7 +23046,7 @@ new function(){
 								});
 
 			// Check if there are same outgoing edges from 'to'
-			var sameOutgoingTo = to
+			const sameOutgoingTo = to
 								.getOutgoingShapes()
 								.findAll(function(a){ return a instanceof ORYX.Core.Edge})
 								.any(function(e){
@@ -23081,7 +23081,7 @@ new function(){
 			// For a and b (if exists), create
 			// a new docker and set position
 			[a, b].compact().each(function(pos){
-				var docker = edge.createDocker(undefined, pos);
+				const docker = edge.createDocker(undefined, pos);
 				docker.bounds.centerMoveTo(pos);
 			});
 
@@ -23153,15 +23153,15 @@ new function(){
          * a lane is created automagically
          */
         onSelectionChanged: function(event) {
-                var selection = event.elements;
+                let selection = event.elements;
 
                 if(selection && selection.length === 1) {
-                        var namespace = this.getNamespace();
-                        var shape = selection[0];
+                        const namespace = this.getNamespace();
+                        const shape = selection[0];
                         if(shape.getStencil().idWithoutNs() === "Pool") {
                                 if(shape.getChildNodes().length === 0) {
                                         // create a lane inside the selected pool
-                                        var option = {
+                                        const option = {
                                                         type:namespace + "Lane",
                                                         position:{x:0,y:0},
                                                         namespace:shape.getStencil().namespace(),
@@ -23176,18 +23176,18 @@ new function(){
 
                 // Preventing selection of all lanes but not the pool
                 if(selection.any(function(s){ return s instanceof ORYX.Core.Node && s.getStencil().id().endsWith("Lane")})){
-                        var lanes = selection.findAll(function(s){
+                        const lanes = selection.findAll(function(s){
                                 return s instanceof ORYX.Core.Node && s.getStencil().id().endsWith("Lane")
                         });
 
-                        var pools = [];
-                        var unselectLanes = [];
+                        let pools = [];
+                        let unselectLanes = [];
                         lanes.each(function(lane){
                                 pools.push(this.getParentPool(lane))
                         }.bind(this));
 
                         pools = pools.uniq().findAll(function(pool){
-                                var childLanes = this.getLanes(pool, true);
+                                const childLanes = this.getLanes(pool, true);
                                 if (childLanes.all(function(lane){ return lanes.include(lane)})){
                                         unselectLanes = unselectLanes.concat(childLanes);
                                         return true;
@@ -23209,24 +23209,24 @@ new function(){
 
         handleShapeRemove: function(option) {
 
-                var sh                          = option.shape;
-                var parent                      = option.parent;
+                const sh                          = option.shape;
+                const parent                      = option.parent;
 
                 if (sh instanceof ORYX.Core.Node && sh.getStencil().idWithoutNs() === "Lane" && this.facade.isExecutingCommands()) {
 
-                        var pool = this.getParentPool(parent);
+                        const pool = this.getParentPool(parent);
                         if (pool&&pool.parent){
 
-                                var isLeafFn = function(leaf){
+                                const isLeafFn = function(leaf){
                                         return !leaf.getChildNodes().any(function(r){ return r.getStencil().idWithoutNs() === "Lane"});
                                 }
 
-                                var isLeaf = isLeafFn(sh);
-                                var parentHasMoreLanes = parent.getChildNodes().any(function(r){ return r.getStencil().idWithoutNs() === "Lane"});
+                                const isLeaf = isLeafFn(sh);
+                                const parentHasMoreLanes = parent.getChildNodes().any(function(r){ return r.getStencil().idWithoutNs() === "Lane"});
 
                                 if (isLeaf && parentHasMoreLanes){
 
-                                        var command = new ResizeLanesCommand(sh, parent, pool, this);
+                                        const command = new ResizeLanesCommand(sh, parent, pool, this);
                                         this.facade.executeCommands([command]);
 
                                 } else if(      !isLeaf &&
@@ -23234,7 +23234,7 @@ new function(){
                                                                         return  select instanceof ORYX.Core.Node && select.getStencil().idWithoutNs() === "Lane" &&
                                                                                         select.isParent(sh) && isLeafFn(select);})) {
 
-                                        var Command = ORYX.Core.Command.extend({
+                                        const Command = ORYX.Core.Command.extend({
                                                 construct: function(shape, facade) {
                                                         this.children = shape.getChildNodes(true);
                                                         this.facade = facade;
@@ -23267,7 +23267,7 @@ new function(){
 		hashedSubProcesses: {},
 
 		hashChildShapes: function(shape){
-			var children = shape.getChildNodes();
+			const children = shape.getChildNodes();
 			children.each(function(child){
 				if (this.hashedSubProcesses[child.id]){
 					this.hashedSubProcesses[child.id] = child.absoluteXY();
@@ -23285,7 +23285,7 @@ new function(){
 		 */
 		handleSubProcess : function(option) {
 
-			var sh = option.shape;
+			const sh = option.shape;
 
 			if (!this.hashedSubProcesses[sh.id]) {
 				this.hashedSubProcesses[sh.id] = sh.absoluteXY();
@@ -23294,11 +23294,11 @@ new function(){
 				return;
 			}
 
-			var offset = sh.absoluteXY();
+			const offset = sh.absoluteXY();
 			offset.x -= this.hashedSubProcesses[sh.id].x;
 			offset.y -= this.hashedSubProcesses[sh.id].y;
 
-			var resized = this.hashedSubProcesses[sh.id].width !== sh.bounds.width() || this.hashedSubProcesses[sh.id].height !== sh.bounds.height();
+			const resized = this.hashedSubProcesses[sh.id].width !== sh.bounds.width() || this.hashedSubProcesses[sh.id].height !== sh.bounds.height();
 
 			this.hashedSubProcesses[sh.id] = sh.absoluteXY();
 			this.hashedSubProcesses[sh.id].width 	= sh.bounds.width();
@@ -23318,10 +23318,10 @@ new function(){
 				return;
 			}
 
-			var children = shape.getChildNodes(true);
+			const children = shape.getChildNodes(true);
 
 			// Get all nodes
-			var dockers = children
+			const dockers = children
 				// Get all incoming and outgoing edges
 				.map(function(node){
 					return [].concat(node.getIncomingShapes())
@@ -23340,32 +23340,32 @@ new function(){
 				// Flatten the dockers lists
 				.flatten();
 
-			var abs = shape.absoluteBounds();
+			const abs = shape.absoluteBounds();
 			abs.moveBy(-offset.x, -offset.y)
-			var obj = {};
+			const obj = {};
 			dockers.each(function(docker){
 
 				if (docker.isChanged){
 					return;
 				}
 
-				var off = Object.clone(offset);
+				const off = Object.clone(offset);
 
 				if (!abs.isIncluded(docker.bounds.center())){
-					var index 	= docker.parent.dockers.indexOf(docker);
-					var size	= docker.parent.dockers.length;
-					var from 	= docker.parent.getSource();
-					var to 		= docker.parent.getTarget();
+					const index 	= docker.parent.dockers.indexOf(docker);
+					const size	= docker.parent.dockers.length;
+					const from 	= docker.parent.getSource();
+					const to 		= docker.parent.getTarget();
 
-					var bothAreIncluded = children.include(from) && children.include(to);
+					const bothAreIncluded = children.include(from) && children.include(to);
 
 					if (!bothAreIncluded){
-						var previousIsOver = index !== 0 ? abs.isIncluded(docker.parent.dockers[index-1].bounds.center()) : false;
-						var nextIsOver = index !== size-1 ? abs.isIncluded(docker.parent.dockers[index+1].bounds.center()) : false;
+						const previousIsOver = index !== 0 ? abs.isIncluded(docker.parent.dockers[index-1].bounds.center()) : false;
+						const nextIsOver = index !== size-1 ? abs.isIncluded(docker.parent.dockers[index+1].bounds.center()) : false;
 
 						if (!previousIsOver && !nextIsOver){ return; }
 
-						var ref = docker.parent.dockers[previousIsOver ? index-1 : index+1];
+						const ref = docker.parent.dockers[previousIsOver ? index-1 : index+1];
 						if (Math.abs(-Math.abs(ref.bounds.center().x-docker.bounds.center().x)) < 2){
 							off.y = 0;
 						} else if(Math.abs(-Math.abs(ref.bounds.center().y-docker.bounds.center().y)) < 2){
@@ -23393,13 +23393,13 @@ new function(){
 		 *
 		 */
 		handleDockerDocked: function(options) {
-			var namespace = this.getNamespace();
+			const namespace = this.getNamespace();
 
-			var edge = options.parent;
-			var edgeSource = options.target;
+			const edge = options.parent;
+			const edgeSource = options.target;
 
-			if(edge.getStencil().id() === namespace + "SequenceFlow") {
-				var isGateway = edgeSource.getStencil().groups().find(function(group) {
+			if(edge.getStencil().id() === `${namespace  }SequenceFlow`) {
+				const isGateway = edgeSource.getStencil().groups().find(function(group) {
 						if(group == "Gateways")
 							return group;
 					});
@@ -23421,28 +23421,28 @@ new function(){
 		 * PropertyWindow.PropertyChanged Handler
 		 */
 		handlePropertyChanged: function(option) {
-			var namespace = this.getNamespace();
+			const namespace = this.getNamespace();
 
-			var shapes = option.elements;
-			var propertyKey = option.key;
-			var propertyValue = option.value;
+			const shapes = option.elements;
+			const propertyKey = option.key;
+			const propertyValue = option.value;
 
-			var changed = false;
+			let changed = false;
 			shapes.each(function(shape){
-				if((shape.getStencil().id() === namespace + "SequenceFlow") &&
+				if((shape.getStencil().id() === `${namespace  }SequenceFlow`) &&
 					(propertyKey === "oryx-conditiontype")) {
 
 					if(propertyValue != "Expression")
 						// Do not show the Diamond
 						shape.setProperty("oryx-showdiamondmarker", false);
 					else {
-						var incomingShapes = shape.getIncomingShapes();
+						const incomingShapes = shape.getIncomingShapes();
 
 						if(!incomingShapes) {
 							shape.setProperty("oryx-showdiamondmarker", true);
 						}
 
-						var incomingGateway = incomingShapes.find(function(aShape) {
+						const incomingGateway = incomingShapes.find(function(aShape) {
 							var foundGateway = aShape.getStencil().groups().find(function(group) {
 								if(group == "Gateways")
 									return group;
@@ -23479,9 +23479,9 @@ new function(){
         handleLayoutPool: function(event){
 
 
-                var pool = event.shape;
-                var selection = this.facade.getSelection();
-                var currentShape = selection.include(pool) ? pool : selection.first();
+                const pool = event.shape;
+                let selection = this.facade.getSelection();
+                let currentShape = selection.include(pool) ? pool : selection.first();
 
                 currentShape = currentShape || pool;
 
@@ -23503,16 +23503,16 @@ new function(){
                 }
 
                 // Find all child lanes
-                var lanes = this.getLanes(pool);
+                const lanes = this.getLanes(pool);
 
                 if (lanes.length <= 0) {
                         return
                 }
 
-                var allLanes = this.getLanes(pool, true), hp;
-                var considerForDockers = allLanes.clone();
+                let allLanes = this.getLanes(pool, true), hp;
+                let considerForDockers = allLanes.clone();
 
-                var hashedPositions = $H({});
+                const hashedPositions = $H({});
                 allLanes.each(function(lane){
                         hashedPositions[lane.id] = lane.bounds.upperLeft();
                 })
@@ -23523,21 +23523,21 @@ new function(){
                 if (lanes.length === 1 && this.getLanes(lanes.first()).length <= 0) {
                         // TRUE if there is a caption
                         lanes.first().setProperty("oryx-showcaption", lanes.first().properties["oryx-name"].trim().length > 0);
-                        var rect = lanes.first().node.getElementsByTagName("rect");
+                        const rect = lanes.first().node.getElementsByTagName("rect");
                         rect[0].setAttributeNS(null, "display", "none");
                 } else {
                         allLanes.invoke("setProperty", "oryx-showcaption", true);
                         allLanes.each(function(lane){
-                                var rect = lane.node.getElementsByTagName("rect");
+                                const rect = lane.node.getElementsByTagName("rect");
                                 rect[0].removeAttributeNS(null, "display");
                         })
                 }
 
-                var deletedLanes = [];
-                var addedLanes = [];
+                const deletedLanes = [];
+                const addedLanes = [];
 
                 // Get all new lanes
-                var i=-1;
+                let i=-1;
                 while (++i<allLanes.length) {
                         if (!this.hashedBounds[pool.id][allLanes[i].id]){
                                 addedLanes.push(allLanes[i])
@@ -23550,8 +23550,8 @@ new function(){
 
 
                 // Get all deleted lanes
-                var resourceIds = $H(this.hashedBounds[pool.id]).keys();
-                var i=-1;
+                const resourceIds = $H(this.hashedBounds[pool.id]).keys();
+                let i=-1;
                 while (++i<resourceIds.length) {
                         if (!allLanes.any(function(lane){ return lane.id == resourceIds[i]})){
                                 deletedLanes.push(this.hashedBounds[pool.id][resourceIds[i]]);
@@ -23559,7 +23559,7 @@ new function(){
                         }
                 }
 
-                var height, width, x, y;
+                let height, width, x, y;
 
                 if (deletedLanes.length > 0 || addedLanes.length > 0) {
 
@@ -23618,7 +23618,7 @@ new function(){
                                 }
 
                                 // Adjust all child lanes
-                                var childLanes = this.getLanes(currentShape, true);
+                                const childLanes = this.getLanes(currentShape, true);
                                 if (childLanes.length > 0){
                                         if (this.shouldScale(currentShape)){
                                                 var old = this.hashedBounds[pool.id][currentShape.id];
@@ -23631,7 +23631,7 @@ new function(){
                         }
 
                         // Cache all bounds
-                        var changes = allLanes.map(function(lane){ return {
+                        const changes = allLanes.map(function(lane){ return {
                                 shape: lane,
                                 bounds: lane.bounds.clone()
                         } });
@@ -23657,7 +23657,7 @@ new function(){
                                         return (allLanes[i]||{}).id     !== key;
                                 })){
 
-                                var LanesHasBeenReordered = ORYX.Core.Command.extend({
+                                const LanesHasBeenReordered = ORYX.Core.Command.extend({
                                         construct: function(originPosition, newPosition, lanes, plugin, poolId) {
                                                 this.originPosition = Object.clone(originPosition);
                                                 this.newPosition = Object.clone(newPosition);
@@ -23684,12 +23684,12 @@ new function(){
                                         }
                                 });
 
-                                var hp2 = $H({});
+                                const hp2 = $H({});
                                 allLanes.each(function(lane){
                                         hp2[lane.id] = lane.bounds.upperLeft();
                                 })
 
-                                var command = new LanesHasBeenReordered(hashedPositions, hp2, allLanes, this, pool.id);
+                                const command = new LanesHasBeenReordered(hashedPositions, hp2, allLanes, this, pool.id);
                                 this.facade.executeCommands([command]);
 
                         }
@@ -23698,7 +23698,7 @@ new function(){
                 this.hashedBounds[pool.id] = {};
                 this.hashedPositions[pool.id] = hashedPositions;
 
-                var i=-1;
+                let i=-1;
                 while (++i < allLanes.length) {
                         // Cache positions
                         this.hashedBounds[pool.id][allLanes[i].id] = allLanes[i].absoluteBounds();
@@ -23719,7 +23719,7 @@ new function(){
         },
 
         shouldScale: function(element){
-                var childLanes = element.getChildNodes().findAll(function(shape){ return shape.getStencil().id().endsWith("Lane") })
+                const childLanes = element.getChildNodes().findAll(function(shape){ return shape.getStencil().id().endsWith("Lane") })
                 return childLanes.length > 1 || childLanes.any(function(lane){ return this.shouldScale(lane) }.bind(this))
         },
 
@@ -23734,7 +23734,7 @@ new function(){
                         return change.shape.bounds.toString() !== change.bounds.toString();
                 })){
 
-                        var Command = ORYX.Core.Command.extend({
+                        const Command = ORYX.Core.Command.extend({
                                                 construct: function(changes) {
                                                         this.oldState = changes;
                                                         this.newState = changes.map(function(s){ return {shape:s.shape, bounds:s.bounds.clone()}});
@@ -23765,7 +23765,7 @@ new function(){
                         return false;
                 }
 
-                var oldB = bounds;
+                const oldB = bounds;
                 //var oldXY = oldB.upperLeft();
                 //var xy = shape.absoluteXY();
                 return Math.round(oldB.width() - shape.bounds.width()) !== 0 || Math.round(oldB.height() - shape.bounds.height()) !== 0
@@ -23779,7 +23779,7 @@ new function(){
                 lanes.each(function(l){
                         l.getChildNodes().each(function(child){
                                 if (!child.getStencil().id().endsWith("Lane")){
-                                        var cy = scale ? child.bounds.center().y - (child.bounds.center().y/scale) : -y;
+                                        const cy = scale ? child.bounds.center().y - (child.bounds.center().y/scale) : -y;
                                         child.bounds.moveBy((x||0), -cy);
 
                                         if (scale&&child.getStencil().id().endsWith("Subprocess")) {
@@ -23797,7 +23797,7 @@ new function(){
         },
 
         getAllExcludedLanes: function(parent, lane){
-                var lanes = [];
+                let lanes = [];
                 parent.getChildNodes().each(function(shape){
                         if ((!lane || shape !== lane) && shape.getStencil().id().endsWith("Lane")){
                                 lanes.push(shape);
@@ -23819,7 +23819,7 @@ new function(){
 
         getDepth: function(child, parent){
 
-                var i=0;
+                let i=0;
                 while(child && child.parent && child !== parent){
                         child = child.parent;
                         ++i
@@ -23829,7 +23829,7 @@ new function(){
 
         updateDepth: function(lane, fromDepth, toDepth){
 
-                var xOffset = (fromDepth - toDepth) * 30;
+                const xOffset = (fromDepth - toDepth) * 30;
 
                 lane.getChildNodes().each(function(shape){
                         shape.bounds.moveBy(xOffset, 0);
@@ -23842,7 +23842,7 @@ new function(){
         },
 
         setDimensions: function(shape, width, height, x, y){
-                var isLane = shape.getStencil().id().endsWith("Lane");
+                const isLane = shape.getStencil().id().endsWith("Lane");
                 // Set the bounds
                 shape.bounds.set(
                                 isLane  ? 30 : (shape.bounds.a.x - (x || 0)),
@@ -23872,7 +23872,7 @@ new function(){
 
         adjustHeight: function(lanes, changedLane, propagateHeight){
 
-                var oldHeight = 0;
+                let oldHeight = 0;
                 if (!changedLane && propagateHeight){
                         var i=-1;
                         while (++i<lanes.length){
@@ -23880,8 +23880,8 @@ new function(){
                         }
                 }
 
-                var i=-1;
-                var height = 0;
+                let i=-1;
+                let height = 0;
 
                 // Iterate trough every lane
                 while (++i<lanes.length){
@@ -23920,14 +23920,14 @@ new function(){
 
         updateHeight: function(root){
 
-                var lanes = this.getLanes(root);
+                const lanes = this.getLanes(root);
 
                 if (lanes.length == 0){
                         return root.bounds.height();
                 }
 
-                var height = 0;
-                var i=-1;
+                let height = 0;
+                let i=-1;
                 while (++i < lanes.length) {
                         this.setLanePosition(lanes[i], height);
                         height += this.updateHeight(lanes[i]);
@@ -23940,7 +23940,7 @@ new function(){
 
         getOffset: function(lane, includePool, pool){
 
-                var offset = {x:0,y:0};
+                const offset = {x:0,y:0};
 
 
                 /*var parent = lane;
@@ -23962,9 +23962,9 @@ new function(){
                         parent = parent.parent;
                 }       */
 
-                var offset = lane.absoluteXY();
+                const offset = lane.absoluteXY();
 
-                var hashed = this.hashedBounds[pool.id][lane.id] ||(includePool === true ? this.hashedPoolPositions[lane.id] : undefined);
+                const hashed = this.hashedBounds[pool.id][lane.id] ||(includePool === true ? this.hashedPoolPositions[lane.id] : undefined);
                 if (hashed) {
                         offset.x -= hashed.upperLeft().x;
                         offset.y -= hashed.upperLeft().y;
@@ -23996,11 +23996,11 @@ new function(){
 
         updateDockers: function(lanes, pool){
 
-                var absPool = pool.absoluteBounds(), movedShapes = [];
-                var oldPool = (this.hashedPoolPositions[pool.id]||absPool).clone();
+                const absPool = pool.absoluteBounds(), movedShapes = [];
+                const oldPool = (this.hashedPoolPositions[pool.id]||absPool).clone();
 
-                var i=-1, j=-1, k=-1, l=-1, docker;
-                var dockers = {};
+                let i=-1, j=-1, k=-1, l=-1, docker;
+                const dockers = {};
 
                 while (++i < lanes.length) {
 
@@ -24008,16 +24008,16 @@ new function(){
                                 continue;
                         }
 
-                        var isScaled = lanes[i].isScaled;
+                        const isScaled = lanes[i].isScaled;
                         delete lanes[i].isScaled;
-                        var children = lanes[i].getChildNodes();
-                        var absBounds = lanes[i].absoluteBounds();
-                        var oldBounds = (this.hashedBounds[pool.id][lanes[i].id]||absBounds);
+                        const children = lanes[i].getChildNodes();
+                        const absBounds = lanes[i].absoluteBounds();
+                        const oldBounds = (this.hashedBounds[pool.id][lanes[i].id]||absBounds);
                         //oldBounds.moveBy((absBounds.upperLeft().x-lanes[i].bounds.upperLeft().x), (absBounds.upperLeft().y-lanes[i].bounds.upperLeft().y));
-                        var offset = this.getOffset(lanes[i], true, pool);
-                        var xOffsetDepth = 0;
+                        const offset = this.getOffset(lanes[i], true, pool);
+                        let xOffsetDepth = 0;
 
-                        var depth = this.getDepth(lanes[i], pool);
+                        const depth = this.getDepth(lanes[i], pool);
                         if ( this.hashedLaneDepth[lanes[i].id] !== undefined &&  this.hashedLaneDepth[lanes[i].id] !== depth) {
                                 xOffsetDepth = (this.hashedLaneDepth[lanes[i].id] - depth) * 30;
                                 offset.x += xOffsetDepth;
@@ -24036,7 +24036,7 @@ new function(){
                                         this.moveChildDockers(children[j], offset);
                                 }
 
-                                var edges = [].concat(children[j].getIncomingShapes())
+                                const edges = [].concat(children[j].getIncomingShapes())
                                         .concat(children[j].getOutgoingShapes())
                                         // Remove all edges which are included in the selection from the list
                                         .findAll(function(r){ return r instanceof ORYX.Core.Edge })
@@ -24062,16 +24062,16 @@ new function(){
                                                 pos = docker.bounds.center();
 
                                                 // Check if the modified center included the new position
-                                                var isOverLane = oldBounds.isIncluded(pos);
+                                                const isOverLane = oldBounds.isIncluded(pos);
                                                 // Check if the original center is over the pool
-                                                var isOutSidePool = !oldPool.isIncluded(pos);
-                                                var previousIsOverLane = l == 0 ? isOverLane : oldBounds.isIncluded(edges[k].dockers[l-1].bounds.center());
-                                                var nextIsOverLane = l == edges[k].dockers.length-1 ? isOverLane : oldBounds.isIncluded(edges[k].dockers[l+1].bounds.center());
-                                                var off = Object.clone(offset);
+                                                const isOutSidePool = !oldPool.isIncluded(pos);
+                                                const previousIsOverLane = l == 0 ? isOverLane : oldBounds.isIncluded(edges[k].dockers[l-1].bounds.center());
+                                                const nextIsOverLane = l == edges[k].dockers.length-1 ? isOverLane : oldBounds.isIncluded(edges[k].dockers[l+1].bounds.center());
+                                                const off = Object.clone(offset);
 
                                                 // If the
                                                 if (isScaled && isOverLane && this.isResized(lanes[i], this.hashedBounds[pool.id][lanes[i].id])){
-                                                        var relY = (pos.y - absBounds.upperLeft().y + off.y);
+                                                        const relY = (pos.y - absBounds.upperLeft().y + off.y);
                                                         off.y -= (relY - (relY * (absBounds.height()/oldBounds.height())));
                                                 }
 
@@ -24107,7 +24107,7 @@ new function(){
                 }
 
                 // Move the moved children
-                var MoveChildCommand = ORYX.Core.Command.extend({
+                const MoveChildCommand = ORYX.Core.Command.extend({
                         construct: function(state){
                                 this.state = state;
                         },
@@ -24149,28 +24149,28 @@ new function(){
          * @param {boolean} recursive
          */
         getLanes: function(shape, recursive){
-                var namespace = this.getNamespace();
+                const namespace = this.getNamespace();
 
                 // Get all the child lanes
-                var lanes = shape.getChildNodes(recursive||false).findAll(function(node) { return (node.getStencil().id() === namespace + "Lane"); });
+                let lanes = shape.getChildNodes(recursive||false).findAll(function(node) { return (node.getStencil().id() === namespace + "Lane"); });
 
                 // Sort all lanes by there y coordinate
-                lanes = lanes.sort(function(a, b){
+                lanes = lanes.toSorted(function(a, b){
 
                                         // Get y coordinates for upper left and lower right
-                                        var auy = Math.round(a.bounds.upperLeft().y);
-                                        var buy = Math.round(b.bounds.upperLeft().y);
-                                        var aly = Math.round(a.bounds.lowerRight().y);
-                                        var bly = Math.round(b.bounds.lowerRight().y);
+                                        let auy = Math.round(a.bounds.upperLeft().y);
+                                        let buy = Math.round(b.bounds.upperLeft().y);
+                                        let aly = Math.round(a.bounds.lowerRight().y);
+                                        let bly = Math.round(b.bounds.lowerRight().y);
 
-                                        var ha  = this.getHashedBounds(a);
-                                        var hb  = this.getHashedBounds(b);
+                                        const ha  = this.getHashedBounds(a);
+                                        const hb  = this.getHashedBounds(b);
 
                                         // Get the old y coordinates
-                                        var oauy = Math.round(ha.upperLeft().y);
-                                        var obuy = Math.round(hb.upperLeft().y);
-                                        var oaly = Math.round(ha.lowerRight().y);
-                                        var obly = Math.round(hb.lowerRight().y);
+                                        const oauy = Math.round(ha.upperLeft().y);
+                                        const obuy = Math.round(hb.upperLeft().y);
+                                        const oaly = Math.round(ha.lowerRight().y);
+                                        const obly = Math.round(hb.lowerRight().y);
 
                                         // If equal, than use the old one
                                         if (auy == buy && aly == bly) {
@@ -24182,14 +24182,14 @@ new function(){
                                         }
 
                                         // Check if upper left and lower right is completely above/below
-                                        var above = auy < buy && aly < bly;
-                                        var below = auy > buy && aly > bly;
+                                        const above = auy < buy && aly < bly;
+                                        const below = auy > buy && aly > bly;
                                         // Check if a is above b including the old values
-                                        var slightlyAboveBottom = auy < buy && aly >= bly && oaly < obly;
-                                        var slightlyAboveTop = auy >= buy && aly < bly && oauy < obuy;
+                                        const slightlyAboveBottom = auy < buy && aly >= bly && oaly < obly;
+                                        const slightlyAboveTop = auy >= buy && aly < bly && oauy < obuy;
                                         // Check if a is below b including the old values
-                                        var slightlyBelowBottom = auy > buy && aly <= bly && oaly > obly;
-                                        var slightlyBelowTop = auy <= buy && aly > bly && oauy > obuy;
+                                        const slightlyBelowBottom = auy > buy && aly <= bly && oaly > obly;
+                                        const slightlyBelowTop = auy <= buy && aly > bly && oauy > obuy;
 
                                         // Return -1 if a is above b, 1 if b is above a, or 0 otherwise
                                         return  (above || slightlyAboveBottom || slightlyAboveTop ? -1 : (below || slightlyBelowBottom || slightlyBelowTop ? 1 : 0))
@@ -24201,7 +24201,7 @@ new function(){
 
         getNamespace: function() {
                 if(!this.namespace) {
-                        var stencilsets = this.facade.getStencilSets();
+                        const stencilsets = this.facade.getStencilSets();
                         if(stencilsets.keys()) {
                                 this.namespace = stencilsets.keys()[0];
                         } else {
@@ -24212,7 +24212,7 @@ new function(){
         }
 	};
 
-	var ResizeLanesCommand = ORYX.Core.Command.extend({
+	const ResizeLanesCommand = ORYX.Core.Command.extend({
 
         construct: function(shape, parent, pool, plugin) {
 

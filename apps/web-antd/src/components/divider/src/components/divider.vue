@@ -29,6 +29,7 @@ withDefaults(
 <style lang="scss" scoped>
 .divider {
   width: 100%;
+
   hr {
     width: 100%;
     margin-bottom: 1rem;
@@ -37,9 +38,9 @@ withDefaults(
 
   .divider-title {
     padding-left: 1rem;
-    border-left: 4px solid hsl(var(--primary));
     font-size: 15px;
     line-height: 15px;
+    border-left: 4px solid hsl(var(--primary));
   }
 }
 </style>

@@ -1,4 +1,4 @@
-@reference "@vben-core/design/theme";
+@reference "@vben/tailwind-config/theme";
 
 :root .vxe-grid {
   --vxe-ui-font-color: hsl(var(--foreground));
@@ -34,7 +34,8 @@
   /* table */
   --vxe-ui-table-header-background-color: hsl(var(--accent));
   --vxe-ui-table-border-color: hsl(var(--border));
-  /*--vxe-ui-table-row-hover-background-color: hsl(var(--accent-hover));*/
+
+  /* --vxe-ui-table-row-hover-background-color: hsl(var(--accent-hover)); */
   --vxe-ui-table-row-striped-background-color: hsl(var(--accent) / 60%);
   --vxe-ui-table-row-hover-striped-background-color: hsl(var(--accent));
   --vxe-ui-table-row-radio-checked-background-color: hsl(var(--accent));
@@ -116,6 +117,15 @@
 
 .vxe-grid--layout-body-content-wrapper {
   overflow: hidden;
+}
+
+/* 已读行默认样式 */
+.vxe-row--viewed {
+  color: hsl(var(--foreground) / 50%);
+
+  .vxe-body--column {
+    opacity: 0.9;
+  }
 }
 
 .vxe-table {

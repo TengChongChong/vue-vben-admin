@@ -21,7 +21,7 @@
  * String controller
  */
 
-var KisBpmStringPropertyCtrl = [ '$scope', function ($scope) {
+const KisBpmStringPropertyCtrl = [ '$scope', function ($scope) {
 
 	$scope.shapeId = $scope.selectedShape.id;
 	$scope.valueFlushed = false;
@@ -56,7 +56,7 @@ var KisBpmStringPropertyCtrl = [ '$scope', function ($scope) {
  * Boolean controller
  */
 
-var KisBpmBooleanPropertyCtrl = ['$scope', function ($scope) {
+const KisBpmBooleanPropertyCtrl = ['$scope', function ($scope) {
 
     $scope.changeValue = function() {
         if ($scope.property.key === 'oryx-defaultflow' && $scope.property.value) {
@@ -90,7 +90,7 @@ var KisBpmBooleanPropertyCtrl = ['$scope', function ($scope) {
  * Text controller
  */
 
-var KisBpmTextPropertyCtrl = [ '$scope', '$modal', function($scope, $modal) {
+const KisBpmTextPropertyCtrl = [ '$scope', '$modal', function($scope, $modal) {
 
     var opts = {
         template:  'editor-app/configuration/properties/text-popup.html?version=' + Date.now(),
@@ -101,7 +101,7 @@ var KisBpmTextPropertyCtrl = [ '$scope', '$modal', function($scope, $modal) {
     $modal(opts);
 }];
 
-var KisBpmTextPropertyPopupCtrl = ['$scope', function($scope) {
+const KisBpmTextPropertyPopupCtrl = ['$scope', function($scope) {
     
     $scope.save = function() {
         $scope.updatePropertyInModel($scope.property);

@@ -16,7 +16,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
-var KISBPM = KISBPM || {};
+const KISBPM = KISBPM || {};
 
 /** Inspired by https://github.com/krasimir/EventBus/blob/master/src/EventBus.js */
 KISBPM.eventBus = {
@@ -80,11 +80,11 @@ KISBPM.eventBus = {
      * Removes the provided event listener.
      */
     removeListener: function (type, callback, scope) {
-        if (typeof this.listeners[type] != "undefined") {
-            var numOfCallbacks = this.listeners[type].length;
-            var newArray = [];
-            for (var i = 0; i < numOfCallbacks; i++) {
-                var listener = this.listeners[type][i];
+        if (typeof this.listeners[type] !== "undefined") {
+            const numOfCallbacks = this.listeners[type].length;
+            const newArray = [];
+            for (let i = 0; i < numOfCallbacks; i++) {
+                const listener = this.listeners[type][i];
                 if (listener.scope === scope && listener.callback === callback) {
                     // Do nothing, this is the listener and doesn't need to survive
                 } else {
@@ -96,13 +96,13 @@ KISBPM.eventBus = {
     },
 
     hasListener:function(type, callback, scope) {
-        if(typeof this.listeners[type] != "undefined") {
-            var numOfCallbacks = this.listeners[type].length;
+        if(typeof this.listeners[type] !== "undefined") {
+            const numOfCallbacks = this.listeners[type].length;
             if(callback === undefined && scope === undefined){
                 return numOfCallbacks > 0;
             }
-            for(var i=0; i<numOfCallbacks; i++) {
-                var listener = this.listeners[type][i];
+            for(let i=0; i<numOfCallbacks; i++) {
+                const listener = this.listeners[type][i];
                 if(listener.scope == scope && listener.callback == callback) {
                     return true;
                 }
@@ -115,10 +115,10 @@ KISBPM.eventBus = {
      * Dispatch an event to all event listeners registered to that specific type.
      */
     dispatch:function(type, event) {
-        if(typeof this.listeners[type] != "undefined") {
-            var numOfCallbacks = this.listeners[type].length;
-            for(var i=0; i<numOfCallbacks; i++) {
-                var listener = this.listeners[type][i];
+        if(typeof this.listeners[type] !== "undefined") {
+            const numOfCallbacks = this.listeners[type].length;
+            for(let i=0; i<numOfCallbacks; i++) {
+                const listener = this.listeners[type][i];
                 if(listener && listener.callback) {
                     listener.callback.apply(listener.scope, [event]);
                 }

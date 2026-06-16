@@ -1,6 +1,6 @@
 // This methods allows the killing of built-in functions,
 // so the shim can take over with that implementation
-var HLP = (function() {
+const HLP = (function() {
     "use strict";
     var kill;
 

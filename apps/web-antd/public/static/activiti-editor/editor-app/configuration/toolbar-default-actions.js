@@ -18,12 +18,12 @@
  */
 'use strict'
 
-var KISBPM = KISBPM || {}
+const KISBPM = KISBPM || {}
 KISBPM.TOOLBAR = {
   ACTIONS: {
 
     saveModel: function (services) {
-      var modal = services.$modal({
+      const modal = services.$modal({
         backdrop: true,
         keyboard: true,
         template: 'editor-app/popups/save-model.html?version=' + Date.now(),
@@ -33,7 +33,7 @@ KISBPM.TOOLBAR = {
 
     undo: function (services) {
       // Get the last commands
-      var lastCommands = services.$scope.undoStack.pop()
+      const lastCommands = services.$scope.undoStack.pop()
 
       if (lastCommands) {
         // Add the commands to the redo stack
@@ -61,19 +61,19 @@ KISBPM.TOOLBAR = {
         services.$scope.editor.updateSelection()
       }
 
-      var toggleUndo = false
+      let toggleUndo = false
       if (services.$scope.undoStack.length == 0) {
         toggleUndo = true
       }
 
-      var toggleRedo = false
+      let toggleRedo = false
       if (services.$scope.redoStack.length > 0) {
         toggleRedo = true
       }
 
       if (toggleUndo || toggleRedo) {
         for (var i = 0; i < services.$scope.items.length; i++) {
-          var item = services.$scope.items[i]
+          const item = services.$scope.items[i]
           if (toggleUndo && item.action === 'KISBPM.TOOLBAR.ACTIONS.undo') {
             services.$scope.safeApply(function () {
               item.enabled = false
@@ -89,7 +89,7 @@ KISBPM.TOOLBAR = {
 
     redo: function (services) {
       // Get the last commands from the redo stack
-      var lastCommands = services.$scope.redoStack.pop()
+      const lastCommands = services.$scope.redoStack.pop()
 
       if (lastCommands) {
         // Add this commands to the undo stack
@@ -117,19 +117,19 @@ KISBPM.TOOLBAR = {
         services.$scope.editor.updateSelection()
       }
 
-      var toggleUndo = false
+      let toggleUndo = false
       if (services.$scope.undoStack.length > 0) {
         toggleUndo = true
       }
 
-      var toggleRedo = false
+      let toggleRedo = false
       if (services.$scope.redoStack.length == 0) {
         toggleRedo = true
       }
 
       if (toggleUndo || toggleRedo) {
-        for (var i = 0; i < services.$scope.items.length; i++) {
-          var item = services.$scope.items[i]
+        for (let i = 0; i < services.$scope.items.length; i++) {
+          const item = services.$scope.items[i]
           if (toggleUndo && item.action === 'KISBPM.TOOLBAR.ACTIONS.undo') {
             services.$scope.safeApply(function () {
               item.enabled = true
@@ -145,8 +145,8 @@ KISBPM.TOOLBAR = {
 
     cut: function (services) {
       KISBPM.TOOLBAR.ACTIONS._getOryxEditPlugin(services.$scope).editCut()
-      for (var i = 0; i < services.$scope.items.length; i++) {
-        var item = services.$scope.items[i]
+      for (let i = 0; i < services.$scope.items.length; i++) {
+        const item = services.$scope.items[i]
         if (item.action === 'KISBPM.TOOLBAR.ACTIONS.paste') {
           services.$scope.safeApply(function () {
             item.enabled = true
@@ -157,8 +157,8 @@ KISBPM.TOOLBAR = {
 
     copy: function (services) {
       KISBPM.TOOLBAR.ACTIONS._getOryxEditPlugin(services.$scope).editCopy()
-      for (var i = 0; i < services.$scope.items.length; i++) {
-        var item = services.$scope.items[i]
+      for (let i = 0; i < services.$scope.items.length; i++) {
+        const item = services.$scope.items[i]
         if (item.action === 'KISBPM.TOOLBAR.ACTIONS.paste') {
           services.$scope.safeApply(function () {
             item.enabled = true
@@ -176,9 +176,9 @@ KISBPM.TOOLBAR = {
     },
 
     addBendPoint: function (services) {
-      var dockerPlugin = KISBPM.TOOLBAR.ACTIONS._getOryxDockerPlugin(services.$scope)
+      const dockerPlugin = KISBPM.TOOLBAR.ACTIONS._getOryxDockerPlugin(services.$scope)
 
-      var enableAdd = !dockerPlugin.enabledAdd()
+      const enableAdd = !dockerPlugin.enabledAdd()
       dockerPlugin.setEnableAdd(enableAdd)
       if (enableAdd) {
         dockerPlugin.setEnableRemove(false)
@@ -189,9 +189,9 @@ KISBPM.TOOLBAR = {
     },
 
     removeBendPoint: function (services) {
-      var dockerPlugin = KISBPM.TOOLBAR.ACTIONS._getOryxDockerPlugin(services.$scope)
+      const dockerPlugin = KISBPM.TOOLBAR.ACTIONS._getOryxDockerPlugin(services.$scope)
 
-      var enableRemove = !dockerPlugin.enabledRemove()
+      const enableRemove = !dockerPlugin.enabledRemove()
       dockerPlugin.setEnableRemove(enableRemove)
       if (enableRemove) {
         dockerPlugin.setEnableAdd(false)
@@ -275,7 +275,7 @@ KISBPM.TOOLBAR = {
 }
 
 /** Custom controller for the save dialog */
-var SaveModelCtrl = ['$rootScope', '$scope', '$http', '$route', '$location',
+const SaveModelCtrl = ['$rootScope', '$scope', '$http', '$route', '$location',
   function ($rootScope, $scope, $http, $route, $location) {
     var modelMetaData = $scope.editor.getModelMetaData()
 

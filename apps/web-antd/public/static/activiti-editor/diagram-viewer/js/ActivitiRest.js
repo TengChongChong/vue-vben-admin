@@ -1,4 +1,4 @@
-var ActivitiRest = {
+const ActivitiRest = {
 	options: {},
 	getProcessDefinitionByKey: function(processDefinitionKey, callback) {
 		var url = Lang.sub(this.options.processDefinitionByKeyUrl, {processDefinitionKey: processDefinitionKey});
