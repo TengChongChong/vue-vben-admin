@@ -38,7 +38,7 @@ import InputModal from './input.vue';
 
 // 导出按钮状态
 function handleSearch() {
-  gridApi.search();
+  gridApi.query();
 }
 
 const formOptions: VbenFormProps = {

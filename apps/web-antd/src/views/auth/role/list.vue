@@ -26,7 +26,7 @@ import InputDrawer from './input.vue';
 const { hasAccessByRoles } = useAccess();
 
 function handleSearch() {
-  gridApi.search();
+  gridApi.query();
 }
 
 const formOptions: VbenFormProps = {

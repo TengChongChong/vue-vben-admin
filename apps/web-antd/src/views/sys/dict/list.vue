@@ -41,7 +41,7 @@ import SysDictTypeList from './type/list.vue';
 const exportBtnLoading = ref<boolean>(false);
 
 function handleSearch() {
-  gridApi.search();
+  gridApi.query();
 }
 
 const dictType = ref('');

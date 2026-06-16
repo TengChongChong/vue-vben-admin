@@ -27,7 +27,7 @@ const props = defineProps<{ pageType: string }>();
 const emit = defineEmits(['editMessage']);
 
 function handleSearch() {
-  gridApi.search();
+  gridApi.query();
 }
 
 const formOptions: VbenFormProps = {

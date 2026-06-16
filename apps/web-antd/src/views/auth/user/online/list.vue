@@ -15,7 +15,7 @@ import { LucideLogOut } from '#/components/icons';
 import { initColumns } from './data';
 
 function handleSearch() {
-  gridApi.search();
+  gridApi.query();
 }
 
 const formOptions: VbenFormProps = {

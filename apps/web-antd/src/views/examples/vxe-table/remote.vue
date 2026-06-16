@@ -21,7 +21,7 @@ import { downloadFileById } from '#/util/download';
 // 导出按钮状态
 const exportBtnLoading = ref<boolean>(false);
 function handleSearch() {
-  gridApi.search();
+  gridApi.query();
 }
 
 const formOptions: VbenFormProps = {

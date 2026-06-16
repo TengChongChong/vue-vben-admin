@@ -40,7 +40,7 @@ import { initColumns } from './data';
 import InputDrawer from './input.vue';
 
 function handleSearch() {
-  gridApi.search();
+  gridApi.query();
 }
 
 const formOptions: VbenFormProps = {

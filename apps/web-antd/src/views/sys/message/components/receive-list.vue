@@ -33,7 +33,7 @@ const props = withDefaults(
 const setReadBtnLoading = ref(false);
 
 function handleSearch() {
-  gridApi.search();
+  gridApi.query();
 }
 
 const formOptions: VbenFormProps = {

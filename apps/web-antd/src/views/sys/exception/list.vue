@@ -20,7 +20,7 @@ import { initColumns } from './data';
 import InfoDrawer from './info.vue';
 
 function handleSearch() {
-  gridApi.search();
+  gridApi.query();
 }
 
 const formOptions: VbenFormProps = {

@@ -42,7 +42,7 @@ const props = defineProps<{
 }>();
 
 function handleSearch() {
-  gridApi.search();
+  gridApi.query();
 }
 
 watch(

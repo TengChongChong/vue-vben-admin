@@ -140,7 +140,7 @@ function initTable() {
 }
 
 function handleSearch() {
-  gridApi.search();
+  gridApi.query();
 }
 
 const gridOptions: VxeGridProps<SysConfig> = {

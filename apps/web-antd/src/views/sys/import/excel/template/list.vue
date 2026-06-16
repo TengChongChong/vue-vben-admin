@@ -21,7 +21,7 @@ import DetailsConfigDrawer from './details-config/index.vue';
 import InputDrawer from './input.vue';
 
 function handleSearch() {
-  gridApi.search();
+  gridApi.query();
 }
 
 const formOptions: VbenFormProps = {
