@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import type { SelectOption } from '@vben/types';
 
+import { useSlots } from 'vue';
+
 import { CircleHelp } from '@vben/icons';
+
 import {
   NumberField,
   NumberFieldContent,
@@ -10,7 +13,6 @@ import {
   NumberFieldInput,
   VbenTooltip,
 } from '@vben-core/shadcn-ui';
-import { useSlots } from 'vue';
 
 defineOptions({
   name: 'PreferenceSelectItem',

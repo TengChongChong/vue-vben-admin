@@ -34,7 +34,7 @@ const tabsValue = defineModel<string>('modelValue');
             class="size-20"
           />
           <span class="text-lg font-semibold">
-            {{ userInfo?.nickname ?? '' }}
+            {{ userInfo?.realName ?? '' }}
           </span>
           <span class="text-sm text-foreground/80">
             {{ userInfo?.username ?? '' }}

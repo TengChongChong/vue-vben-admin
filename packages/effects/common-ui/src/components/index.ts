@@ -18,6 +18,7 @@ export * from '@vben-core/popup-ui';
 export {
   PinInput,
   PinInputGroup,
+  PinInputSlot as PinInputInput,
   VbenAvatar,
   VbenButton,
   VbenButtonGroup,

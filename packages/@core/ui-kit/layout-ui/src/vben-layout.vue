@@ -3,6 +3,8 @@ import type { CSSProperties } from 'vue';
 
 import type { VbenLayoutProps } from './vben-layout';
 
+import { computed, ref, watch } from 'vue';
+
 import {
   SCROLL_FIXED_CLASS,
   useLayoutFooterStyle,
@@ -11,8 +13,8 @@ import {
 import { IconifyIcon } from '@vben-core/icons';
 import { VbenIconButton } from '@vben-core/shadcn-ui';
 import { ELEMENT_ID_MAIN_CONTENT } from '@vben-core/shared/constants';
+
 import { useMouse, useScroll, useThrottleFn } from '@vueuse/core';
-import { computed, ref, watch } from 'vue';
 
 import {
   LayoutContent,

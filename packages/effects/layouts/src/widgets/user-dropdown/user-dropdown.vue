@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import type { AnyFunction } from '@vben/types';
 import type { Component } from 'vue';
+
+import type { AnyFunction } from '@vben/types';
+
+import { computed, useTemplateRef, watch } from 'vue';
 
 import { useHoverToggle } from '@vben/hooks';
 import { LockKeyhole, LogOut, Settings } from '@vben/icons';
@@ -8,6 +11,7 @@ import { $t } from '@vben/locales';
 import { preferences, usePreferences } from '@vben/preferences';
 import { useAccessStore } from '@vben/stores';
 import { isWindowsOs } from '@vben/utils';
+
 import { useVbenModal } from '@vben-core/popup-ui';
 import {
   Badge,
@@ -21,8 +25,8 @@ import {
   VbenAvatar,
   VbenIcon,
 } from '@vben-core/shadcn-ui';
+
 import { useMagicKeys, whenever } from '@vueuse/core';
-import { computed, useTemplateRef, watch } from 'vue';
 
 import { LockScreenModal } from '../lock-screen';
 import { Preferences } from '../preferences';

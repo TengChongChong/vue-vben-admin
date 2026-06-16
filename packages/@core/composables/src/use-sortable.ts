@@ -11,7 +11,7 @@ function useSortable<T extends HTMLElement>(
       'sortablejs/modular/sortable.complete.esm.js'
     );
     const sortable = Sortable?.default?.create?.(sortableContainer, {
-      animation: 100,
+      animation: 300,
       delay: 400,
       delayOnTouchOnly: true,
       ...options,

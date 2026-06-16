@@ -63,7 +63,7 @@ const handleClear = () => {
         <VbenIconButton class="bell-button relative text-foreground">
           <span
             v-if="dot"
-            class="absolute top-0.5 right-0.5 size-2 rounded-full bg-red-500"
+            class="absolute top-0.5 right-0.5 size-2 rounded-sm bg-primary"
           ></span>
           <Bell class="size-4" />
         </VbenIconButton>

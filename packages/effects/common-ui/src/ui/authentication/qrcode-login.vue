@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { $t } from '@vben/locales';
-import { VbenButton } from '@vben-core/shadcn-ui';
-import { useQRCode } from '@vueuse/integrations/useQRCode';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+
+import { $t } from '@vben/locales';
+
+import { VbenButton } from '@vben-core/shadcn-ui';
+
+import { useQRCode } from '@vueuse/integrations/useQRCode';
 
 import Title from './auth-title.vue';
 

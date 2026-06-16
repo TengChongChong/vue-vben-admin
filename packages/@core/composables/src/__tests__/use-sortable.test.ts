@@ -38,7 +38,7 @@ describe('useSortable', () => {
     expect(Sortable.default.create).toHaveBeenCalledWith(
       mockElement,
       expect.objectContaining({
-        animation: 100,
+        animation: 300,
         delay: 400,
         delayOnTouchOnly: true,
         ...customOptions,

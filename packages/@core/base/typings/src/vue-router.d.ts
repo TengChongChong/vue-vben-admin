@@ -74,7 +74,7 @@ interface RouteMeta {
   /**
    * 图标（菜单/tab）
    */
-  icon?: string;
+  icon?: Component | string;
   /**
    * iframe 地址
    */
@@ -128,10 +128,13 @@ interface RouteMeta {
 }
 
 // 定义递归类型以将 RouteRecordRaw 的 component 属性更改为 string
-type RouteRecordStringComponent<T = string> = {
+type RouteRecordStringComponent<T = string> = Omit<
+  RouteRecordRaw,
+  'children' | 'component'
+> & {
   children?: RouteRecordStringComponent<T>[];
   component: T;
-} & Omit<RouteRecordRaw, 'children' | 'component'>;
+};
 
 type ComponentRecordType = Record<string, () => Promise<Component>>;
 

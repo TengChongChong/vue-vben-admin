@@ -32,11 +32,11 @@ const userStore = useUserStore();
 const router = useRouter();
 
 function roleButtonType(role: string) {
-  return userStore.roleCodeList.includes(role) ? 'primary' : 'default';
+  return userStore.userRoles.includes(role) ? 'primary' : 'default';
 }
 
 async function changeAccount(role: string) {
-  if (userStore.roleCodeList.includes(role)) {
+  if (userStore.userRoles.includes(role)) {
     return;
   }
 
@@ -59,7 +59,7 @@ async function changeAccount(role: string) {
       <template #title>
         <span class="font-semibold">当前角色:</span>
         <span class="mx-4 text-lg text-primary">
-          {{ userStore.roleCodeList?.[0] }}
+          {{ userStore.userRoles?.[0] }}
         </span>
       </template>
 

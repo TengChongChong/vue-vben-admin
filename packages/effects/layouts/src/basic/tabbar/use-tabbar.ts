@@ -1,6 +1,11 @@
-import type { TabDefinition } from '@vben/types';
-import type { IContextMenuItem } from '@vben-core/tabs-ui';
 import type { RouteLocationNormalizedGeneric } from 'vue-router';
+
+import type { TabDefinition } from '@vben/types';
+
+import type { IContextMenuItem } from '@vben-core/tabs-ui';
+
+import { computed, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 import { useContentMaximize, useTabs } from '@vben/hooks';
 import {
@@ -19,8 +24,6 @@ import {
 import { $t, useI18n } from '@vben/locales';
 import { getTabKey, useAccessStore, useTabbarStore } from '@vben/stores';
 import { filterTree } from '@vben/utils';
-import { computed, ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
 
 export function useTabbar() {
   const router = useRouter();
