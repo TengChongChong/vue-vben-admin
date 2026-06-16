@@ -196,10 +196,4 @@ export interface ModalApiOptions extends ModalState {
    * @returns
    */
   onOpened?: () => void;
-  /**
-   * 更改 loading
-   *
-   * @param loading
-   */
-  setLoading?: (loading: boolean) => void;
 }

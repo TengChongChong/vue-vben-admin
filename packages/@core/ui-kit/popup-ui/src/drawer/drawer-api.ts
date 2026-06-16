@@ -8,7 +8,6 @@ export class DrawerApi {
   public sharedData: Record<'payload', any> = {
     payload: {},
   };
-
   public store: Store<DrawerState>;
 
   private api: Pick<
@@ -154,10 +153,6 @@ export class DrawerApi {
   setData<T>(payload: T) {
     this.sharedData.payload = payload;
     return this;
-  }
-
-  setLoading(loading: boolean) {
-    this.setState({ loading });
   }
 
   setState(

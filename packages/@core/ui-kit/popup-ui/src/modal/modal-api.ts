@@ -168,10 +168,6 @@ export class ModalApi {
     return this;
   }
 
-  setLoading(loading: boolean) {
-    this.setState({ loading });
-  }
-
   setState(
     stateOrFn:
       | ((prev: ModalState) => Partial<ModalState>)
