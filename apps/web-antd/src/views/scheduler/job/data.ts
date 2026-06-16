@@ -10,6 +10,8 @@ import { message, Switch } from 'ant-design-vue';
 import { pauseSchedulerJobApi, startSchedulerJobApi } from '#/api';
 import { RoleEnum } from '#/enums/roleEnum';
 
+import { formatSchedulerJobParams } from './job-params';
+
 const { hasAccessByRoles } = useAccess();
 
 export const initColumns = (): VxeGridPropTypes.Columns => {
@@ -46,6 +48,12 @@ export const initColumns = (): VxeGridPropTypes.Columns => {
       field: 'method',
       sortable: true,
       minWidth: 150,
+    },
+    {
+      title: '参数',
+      field: 'params',
+      minWidth: 180,
+      formatter: ({ cellValue }) => formatSchedulerJobParams(cellValue),
     },
     {
       title: '系统',

@@ -23,6 +23,9 @@ import { ButtonClose, ButtonSave } from '#/components/button';
 import { LucideChevronDown } from '#/components/icons';
 import { RoleEnum } from '#/enums/roleEnum';
 
+import JobParamsEditor from './job-params-editor.vue';
+import { validateSchedulerJobParams } from './job-params';
+
 const emit = defineEmits(['success']);
 
 const saveBtnLoading = ref(false);
@@ -83,6 +86,19 @@ const [BaseForm, baseFormApi] = useVbenForm({
       description: '类（Bean）中定义的方法',
     },
     {
+      fieldName: 'params',
+      label: '方法参数',
+      component: 'Input',
+      description:
+        '按顺序配置方法参数，无参方法可留空。JSON 类型用于传入对象或数组结构。',
+      rules: z
+        .string()
+        .optional()
+        .refine((value) => validateSchedulerJobParams(value), {
+          message: '参数格式错误，请检查类型与 JSON 内容',
+        }),
+    },
+    {
       fieldName: 'status',
       label: '状态',
       component: 'DictRadio',
@@ -127,6 +143,9 @@ async function handleSubmit(callback: (res: SchedulerJob) => any) {
       return;
     }
     const values: SchedulerJob = await baseFormApi.getValues();
+    if (!values.params || values.params.trim() === '[]') {
+      values.params = undefined;
+    }
     const res = await saveSchedulerJobApi(values);
     message.success('保存成功');
     emit('success');
@@ -171,8 +190,11 @@ function handleSetCron({ key }) {
 }
 </script>
 <template>
-  <Drawer class="w-[600px]" title="文件上传策略">
+  <Drawer class="w-[600px]" title="定时任务">
     <BaseForm>
+      <template #params="slotProps">
+        <JobParamsEditor v-bind="slotProps" />
+      </template>
       <template #cron="slotProps">
         <Input v-bind="slotProps">
           <template #addonAfter>
