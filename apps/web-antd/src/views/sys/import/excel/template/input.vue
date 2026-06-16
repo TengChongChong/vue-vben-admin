@@ -62,8 +62,8 @@ const [BaseForm, baseFormApi] = useVbenForm({
       component: 'InputNumber',
       rules: z
         .number()
-        .min(0, { message: '起始行不能小于0' })
-        .max(99, { message: '起始行不能大于99' }),
+        .min(1, { message: '起始行不能小于1' })
+        .max(10, { message: '起始行不能大于10' }),
       description: '系统将从“起始行”开始读取Excel数据',
     },
     {

@@ -96,38 +96,53 @@ const [BaseInputDrawer, baseInputDrawerApi] = useVbenDrawer({
 });
 
 async function handleCreate() {
-  addSchedulerJobApi().then((res) => {
+  try {
+    const res = await addSchedulerJobApi();
     baseInputDrawerApi.setData(res);
     baseInputDrawerApi.open();
-  });
+  } catch (error) {
+    message.error('初始化新增任务失败，请稍后重试');
+  }
 }
 
-function handleEdit(id: string) {
-  getSchedulerJobApi(id).then((res) => {
+async function handleEdit(id: string) {
+  try {
+    const res = await getSchedulerJobApi(id);
     baseInputDrawerApi.setData(res);
     baseInputDrawerApi.open();
-  });
+  } catch (error) {
+    message.error('加载任务详情失败，请稍后重试');
+  }
 }
 
-const handleImmediateExecution = (id) => {
-  immediateExecutionSchedulerJobApi(id).then(() => {
+const handleImmediateExecution = async (id: string) => {
+  try {
+    await immediateExecutionSchedulerJobApi(id);
     message.success('执行成功');
     handleSearch();
-  });
+  } catch (error) {
+    message.error('执行失败，请稍后重试');
+  }
 };
 
-const handleStartAll = () => {
-  startAllSchedulerJobApi().then(() => {
+const handleStartAll = async () => {
+  try {
+    await startAllSchedulerJobApi();
     message.success('执行成功');
     handleSearch();
-  });
+  } catch (error) {
+    message.error('操作失败，请稍后重试');
+  }
 };
 
-const handlePauseAll = () => {
-  pauseAllSchedulerJobApi().then(() => {
+const handlePauseAll = async () => {
+  try {
+    await pauseAllSchedulerJobApi();
     message.success('执行成功');
     handleSearch();
-  });
+  } catch (error) {
+    message.error('操作失败，请稍后重试');
+  }
 };
 
 async function handleOpenRunLogModal(id: string) {

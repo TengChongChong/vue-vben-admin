@@ -40,6 +40,9 @@ const importExcelColumns = ref<Array<Array<string>>>([]);
 // 起始行
 const startRow = ref(2);
 
+const START_ROW_MAX = 10;
+const START_ROW_MIN = 1;
+
 watch(
   () => [props.sysImportExcelTemplate, props.importFile],
   () => initConfig(),
@@ -55,7 +58,14 @@ function initConfig() {
     return;
   }
   // @ts-expect-error
-  startRow.value = props.sysImportExcelTemplate.startRow!;
+  const templateStartRow = props.sysImportExcelTemplate.startRow!;
+  if (templateStartRow > START_ROW_MAX || templateStartRow < START_ROW_MIN) {
+    message.warning(`起始行仅支持 ${START_ROW_MIN}-${START_ROW_MAX}，已自动调整`);
+  }
+  startRow.value = Math.min(
+    START_ROW_MAX,
+    Math.max(START_ROW_MIN, templateStartRow),
+  );
   // 系统预设导入规则
   // @ts-expect-error
   columns.value = props.sysImportExcelTemplate.detailList.map((item, index) => {
@@ -239,8 +249,8 @@ function checkImportExcelTemplate() {
         <InputNumber
           id="inputNumber"
           v-model:value="startRow"
-          :min="1"
-          :max="10"
+          :min="START_ROW_MIN"
+          :max="START_ROW_MAX"
           @change="handleStartRowChange"
         />
       </DescriptionsItem>

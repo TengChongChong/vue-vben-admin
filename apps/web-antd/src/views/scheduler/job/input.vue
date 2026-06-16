@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import type {
   SchedulerJob,
-  SchedulerJobMethodOption,
-  SelectModel,
 } from '#/api';
 
 import { computed, ref } from 'vue';
@@ -27,8 +25,6 @@ import { useVbenForm } from '#/adapter/form';
 import {
   addSchedulerJobApi,
   saveSchedulerJobApi,
-  selectSchedulerJobBeansApi,
-  selectSchedulerJobMethodsApi,
 } from '#/api';
 import { ButtonClose, ButtonSave } from '#/components/button';
 import { LucideChevronDown } from '#/components/icons';
@@ -36,15 +32,15 @@ import { RoleEnum } from '#/enums/roleEnum';
 
 import { validateSchedulerJobParams } from './job-params';
 import JobParamsEditor from './job-params-editor.vue';
+import { useSchedulerJobRemoteOptions } from './use-scheduler-job-remote-options';
 
 const emit = defineEmits(['success']);
 
 const saveBtnLoading = ref(false);
-const beanOptions = ref<SelectModel[]>([]);
-const methodOptions = ref<SchedulerJobMethodOption[]>([]);
+const { beanOptions, clearMethodOptions, loadBeanOptions, loadMethodOptions, methodOptions } =
+  useSchedulerJobRemoteOptions();
 const currentBean = ref('');
 const beanSearchTimer = ref<null | ReturnType<typeof setTimeout>>(null);
-const methodRequestId = ref(0);
 
 const { hasAccessByRoles } = useAccess();
 
@@ -66,15 +62,6 @@ function filterMethodOption(input: string, option: { value: string }) {
   return option.value.toLowerCase().includes(input.toLowerCase());
 }
 
-async function loadBeanOptions(keyword = '') {
-  try {
-    beanOptions.value = await selectSchedulerJobBeansApi(keyword);
-  } catch (error) {
-    beanOptions.value = [];
-    message.error('加载Bean列表失败，请稍后重试');
-  }
-}
-
 function handleBeanSearch(value: string) {
   const keyword = value?.trim() ?? '';
   if (beanSearchTimer.value) {
@@ -87,27 +74,6 @@ function handleBeanSearch(value: string) {
     }
     void loadBeanOptions(keyword);
   }, 200);
-}
-
-async function loadMethodOptions(bean: string) {
-  const requestId = ++methodRequestId.value;
-  if (!bean?.trim()) {
-    if (requestId === methodRequestId.value) {
-      methodOptions.value = [];
-    }
-    return;
-  }
-  try {
-    const data = await selectSchedulerJobMethodsApi(bean);
-    if (requestId === methodRequestId.value) {
-      methodOptions.value = data;
-    }
-  } catch (error) {
-    if (requestId === methodRequestId.value) {
-      methodOptions.value = [];
-    }
-    message.error('加载方法列表失败，请稍后重试');
-  }
 }
 
 async function handleBeanChange(value: unknown) {
@@ -258,7 +224,7 @@ async function handleSubmit(callback: (res: SchedulerJob) => any) {
     message.success('保存成功');
     emit('success');
     callback(res);
-  } catch (error) {
+  } catch {
     message.error('保存失败，请稍后重试');
   } finally {
     saveBtnLoading.value = false;
@@ -275,7 +241,7 @@ async function handleSaveAndAdd() {
   await handleSubmit(() => {
     baseFormApi.resetForm();
     currentBean.value = '';
-    methodOptions.value = [];
+    clearMethodOptions();
     addSchedulerJobApi()
       .then((res) => {
         baseFormApi.setValues(res);
@@ -299,7 +265,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
       if (data?.bean) {
         await loadMethodOptions(data.bean);
       } else {
-        methodOptions.value = [];
+        clearMethodOptions();
       }
     }
   },
