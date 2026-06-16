@@ -1,5 +1,9 @@
 import type { Page } from '#/api/base/model/page-model';
-import type { SchedulerJob } from '#/api/scheduler/model/scheduler-job-model';
+import type { SelectModel } from '#/api/base/model/select-model';
+import type {
+  SchedulerJob,
+  SchedulerJobMethodOption,
+} from '#/api/scheduler/model/scheduler-job-model';
 
 import { getRequestClient } from '../request-context';
 // base url
@@ -94,5 +98,28 @@ export function pauseAllSchedulerJobApi() {
 export function immediateExecutionSchedulerJobApi(id: string) {
   return getRequestClient().post<boolean>(
     `${BASE_URL}/immediate/execution/${id}`,
+  );
+}
+
+/**
+ * 查询候选 Bean
+ */
+export function selectSchedulerJobBeansApi(keyword?: string) {
+  return getRequestClient().get<SelectModel[]>(`${BASE_URL}/select/beans`, {
+    params: { keyword },
+  });
+}
+
+/**
+ * 查询 Bean 可调用的方法
+ *
+ * @param bean Bean 名称
+ */
+export function selectSchedulerJobMethodsApi(bean: string) {
+  return getRequestClient().get<SchedulerJobMethodOption[]>(
+    `${BASE_URL}/select/methods`,
+    {
+      params: { bean },
+    },
   );
 }

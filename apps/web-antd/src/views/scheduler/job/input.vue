@@ -1,12 +1,17 @@
 <script lang="ts" setup>
-import type { SchedulerJob } from '#/api';
+import type {
+  SchedulerJob,
+  SchedulerJobMethodOption,
+  SelectModel,
+} from '#/api';
 
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import { useAccess } from '@vben/access';
 import { useVbenDrawer, z } from '@vben/common-ui';
 
 import {
+  AutoComplete,
   Button,
   Dropdown,
   Input,
@@ -14,23 +19,116 @@ import {
   MenuDivider,
   MenuItem,
   message,
+  Select,
   Space,
 } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { addSchedulerJobApi, saveSchedulerJobApi } from '#/api';
+import {
+  addSchedulerJobApi,
+  saveSchedulerJobApi,
+  selectSchedulerJobBeansApi,
+  selectSchedulerJobMethodsApi,
+} from '#/api';
 import { ButtonClose, ButtonSave } from '#/components/button';
 import { LucideChevronDown } from '#/components/icons';
 import { RoleEnum } from '#/enums/roleEnum';
 
-import JobParamsEditor from './job-params-editor.vue';
 import { validateSchedulerJobParams } from './job-params';
+import JobParamsEditor from './job-params-editor.vue';
 
 const emit = defineEmits(['success']);
 
 const saveBtnLoading = ref(false);
+const beanOptions = ref<SelectModel[]>([]);
+const methodOptions = ref<SchedulerJobMethodOption[]>([]);
+const currentBean = ref('');
+const beanSearchTimer = ref<null | ReturnType<typeof setTimeout>>(null);
+const methodRequestId = ref(0);
 
 const { hasAccessByRoles } = useAccess();
+
+const beanAutoCompleteOptions = computed(() =>
+  beanOptions.value.map((item) => ({
+    value: item.value,
+    label: item.label ?? item.value,
+  })),
+);
+
+const methodAutoCompleteOptions = computed(() =>
+  methodOptions.value.map((item) => ({
+    value: item.signature,
+    label: item.signature,
+  })),
+);
+
+function filterMethodOption(input: string, option: { value: string }) {
+  return option.value.toLowerCase().includes(input.toLowerCase());
+}
+
+async function loadBeanOptions(keyword = '') {
+  beanOptions.value = await selectSchedulerJobBeansApi(keyword);
+}
+
+function handleBeanSearch(value: string) {
+  const keyword = value?.trim() ?? '';
+  if (beanSearchTimer.value) {
+    clearTimeout(beanSearchTimer.value);
+  }
+  beanSearchTimer.value = setTimeout(() => {
+    if (keyword.length > 0 && keyword.length < 2) {
+      beanOptions.value = [];
+      return;
+    }
+    loadBeanOptions(keyword);
+  }, 200);
+}
+
+async function loadMethodOptions(bean: string) {
+  const requestId = ++methodRequestId.value;
+  if (!bean?.trim()) {
+    if (requestId === methodRequestId.value) {
+      methodOptions.value = [];
+    }
+    return;
+  }
+  const data = await selectSchedulerJobMethodsApi(bean);
+  if (requestId === methodRequestId.value) {
+    methodOptions.value = data;
+  }
+}
+
+async function handleBeanChange(value: unknown) {
+  const beanValue =
+    value == null || Array.isArray(value) ? '' : String(value);
+  if (beanValue === currentBean.value) {
+    return;
+  }
+  currentBean.value = beanValue;
+  await baseFormApi.setValues({
+    bean: beanValue,
+    method: '',
+    params: '',
+  });
+  await loadMethodOptions(beanValue);
+}
+
+async function handleMethodSelect(value: unknown) {
+  const signatureValue =
+    value == null || Array.isArray(value) ? '' : String(value);
+  const option = methodOptions.value.find(
+    (item) => item.signature === signatureValue,
+  );
+  if (!option) {
+    return;
+  }
+  const updates: Partial<SchedulerJob> = {
+    method: option.method,
+    params:
+      option.params.length > 0 ? JSON.stringify(option.params) : '',
+  };
+  await baseFormApi.setValues(updates);
+}
 
 const [BaseForm, baseFormApi] = useVbenForm({
   showDefaultActions: false,
@@ -72,7 +170,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
       rules: z
         .string()
         .min(1, { message: '请输入类' })
-        .max(32, { message: '类最多输入32个字符' }),
+        .max(64, { message: '类最多输入64个字符' }),
       description: 'Spring Bean Id',
     },
     {
@@ -82,7 +180,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
       rules: z
         .string()
         .min(1, { message: '请输入方法' })
-        .max(32, { message: '方法最多输入32个字符' }),
+        .max(64, { message: '方法最多输入64个字符' }),
       description: '类（Bean）中定义的方法',
     },
     {
@@ -166,6 +264,8 @@ async function handleSave() {
 async function handleSaveAndAdd() {
   await handleSubmit(() => {
     baseFormApi.resetForm();
+    currentBean.value = '';
+    methodOptions.value = [];
     addSchedulerJobApi().then((res) => {
       baseFormApi.setValues(res);
     });
@@ -175,23 +275,51 @@ async function handleSaveAndAdd() {
 const [Drawer, drawerApi] = useVbenDrawer({
   onOpenChange: async (isOpen: boolean) => {
     if (isOpen) {
-      // 打开时根据id获取详情
       const data = drawerApi.getData<Record<string, any>>();
       await baseFormApi.resetForm();
+      await loadBeanOptions();
+      currentBean.value = data?.bean ?? '';
       await baseFormApi.setValues({
         ...data,
       });
+      if (data?.bean) {
+        await loadMethodOptions(data.bean);
+      } else {
+        methodOptions.value = [];
+      }
     }
   },
 });
 
-function handleSetCron({ key }) {
-  baseFormApi.setValues({ cron: key });
+function handleSetCron({ key }: { key: number | string }) {
+  baseFormApi.setValues({ cron: String(key) });
 }
 </script>
 <template>
   <Drawer class="w-[600px]" title="定时任务">
     <BaseForm>
+      <template #bean="slotProps">
+        <AutoComplete
+          v-bind="slotProps"
+          allow-clear
+          class="w-full"
+          :filter-option="false"
+          :options="beanAutoCompleteOptions"
+          @change="handleBeanChange"
+          @search="handleBeanSearch"
+        />
+      </template>
+      <template #method="slotProps">
+        <Select
+          v-bind="slotProps"
+          allow-clear
+          class="w-full"
+          show-search
+          :filter-option="filterMethodOption"
+          :options="methodAutoCompleteOptions"
+          @change="handleMethodSelect"
+        />
+      </template>
       <template #params="slotProps">
         <JobParamsEditor v-bind="slotProps" />
       </template>

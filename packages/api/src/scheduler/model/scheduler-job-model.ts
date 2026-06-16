@@ -18,6 +18,15 @@ export interface SchedulerJobParam {
 }
 
 /**
+ * 定时任务方法选项
+ */
+export interface SchedulerJobMethodOption {
+  method: string;
+  signature: string;
+  params: SchedulerJobParam[];
+}
+
+/**
  * 定时任务
  */
 export interface SchedulerJob extends BasicModel {
