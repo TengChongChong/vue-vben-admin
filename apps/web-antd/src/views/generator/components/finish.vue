@@ -19,7 +19,7 @@ import { Divider } from '#/components/divider';
 import { LucideArrowLeft, LucideCheck } from '#/components/icons';
 
 import { GenFile } from '../types/generator.data';
-import { getApiFileName, getFrontEndPath } from '../util/util';
+import { getApiFileName, getFrontEndApiPath } from '../util/util';
 
 const props = defineProps<{
   generatorConfig: GeneratorConfig;
@@ -64,7 +64,7 @@ function initGeneratorFileArray() {
         );
         const modelName = `${getApiFileName(basicsConfig.table)}-model.ts`;
         generatorFileArray.value.push(
-          `${basicsConfig.frontEndPath}/src/api/${getFrontEndPath(
+          `${basicsConfig.frontEndPath}/packages/api/src/${getFrontEndApiPath(
             basicsConfig.table as string,
           )}/model/${modelName}`,
         );

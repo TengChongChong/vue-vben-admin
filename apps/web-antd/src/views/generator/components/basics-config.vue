@@ -498,7 +498,7 @@ async function handleTableChange(table: string) {
         packagePath: `com.easy.admin.${packagePath}`,
         controllerMapping: `/auth/${getControllerMapping(table)}`,
         viewPath: `/src/views/${getControllerMapping(table)}`,
-        apiPath: `/src/api/${getFrontEndApiPath(table)}/${getApiFileName(table)}.ts`,
+        apiPath: `/packages/api/src/${getFrontEndApiPath(table)}/${getApiFileName(table)}.ts`,
       });
       // 设置模块
       setModules(table);
