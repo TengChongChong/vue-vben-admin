@@ -104,13 +104,12 @@ const handelExportData = async () => {
 </script>
 
 <template>
-  <div class="dict-type-page mr-2 h-full rounded-md bg-card">
+  <div class="dict-type-page h-full rounded-md bg-card">
     <div class="dict-type-search w-full">
       <InputSearch
         v-model:value="searchValue"
         placeholder="请输入字典类型或名称搜索"
-        @search="handleSearch"
-      />
+        @search="handleSearch" />
     </div>
     <div class="h-full" style="height: calc(100% - 48px)">
       <Grid>
@@ -120,8 +119,7 @@ const handelExportData = async () => {
 
             <ButtonExport
               :loading="exportBtnLoading"
-              @click="handelExportData"
-            />
+              @click="handelExportData" />
           </Space>
         </template>
         <template #action="{ row }">
@@ -129,8 +127,7 @@ const handelExportData = async () => {
             :auth-codes="['sys:dict:save']"
             size="small"
             type="link"
-            @click="handleEdit(row.id)"
-          />
+            @click="handleEdit(row.id)" />
 
           <ButtonRemove
             :api="removeSysDictTypeApi"
@@ -138,8 +135,7 @@ const handelExportData = async () => {
             :ids="[row.id]"
             size="small"
             type="link"
-            @success="handleSearch"
-          />
+            @success="handleSearch" />
         </template>
       </Grid>
     </div>

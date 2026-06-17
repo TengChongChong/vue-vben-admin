@@ -159,14 +159,13 @@ const handelExportData = async () => {
     :left-collapsible="false"
     :left-min-width="30"
     :left-width="40"
-    auto-content-height
-  >
+    auto-content-height>
     <template #left>
       <div class="h-full">
         <SysDictTypeList @change="handleDictTypeChange" />
       </div>
     </template>
-    <div class="ml-2 h-full">
+    <div class="h-full">
       <Grid>
         <template #toolbar-tools>
           <Space>
@@ -176,8 +175,7 @@ const handelExportData = async () => {
               <Button
                 type="primary"
                 @click="handleGeneratorEnum"
-                v-if="dictType"
-              >
+                v-if="dictType">
                 <template #icon> <LucideSquareDashedBottomCode /> </template>
                 生成 Enum
               </Button>
@@ -187,13 +185,11 @@ const handelExportData = async () => {
               :api="removeSysDictApi"
               :auth-codes="['sys:dict:remove']"
               :grid-api="gridApi"
-              @success="handleSearch"
-            />
+              @success="handleSearch" />
 
             <ButtonExport
               :loading="exportBtnLoading"
-              @click="handelExportData"
-            />
+              @click="handelExportData" />
 
             <Button @click="handleReloadCache">
               <template #icon> <LucideRefreshCw /> </template>
@@ -208,8 +204,7 @@ const handelExportData = async () => {
             :auth-codes="['sys:dict:save']"
             size="small"
             type="link"
-            @click="handleEdit(row.id)"
-          />
+            @click="handleEdit(row.id)" />
 
           <ButtonRemove
             :api="removeSysDictApi"
@@ -217,8 +212,7 @@ const handelExportData = async () => {
             :ids="[row.id]"
             size="small"
             type="link"
-            @success="handleSearch"
-          />
+            @success="handleSearch" />
         </template>
       </Grid>
     </div>
