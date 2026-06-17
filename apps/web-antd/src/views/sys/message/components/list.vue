@@ -1,23 +1,33 @@
 <script lang="ts" setup>
-import type { VbenFormProps } from '#/adapter/form';
-import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { FileUploadRule } from '#/api';
+import { onMounted } from 'vue';
 
 import { useVbenDrawer, useVbenModal } from '@vben/common-ui';
+import { formatToDateTime } from '@vben/utils';
 
-import { Button, Divider, message, Popconfirm, Space } from 'ant-design-vue';
-import dayjs from 'dayjs';
-
-import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
-  infoApi,
-  removeSysMessageApi,
-  selectSysMessageApi,
-  sendApi,
-} from '#/api';
+  Button,
+  Checkbox,
+  Empty,
+  Input,
+  message,
+  Pagination,
+  Popconfirm,
+  RangePicker,
+  Spin,
+} from 'ant-design-vue';
+import dayjs from 'dayjs';
+import { useDebounceFn } from '@vueuse/core';
+
+import { infoApi, removeSysMessageApi, sendApi } from '#/api';
 import { ButtonEdit, ButtonRemove } from '#/components/button';
-import { LucideListOrdered, LucideSend } from '#/components/icons';
+import { DictTag } from '#/components/dict';
+import {
+  LucideListOrdered,
+  LucideSearch,
+  LucideSend,
+} from '#/components/icons';
 import { SysMessageStatus } from '#/views/sys/message/components/data';
+import { useMessageSendList } from '#/views/sys/message/composables/use-message-send-list';
 
 import InfoModal from './info-modal.vue';
 import ReceiverUserDetailDrawer from './receiver-user-detail-drawer.vue';
@@ -26,109 +36,25 @@ const props = defineProps<{ pageType: string }>();
 
 const emit = defineEmits(['editMessage']);
 
-function handleSearch() {
-  gridApi.query();
-}
+const isSent = () => props.pageType === SysMessageStatus.HAS_BEEN_SENT;
 
-const formOptions: VbenFormProps = {
-  collapsed: true,
-  fieldMappingTime: [
-    ['sendDate', ['startSendDate', 'endSendDate'], 'YYYY-MM-DD'],
-  ],
-  schema: [
-    {
-      fieldName: 'title',
-      label: '标题',
-      component: 'Input',
-    },
-    {
-      fieldName: 'sendDate',
-      label: '发送时间',
-      component: 'RangePicker',
-      componentProps: {
-        allowEmpty: [true, true],
-        presets: [
-          {
-            label: '今天',
-            value: [dayjs().startOf('day'), dayjs().endOf('day')],
-          },
-          {
-            label: '本周',
-            value: [dayjs().startOf('week'), dayjs().endOf('week')],
-          },
-          {
-            label: '本月',
-            value: [dayjs().startOf('month'), dayjs().endOf('month')],
-          },
-        ],
-      },
-      formItemClass:
-        SysMessageStatus.HAS_BEEN_SENT === props.pageType ? '' : 'hidden',
-    },
-  ],
-};
-
-const gridOptions: VxeGridProps<FileUploadRule> = {
-  id: 'message-list',
-  columns: [
-    { type: 'checkbox', width: 50, fixed: 'left' },
-    { title: '序号', type: 'seq', width: 50, fixed: 'left' },
-    {
-      title: '标题',
-      field: 'title',
-      sortable: true,
-      minWidth: 400,
-      slots: { default: 'title' },
-    },
-    {
-      title: '发送时间',
-      field: 'sendDate',
-      sortable: true,
-      width: 160,
-      formatter: 'dateTime',
-    },
-    {
-      title: '创建时间',
-      field: 'createDate',
-      sortable: true,
-      width: 160,
-      formatter: 'dateTime',
-    },
-    {
-      title: '类型',
-      field: 'type',
-      sortable: true,
-      width: 150,
-      cellRender: {
-        name: 'DictTag',
-        props: { dictType: 'messageType' },
-      },
-    },
-    {
-      title: '操作',
-      field: 'action',
-      width: 260,
-      fixed: 'right',
-      slots: { default: 'action' },
-    },
-  ],
-  proxyConfig: {
-    ajax: {
-      query: async ({ page }, formValues) => {
-        return await selectSysMessageApi(
-          { ...formValues, status: props.pageType },
-          page,
-        );
-      },
-    },
-  },
-};
-
-const [Grid, gridApi] = useVbenVxeGrid({
-  tableTitle: '消息',
-  formOptions,
-  gridOptions,
-});
+const {
+  allChecked,
+  clearSelection,
+  current,
+  fetchList,
+  handlePageChange,
+  handleSearch,
+  indeterminate,
+  isSelected,
+  loading,
+  pageSize,
+  query,
+  records,
+  selectedIds,
+  toggleSelect,
+  total,
+} = useMessageSendList(props.pageType);
 
 const [BaseInfoModal, baseInfoModalApi] = useVbenModal({
   connectedComponent: InfoModal,
@@ -139,10 +65,14 @@ const [BaseReceiverUserDetailDrawer, baseReceiverUserDetailDrawerApi] =
     connectedComponent: ReceiverUserDetailDrawer,
   });
 
+const debouncedSearch = useDebounceFn(() => {
+  handleSearch();
+}, 300);
+
 function handleSend(id: string) {
   sendApi(id).then(() => {
     message.success('发送成功');
-    handleSearch();
+    fetchList();
   });
 }
 
@@ -150,11 +80,6 @@ function handleEdit(id: string) {
   emit('editMessage', id);
 }
 
-/**
- * 显示用户接收情况
- *
- * @param messageId 消息id
- */
 function handleOpenReceiverUserDetailDrawer(messageId: string) {
   baseReceiverUserDetailDrawerApi.setData({ messageId });
   baseReceiverUserDetailDrawerApi.open();
@@ -166,78 +91,171 @@ function handleOpenInfoModel(id: string) {
     baseInfoModalApi.open();
   });
 }
+
+function handleDateChange(_: unknown, dateStrings: [string, string]) {
+  query.startSendDate = dateStrings[0] || undefined;
+  query.endSendDate = dateStrings[1] || undefined;
+  handleSearch();
+}
+
+onMounted(() => {
+  fetchList();
+});
 </script>
 
 <template>
-  <div class="h-full">
-    <Grid>
-      <template #toolbar-tools>
-        <Space>
-          <ButtonRemove
-            :api="removeSysMessageApi"
-            :grid-api="gridApi"
-            @success="handleSearch"
-          />
+  <div class="message-send-list">
+    <div class="message-send-list__toolbar">
+      <div class="message-send-list__toolbar-left">
+        <Input
+          v-model:value="query.title"
+          allow-clear
+          class="max-w-xs"
+          placeholder="搜索标题"
+          @change="debouncedSearch"
+          @press-enter="handleSearch"
+        >
+          <template #prefix>
+            <LucideSearch class="size-4 text-muted-foreground" />
+          </template>
+        </Input>
+        <RangePicker
+          v-if="isSent()"
+          :presets="[
+            {
+              label: '今天',
+              value: [dayjs().startOf('day'), dayjs().endOf('day')],
+            },
+            {
+              label: '本周',
+              value: [dayjs().startOf('week'), dayjs().endOf('week')],
+            },
+            {
+              label: '本月',
+              value: [dayjs().startOf('month'), dayjs().endOf('month')],
+            },
+          ]"
+          @change="handleDateChange"
+        />
+      </div>
+      <div class="message-send-list__toolbar-right">
+        <Checkbox
+          v-if="records.length > 0"
+          v-model:checked="allChecked"
+          :indeterminate="indeterminate"
+        >
+          全选
+        </Checkbox>
+        <ButtonRemove
+          :api="removeSysMessageApi"
+          :disabled="selectedIds.length === 0"
+          :ids="selectedIds"
+          @success="
+            () => {
+              clearSelection();
+              fetchList();
+            }
+          "
+        />
+      </div>
+    </div>
 
-          <Divider class="h-5" type="vertical" />
-        </Space>
-      </template>
-
-      <template #title="{ row }">
-        <span class="message-title" @click="handleOpenInfoModel(row.id)">
-          {{ row.title }}
-        </span>
-      </template>
-
-      <template #action="{ row }">
-        <template v-if="SysMessageStatus.HAS_BEEN_SENT === props.pageType">
-          <Button
-            size="small"
-            type="link"
-            @click="handleOpenReceiverUserDetailDrawer(row.id)"
-          >
-            <template #icon>
-              <LucideListOrdered />
+    <Spin :spinning="loading" class="message-send-list__cards">
+      <template v-if="records.length > 0">
+        <div
+          v-for="item in records"
+          :key="item.id"
+          :class="{ 'message-send-card--selected': isSelected(item.id) }"
+          class="message-send-card"
+        >
+          <div class="message-send-card__checkbox">
+            <Checkbox
+              :checked="isSelected(item.id)"
+              @change="(e) => toggleSelect(item.id!, e.target.checked)"
+            />
+          </div>
+          <div class="message-send-card__main">
+            <div
+              class="message-send-card__title"
+              @click="handleOpenInfoModel(item.id!)"
+            >
+              {{ item.title }}
+            </div>
+            <div class="message-send-card__meta">
+              <DictTag
+                v-if="item.type"
+                :code="item.type"
+                dict-type="messageType"
+              />
+              <span v-if="isSent() && item.sendDate">
+                发送：{{ formatToDateTime(item.sendDate) }}
+              </span>
+              <span v-if="item.createDate">
+                创建：{{ formatToDateTime(item.createDate) }}
+              </span>
+            </div>
+          </div>
+          <div class="message-send-card__actions">
+            <template v-if="isSent()">
+              <Button
+                size="small"
+                type="link"
+                @click="handleOpenReceiverUserDetailDrawer(item.id!)"
+              >
+                <template #icon>
+                  <LucideListOrdered />
+                </template>
+                接收情况
+              </Button>
             </template>
-            用户接收情况
-          </Button>
-        </template>
-
-        <template v-if="SysMessageStatus.DRAFT === props.pageType">
-          <ButtonRemove
-            :api="removeSysMessageApi"
-            :ids="[row.id]"
-            size="small"
-            type="link"
-            @success="handleSearch"
-          />
-
-          <ButtonEdit size="small" type="link" @click="handleEdit(row.id)" />
-
-          <Popconfirm
-            cancel-text="否"
-            ok-text="是"
-            title="发送后无法修改或删除，确定要立即发送吗？"
-            @confirm="handleSend(row.id)"
-          >
-            <Button size="small" type="link">
-              <template #icon>
-                <LucideSend />
-              </template>
-              发送
-            </Button>
-          </Popconfirm>
-        </template>
+            <template v-else>
+              <ButtonEdit
+                size="small"
+                type="link"
+                @click="handleEdit(item.id!)"
+              />
+              <ButtonRemove
+                :api="removeSysMessageApi"
+                :ids="[item.id!]"
+                size="small"
+                type="link"
+                @success="fetchList()"
+              />
+              <Popconfirm
+                cancel-text="否"
+                ok-text="是"
+                title="发送后无法修改或删除，确定要立即发送吗？"
+                @confirm="handleSend(item.id!)"
+              >
+                <Button size="small" type="link">
+                  <template #icon>
+                    <LucideSend />
+                  </template>
+                  发送
+                </Button>
+              </Popconfirm>
+            </template>
+          </div>
+        </div>
       </template>
-    </Grid>
+      <Empty v-else class="py-16" description="暂无消息" />
+    </Spin>
+
+    <div v-if="total > 0" class="message-send-list__pagination">
+      <Pagination
+        :current="current"
+        :page-size="pageSize"
+        :show-size-changer="true"
+        :total="total"
+        @change="handlePageChange"
+      />
+    </div>
 
     <BaseInfoModal />
-
     <BaseReceiverUserDetailDrawer />
   </div>
 </template>
+
 <style lang="scss" scoped>
-.message-title {
-  cursor: pointer;
-}
+@import '../style/message.scss';
 </style>

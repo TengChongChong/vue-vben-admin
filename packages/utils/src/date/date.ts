@@ -8,7 +8,7 @@ dayjs.locale('zh-cn');
 dayjs.extend(relativeTime);
 dayjs.extend(duration);
 
-const DATE_TIME_FORMAT = 'YYYY-MM-DD HH:mm:ss';
+const DATE_TIME_FORMAT = 'YYYY-MM-DD HH:mm';
 const DATE_FORMAT = 'YYYY-MM-DD';
 
 export function formatToDateTime(

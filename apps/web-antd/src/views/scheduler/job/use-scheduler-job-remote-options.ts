@@ -4,7 +4,10 @@ import { ref } from 'vue';
 
 import { message } from 'ant-design-vue';
 
-import { selectSchedulerJobBeansApi, selectSchedulerJobMethodsApi } from '#/api';
+import {
+  selectSchedulerJobBeansApi,
+  selectSchedulerJobMethodsApi,
+} from '#/api';
 
 interface CacheEntry<T> {
   data: T;

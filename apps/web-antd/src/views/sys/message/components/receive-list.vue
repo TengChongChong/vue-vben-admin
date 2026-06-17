@@ -1,237 +1,277 @@
 <script lang="ts" setup>
-import type { VbenFormProps } from '#/adapter/form';
-import type { VxeGridProps } from '#/adapter/vxe-table';
+import type { CSSProperties } from 'vue';
+
 import type { SysMessage } from '#/api';
 
-import { ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
 
-import { Button, Divider, Space } from 'ant-design-vue';
-import dayjs from 'dayjs';
+import { useDebounceFn } from '@vueuse/core';
+import {
+  Button,
+  Card,
+  Checkbox,
+  Drawer,
+  Empty,
+  Input,
+  Pagination,
+  Segmented,
+  Spin,
+} from 'ant-design-vue';
 
-import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { infoApi, removeByIdsApi, selectReceiveApi, setReadApi } from '#/api';
+import { removeByIdsApi } from '#/api';
 import { ButtonRemove } from '#/components/button';
-import { LucideMailCheck } from '#/components/icons';
+import { LucideMailCheck, LucideSearch } from '#/components/icons';
+import { useMessageReceiveList } from '#/views/sys/message/composables/use-message-receive-list';
 
 import InfoModal from './info-modal.vue';
+import MessageDetailPanel from './message-detail-panel.vue';
+import MessageListItem from './message-list-item.vue';
 
 const props = withDefaults(
   defineProps<{
+    onUnreadChange?: () => void;
     params?: SysMessage;
     showQuery?: boolean;
     title?: string;
   }>(),
   {
-    params: {},
+    onUnreadChange: undefined,
+    params: () => ({}),
     title: '消息',
     showQuery: true,
   },
 );
 
-const setReadBtnLoading = ref(false);
+const emit = defineEmits<{
+  unreadChange: [];
+}>();
 
-function handleSearch() {
-  gridApi.query();
+const compact = computed(() => !props.showQuery);
+const detailDrawerOpen = ref(false);
+
+const inboxBodyStyle: CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100%',
+  minHeight: 0,
+  overflow: 'hidden',
+  padding: 0,
+};
+
+const listBodyStyle: CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100%',
+  minHeight: 0,
+  overflow: 'hidden',
+  padding: 0,
+};
+
+const filterOptions = [
+  { label: '全部', value: 'all' },
+  { label: '未读', value: 'unread' },
+  { label: '已读', value: 'read' },
+] as const;
+
+function handleUnreadChange() {
+  props.onUnreadChange?.();
+  emit('unreadChange');
 }
 
-const formOptions: VbenFormProps = {
-  collapsed: true,
-  fieldMappingTime: [
-    ['sendDate', ['startSendDate', 'endSendDate'], 'YYYY-MM-DD'],
-  ],
-  schema: [
-    {
-      fieldName: 'title',
-      label: '标题',
-      component: 'Input',
-    },
-    {
-      fieldName: 'sendDate',
-      label: '发送时间',
-      component: 'RangePicker',
-      componentProps: {
-        allowEmpty: [true, true],
-        presets: [
-          {
-            label: '今天',
-            value: [dayjs().startOf('day'), dayjs().endOf('day')],
-          },
-          {
-            label: '本周',
-            value: [dayjs().startOf('week'), dayjs().endOf('week')],
-          },
-          {
-            label: '本月',
-            value: [dayjs().startOf('month'), dayjs().endOf('month')],
-          },
-        ],
-      },
-    },
-    {
-      fieldName: 'detailsStatus',
-      label: '状态',
-      component: 'DictSelect',
-      componentProps: {
-        dictType: 'messageStatus',
-      },
-    },
-  ],
-};
-
-const gridOptions: VxeGridProps<SysMessage> = {
-  id: 'message-receive-list',
-  columns: [
-    { type: 'checkbox', width: 50, fixed: 'left' },
-    { title: '序号', type: 'seq', width: 50, fixed: 'left' },
-    {
-      title: '标题',
-      field: 'title',
-      sortable: true,
-      minWidth: 400,
-      slots: { default: 'title' },
-    },
-    {
-      title: '状态',
-      field: 'detailsStatus',
-      sortable: true,
-      width: 150,
-      cellRender: {
-        name: 'DictTag',
-        props: { dictType: 'messageStatus' },
-      },
-    },
-    {
-      title: '发送人',
-      field: 'nickname',
-      sortable: true,
-      width: 160,
-    },
-    {
-      title: '收信时间',
-      field: 'sendDate',
-      sortable: true,
-      width: 160,
-      formatter: 'dateTime',
-    },
-    {
-      title: '类型',
-      field: 'type',
-      sortable: true,
-      width: 150,
-      cellRender: {
-        name: 'DictTag',
-        props: { dictType: 'messageType' },
-      },
-    },
-    {
-      title: '操作',
-      field: 'action',
-      width: 160,
-      fixed: 'right',
-      slots: { default: 'action' },
-    },
-  ],
-  proxyConfig: {
-    ajax: {
-      query: async ({ page }, formValues) => {
-        return await selectReceiveApi({ ...props.params, ...formValues }, page);
-      },
-    },
-  },
-};
-
-const [Grid, gridApi] = useVbenVxeGrid({
-  tableTitle: props.title,
-  formOptions: props.showQuery ? formOptions : undefined,
-  gridOptions,
+const {
+  activeReceiveId,
+  allChecked,
+  current,
+  currentDetail,
+  detailLoading,
+  fetchList,
+  handlePageChange,
+  handleSearch,
+  indeterminate,
+  isSelected,
+  loading,
+  markAllAsRead,
+  markSelectedAsRead,
+  openMessage,
+  pageSize,
+  query,
+  records,
+  selectedIds,
+  setReadBtnLoading,
+  toggleSelect,
+  total,
+} = useMessageReceiveList({
+  params: props.params,
+  onUnreadChange: handleUnreadChange,
 });
 
 const [BaseInfoModal, baseInfoModalApi] = useVbenModal({
   connectedComponent: InfoModal,
 });
 
-/**
- * 消息全部标记为已读
- */
-async function handleMakeAllAsRead() {
-  try {
-    setReadBtnLoading.value = true;
-    await setReadApi();
-    await handleSearch();
-  } catch (error) {
-    console.error('消息全部标记为已读失败', error);
-  } finally {
-    setReadBtnLoading.value = false;
+const debouncedSearch = useDebounceFn(() => {
+  handleSearch();
+}, 300);
+
+function handleFilterChange(value: number | string) {
+  query.filter = value as typeof query.filter;
+  handleSearch();
+}
+
+async function handleItemClick(message: SysMessage) {
+  if (!message.id || !message.messageId) {
+    return;
+  }
+  const detail = await openMessage(message.id, message.messageId);
+  if (compact.value) {
+    baseInfoModalApi.setData(detail);
+    baseInfoModalApi.open();
+    return;
+  }
+  if (window.innerWidth < 1024) {
+    detailDrawerOpen.value = true;
   }
 }
 
-function handleOpenInfoModel(id: string, messageId: string) {
-  infoApi(id, messageId).then((res) => {
-    if (!res.readDate) {
-      // 未读消息，更新列表页消息状态
-      handleSearch();
-    }
-
-    baseInfoModalApi.setData(res);
-    baseInfoModalApi.open();
-  });
+function handleMarkRead() {
+  if (selectedIds.value.length > 0) {
+    markSelectedAsRead();
+    return;
+  }
+  markAllAsRead();
 }
+
+onMounted(() => {
+  fetchList();
+});
 </script>
 
 <template>
-  <div class="h-full">
-    <Grid>
-      <template #toolbar-tools>
-        <Space>
-          <Button :loading="setReadBtnLoading" @click="handleMakeAllAsRead">
-            <template #icon>
-              <LucideMailCheck />
-            </template>
-            标记已读
-          </Button>
-
-          <ButtonRemove
-            :api="removeByIdsApi"
-            :grid-api="gridApi"
-            @success="handleSearch"
-          />
-
-          <Divider class="h-5" type="vertical" />
-        </Space>
-      </template>
-
-      <template #title="{ row }">
-        <span
-          :class="[row.readDate == null ? 'unread' : '']"
-          class="message-title"
-          @click="handleOpenInfoModel(row.id, row.messageId)"
+  <Card
+    :bordered="compact"
+    :body-style="inboxBodyStyle"
+    class="h-full"
+    :title="title"
+  >
+    <div
+      v-if="showQuery"
+      class="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-border px-4 py-3"
+    >
+      <div class="flex min-w-[200px] flex-1 flex-wrap items-center gap-3">
+        <span class="text-base font-semibold whitespace-nowrap">{{
+          title
+        }}</span>
+        <Input
+          v-model:value="query.title"
+          allow-clear
+          class="max-w-xs"
+          placeholder="搜索标题"
+          @change="debouncedSearch"
+          @press-enter="handleSearch"
         >
-          {{ row.title }}
-        </span>
-      </template>
-
-      <template #action="{ row }">
+          <template #prefix>
+            <LucideSearch class="size-4 text-muted-foreground" />
+          </template>
+        </Input>
+        <Segmented
+          :options="[...filterOptions]"
+          :value="query.filter"
+          @change="handleFilterChange"
+        />
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        <Checkbox
+          v-if="records.length > 0"
+          v-model:checked="allChecked"
+          :indeterminate="indeterminate"
+        >
+          全选
+        </Checkbox>
+        <Button :loading="setReadBtnLoading" @click="handleMarkRead">
+          <template #icon>
+            <LucideMailCheck />
+          </template>
+          {{ selectedIds.length > 0 ? '标记选中已读' : '全部已读' }}
+        </Button>
         <ButtonRemove
           :api="removeByIdsApi"
-          :ids="[row.id]"
-          size="small"
-          type="link"
-          @success="handleSearch"
+          :disabled="selectedIds.length === 0"
+          :ids="selectedIds"
+          @success="
+            () => {
+              handleUnreadChange();
+              fetchList();
+            }
+          "
         />
-      </template>
-    </Grid>
+      </div>
+    </div>
+
+    <div class="flex min-h-0 flex-1 overflow-hidden">
+      <Card
+        :body-style="listBodyStyle"
+        :bordered="false"
+        class="flex min-h-0 flex-col overflow-hidden rounded-none"
+        :class="[
+          compact
+            ? 'w-full flex-1'
+            : 'w-full lg:w-[38%] lg:min-w-[280px] lg:flex-none lg:border-r lg:border-border',
+        ]"
+        size="small"
+      >
+        <div class="min-h-0 flex-1 overflow-y-auto">
+          <Spin :spinning="loading">
+            <template v-if="records.length > 0">
+              <MessageListItem
+                v-for="item in records"
+                :key="item.id"
+                :active="activeReceiveId === item.id"
+                :checked="isSelected(item.id)"
+                :message="item"
+                :show-checkbox="showQuery"
+                @check="(checked) => toggleSelect(item.id!, checked)"
+                @click="handleItemClick(item)"
+              />
+            </template>
+            <Empty v-else class="py-12" description="暂无消息" />
+          </Spin>
+        </div>
+
+        <div
+          v-if="total > 0"
+          class="shrink-0 border-t border-border px-3 py-2 text-right"
+        >
+          <Pagination
+            :current="current"
+            :page-size="pageSize"
+            :show-size-changer="!compact"
+            :simple="compact"
+            :total="total"
+            size="small"
+            @change="handlePageChange"
+          />
+        </div>
+      </Card>
+
+      <div v-if="!compact" class="hidden min-w-0 flex-1 overflow-auto lg:block">
+        <MessageDetailPanel :loading="detailLoading" :message="currentDetail" />
+      </div>
+    </div>
+
+    <Drawer
+      v-if="!compact"
+      v-model:open="detailDrawerOpen"
+      :body-style="{ padding: 0 }"
+      class="lg:hidden"
+      placement="right"
+      title="消息详情"
+      width="100%"
+    >
+      <MessageDetailPanel :loading="detailLoading" :message="currentDetail" />
+    </Drawer>
 
     <BaseInfoModal />
-  </div>
+  </Card>
 </template>
-<style lang="scss" scoped>
-.message-title {
-  cursor: pointer;
-
-  &.unread {
-    font-weight: bold;
-  }
-}
-</style>

@@ -25,18 +25,21 @@ export function selectSysUserApi(params: SysUserVO, page: Page<SysUserVO>) {
  * @param range 范围
  * @param deptId 部门Id，传入此参数时将忽略`range`
  * @param page 分页
+ * @param roleCode 角色标识（range 为 role 时生效）
  */
 export function searchApi(
   keyword: string,
   range: string,
-  deptId: string,
+  deptId: string | undefined,
   page: Page<SysUserVO>,
+  roleCode?: string,
 ) {
   return getRequestClient().get<Page<SysUserVO>>(`${BASE_URL}/search`, {
     params: {
       keyword,
       range,
       deptId,
+      roleCode,
       ...page,
     },
   });

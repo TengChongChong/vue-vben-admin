@@ -99,8 +99,7 @@ async function loadMethodOptions(bean: string) {
 }
 
 async function handleBeanChange(value: unknown) {
-  const beanValue =
-    value == null || Array.isArray(value) ? '' : String(value);
+  const beanValue = value == null || Array.isArray(value) ? '' : String(value);
   if (beanValue === currentBean.value) {
     return;
   }
@@ -124,8 +123,7 @@ async function handleMethodSelect(value: unknown) {
   }
   const updates: Partial<SchedulerJob> = {
     method: option.method,
-    params:
-      option.params.length > 0 ? JSON.stringify(option.params) : '',
+    params: option.params.length > 0 ? JSON.stringify(option.params) : '',
   };
   await baseFormApi.setValues(updates);
 }

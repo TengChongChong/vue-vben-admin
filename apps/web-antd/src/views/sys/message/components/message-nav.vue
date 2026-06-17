@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, unref, watch } from 'vue';
+import { onMounted, ref, unref, watch } from 'vue';
 
-import { Menu, MenuItem } from 'ant-design-vue';
+import { Badge, Menu, MenuItem } from 'ant-design-vue';
 
 import {
   LucideFilePen,
@@ -9,6 +9,7 @@ import {
   LucideMailCheck,
   LucideMails,
 } from '#/components/icons';
+import { useMessageUnreadCount } from '#/views/sys/message/composables/use-message-unread-count';
 
 const prop = defineProps({
   selectedKeys: {
@@ -22,6 +23,8 @@ const prop = defineProps({
 const emit = defineEmits(['update:selectedKeys']);
 const selectedKeys = ref([prop.selectedKeys]);
 
+const { refreshUnreadCount, unreadCount } = useMessageUnreadCount();
+
 watch(
   () => prop.selectedKeys,
   () => (selectedKeys.value = [prop.selectedKeys]),
@@ -30,10 +33,17 @@ watch(
 function handleSelect() {
   emit('update:selectedKeys', unref(selectedKeys)[0]);
 }
+
+onMounted(() => {
+  refreshUnreadCount();
+});
+
+defineExpose({
+  refreshUnreadCount,
+});
 </script>
 
 <template>
-  <!-- 导航 -->
   <div class="personal-nav-wrapper">
     <Menu
       v-model:selected-keys="selectedKeys"
@@ -51,7 +61,9 @@ function handleSelect() {
         <template #icon>
           <LucideMailbox />
         </template>
-        收信箱
+        <Badge :count="unreadCount" :offset="[16, 6]">
+          <span>收信箱</span>
+        </Badge>
       </MenuItem>
       <MenuItem key="draft">
         <template #icon>

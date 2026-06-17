@@ -125,4 +125,6 @@ export interface BasicTreeProps {
   selectedOnSearch?: boolean;
   loading?: boolean;
   treeWrapperClassName?: string;
+  /** 是否使用 Card 包裹，默认 true；嵌入 ColPage 等场景可设为 false */
+  useCard?: boolean;
 }

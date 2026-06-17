@@ -60,7 +60,9 @@ function initConfig() {
   // @ts-expect-error
   const templateStartRow = props.sysImportExcelTemplate.startRow!;
   if (templateStartRow > START_ROW_MAX || templateStartRow < START_ROW_MIN) {
-    message.warning(`起始行仅支持 ${START_ROW_MIN}-${START_ROW_MAX}，已自动调整`);
+    message.warning(
+      `起始行仅支持 ${START_ROW_MIN}-${START_ROW_MAX}，已自动调整`,
+    );
   }
   startRow.value = Math.min(
     START_ROW_MAX,

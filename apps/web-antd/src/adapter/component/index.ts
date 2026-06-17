@@ -84,7 +84,7 @@ import { ApiTreeSelect } from '#/components/form';
 import { RoleSelect } from '#/components/role';
 import { SmsVerificationCode } from '#/components/sms-verification-code';
 import { RuleUpload } from '#/components/upload';
-import { UserSelect } from '#/components/user';
+import { UserPicker, UserSelect } from '#/components/user';
 
 type AdapterUploadProps = UploadProps & {
   aspectRatio?: string;
@@ -654,6 +654,7 @@ export type ComponentType =
   | 'TimePicker'
   | 'TreeSelect'
   | 'Upload'
+  | 'UserPicker'
   | 'UserSelect'
   | BaseFormComponentType;
 
@@ -772,6 +773,7 @@ async function initComponentAdapter() {
     DictTreeSelect: withDefaultPlaceholder(DictTreeSelect, 'select'),
     DeptSelect: withDefaultPlaceholder(DeptSelect, 'select'),
     RoleSelect: withDefaultPlaceholder(RoleSelect, 'select'),
+    UserPicker: withDefaultPlaceholder(UserPicker, 'select'),
     UserSelect: withDefaultPlaceholder(UserSelect, 'select'),
   };
 

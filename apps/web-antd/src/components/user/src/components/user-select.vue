@@ -1,41 +1,52 @@
 <script setup lang="ts">
-import type { SysUser } from '#/api';
-import type { UserSelect } from '#/components/user/src/type';
+import type { UserSelectProps } from '#/components/user/src/type';
 
-import { onMounted, ref, unref, watch } from 'vue';
+import { computed, onMounted, ref, unref, watch } from 'vue';
 
 import { cn } from '@vben/utils';
 
-import { useDebounceFn } from '@vueuse/shared';
+import type { SelectValue } from 'ant-design-vue/es/select';
+
 import { Select, SelectOption, Spin } from 'ant-design-vue';
 
-import { searchApi, selectUsersByIdsApi } from '#/api';
 import {
   convertArrayValue,
   convertSingleValue,
 } from '#/components/form/src/helper';
-import { HighlightText } from '#/components/highlight-text';
+import UserOptionItem from '#/components/user/src/components/user-option-item.vue';
+import { useUserSelect } from '#/components/user/src/composables/use-user-select';
+import { formatUserLabel } from '#/components/user/src/util/user-helpers';
 
 defineOptions({
   inheritAttrs: false,
 });
 
-const props = withDefaults(defineProps<UserSelect>(), {
+const props = withDefaults(defineProps<UserSelectProps>(), {
   range: 'all',
-  deptIds: [],
 });
 
 const emit = defineEmits(['change', 'update:value']);
 
-const loading = ref<boolean>(false);
-let lastFetchId = 0;
+const filterOptions = computed(() => ({
+  deptId: props.deptId,
+  range: props.range,
+  roleCode: props.roleCode,
+}));
 
-const options = ref<SysUser[]>([]);
-let searchValue = '';
-const currentValue = ref<Array<string> | null | string>();
+const {
+  debouncedFetchUsers,
+  fetchUsers,
+  loading,
+  options,
+  resolveLabels,
+  searchKeyword,
+} = useUserSelect(filterOptions);
+
+const currentValue = ref<SelectValue>();
 
 onMounted(() => {
   convertValue();
+  initSelectValue();
 });
 
 function convertValue() {
@@ -52,48 +63,25 @@ watch(
   },
 );
 
-const initSelectValue = () => {
+watch(filterOptions, () => {
+  fetchUsers(searchKeyword.value);
+});
+
+function initSelectValue() {
   if (props.value && props.value.length > 0) {
-    lastFetchId += 1;
-    const fetchId = lastFetchId;
-    options.value = [];
-    loading.value = true;
-    selectUsersByIdsApi(props.value).then((res) => {
-      if (fetchId !== lastFetchId) {
-        return;
-      }
-      options.value = res;
-      loading.value = false;
-    });
+    resolveLabels(props.value);
   }
-};
+}
 
-initSelectValue();
-
-const fetchUser = useDebounceFn(async (value: null | string) => {
-  try {
-    searchValue = value;
-    lastFetchId += 1;
-    const fetchId = lastFetchId;
-    options.value = [];
-    loading.value = true;
-    if (value === null || value === '') {
-      return;
-    }
-    const res = await searchApi(value, props.range, props.deptId, {
-      current: 1,
-      pageSize: 20,
-    });
-    if (fetchId !== lastFetchId) {
-      return;
-    }
-    options.value = res.records as SysUser[];
-  } catch (error) {
-    console.error('获取用户数据失败，', error);
-  } finally {
-    loading.value = false;
+function handleDropdownVisibleChange(open: boolean) {
+  if (open && options.value.length === 0) {
+    fetchUsers('');
   }
-}, 300);
+}
+
+function handleSearch(value: string) {
+  debouncedFetchUsers(value);
+}
 
 function handleChange() {
   let relValue = unref(currentValue);
@@ -109,25 +97,25 @@ function handleChange() {
   <Select
     :allow-clear="true"
     :filter-option="false"
+    :loading="loading"
     :mode="props.mode"
+    :not-found-content="loading ? undefined : '输入关键字进一步筛选'"
     option-filter-prop="label"
     show-search
     v-bind="$attrs"
     v-model:value="currentValue"
     :class="cn(props.class, 'w-full')"
     @change="handleChange"
-    @search="fetchUser"
+    @dropdown-visible-change="handleDropdownVisibleChange"
+    @search="handleSearch"
   >
     <SelectOption
       v-for="item in options"
       :key="item.id"
-      :label="item.nickname"
+      :label="formatUserLabel(item)"
       :value="item.id"
     >
-      <HighlightText
-        :keyword="searchValue"
-        :text="`${item.username} - ${item.nickname} - ${item.deptName}`"
-      />
+      <UserOptionItem :keyword="searchKeyword" :user="item" />
     </SelectOption>
 
     <template v-if="loading" #notFoundContent>
@@ -135,5 +123,3 @@ function handleChange() {
     </template>
   </Select>
 </template>
-
-<style scoped></style>

@@ -39,16 +39,18 @@ interface Props extends ModalProps {
 
 const props = withDefaults(defineProps<Props>(), {
   appendToMain: false,
-  destroyOnClose: false,
+  destroyOnClose: true,
   modalApi: undefined,
 });
 
 const components = globalShareState.getComponents();
 
 const contentRef = ref();
+// @ts-expect-error unused
 const wrapperRef = ref<HTMLElement>();
 const dialogRef = ref();
 const headerRef = ref();
+// @ts-expect-error unused
 const footerRef = ref();
 
 const { $t } = useSimpleLocale();
@@ -179,7 +181,6 @@ function interactOutside(e: Event) {
   }
 }
 function escapeKeyDown(e: KeyboardEvent) {
-  debugger;
   if (!closeOnPressEscape.value || submitting.value) {
     e.preventDefault();
   }

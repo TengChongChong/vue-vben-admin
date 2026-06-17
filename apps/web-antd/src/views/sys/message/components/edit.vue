@@ -17,10 +17,9 @@ const [BaseForm, baseFormApi] = useVbenForm({
     { fieldName: 'id', component: 'Input', formItemClass: 'hidden' },
     { fieldName: 'version', component: 'Input', formItemClass: 'hidden' },
     {
-      component: 'UserSelect',
+      component: 'UserPicker',
       componentProps: {
-        placeholder: '输入用户名、昵称或部门名称搜索',
-        mode: 'multiple',
+        placeholder: '点击选择收信人',
       },
       fieldName: 'receivers',
       label: '收信人',

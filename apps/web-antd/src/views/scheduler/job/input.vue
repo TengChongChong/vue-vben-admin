@@ -1,7 +1,5 @@
 <script lang="ts" setup>
-import type {
-  SchedulerJob,
-} from '#/api';
+import type { SchedulerJob } from '#/api';
 
 import { computed, ref } from 'vue';
 
@@ -22,10 +20,7 @@ import {
 } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import {
-  addSchedulerJobApi,
-  saveSchedulerJobApi,
-} from '#/api';
+import { addSchedulerJobApi, saveSchedulerJobApi } from '#/api';
 import { ButtonClose, ButtonSave } from '#/components/button';
 import { LucideChevronDown } from '#/components/icons';
 import { RoleEnum } from '#/enums/roleEnum';
@@ -37,8 +32,13 @@ import { useSchedulerJobRemoteOptions } from './use-scheduler-job-remote-options
 const emit = defineEmits(['success']);
 
 const saveBtnLoading = ref(false);
-const { beanOptions, clearMethodOptions, loadBeanOptions, loadMethodOptions, methodOptions } =
-  useSchedulerJobRemoteOptions();
+const {
+  beanOptions,
+  clearMethodOptions,
+  loadBeanOptions,
+  loadMethodOptions,
+  methodOptions,
+} = useSchedulerJobRemoteOptions();
 const currentBean = ref('');
 const beanSearchTimer = ref<null | ReturnType<typeof setTimeout>>(null);
 
