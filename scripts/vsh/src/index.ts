@@ -5,6 +5,7 @@ import { cac } from 'cac';
 import { version } from '../package.json';
 import { defineCheckCircularCommand } from './check-circular';
 import { defineCheckDepCommand } from './check-dep';
+import { defineCheckTypeCommand } from './check-type';
 import { defineCodeWorkspaceCommand } from './code-workspace';
 import { defineLintCommand } from './lint';
 import { definePubLintCommand } from './publint';
@@ -12,6 +13,7 @@ import { definePubLintCommand } from './publint';
 // 命令描述
 const COMMAND_DESCRIPTIONS = {
   'check-circular': 'Check for circular dependencies',
+  'check-type': 'Run TypeScript checks for the monorepo',
   'check-dep': 'Check for unused dependencies',
   'code-workspace': 'Manage VS Code workspace settings',
   lint: 'Run linting on the project',
@@ -30,6 +32,7 @@ async function main(): Promise<void> {
     definePubLintCommand(vsh);
     defineCodeWorkspaceCommand(vsh);
     defineCheckCircularCommand(vsh);
+    defineCheckTypeCommand(vsh);
     defineCheckDepCommand(vsh);
 
     // Set up CLI

@@ -44,10 +44,12 @@
 pre-commit:
   parallel: true
   commands:
-    lint:
-      run: pnpm lint
-    checkType:
-      run: pnpm check:type
+    lint-js:
+      glob: '*.{js,jsx,mjs,cjs,ts,tsx,mts,cts,vue}'
+      run: pnpm exec oxlint {staged_files} && pnpm exec eslint --cache {staged_files}
+    lint-style:
+      glob: '*.{vue,css,less,scss}'
+      run: pnpm exec stylelint {staged_files} --cache
 
 post-merge:
   commands:
