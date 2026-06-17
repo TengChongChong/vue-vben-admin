@@ -10,12 +10,11 @@ import type {
   TableInfo,
 } from '#/api';
 
-import { useDictStore } from '#/store';
-
 import {
   FORM_TYPE,
   GenFile,
   GenMethod,
+  ListGeneratorTemplate,
   MatchingMode,
 } from '../types/generator.data';
 import { PREFERENCE_SETTING } from '../types/preference-setting';
@@ -128,8 +127,16 @@ function getTableCellConfig(
   field: TableField,
   dictTypeArray: string[],
 ): TableCellConfig {
-  const { name, comment, type, propertyName, propertyType, keyFlag, metaInfo } =
-    field;
+  const {
+    columnName,
+    name,
+    comment,
+    type,
+    propertyName,
+    propertyType,
+    keyFlag,
+    metaInfo,
+  } = field;
 
   // 是否在偏好设置中排除此字段
   const isExclude =
@@ -140,6 +147,7 @@ function getTableCellConfig(
   // 公共参数
   const config: TableCellConfig = {
     isEnable,
+    columnName,
     name,
     comment,
     type,
@@ -212,11 +220,18 @@ export function getDefaultForm(
   tableInfo: TableInfo,
   dictTypeArray: string[],
   formType: FormType,
+  dictItemCountMap?: Record<string, number>,
 ): FieldConfig[] {
   const defaultConfig: FieldConfig[] = [];
   if (tableInfo.fields && tableInfo.fields.length > 0) {
     tableInfo.fields.forEach((field) => {
-      const config = getFieldConfig(tableInfo, field, dictTypeArray, formType);
+      const config = getFieldConfig(
+        tableInfo,
+        field,
+        dictTypeArray,
+        formType,
+        dictItemCountMap,
+      );
       if (config) {
         defaultConfig.push(config);
       }
@@ -238,9 +253,18 @@ function getFieldConfig(
   field: TableField,
   dictTypeArray: string[],
   formType: FormType,
+  dictItemCountMap?: Record<string, number>,
 ): FieldConfig {
-  const { name, comment, type, propertyName, propertyType, keyFlag, metaInfo } =
-    field;
+  const {
+    columnName,
+    name,
+    comment,
+    type,
+    propertyName,
+    propertyType,
+    keyFlag,
+    metaInfo,
+  } = field;
 
   // 是否在偏好设置中排除此字段
   let isExclude = false;
@@ -262,6 +286,7 @@ function getFieldConfig(
   // 公共参数
   const config: FieldConfig = {
     isEnable,
+    columnName,
     name,
     comment,
     type,
@@ -290,10 +315,8 @@ function getFieldConfig(
       config.componentType = 'DictSelect';
       config.matchingMode = MatchingMode.EQ;
     } else if (FORM_TYPE.INPUT === formType) {
-      // 检查字典数量，如果>=5就用DictSelect，反之DictRadio
-      const dictStore = useDictStore();
-      const dictArray = dictStore.selectDictArray(dictType);
-      config.componentType = dictArray.length >= 5 ? 'DictSelect' : 'DictRadio';
+      const dictCount = dictItemCountMap?.[dictType] ?? 0;
+      config.componentType = dictCount >= 5 ? 'DictSelect' : 'DictRadio';
       config.required = false;
     }
   } else {
@@ -422,8 +445,16 @@ function getExportConfig(
   field: TableField,
   dictTypeArray: string[],
 ): TableCellConfig {
-  const { name, comment, type, propertyName, propertyType, keyFlag, metaInfo } =
-    field;
+  const {
+    columnName,
+    name,
+    comment,
+    type,
+    propertyName,
+    propertyType,
+    keyFlag,
+    metaInfo,
+  } = field;
 
   // 是否在偏好设置中排除此字段
   const isExclude = PREFERENCE_SETTING.export.exclude.includes(propertyName);
@@ -433,6 +464,7 @@ function getExportConfig(
   // 公共参数
   const config: TableCellConfig = {
     isEnable,
+    columnName,
     name,
     comment,
     type,
@@ -518,17 +550,26 @@ function getImportConfig(
   field: TableField,
   dictTypeArray: string[],
 ): ImportCellConfig {
-  const { name, comment, type, propertyName, propertyType, keyFlag, metaInfo } =
-    field;
+  const {
+    columnName,
+    name,
+    comment,
+    type,
+    propertyName,
+    propertyType,
+    keyFlag,
+    metaInfo,
+  } = field;
 
   // 是否在偏好设置中排除此字段
-  const isExclude = PREFERENCE_SETTING.export.exclude.includes(propertyName);
-  // 是否需要导出
+  const isExclude = PREFERENCE_SETTING.importExclude.includes(propertyName);
+  // 是否需要导入
   const isEnable = !keyFlag && !isExclude;
 
   // 公共参数
   const config: ImportCellConfig = {
     isEnable,
+    columnName,
     name,
     comment,
     type,
@@ -594,7 +635,7 @@ export function getDictType(
   tableInfo: TableInfo,
   field: TableField,
   dictTypeArray: string[],
-): string {
+): string | null {
   // 实体类首字母小写 + 属性
   let dictType =
     firstLowerCase(tableInfo.entityName) + firstUpperCase(field.propertyName);
@@ -718,4 +759,79 @@ export function toDictTypeArray(dictTypeOptions: SelectModel[]): string[] {
     dictTypeArray.push(item.value as string);
   });
   return dictTypeArray;
+}
+
+/**
+ * 预览将生成的文件路径（与后端 GeneratorServiceImpl 级联规则对齐）
+ */
+export function getGeneratorFilePreviewPaths(
+  basicsConfig: BasicsConfigModel,
+): string[] {
+  if (!basicsConfig?.genFile?.length) {
+    return [];
+  }
+
+  const paths: string[] = [];
+  const packagePath = basicsConfig.packagePath?.replaceAll('.', '/');
+  const backEndPathBasePath = `${basicsConfig.backEndPath}/src/main/java/`;
+  const modelName = basicsConfig.modelName;
+  const viewBase = `${basicsConfig.frontEndPath}${basicsConfig.viewPath}`;
+
+  basicsConfig.genFile.forEach((item) => {
+    switch (item) {
+      case GenFile.API_TS: {
+        paths.push(`${basicsConfig.frontEndPath}${basicsConfig.apiPath}`);
+        paths.push(
+          `${basicsConfig.frontEndPath}/packages/api/src/${getFrontEndApiPath(
+            basicsConfig.table as string,
+          )}/model/${getApiFileName(basicsConfig.table as string)}-model.ts`,
+        );
+        break;
+      }
+      case GenFile.CONTROLLER: {
+        paths.push(
+          `${backEndPathBasePath}${packagePath}/controller/${modelName}Controller.java`,
+        );
+        break;
+      }
+      case GenFile.INPUT_VUE: {
+        paths.push(`${viewBase}/input.vue`);
+        break;
+      }
+      case GenFile.LIST_VUE: {
+        paths.push(`${viewBase}/list.vue`);
+        if (
+          basicsConfig.listGeneratorTemplate ===
+          ListGeneratorTemplate.TREE_TABLE
+        ) {
+          paths.push(`${viewBase}/order.vue`);
+        }
+        paths.push(`${viewBase}/data.ts`);
+        break;
+      }
+      case GenFile.MAPPER: {
+        paths.push(
+          `${backEndPathBasePath}${packagePath}/dao/${modelName}Mapper.java`,
+          `${backEndPathBasePath}${packagePath}/dao/mapping/${modelName}Mapper.xml`,
+        );
+        break;
+      }
+      case GenFile.MODEL: {
+        paths.push(
+          `${backEndPathBasePath}${packagePath}/model/${modelName}.java`,
+          `${backEndPathBasePath}${packagePath}/model/vo/${modelName}VO.java`,
+        );
+        break;
+      }
+      case GenFile.SERVICE: {
+        paths.push(
+          `${backEndPathBasePath}${packagePath}/service/${modelName}Service.java`,
+          `${backEndPathBasePath}${packagePath}/service/impl/${modelName}ServiceImpl.java`,
+        );
+        break;
+      }
+    }
+  });
+
+  return paths;
 }

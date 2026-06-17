@@ -46,8 +46,11 @@ export function selectModulesApi() {
  *
  * @param generatorConfig 生成配置
  */
-export function generateApi(generatorConfig: GeneratorConfig) {
-  return getRequestClient().post<boolean>(BASE_URL, generatorConfig);
+export function generateApi(
+  generatorConfig: GeneratorConfig,
+  config?: Record<string, unknown>,
+) {
+  return getRequestClient().post<boolean>(BASE_URL, generatorConfig, config);
 }
 
 /**

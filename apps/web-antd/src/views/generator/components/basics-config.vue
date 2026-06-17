@@ -5,14 +5,25 @@ import type {
   TableInfo,
   TreeNode,
   TreeNodeModel,
+  WizardGeneratorConfig,
 } from '#/api';
 
-import { onMounted, ref, unref } from 'vue';
+import { onMounted, ref, unref, watch } from 'vue';
+import { RouterLink } from 'vue-router';
 
 import { useUserStore } from '@vben/stores';
 import { isArray, isBlank, listToTree } from '@vben/utils';
 
-import { Affix, Button, Input, Select } from 'ant-design-vue';
+import {
+  Affix,
+  Alert,
+  Button,
+  Input,
+  Modal,
+  message,
+  Select,
+} from 'ant-design-vue';
+import type { SelectValue } from 'ant-design-vue/es/select';
 
 import { useVbenForm } from '#/adapter/form';
 import {
@@ -38,7 +49,14 @@ import {
   getFrontEndApiPath,
   getPermissionCode,
 } from '../util/util';
+import { hasFieldConfigs } from '../util/generator-helpers';
 import ChoseButtonGroup from './form/chose-button-group.vue';
+
+const props = defineProps<{
+  generatorConfig: WizardGeneratorConfig;
+}>();
+
+const isDevEnvironment = import.meta.env.DEV;
 
 const emit = defineEmits(['next', 'prev', 'updateConfig']);
 const [BaseForm, baseFormApi] = useVbenForm({
@@ -444,6 +462,9 @@ const [BaseForm, baseFormApi] = useVbenForm({
 const userStore = useUserStore();
 // 表信息
 const tableInfo = ref<TableInfo>();
+const tableLoading = ref(false);
+let tableInfoRequestId = 0;
+const selectedTable = ref<string>();
 // 默认设置
 const defaultConfig: BasicsConfigModel = {
   generatorTemplate: GeneratorTemplate.MAIN_TABLE,
@@ -463,46 +484,113 @@ const modules = ref<SelectModel[]>([]);
 // 后端模块
 const moduleValue = ref<number | string | undefined>();
 
-onMounted(() => {
-  selectModulesApi().then((res) => {
-    modules.value = res;
-  });
+onMounted(async () => {
+  try {
+    modules.value = await selectModulesApi();
+  } catch {
+    message.error('加载后端模块失败');
+  }
 
-  baseFormApi.setValues({ ...defaultConfig });
-  handleListGeneratorTemplateChange(defaultConfig.listGeneratorTemplate);
-  handleDataSourceChange(defaultConfig.dataSource);
+  restoreFormFromConfig();
+  if (!props.generatorConfig?.basicsConfig) {
+    baseFormApi.setValues({ ...defaultConfig });
+    handleListGeneratorTemplateChange(defaultConfig.listGeneratorTemplate);
+    handleDataSourceChange(defaultConfig.dataSource);
+  }
 });
+
+function restoreFormFromConfig() {
+  const savedBasics = props.generatorConfig?.basicsConfig;
+  if (savedBasics) {
+    baseFormApi.setValues({ ...savedBasics });
+    moduleValue.value = savedBasics.backEndPath;
+    handleDataSourceChange(savedBasics.dataSource);
+  }
+  if (props.generatorConfig?.tableInfo) {
+    tableInfo.value = props.generatorConfig.tableInfo;
+    selectedTable.value = props.generatorConfig.tableInfo.name;
+  }
+}
+
+watch(
+  () => props.generatorConfig?.basicsConfig,
+  () => {
+    restoreFormFromConfig();
+  },
+  { deep: true },
+);
 
 /**
  * 更改表
- *
- * @param table
  */
 async function handleTableChange(table: string) {
-  const values = (await baseFormApi.getValues()) as BasicsConfigModel;
-  // @ts-expect-error
-  if (values.dataSource && table) {
-    getTableInfoApi(values.dataSource, table).then((info) => {
-      tableInfo.value = info;
-      const { comment, entityName } = info;
-      let packagePath = table;
-      if (table.includes('_')) {
-        packagePath = table.slice(0, Math.max(0, table.indexOf('_')));
-      }
-      // 设置一些默认值
-      baseFormApi.setValues({
-        businessName: comment,
-        menuName: comment,
-        modelName: entityName,
-        permissionCode: getPermissionCode(table),
-        packagePath: `com.easy.admin.${packagePath}`,
-        controllerMapping: `/auth/${getControllerMapping(table)}`,
-        viewPath: `/src/views/${getControllerMapping(table)}`,
-        apiPath: `/packages/api/src/${getFrontEndApiPath(table)}/${getApiFileName(table)}.ts`,
+  const previousTable =
+    props.generatorConfig?.tableInfo?.name || selectedTable.value;
+  if (
+    previousTable &&
+    table !== previousTable &&
+    hasFieldConfigs(props.generatorConfig)
+  ) {
+    const confirmed = await new Promise<boolean>((resolve) => {
+      Modal.confirm({
+        title: '更换数据表',
+        content: '更换数据表将重置字段配置，是否继续？',
+        okText: '继续',
+        cancelText: '取消',
+        onOk: () => resolve(true),
+        onCancel: () => resolve(false),
       });
-      // 设置模块
-      setModules(table);
     });
+    if (!confirmed) {
+      baseFormApi.setValues({ table: previousTable });
+      return;
+    }
+  }
+
+  selectedTable.value = table;
+  await loadTableInfo(table);
+}
+
+async function loadTableInfo(table: string) {
+  const values = (await baseFormApi.getValues()) as BasicsConfigModel;
+  if (!values.dataSource || !table) {
+    return;
+  }
+
+  const requestId = ++tableInfoRequestId;
+  tableLoading.value = true;
+  tableInfo.value = undefined;
+
+  try {
+    const info = await getTableInfoApi(values.dataSource, table);
+    if (requestId !== tableInfoRequestId) {
+      return;
+    }
+    tableInfo.value = info;
+    const { comment, entityName } = info;
+    let packagePath = table;
+    if (table.includes('_')) {
+      packagePath = table.slice(0, Math.max(0, table.indexOf('_')));
+    }
+    baseFormApi.setValues({
+      businessName: comment,
+      menuName: comment,
+      modelName: entityName,
+      permissionCode: getPermissionCode(table),
+      packagePath: `com.easy.admin.${packagePath}`,
+      controllerMapping: `/auth/${getControllerMapping(table)}`,
+      viewPath: `/src/views/${getControllerMapping(table)}`,
+      apiPath: `/packages/api/src/${getFrontEndApiPath(table)}/${getApiFileName(table)}.ts`,
+    });
+    setModules(table);
+  } catch {
+    if (requestId === tableInfoRequestId) {
+      message.error('获取表信息失败');
+    }
+  } finally {
+    if (requestId === tableInfoRequestId) {
+      tableLoading.value = false;
+    }
   }
 }
 
@@ -544,17 +632,46 @@ function handleGeneratorTemplateChange(generatorTemplate: string) {
 
 /**
  * 更改列表页生成模板
- *
- * @param generatorTemplate 模板
  */
-function handleListGeneratorTemplateChange(generatorTemplate: string) {
-  const config = TEMPLATE[generatorTemplate];
-  if (config) {
-    baseFormApi.setValues({
-      genFile: config.file,
-      genMethod: config.method,
-    });
+async function handleListGeneratorTemplateChange(generatorTemplate: string) {
+  const config = TEMPLATE[generatorTemplate as keyof typeof TEMPLATE];
+  if (!config) {
+    return;
   }
+
+  const values = (await baseFormApi.getValues()) as BasicsConfigModel;
+  const hasCustomGenFile =
+    values.genFile?.length > 0 &&
+    JSON.stringify([...values.genFile].sort()) !==
+      JSON.stringify([...config.file].sort());
+  const hasCustomGenMethod =
+    values.genMethod?.length > 0 &&
+    JSON.stringify([...values.genMethod].sort()) !==
+      JSON.stringify([...config.method].sort());
+
+  if (hasCustomGenFile || hasCustomGenMethod) {
+    const confirmed = await new Promise<boolean>((resolve) => {
+      Modal.confirm({
+        title: '切换列表模板',
+        content: '切换模板将覆盖已选的生成文件和方法，是否继续？',
+        okText: '继续',
+        cancelText: '取消',
+        onOk: () => resolve(true),
+        onCancel: () => resolve(false),
+      });
+    });
+    if (!confirmed) {
+      baseFormApi.setValues({
+        listGeneratorTemplate: values.listGeneratorTemplate,
+      });
+      return;
+    }
+  }
+
+  baseFormApi.setValues({
+    genFile: config.file,
+    genMethod: config.method,
+  });
 }
 
 function handleDataSourceChange(dataSource: string) {
@@ -576,9 +693,9 @@ function handleDataSourceChange(dataSource: string) {
  *
  * @param path 模块路径
  */
-function handleModuleChange(path: string) {
+function handleModuleChange(path: SelectValue) {
   baseFormApi.setValues({
-    backEndPath: path,
+    backEndPath: path == null ? undefined : String(path),
   });
 }
 
@@ -626,25 +743,43 @@ async function handleStepNext() {
     if (!valid) {
       return;
     }
+    if (tableLoading.value) {
+      message.warning('表信息加载中，请稍候');
+      return;
+    }
+    if (!tableInfo.value) {
+      message.warning('请先选择数据表并等待表信息加载完成');
+      return;
+    }
 
     const values = (await baseFormApi.getValues()) as BasicsConfigModel;
     emit('updateConfig', 'tableInfo', unref(tableInfo));
     emit('updateConfig', 'basicsConfig', { ...values });
     emit('next');
-  } catch (error) {
-    console.error(error);
+  } catch {
+    message.error('表单校验失败');
   }
 }
 </script>
 
 <template>
   <div class="basics-config">
+    <Alert
+      v-if="!isDevEnvironment"
+      class="mb-4"
+      message="代码生成仅在后端 dev 环境可用，请确认后端运行于开发模式后再操作。"
+      show-icon
+      type="warning"
+    />
     <BaseForm>
       <template #generatorTemplate="slotProps">
         <ChoseButtonGroup v-bind="slotProps" />
       </template>
       <template #listGeneratorTemplate="slotProps">
-        <ChoseButtonGroup v-bind="slotProps" />
+        <ChoseButtonGroup
+          v-bind="slotProps"
+          @change="handleListGeneratorTemplateChange"
+        />
       </template>
       <template #formGeneratorTemplate="slotProps">
         <ChoseButtonGroup v-bind="slotProps" />
@@ -680,13 +815,22 @@ async function handleStepNext() {
     <Divider>说明</Divider>
     <div class="my-4">
       <p>
-        1、建议在 字典管理 中设置好业务表的字典类型，便于后续生成代码时使用。
+        1、建议在
+        <RouterLink class="text-primary" to="/sys/dict/list">
+          字典管理
+        </RouterLink>
+        中设置好业务表的字典类型，便于后续生成代码时使用。
       </p>
     </div>
 
     <Affix :offset-bottom="0">
       <div class="footer-button bg-background">
-        <Button type="primary" @click="handleStepNext">
+        <Button
+          :disabled="tableLoading"
+          :loading="tableLoading"
+          type="primary"
+          @click="handleStepNext"
+        >
           <template #icon>
             <LucideArrowRight />
           </template>

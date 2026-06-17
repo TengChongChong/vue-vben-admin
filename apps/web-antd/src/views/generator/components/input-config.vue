@@ -1,108 +1,87 @@
 <script setup lang="ts">
-import type { FieldConfig, GeneratorConfig } from '#/api';
+import type { FieldConfig, SelectModel, WizardGeneratorConfig } from '#/api';
 
-import { nextTick, onMounted, ref, unref, watch } from 'vue';
+import { computed, ref, unref, watch } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
-import { useSortable } from '@vben/hooks';
-import { isNullOrUnDef } from '@vben/utils';
 
-import {
-  Button,
-  Card,
-  Popover,
-  Space,
-  Tooltip,
-  TypographyText,
-} from 'ant-design-vue';
+import { Button, Card, Space, Tooltip, TypographyText } from 'ant-design-vue';
 
 import { Divider } from '#/components/divider';
 import {
   LucideArrowLeft,
   LucideArrowRight,
+  LucideMinus,
   LucideSettings,
-  LucideTrash,
 } from '#/components/icons';
 
-import InputConfigModal from './modal/input-config-modal.vue';
+import { useFieldConfigSortable } from '../composables/use-field-config-sortable';
+import { INPUT_CONFIG_COLUMNS } from '../types/modal-columns';
+import FieldConfigEmpty from './field-config-empty.vue';
+import HiddenFieldsPanel from './hidden-fields-panel.vue';
+import FieldConfigTableModal from './modal/field-config-table-modal.vue';
+import FieldMetaPopover from './modal/field-meta-popover.vue';
 
 const props = defineProps<{
-  generatorConfig: GeneratorConfig;
+  dictTypeOptions: SelectModel[];
+  generatorConfig: WizardGeneratorConfig;
 }>();
 
 const emit = defineEmits(['next', 'prev', 'updateConfig']);
 
 const inputConfig = ref<FieldConfig[]>([]);
 
-const [BaseInputConfigModal, baseInputConfigModalApi] = useVbenModal({
-  connectedComponent: InputConfigModal,
+const enabledInputConfig = computed(() =>
+  inputConfig.value.filter((item) => item.isEnable),
+);
+const hiddenInputConfig = computed(() =>
+  inputConfig.value.filter((item) => !item.isEnable),
+);
+
+const [BaseInputConfigModal, inputConfigModalApi] = useVbenModal({
+  connectedComponent: FieldConfigTableModal,
 });
 
-onMounted(() => {
-  initData();
-  initInputSortable();
-});
-
-async function initInputSortable() {
-  await nextTick();
-  const el = document.querySelectorAll(`.config-items-input`)?.[0];
-
-  const { initializeSortable } = useSortable(el, {
-    onEnd: (evt) => {
-      const { oldIndex, newIndex } = evt;
-
-      if (
-        isNullOrUnDef(oldIndex) ||
-        isNullOrUnDef(newIndex) ||
-        oldIndex === newIndex
-      ) {
-        return;
-      }
-      const currentTab = inputConfig.value[oldIndex];
-      inputConfig.value.splice(oldIndex, 1);
-      inputConfig.value.splice(newIndex, 0, currentTab);
-    },
-  });
-
-  await initializeSortable();
-}
+useFieldConfigSortable('config-items-input', inputConfig);
 
 watch(
   () => props.generatorConfig,
   () => {
     initData();
   },
-  { deep: true },
+  { deep: true, immediate: true },
 );
 
 function initData() {
   inputConfig.value = props.generatorConfig?.inputConfig || [];
 }
 
-/**
- * 打开配置查询条件模态框
- */
 function openInputConfigModal() {
-  baseInputConfigModalApi.setData({
-    tableInfo: props.generatorConfig?.tableInfo,
+  inputConfigModalApi.setData({
+    title: '表单配置',
+    columns: INPUT_CONFIG_COLUMNS,
     config: unref(inputConfig),
+    dictTypeOptions: props.dictTypeOptions,
   });
-  baseInputConfigModalApi.open();
+  inputConfigModalApi.open();
 }
 
-/**
- * 更新查询条件配置
- *
- * @param config config
- */
-function updateInputConfig(config) {
+function updateInputConfig(config: FieldConfig[]) {
   inputConfig.value = config;
 }
 
-function disableInputConfig(propertyName: string) {
+function hideInputConfig(propertyName: string) {
   inputConfig.value.forEach((item) => {
     if (item.propertyName === propertyName) {
       item.isEnable = false;
+    }
+  });
+}
+
+function restoreInputConfig(propertyName: string) {
+  inputConfig.value.forEach((item) => {
+    if (item.propertyName === propertyName) {
+      item.isEnable = true;
     }
   });
 }
@@ -130,32 +109,24 @@ function handleStepNext() {
             字段设置
           </Button>
         </template>
-        <div class="config-input config-items config-items-input">
-          <template v-for="item in inputConfig" :key="item.name">
-            <div v-show="item.isEnable" class="config-item">
+        <FieldConfigEmpty
+          v-if="enabledInputConfig.length === 0"
+          description="暂无启用的表单字段"
+          @open-settings="openInputConfigModal"
+        />
+        <div v-else class="config-input config-items config-items-input">
+          <template v-for="item in enabledInputConfig" :key="item.name">
+            <div class="config-item">
               <div class="config-item-body">
                 <div class="config-item-body-label">
-                  <Popover>
-                    <template #content>
-                      <div>列名：{{ item.name }}</div>
-                      <div>
-                        类型：{{ item.metaInfo.jdbcType?.toLowerCase() }}
-                        {{
-                          item.metaInfo.length > 0
-                            ? `(${item.metaInfo.length})`
-                            : ''
-                        }}
-                      </div>
-                      <div>属性：{{ item.propertyName }}</div>
-                      <div>注释：{{ item.comment ? item.comment : '-' }}</div>
-                    </template>
+                  <FieldMetaPopover :field="item">
                     <label>
                       <TypographyText v-if="item.required" type="danger">
                         *
                       </TypographyText>
                       {{ item.label }}
                     </label>
-                  </Popover>
+                  </FieldMetaPopover>
                 </div>
                 <div class="config-item-body-control">
                   <span class="component-type">
@@ -165,15 +136,14 @@ function handleStepNext() {
 
                   <div class="config-item-body-control-tool">
                     <Tooltip>
-                      <template #title>移除</template>
+                      <template #title>隐藏</template>
                       <Button
-                        danger
                         shape="circle"
                         size="small"
-                        @click="disableInputConfig(item.propertyName)"
+                        @click="hideInputConfig(item.propertyName)"
                       >
                         <template #icon>
-                          <LucideTrash />
+                          <LucideMinus />
                         </template>
                       </Button>
                     </Tooltip>
@@ -183,6 +153,10 @@ function handleStepNext() {
             </div>
           </template>
         </div>
+        <HiddenFieldsPanel
+          :fields="hiddenInputConfig"
+          @restore="restoreInputConfig"
+        />
       </Card>
 
       <Divider>说明</Divider>

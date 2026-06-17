@@ -114,7 +114,10 @@ export interface BasicsConfigModel {
   genFile: string[];
   genMethod: string[];
   listGeneratorTemplate: string;
+  mainTableField?: string;
+  mainTableProperty?: string;
   menuName?: string;
+  menuParentId?: string;
   modelName?: string;
   overwrite: boolean;
   packagePath?: string;
@@ -151,3 +154,9 @@ export interface GeneratorConfig {
   // 表信息
   tableInfo: TableInfo;
 }
+
+/** 向导初始阶段，部分字段尚未填写 */
+export type WizardGeneratorConfig = Partial<GeneratorConfig> & {
+  basicsConfig?: BasicsConfigModel;
+  tableInfo?: TableInfo;
+};

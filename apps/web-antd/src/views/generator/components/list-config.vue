@@ -1,35 +1,39 @@
 <script setup lang="ts">
-import type { FieldConfig, GeneratorConfig, TableCellConfig } from '#/api';
+import type {
+  FieldConfig,
+  SelectModel,
+  TableCellConfig,
+  WizardGeneratorConfig,
+} from '#/api';
 
-import { nextTick, onMounted, ref, unref, watch } from 'vue';
+import { computed, ref, unref, watch } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
-import { useSortable } from '@vben/hooks';
-import { isNullOrUnDef } from '@vben/utils';
 
-import {
-  Button,
-  Card,
-  Popover,
-  Space,
-  Tooltip,
-  TypographyText,
-} from 'ant-design-vue';
+import { Button, Card, Space, Tooltip, TypographyText } from 'ant-design-vue';
 
 import { DictTag } from '#/components/dict';
 import { Divider } from '#/components/divider';
 import {
   LucideArrowLeft,
   LucideArrowRight,
+  LucideMinus,
   LucideSettings,
-  LucideTrash,
 } from '#/components/icons';
 
-import QueryConfigModal from './modal/query-config-modal.vue';
-import TableConfigModal from './modal/table-config-modal.vue';
+import { useFieldConfigSortable } from '../composables/use-field-config-sortable';
+import {
+  QUERY_CONFIG_COLUMNS,
+  TABLE_CONFIG_COLUMNS,
+} from '../types/modal-columns';
+import FieldConfigEmpty from './field-config-empty.vue';
+import HiddenFieldsPanel from './hidden-fields-panel.vue';
+import FieldConfigTableModal from './modal/field-config-table-modal.vue';
+import FieldMetaPopover from './modal/field-meta-popover.vue';
 
 const props = defineProps<{
-  generatorConfig: GeneratorConfig;
+  dictTypeOptions: SelectModel[];
+  generatorConfig: WizardGeneratorConfig;
 }>();
 
 const emit = defineEmits(['next', 'prev', 'updateConfig']);
@@ -37,72 +41,36 @@ const emit = defineEmits(['next', 'prev', 'updateConfig']);
 const queryConfig = ref<FieldConfig[]>([]);
 const tableConfig = ref<TableCellConfig[]>([]);
 
-const [BaseQueryConfigModal, baseQueryConfigModalApi] = useVbenModal({
-  connectedComponent: QueryConfigModal,
+const enabledQueryConfig = computed(() =>
+  queryConfig.value.filter((item) => item.isEnable),
+);
+const enabledTableConfig = computed(() =>
+  tableConfig.value.filter((item) => item.isEnable),
+);
+const hiddenQueryConfig = computed(() =>
+  queryConfig.value.filter((item) => !item.isEnable),
+);
+const hiddenTableConfig = computed(() =>
+  tableConfig.value.filter((item) => !item.isEnable),
+);
+
+const [BaseQueryConfigModal, queryConfigModalApi] = useVbenModal({
+  connectedComponent: FieldConfigTableModal,
 });
 
-const [BaseTableConfigModal, baseTableConfigModalApi] = useVbenModal({
-  connectedComponent: TableConfigModal,
+const [BaseTableConfigModal, tableConfigModalApi] = useVbenModal({
+  connectedComponent: FieldConfigTableModal,
 });
 
-onMounted(() => {
-  initData();
-  initQuerySortable();
-  initTableSortable();
-});
+useFieldConfigSortable('config-items-query', queryConfig);
+useFieldConfigSortable('config-items-table', tableConfig);
 
-async function initQuerySortable() {
-  await nextTick();
-  const el = document.querySelectorAll(`.config-items-query`)?.[0];
-
-  const { initializeSortable } = useSortable(el, {
-    onEnd: (evt) => {
-      const { oldIndex, newIndex } = evt;
-
-      if (
-        isNullOrUnDef(oldIndex) ||
-        isNullOrUnDef(newIndex) ||
-        oldIndex === newIndex
-      ) {
-        return;
-      }
-      const currentTab = queryConfig.value[oldIndex];
-      queryConfig.value.splice(oldIndex, 1);
-      queryConfig.value.splice(newIndex, 0, currentTab);
-    },
-  });
-
-  await initializeSortable();
-}
-async function initTableSortable() {
-  await nextTick();
-  const el = document.querySelectorAll(`.config-items-table`)?.[0];
-
-  const { initializeSortable } = useSortable(el, {
-    onEnd: (evt) => {
-      const { oldIndex, newIndex } = evt;
-
-      if (
-        isNullOrUnDef(oldIndex) ||
-        isNullOrUnDef(newIndex) ||
-        oldIndex === newIndex
-      ) {
-        return;
-      }
-      const currentTab = tableConfig.value[oldIndex];
-      tableConfig.value.splice(oldIndex, 1);
-      tableConfig.value.splice(newIndex, 0, currentTab);
-    },
-  });
-
-  await initializeSortable();
-}
 watch(
   () => props.generatorConfig,
   () => {
     initData();
   },
-  { deep: true },
+  { deep: true, immediate: true },
 );
 
 function initData() {
@@ -110,47 +78,35 @@ function initData() {
   tableConfig.value = props.generatorConfig?.tableConfig || [];
 }
 
-/**
- * 打开配置查询条件模态框
- */
 function openQueryConfigModal() {
-  baseQueryConfigModalApi.setData({
-    tableInfo: props.generatorConfig?.tableInfo,
+  queryConfigModalApi.setData({
+    title: '查询条件配置',
+    columns: QUERY_CONFIG_COLUMNS,
     config: unref(queryConfig),
+    dictTypeOptions: props.dictTypeOptions,
   });
-  baseQueryConfigModalApi.open();
+  queryConfigModalApi.open();
 }
 
-/**
- * 打开配置表格模态框
- */
 function openTableConfigModal() {
-  baseTableConfigModalApi.setData({
-    tableInfo: props.generatorConfig?.tableInfo,
+  tableConfigModalApi.setData({
+    title: '表格配置',
+    columns: TABLE_CONFIG_COLUMNS,
     config: unref(tableConfig),
+    dictTypeOptions: props.dictTypeOptions,
   });
-  baseTableConfigModalApi.open();
+  tableConfigModalApi.open();
 }
 
-/**
- * 更新查询条件配置
- *
- * @param config config
- */
-function updateQueryConfig(config) {
+function updateQueryConfig(config: FieldConfig[]) {
   queryConfig.value = config;
 }
 
-/**
- * 更新表格配置
- *
- * @param config config
- */
-function updateTableConfig(config) {
+function updateTableConfig(config: TableCellConfig[]) {
   tableConfig.value = config;
 }
 
-function disableQueryConfig(propertyName: string) {
+function hideQueryConfig(propertyName: string) {
   queryConfig.value.forEach((item) => {
     if (item.propertyName === propertyName) {
       item.isEnable = false;
@@ -158,10 +114,26 @@ function disableQueryConfig(propertyName: string) {
   });
 }
 
-function disableTableConfig(propertyName: string) {
+function hideTableConfig(propertyName: string) {
   tableConfig.value.forEach((item) => {
     if (item.propertyName === propertyName) {
       item.isEnable = false;
+    }
+  });
+}
+
+function restoreQueryConfig(propertyName: string) {
+  queryConfig.value.forEach((item) => {
+    if (item.propertyName === propertyName) {
+      item.isEnable = true;
+    }
+  });
+}
+
+function restoreTableConfig(propertyName: string) {
+  tableConfig.value.forEach((item) => {
+    if (item.propertyName === propertyName) {
+      item.isEnable = true;
     }
   });
 }
@@ -189,27 +161,19 @@ function handleStepNext() {
             字段设置
           </Button>
         </template>
-        <div class="config-items config-items-query">
-          <template v-for="item in queryConfig" :key="item.name">
-            <div v-show="item.isEnable" class="config-item">
+        <FieldConfigEmpty
+          v-if="enabledQueryConfig.length === 0"
+          description="暂无启用的查询字段"
+          @open-settings="openQueryConfigModal"
+        />
+        <div v-else class="config-items config-items-query">
+          <template v-for="item in enabledQueryConfig" :key="item.name">
+            <div class="config-item">
               <div class="config-item-body">
                 <div class="config-item-body-label">
-                  <Popover>
-                    <template #content>
-                      <div>列名：{{ item.name }}</div>
-                      <div>
-                        类型：{{ item.metaInfo.jdbcType?.toLowerCase() }}
-                        {{
-                          item.metaInfo.length > 0
-                            ? `(${item.metaInfo.length})`
-                            : ''
-                        }}
-                      </div>
-                      <div>属性：{{ item.propertyName }}</div>
-                      <div>注释：{{ item.comment ? item.comment : '-' }}</div>
-                    </template>
+                  <FieldMetaPopover :field="item">
                     <label>{{ item.label }}</label>
-                  </Popover>
+                  </FieldMetaPopover>
                 </div>
                 <div class="config-item-body-control">
                   <span class="component-type">
@@ -226,14 +190,13 @@ function handleStepNext() {
 
                   <div class="config-item-body-control-tool">
                     <Tooltip>
-                      <template #title>移除</template>
+                      <template #title>隐藏</template>
                       <Button
-                        danger
                         shape="circle"
                         size="small"
-                        @click="disableQueryConfig(item.propertyName)"
+                        @click="hideQueryConfig(item.propertyName)"
                       >
-                        <template #icon> <LucideTrash /> </template>
+                        <template #icon> <LucideMinus /> </template>
                       </Button>
                     </Tooltip>
                   </div>
@@ -242,6 +205,10 @@ function handleStepNext() {
             </div>
           </template>
         </div>
+        <HiddenFieldsPanel
+          :fields="hiddenQueryConfig"
+          @restore="restoreQueryConfig"
+        />
       </Card>
 
       <Card>
@@ -261,35 +228,19 @@ function handleStepNext() {
             字段设置
           </Button>
         </template>
-        <div class="config-items config-items-table config-table">
-          <template v-for="item in tableConfig" :key="item.name">
-            <div
-              v-show="item.isEnable"
-              :style="{ minWidth: `${item.width}px` }"
-              class="config-item"
-            >
+        <FieldConfigEmpty
+          v-if="enabledTableConfig.length === 0"
+          description="暂无启用的表格列"
+          @open-settings="openTableConfigModal"
+        />
+        <div v-else class="config-items config-items-table config-table">
+          <template v-for="item in enabledTableConfig" :key="item.name">
+            <div :style="{ minWidth: `${item.width}px` }" class="config-item">
               <div class="config-item-body">
                 <div class="config-item-body-control">
-                  <Popover>
-                    <template #content>
-                      <div>列名：{{ item.name }}</div>
-                      <div>
-                        类型：{{ item.metaInfo.jdbcType?.toLowerCase() }}
-                        {{
-                          item.metaInfo.length > 0
-                            ? `(${item.metaInfo.length})`
-                            : ''
-                        }}
-                      </div>
-                      <div>属性：{{ item.propertyName }}</div>
-                      <div>注释：{{ item.comment ? item.comment : '-' }}</div>
-                      <div>格式：{{ item.format ? item.format : '-' }}</div>
-                      <div>字典：{{ item.dictType ? item.dictType : '-' }}</div>
-                      <div>排序：{{ item.sorter ? '支持' : '不支持' }}</div>
-                      <div>宽度：{{ item.width ? item.width : '-' }}</div>
-                    </template>
+                  <FieldMetaPopover :field="item" show-extra>
                     <span>{{ item.title }}</span>
-                  </Popover>
+                  </FieldMetaPopover>
 
                   <div class="config-item-body-control-mark">
                     <Tooltip v-if="item.format">
@@ -304,14 +255,13 @@ function handleStepNext() {
 
                   <div class="config-item-body-control-tool">
                     <Tooltip>
-                      <template #title>移除</template>
+                      <template #title>隐藏</template>
                       <Button
-                        danger
                         shape="circle"
                         size="small"
-                        @click="disableTableConfig(item.propertyName)"
+                        @click="hideTableConfig(item.propertyName)"
                       >
-                        <template #icon> <LucideTrash /> </template>
+                        <template #icon> <LucideMinus /> </template>
                       </Button>
                     </Tooltip>
                   </div>
@@ -320,6 +270,11 @@ function handleStepNext() {
             </div>
           </template>
         </div>
+        <HiddenFieldsPanel
+          :fields="hiddenTableConfig"
+          name-field="title"
+          @restore="restoreTableConfig"
+        />
       </Card>
 
       <Divider>说明</Divider>

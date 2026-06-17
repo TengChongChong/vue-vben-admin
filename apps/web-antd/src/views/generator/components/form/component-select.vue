@@ -77,7 +77,7 @@ const initOptions = () => {
   options.value = opt;
 };
 
-function handleChange(value) {
+function handleChange(value: string) {
   currentValue.value = value;
   emit('change', value);
   emit('update:value', value);
