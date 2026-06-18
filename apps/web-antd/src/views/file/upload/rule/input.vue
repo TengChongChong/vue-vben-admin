@@ -187,6 +187,7 @@ async function handleSubmit(callback: (res: FileUploadRuleVO) => any) {
     if (!valid) {
       return;
     }
+    drawerApi.lock();
     const values: FileUploadRuleVO = await baseFormApi.getValues();
     const res = await saveFileUploadRuleApi({
       ...values,
@@ -197,8 +198,10 @@ async function handleSubmit(callback: (res: FileUploadRuleVO) => any) {
     });
     message.success('保存成功');
     emit('success');
-    callback(res);
+    await callback(res);
+    drawerApi.unlock();
   } catch (error) {
+    drawerApi.unlock();
     console.error('保存失败', error);
   } finally {
     saveBtnLoading.value = false;
@@ -242,8 +245,8 @@ const [Drawer, drawerApi] = useVbenDrawer({
 });
 
 function containImage(suffix: string) {
-  const suffixArray = suffix.split(',');
-  return suffixArray.includes('jpg') || suffixArray.includes('jpeg');
+  const suffixArray = new Set(suffix.split(','));
+  return suffixArray.has('jpg') || suffixArray.has('jpeg');
 }
 </script>
 <template>
@@ -257,21 +260,18 @@ function containImage(suffix: string) {
               v-model:value="lowerLimit"
               :max="Math.max(upperLimit - 1, 1)"
               :min="1"
-              style="width: 120px"
-            />
+              style="width: 120px" />
 
             <Input
               disabled
               placeholder="~"
-              style="width: 30px; pointer-events: none; background-color: #fff"
-            />
+              style="width: 30px; pointer-events: none; background-color: #fff" />
             <InputNumber
               id="inputNumber"
               v-model:value="upperLimit"
               :max="1048576"
               :min="Math.max(lowerLimit + 1, 1)"
-              style="width: 120px"
-            />
+              style="width: 120px" />
           </FormItemRest>
         </InputGroup>
       </template>
@@ -282,19 +282,16 @@ function containImage(suffix: string) {
             <InputNumber
               v-model:value="maxWidth"
               :min="1"
-              style="width: 120px"
-            />
+              style="width: 120px" />
 
             <Input
               disabled
               placeholder=":"
-              style="width: 30px; pointer-events: none; background-color: #fff"
-            />
+              style="width: 30px; pointer-events: none; background-color: #fff" />
             <InputNumber
               v-model:value="maxHeight"
               :min="1"
-              style="width: 120px"
-            />
+              style="width: 120px" />
           </FormItemRest>
         </InputGroup>
       </template>
@@ -307,8 +304,7 @@ function containImage(suffix: string) {
         <ButtonSave
           :loading="saveBtnLoading"
           text="保存并新增"
-          @click="handleSaveAndAdd"
-        />
+          @click="handleSaveAndAdd" />
       </Space>
     </template>
   </Drawer>

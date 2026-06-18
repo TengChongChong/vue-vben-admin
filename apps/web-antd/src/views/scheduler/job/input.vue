@@ -77,7 +77,10 @@ function handleBeanSearch(value: string) {
 }
 
 async function handleBeanChange(value: unknown) {
-  const beanValue = value == null || Array.isArray(value) ? '' : String(value);
+  const beanValue =
+    value === null || value === undefined || Array.isArray(value)
+      ? ''
+      : String(value);
   if (beanValue === currentBean.value) {
     return;
   }
@@ -92,7 +95,9 @@ async function handleBeanChange(value: unknown) {
 
 async function handleMethodSelect(value: unknown) {
   const signatureValue =
-    value == null || Array.isArray(value) ? '' : String(value);
+    value === null || value === undefined || Array.isArray(value)
+      ? ''
+      : String(value);
   const option = methodOptions.value.find(
     (item) => item.signature === signatureValue,
   );
@@ -216,6 +221,7 @@ async function handleSubmit(callback: (res: SchedulerJob) => any) {
     if (!valid) {
       return;
     }
+    drawerApi.lock();
     const values: SchedulerJob = await baseFormApi.getValues();
     if (!values.params || values.params.trim() === '[]') {
       values.params = undefined;
@@ -223,8 +229,10 @@ async function handleSubmit(callback: (res: SchedulerJob) => any) {
     const res = await saveSchedulerJobApi(values);
     message.success('保存成功');
     emit('success');
-    callback(res);
+    await callback(res);
+    drawerApi.unlock();
   } catch {
+    drawerApi.unlock();
     message.error('保存失败，请稍后重试');
   } finally {
     saveBtnLoading.value = false;
@@ -286,8 +294,7 @@ function handleSetCron({ key }: { key: number | string }) {
           :filter-option="false"
           :options="beanAutoCompleteOptions"
           @change="handleBeanChange"
-          @search="handleBeanSearch"
-        />
+          @search="handleBeanSearch" />
       </template>
       <template #method="slotProps">
         <Select
@@ -297,8 +304,7 @@ function handleSetCron({ key }: { key: number | string }) {
           show-search
           :filter-option="filterMethodOption"
           :options="methodAutoCompleteOptions"
-          @change="handleMethodSelect"
-        />
+          @change="handleMethodSelect" />
       </template>
       <template #params="slotProps">
         <JobParamsEditor v-bind="slotProps" />
@@ -362,8 +368,7 @@ function handleSetCron({ key }: { key: number | string }) {
         <ButtonSave
           :loading="saveBtnLoading"
           text="保存并新增"
-          @click="handleSaveAndAdd"
-        />
+          @click="handleSaveAndAdd" />
       </Space>
     </template>
   </Drawer>

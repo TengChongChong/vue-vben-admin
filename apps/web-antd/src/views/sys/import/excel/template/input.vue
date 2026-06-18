@@ -145,12 +145,15 @@ async function handleSubmit(callback: (res: SysImportExcelTemplate) => any) {
     if (!valid) {
       return;
     }
+    drawerApi.lock();
     const values = await baseFormApi.getValues();
     const res = await saveSysImportExcelTemplateApi(values);
     message.success('保存成功');
     emit('success');
-    callback(res);
+    await callback(res);
+    drawerApi.unlock();
   } catch (error) {
+    drawerApi.unlock();
     console.error('保存失败', error);
   } finally {
     saveBtnLoading.value = false;
@@ -192,8 +195,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
         <ButtonSave
           :loading="saveBtnLoading"
           text="保存并新增"
-          @click="handleSaveAndAdd"
-        />
+          @click="handleSaveAndAdd" />
       </Space>
     </template>
   </Drawer>

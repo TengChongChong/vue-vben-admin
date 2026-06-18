@@ -144,11 +144,14 @@ async function handleSubmit(callback: (res: SysConfig) => any) {
     if (!valid) {
       return;
     }
+    modalApi.lock();
     const res = await saveSysConfigApi(await baseFormApi.getValues());
     message.success('保存成功');
     emit('success');
-    callback(res);
+    await callback(res);
+    modalApi.unlock();
   } catch (error) {
+    modalApi.unlock();
     console.error('保存失败', error);
   } finally {
     saveBtnLoading.value = false;
@@ -192,8 +195,7 @@ const [Modal, modalApi] = useVbenModal({
         <ButtonSave
           :loading="saveBtnLoading"
           text="保存并新增"
-          @click="handleSaveAndAdd"
-        />
+          @click="handleSaveAndAdd" />
       </Space>
     </template>
   </Modal>

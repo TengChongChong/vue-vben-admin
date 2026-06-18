@@ -36,12 +36,14 @@ async function handleSubmit() {
     if (!valid) {
       return;
     }
+    modalApi.lock();
     const { email } = await baseFormApi.getValues();
     await applicationBindingEmailApi(email);
     message.success('邮件发送成功，请前往邮箱激活邮箱');
     emit('success');
     modalApi.close();
   } catch (error) {
+    modalApi.unlock();
     console.error('保存失败', error);
   } finally {
     saveBtnLoading.value = false;

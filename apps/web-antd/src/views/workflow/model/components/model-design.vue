@@ -19,6 +19,7 @@ const id = ref();
 async function handleSave() {
   try {
     saveBtnLoading.value = true;
+    drawerApi.lock();
     // const { valid } = await baseFormApi.validate();
     // if (!valid) {
     //   return;
@@ -29,6 +30,7 @@ async function handleSave() {
     emit('success');
     drawerApi.close();
   } catch (error) {
+    drawerApi.unlock();
     console.error('保存失败', error);
   } finally {
     saveBtnLoading.value = false;
@@ -48,8 +50,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
   <Drawer class="w-full" title="流程设计">
     <iframe
       class="size-full"
-      :src="`/static/activiti-editor/modeler.html?modelId=${id}&token=${accessStore.accessToken}`"
-    ></iframe>
+      :src="`/static/activiti-editor/modeler.html?modelId=${id}&token=${accessStore.accessToken}`"></iframe>
 
     <template #footer>
       <Space>
@@ -58,8 +59,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
         <ButtonSave
           v-if="false"
           :loading="saveBtnLoading"
-          @click="handleSave"
-        />
+          @click="handleSave" />
       </Space>
     </template>
   </Drawer>

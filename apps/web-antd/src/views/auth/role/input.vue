@@ -40,7 +40,7 @@ async function loadTreeData() {
     ]);
     menuTreeData.value = listToTree(menuList);
     deptTreeData.value = listToTree(deptList);
-  } catch (error) {
+  } catch {
     message.error('加载菜单或部门数据失败，请稍后重试');
   }
 }
@@ -150,6 +150,7 @@ async function handleSubmit(callback: (res: SysRoleVO) => any) {
     if (!valid) {
       return;
     }
+    drawerApi.lock();
     const values: SysRoleVO = { ...(await baseFormApi.getValues()) };
     if (!isArray(values.menuIds)) {
       const { checked, halfChecked } = values.menuIds;
@@ -165,8 +166,10 @@ async function handleSubmit(callback: (res: SysRoleVO) => any) {
     const res = await saveSysRoleApi(values);
     message.success('保存成功');
     emit('success');
-    callback(res);
-  } catch (error) {
+    await callback(res);
+    drawerApi.unlock();
+  } catch {
+    drawerApi.unlock();
     message.error('保存失败，请稍后重试');
   } finally {
     saveBtnLoading.value = false;
@@ -221,8 +224,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
           checkable
           size="small"
           title="请勾选菜单"
-          v-bind="slotProps"
-        />
+          v-bind="slotProps" />
       </template>
 
       <template #dataPermissionDeptIds="slotProps">
@@ -234,8 +236,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
           checkable
           size="small"
           title="请勾选部门"
-          v-bind="slotProps"
-        />
+          v-bind="slotProps" />
       </template>
     </BaseForm>
 
@@ -246,8 +247,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
         <ButtonSave
           :loading="saveBtnLoading"
           text="保存并新增"
-          @click="handleSaveAndAdd"
-        />
+          @click="handleSaveAndAdd" />
       </Space>
     </template>
   </Drawer>

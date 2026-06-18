@@ -70,12 +70,14 @@ async function handleSubmit() {
     if (!valid) {
       return;
     }
+    modalApi.lock();
     const { phoneNumber, captcha } = await baseFormApi.getValues();
     await bindingPhoneNumberApi(phoneNumber, captcha);
     message.success('绑定成功');
     emit('success');
     modalApi.close();
   } catch (error) {
+    modalApi.unlock();
     console.error('保存失败', error);
   } finally {
     saveBtnLoading.value = false;
