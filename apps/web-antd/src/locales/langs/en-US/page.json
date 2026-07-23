@@ -13,5 +13,25 @@
     "title": "Dashboard",
     "analytics": "Analytics",
     "workspace": "Workspace"
+  },
+  "tenant": {
+    "unknown": "Unknown tenant",
+    "invalid": "The current tenant is invalid or inaccessible. Please select another tenant.",
+    "switchSuccess": "Tenant switched successfully"
+  },
+  "cms": {
+    "site": {
+      "unknown": "No site selected",
+      "switchSuccess": "Site switched successfully",
+      "selectRequired": "Please select the current editing site first"
+    },
+    "release": {
+      "staticNotice": "After creating a release task, Beetl renders static HTML into the site deployment_path. Configure a dedicated Nginx vhost for production."
+    },
+    "perm": {
+      "backendRequired": "This feature requires dedicated backend authorization APIs and is not fully available yet.",
+      "siteUser": "Site user authorization needs a dedicated admin API. This page is a menu placeholder.",
+      "columnUser": "Column user authorization needs a dedicated admin API. This page is a menu placeholder."
+    }
   }
 }

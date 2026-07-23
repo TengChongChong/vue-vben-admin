@@ -1,3 +1,5 @@
+import type { Router } from 'vue-router';
+
 import type {
   ComponentRecordType,
   GenerateMenuAndRoutesOptions,
@@ -5,12 +7,14 @@ import type {
 
 import { generateAccessible } from '@vben/access';
 import { preferences } from '@vben/preferences';
+import { useAccessStore, useUserStore } from '@vben/stores';
 
 import { message } from 'ant-design-vue';
 
 import { getCurrentUserRouteApi } from '#/api';
 import { BasicLayout, IFrameView } from '#/layouts';
 import { $t } from '#/locales';
+import { accessRoutes } from '#/router/routes';
 
 const forbiddenComponent = () => import('#/views/_core/fallback/forbidden.vue');
 
@@ -39,4 +43,30 @@ async function generateAccess(options: GenerateMenuAndRoutesOptions) {
   });
 }
 
-export { generateAccess };
+/**
+ * 切换租户后重新拉取菜单与动态路由（不刷新字典/参数等全局缓存）。
+ */
+async function refreshAccessAfterTenantSwitch(router: Router) {
+  const accessStore = useAccessStore();
+  const userStore = useUserStore();
+  const userInfo = userStore.userInfo;
+
+  if (!userInfo) {
+    return;
+  }
+
+  accessStore.setIsAccessChecked(false);
+
+  const userRoles = userInfo.roleCodeList ?? [];
+  const { accessibleMenus, accessibleRoutes } = await generateAccess({
+    roles: userRoles,
+    router,
+    routes: accessRoutes,
+  });
+
+  accessStore.setAccessMenus(accessibleMenus);
+  accessStore.setAccessRoutes(accessibleRoutes);
+  accessStore.setIsAccessChecked(true);
+}
+
+export { generateAccess, refreshAccessAfterTenantSwitch };

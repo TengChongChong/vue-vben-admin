@@ -1,4 +1,4 @@
-import type { SessionUser } from './user';
+import type { SessionTenant, SessionUser } from './user';
 
 interface BasicOption {
   label: string;
@@ -24,6 +24,7 @@ export type {
   BasicUserInfo,
   ClassType,
   SelectOption,
+  SessionTenant,
   SessionUser,
   TabOption,
 };

@@ -42,6 +42,16 @@ export interface LoginSmsParams {
 /**
  * 登录响应信息
  */
+export interface SessionTenantBrief {
+  id: string;
+  isDefault?: string;
+  name: string;
+  tenantCode: string;
+}
+
+/**
+ * 登录响应信息
+ */
 export interface LoginResult {
   /**
    * accessToken
@@ -53,13 +63,28 @@ export interface LoginResult {
    */
   accessTokenExpiresIn: number;
 
+  /** 当前租户 ID */
+  currentTenantId?: string;
+
+  /** 默认租户 ID */
+  defaultTenantId?: string;
+
+  /** 是否启用多租户 */
+  enableMultiTenant?: boolean;
+
   /**
    * refreshToken
    */
-  refreshToken: string;
+  refreshToken?: string;
 
   /**
    * refreshToken 有效期，单位：秒
    */
-  refreshTokenExpiresIn: number;
+  refreshTokenExpiresIn?: number;
+
+  /** 可切换租户列表 */
+  tenantList?: SessionTenantBrief[];
+
+  /** 是否允许切换租户 */
+  tenantSwitchable?: boolean;
 }

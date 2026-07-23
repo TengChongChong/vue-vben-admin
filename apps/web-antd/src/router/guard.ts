@@ -2,8 +2,10 @@ import type { Router } from 'vue-router';
 
 import { LOGIN_PATH } from '@vben/constants';
 import { preferences } from '@vben/preferences';
-import { useAccessStore, useUserStore } from '@vben/stores';
+import { useAccessStore, useTenantStore, useUserStore } from '@vben/stores';
 import { startProgress, stopProgress } from '@vben/utils';
+
+import { message } from 'ant-design-vue';
 
 import { accessRoutes, coreRouteNames } from '#/router/routes';
 import { useAuthStore } from '#/store';
@@ -120,6 +122,43 @@ function setupAccessGuard(router: Router) {
 }
 
 /**
+ * 租户有效性守卫：当前租户不在可访问列表时回到首页
+ */
+function setupTenantGuard(router: Router) {
+  router.beforeEach((to) => {
+    if (coreRouteNames.includes(to.name as string)) {
+      return true;
+    }
+
+    const accessStore = useAccessStore();
+    if (!accessStore.accessToken) {
+      return true;
+    }
+
+    const tenantStore = useTenantStore();
+    if (!tenantStore.enabled) {
+      return true;
+    }
+
+    const { currentTenantId, tenantList } = tenantStore;
+    if (!currentTenantId || tenantList.length === 0) {
+      return true;
+    }
+
+    const valid = tenantList.some((tenant) => tenant.id === currentTenantId);
+    if (!valid) {
+      message.warning('当前租户无权访问或已失效，请重新选择租户');
+      return {
+        path: preferences.app.defaultHomePath,
+        replace: true,
+      };
+    }
+
+    return true;
+  });
+}
+
+/**
  * 项目守卫配置
  * @param router
  */
@@ -128,6 +167,8 @@ function createRouterGuard(router: Router) {
   setupCommonGuard(router);
   /** 权限访问 */
   setupAccessGuard(router);
+  /** 租户有效性 */
+  setupTenantGuard(router);
 }
 
 export { createRouterGuard };

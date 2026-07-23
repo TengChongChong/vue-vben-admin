@@ -77,3 +77,10 @@ export async function getCurrentUserQuickNavigationApi() {
 export async function logoutApi() {
   return getRequestClient().post('/logout');
 }
+
+/**
+ * 切换租户
+ */
+export function switchTenantApi(tenantId: string) {
+  return getRequestClient().post<LoginResult>('/auth/switch-tenant', { tenantId });
+}

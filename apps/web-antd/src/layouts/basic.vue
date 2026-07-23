@@ -23,6 +23,7 @@ import { formatToNow, openWindow } from '@vben/utils';
 import {
   getSysConfigByKeyApi,
   infoApi,
+  removeByIdsApi,
   selectReceiveApi,
   setReadApi,
 } from '#/api';
@@ -32,6 +33,7 @@ import {
   LucideUserRound,
   SvgGithubIcon,
 } from '#/components/icons';
+import TenantSwitcher from '#/components/tenant/tenant-switcher.vue';
 import { $t } from '#/locales';
 import { useAuthStore, useDictStore } from '#/store';
 import LoginForm from '#/views/_core/authentication/login.vue';
@@ -65,13 +67,6 @@ const showDot = computed(() =>
 dictStore.initDict(true);
 
 const menus = computed(() => [
-  {
-    handler: () => {
-      router.push({ name: 'Profile' });
-    },
-    icon: 'lucide:user',
-    text: $t('page.auth.profile'),
-  },
   {
     handler: () => {
       openWindow(VBEN_DOC_URL, {
@@ -175,6 +170,24 @@ function checkAuth() {
  */
 function handleMakeAllAsRead() {
   setReadApi().then(() => {
+    refreshMessage();
+  });
+}
+
+/**
+ * 清空通知（全部标记为已读）
+ */
+function handleNoticeClear() {
+  setReadApi().then(() => {
+    refreshMessage();
+  });
+}
+
+/**
+ * 删除单条收信记录
+ */
+function remove(id: number | string) {
+  removeByIdsApi(String(id)).then(() => {
     refreshMessage();
   });
 }
@@ -285,6 +298,9 @@ onMounted(async () => {
 
 <template>
   <BasicLayout @clear-preferences-and-logout="handleLogout">
+    <template #header-right-80>
+      <TenantSwitcher />
+    </template>
     <template #user-dropdown>
       <UserDropdown
         :avatar
@@ -292,8 +308,7 @@ onMounted(async () => {
         :menus="menus"
         :text="userStore.userInfo?.nickname"
         @logout="handleLogout"
-        @clear-preferences-and-logout="handleLogout"
-      />
+        @clear-preferences-and-logout="handleLogout" />
     </template>
     <template #notification>
       <Notification
@@ -304,14 +319,12 @@ onMounted(async () => {
         @view-all="handleViewAll"
         @clear="handleNoticeClear"
         @remove="(item) => item.id && remove(item.id)"
-        @on-click="handleClick"
-      />
+        @on-click="handleClick" />
     </template>
     <template #extra>
       <AuthenticationLoginExpiredModal
         v-model:open="accessStore.loginExpired"
-        :avatar
-      >
+        :avatar>
         <LoginForm />
       </AuthenticationLoginExpiredModal>
     </template>

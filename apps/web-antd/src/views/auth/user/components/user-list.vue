@@ -20,6 +20,9 @@ import {
 } from '#/api';
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
 import { LucideRotateCcw } from '#/components/icons';
+import { buildTenantGridId } from '#/utils/tenant-grid-id';
+import CmsUserAuthDrawer from '#/views/cms/auth/user-auth-drawer.vue';
+import UserTenantsDrawer from '#/views/sys/tenant/user-tenants-drawer.vue';
 
 import { initColumns } from './data';
 import InputDrawer from './input.vue';
@@ -61,7 +64,7 @@ const formOptions: VbenFormProps = {
 };
 
 const gridOptions: VxeGridProps<SysConfig> = {
-  id: 'sys-user',
+  id: buildTenantGridId('sys-user'),
   columns: initColumns(),
   proxyConfig: {
     ajax: {
@@ -84,6 +87,24 @@ const [Grid, gridApi] = useVbenVxeGrid({
 const [BaseInputDrawer, baseInputDrawerApi] = useVbenDrawer({
   connectedComponent: InputDrawer,
 });
+
+const [UserTenantsDrawerComp, userTenantsDrawerApi] = useVbenDrawer({
+  connectedComponent: UserTenantsDrawer,
+});
+
+const [CmsUserAuthDrawerComp, cmsUserAuthDrawerApi] = useVbenDrawer({
+  connectedComponent: CmsUserAuthDrawer,
+});
+
+function handleOpenTenants(userId: string) {
+  userTenantsDrawerApi.setData({ userId });
+  userTenantsDrawerApi.open();
+}
+
+function handleOpenCmsAuth(userId: string) {
+  cmsUserAuthDrawerApi.setData({ userId });
+  cmsUserAuthDrawerApi.open();
+}
 
 async function handleCreate() {
   addSysUserApi(props.deptId).then((res) => {
@@ -119,8 +140,7 @@ const handleResetPassword = (id: string) => {
           :api="removeSysUserApi"
           :auth-codes="['sys:user:remove']"
           :grid-api="gridApi"
-          @success="handleSearch"
-        />
+          @success="handleSearch" />
 
         <Divider class="h-5" type="vertical" />
       </Space>
@@ -129,13 +149,24 @@ const handleResetPassword = (id: string) => {
       <VbenAvatar :alt="row.nickname" :size="32" :src="row.avatarUrl" />
     </template>
     <template #action="{ row }">
+      <AccessControl :codes="['cms:site:user:save', 'cms:column:user:save']" type="code">
+        <Button size="small" type="link" @click="handleOpenCmsAuth(row.id)">
+          CMS 权限
+        </Button>
+      </AccessControl>
+
+      <AccessControl :codes="['sys:tenant:user:save']">
+        <Button size="small" type="link" @click="handleOpenTenants(row.id)">
+          租户
+        </Button>
+      </AccessControl>
+
       <AccessControl :codes="['sys:user:save']">
         <Popconfirm
           cancel-text="否"
           ok-text="是"
           title="确定要重置为默认密码吗？"
-          @confirm="handleResetPassword(row.id)"
-        >
+          @confirm="handleResetPassword(row.id)">
           <Button size="small" type="link">
             <template #icon> <LucideRotateCcw /> </template>
             重置密码
@@ -147,8 +178,7 @@ const handleResetPassword = (id: string) => {
         :auth-codes="['sys:user:save']"
         size="small"
         type="link"
-        @click="handleEdit(row.id)"
-      />
+        @click="handleEdit(row.id)" />
 
       <ButtonRemove
         :api="removeSysUserApi"
@@ -156,11 +186,12 @@ const handleResetPassword = (id: string) => {
         :ids="[row.id]"
         size="small"
         type="link"
-        @success="handleSearch"
-      />
+        @success="handleSearch" />
     </template>
   </Grid>
   <!--  编辑  -->
   <BaseInputDrawer @success="handleSearch" />
+  <UserTenantsDrawerComp @success="handleSearch" />
+  <CmsUserAuthDrawerComp @success="handleSearch" />
 </template>
 <style lang="scss" scoped></style>

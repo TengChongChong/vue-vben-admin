@@ -15,3 +15,5 @@ export * from './sys-message-detail';
 export * from './sys-quick-navigation';
 export * from './sys-redis';
 export * from './sys-status';
+export * from './sys-tenant';
+export * from './sys-tenant-package';

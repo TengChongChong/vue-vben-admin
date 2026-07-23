@@ -13,3 +13,5 @@ export * from './sys-message-model';
 export * from './sys-quick-navigation-model';
 export * from './sys-redis-model';
 export * from './sys-status-model';
+export * from './sys-tenant-model';
+export * from './sys-tenant-package-model';
