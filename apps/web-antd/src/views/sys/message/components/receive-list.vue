@@ -153,12 +153,10 @@ onMounted(() => {
     :bordered="compact"
     :body-style="inboxBodyStyle"
     class="h-full"
-    :title="title"
-  >
+    :title="title">
     <div
       v-if="showQuery"
-      class="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-border px-4 py-3"
-    >
+      class="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-border px-4 py-3">
       <div class="flex min-w-[200px] flex-1 flex-wrap items-center gap-3">
         <span class="text-base font-semibold whitespace-nowrap">{{
           title
@@ -169,8 +167,7 @@ onMounted(() => {
           class="max-w-xs"
           placeholder="搜索标题"
           @change="debouncedSearch"
-          @press-enter="handleSearch"
-        >
+          @press-enter="handleSearch">
           <template #prefix>
             <LucideSearch class="size-4 text-muted-foreground" />
           </template>
@@ -178,15 +175,13 @@ onMounted(() => {
         <Segmented
           :options="[...filterOptions]"
           :value="query.filter"
-          @change="handleFilterChange"
-        />
+          @change="handleFilterChange" />
       </div>
       <div class="flex flex-wrap items-center gap-2">
         <Checkbox
           v-if="records.length > 0"
           v-model:checked="allChecked"
-          :indeterminate="indeterminate"
-        >
+          :indeterminate="indeterminate">
           全选
         </Checkbox>
         <Button :loading="setReadBtnLoading" @click="handleMarkRead">
@@ -204,8 +199,7 @@ onMounted(() => {
               handleUnreadChange();
               fetchList();
             }
-          "
-        />
+          " />
       </div>
     </div>
 
@@ -219,8 +213,7 @@ onMounted(() => {
             ? 'w-full flex-1'
             : 'w-full lg:w-[38%] lg:min-w-[280px] lg:flex-none lg:border-r lg:border-border',
         ]"
-        size="small"
-      >
+        size="small">
         <div class="min-h-0 flex-1 overflow-y-auto">
           <Spin :spinning="loading">
             <template v-if="records.length > 0">
@@ -232,8 +225,7 @@ onMounted(() => {
                 :message="item"
                 :show-checkbox="showQuery"
                 @check="(checked) => toggleSelect(item.id!, checked)"
-                @click="handleItemClick(item)"
-              />
+                @click="handleItemClick(item)" />
             </template>
             <Empty v-else class="py-12" description="暂无消息" />
           </Spin>
@@ -241,8 +233,7 @@ onMounted(() => {
 
         <div
           v-if="total > 0"
-          class="shrink-0 border-t border-border px-3 py-2 text-right"
-        >
+          class="shrink-0 border-t border-border px-3 py-2 text-right">
           <Pagination
             :current="current"
             :page-size="pageSize"
@@ -250,8 +241,7 @@ onMounted(() => {
             :simple="compact"
             :total="total"
             size="small"
-            @change="handlePageChange"
-          />
+            @change="handlePageChange" />
         </div>
       </Card>
 
@@ -267,8 +257,7 @@ onMounted(() => {
       class="lg:hidden"
       placement="right"
       title="消息详情"
-      width="100%"
-    >
+      width="100%">
       <MessageDetailPanel :loading="detailLoading" :message="currentDetail" />
     </Drawer>
 

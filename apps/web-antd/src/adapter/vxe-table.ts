@@ -22,6 +22,9 @@ import { useVbenForm } from './form';
 const { defaultTableSize } =
   getCustomPreferences<WebAntdPreferencesExtension>();
 
+/** 与 Grid 一致的默认每页条数（来自偏好设置） */
+export const DEFAULT_TABLE_PAGE_SIZE = defaultTableSize;
+
 const basePageSizes = [10, 15, 20, 30, 40, 50, 100, 200];
 const pageSizes = [...new Set([...basePageSizes, defaultTableSize])].toSorted(
   (a, b) => a - b,
@@ -91,7 +94,7 @@ setupVbenVxeTable({
         },
         pagerConfig: {
           // 每页大小
-          pageSize: defaultTableSize,
+          pageSize: DEFAULT_TABLE_PAGE_SIZE,
           // 每页大小选项列表
           pageSizes,
         },

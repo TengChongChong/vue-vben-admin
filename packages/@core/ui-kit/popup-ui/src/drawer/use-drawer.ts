@@ -97,14 +97,16 @@ export function useVbenDrawer<
     injectData.options?.onOpenChange?.(isOpen);
   };
 
-  const onClosed = mergedOptions.onClosed;
-  mergedOptions.onClosed = () => {
-    onClosed?.();
-    if (mergedOptions.destroyOnClose) {
-      injectData.reCreateDrawer?.();
-    }
-  };
-  const api = new DrawerApi(mergedOptions);
+  const userOnClosed = mergedOptions.onClosed;
+  const api = new DrawerApi({
+    ...mergedOptions,
+    onClosed: () => {
+      userOnClosed?.();
+      if (api.store.state.destroyOnClose) {
+        injectData.reCreateDrawer?.();
+      }
+    },
+  });
 
   const extendedApi: ExtendedDrawerApi = api as never;
 

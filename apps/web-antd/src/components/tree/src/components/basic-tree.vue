@@ -137,14 +137,11 @@ const getBindValues = computed(() => {
       } else {
         state.checkedKeys = v;
       }
-      const rawVal = state.checkStrictly
-        ? toRaw(state.checkedKeys)
-        : {
-            checked: toRaw(state.checkedKeys),
-            halfChecked: e.halfCheckedKeys,
-          };
-      emit('update:value', rawVal);
-      emit('check', rawVal, e);
+      emitCheckedValue(
+        state.checkedKeys,
+        state.checkStrictly ? [] : (e.halfCheckedKeys ?? []),
+        e,
+      );
     },
   };
   return omit(propsData, 'treeData', 'class', 'useCard') as TreeProps;
@@ -185,8 +182,25 @@ function getCheckedKeys() {
   return state.checkedKeys;
 }
 
+function emitCheckedValue(
+  checkedKeys: CheckKeys,
+  halfCheckedKeys: KeyType[] = [],
+  e?: any,
+) {
+  const rawVal = state.checkStrictly
+    ? toRaw(checkedKeys)
+    : {
+        checked: toRaw(checkedKeys) as KeyType[],
+        halfChecked: halfCheckedKeys,
+      };
+  emit('update:value', rawVal);
+  emit('check', rawVal, e);
+}
+
 function checkAll(checkAll: boolean) {
-  state.checkedKeys = checkAll ? getEnabledKeys() : ([] as KeyType[]);
+  const keys = checkAll ? getEnabledKeys() : ([] as KeyType[]);
+  state.checkedKeys = keys;
+  emitCheckedValue(keys);
 }
 
 function expandAll(expandAll: boolean) {
@@ -399,8 +413,7 @@ defineExpose(instance);
     :class="cn(props.class)"
     :head-style="props.headStyle"
     :size="props.size"
-    :title="props.title"
-  >
+    :title="props.title">
     <template #extra>
       <Space class="pl-2">
         <InputSearch
@@ -408,8 +421,7 @@ defineExpose(instance);
           v-model:value="searchState.searchText"
           :size="props.size"
           placeholder="输入节点名称搜索"
-          style="width: 200px"
-        />
+          style="width: 200px" />
         <Dropdown v-if="props.showToolbar">
           <Button :size="props.size">
             <template #icon>
@@ -433,15 +445,13 @@ defineExpose(instance);
     </template>
     <div
       :style="{ maxHeight: `${props.height}px` }"
-      class="relative flex-1 overflow-y-auto"
-    >
+      class="relative flex-1 overflow-y-auto">
       <VbenScrollbar shadow shadow-border>
         <Tree
           v-if="!getNotFound"
           v-bind="getBindValues"
           :show-icon="false"
-          :tree-data="getTreeSearchData"
-        >
+          :tree-data="getTreeSearchData">
           <template #title="{ title, icon }">
             <TreeIcon :icon="icon" />
 
@@ -457,8 +467,7 @@ defineExpose(instance);
   <div v-else v-bind="$attrs" :class="cn('flex h-full flex-col', props.class)">
     <div
       v-if="props.title || props.showSearch || props.showToolbar"
-      class="basic-tree-embed__header mb-2 flex flex-shrink-0 items-center justify-between gap-2"
-    >
+      class="basic-tree-embed__header mb-2 flex flex-shrink-0 items-center justify-between gap-2">
       <span v-if="props.title" class="text-sm font-medium">{{
         props.title
       }}</span>
@@ -468,8 +477,7 @@ defineExpose(instance);
           v-model:value="searchState.searchText"
           :size="props.size"
           placeholder="输入节点名称搜索"
-          style="width: 200px"
-        />
+          style="width: 200px" />
         <Dropdown v-if="props.showToolbar">
           <Button :size="props.size">
             <template #icon>
@@ -493,15 +501,13 @@ defineExpose(instance);
     </div>
     <div
       :style="{ maxHeight: `${props.height}px` }"
-      class="relative min-h-0 flex-1 overflow-y-auto"
-    >
+      class="relative min-h-0 flex-1 overflow-y-auto">
       <VbenScrollbar shadow shadow-border>
         <Tree
           v-if="!getNotFound"
           v-bind="getBindValues"
           :show-icon="false"
-          :tree-data="getTreeSearchData"
-        >
+          :tree-data="getTreeSearchData">
           <template #title="{ title, icon }">
             <TreeIcon :icon="icon" />
 

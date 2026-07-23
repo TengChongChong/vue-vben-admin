@@ -43,8 +43,7 @@ watch(selectedKeys, (key) => {
         <Card :bordered="false" size="small" style="height: 100%">
           <MessageNav
             ref="messageNavRef"
-            v-model:selected-keys="selectedKeys"
-          />
+            v-model:selected-keys="selectedKeys" />
         </Card>
       </LayoutSider>
 
@@ -52,25 +51,21 @@ watch(selectedKeys, (key) => {
         <Card
           :bordered="false"
           class="message-page-content h-full"
-          size="small"
-        >
+          size="small">
           <Edit v-if="'edit' === selectedKeys" :id="messageId" />
 
           <ReceiveList
             v-if="'receive' === selectedKeys"
-            @unread-change="handleUnreadChange"
-          />
+            @unread-change="handleUnreadChange" />
 
           <List
             v-if="'draft' === selectedKeys"
             :page-type="SysMessageStatus.DRAFT"
-            @edit-message="handleEditMessage"
-          />
+            @edit-message="handleEditMessage" />
 
           <List
             v-if="'has-been-sent' === selectedKeys"
-            :page-type="SysMessageStatus.HAS_BEEN_SENT"
-          />
+            :page-type="SysMessageStatus.HAS_BEEN_SENT" />
         </Card>
       </LayoutContent>
     </Layout>
@@ -78,5 +73,5 @@ watch(selectedKeys, (key) => {
 </template>
 
 <style lang="scss" scoped>
-@import './style/message.scss';
+@use './style/message.scss';
 </style>

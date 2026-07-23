@@ -49,8 +49,7 @@ defineExpose({
       v-model:selected-keys="selectedKeys"
       class="personal-nav"
       mode="inline"
-      @select="handleSelect"
-    >
+      @select="handleSelect">
       <MenuItem key="edit">
         <template #icon>
           <LucideFilePen />

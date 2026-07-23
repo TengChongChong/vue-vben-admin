@@ -7,7 +7,6 @@ export interface WebAntdPreferencesExtension {
   defaultTableSize: number;
   enableFormFullscreen: boolean;
   reportTitle: string;
-  tenantMode: 'multi' | 'single';
 }
 
 /**
@@ -24,6 +23,11 @@ export const overridesPreferences = defineOverridesPreferences({
     radius: '0.25',
     /** 是否开启半深色菜单（只在theme='light'时生效） */
     semiDarkSidebar: true,
+  },
+  /** 快捷键配置 */
+  shortcutKeys: {
+    /** 是否启用全局关闭窗口快捷键 */
+    globalEscape: true,
   },
   app: {
     /** 权限模式 */
@@ -52,22 +56,6 @@ export const preferencesExtension =
         key: 'enableFormFullscreen',
         label: 'preferences.antd.fields.enableFormFullscreen.label',
         tip: 'preferences.antd.fields.enableFormFullscreen.tip',
-      },
-      {
-        component: 'select',
-        defaultValue: 'single',
-        key: 'tenantMode',
-        label: 'preferences.antd.fields.tenantMode.label',
-        options: [
-          {
-            label: 'preferences.antd.fields.tenantMode.options.single.label',
-            value: 'single',
-          },
-          {
-            label: 'preferences.antd.fields.tenantMode.options.multi.label',
-            value: 'multi',
-          },
-        ],
       },
       {
         component: 'number',

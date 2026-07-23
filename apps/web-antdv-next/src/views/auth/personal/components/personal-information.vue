@@ -6,7 +6,7 @@ import { useUserStore } from '@vben/stores';
 import { Card, message, Space } from 'antdv-next';
 
 import { useVbenForm } from '#/adapter/form';
-import { currentUserApi, getUserInfoApi, saveUserInfoApi } from '#/api';
+import { currentUserApi, saveUserInfoApi } from '#/api';
 import { ButtonSave } from '#/components/button';
 
 const saveBtnLoading = ref(false);
@@ -69,7 +69,7 @@ async function handleSubmit() {
     }
     await saveUserInfoApi(await baseFormApi.getValues());
     const userStore = useUserStore();
-    const userInfo = await getUserInfoApi();
+    const userInfo = await getCurrentUserApi();
     userStore.setUserInfo(userInfo);
     message.success('保存成功');
   } catch (error) {

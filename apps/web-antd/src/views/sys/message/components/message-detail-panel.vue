@@ -38,8 +38,7 @@ const sanitizedContent = computed(() =>
           <VbenAvatar
             :alt="message.nickname"
             :size="40"
-            :src="message.avatar || preferences.app.defaultAvatar"
-          />
+            :src="message.avatar || preferences.app.defaultAvatar" />
           <span class="message-detail-panel__sender">{{
             message.nickname
           }}</span>
@@ -51,18 +50,16 @@ const sanitizedContent = computed(() =>
         <Divider />
         <div
           class="message-detail-panel__content"
-          v-html="sanitizedContent"
-        ></div>
+          v-html="sanitizedContent"></div>
       </template>
       <Empty
         v-else
         class="message-detail-panel__empty"
-        description="选择左侧消息查看详情"
-      />
+        description="选择左侧消息查看详情" />
     </Spin>
   </div>
 </template>
 
 <style lang="scss" scoped>
-@import '../style/message.scss';
+@use '../style/message.scss';
 </style>

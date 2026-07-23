@@ -4,6 +4,7 @@ import { onMounted } from 'vue';
 import { useVbenDrawer, useVbenModal } from '@vben/common-ui';
 import { formatToDateTime } from '@vben/utils';
 
+import { useDebounceFn } from '@vueuse/core';
 import {
   Button,
   Checkbox,
@@ -16,7 +17,6 @@ import {
   Spin,
 } from 'ant-design-vue';
 import dayjs from 'dayjs';
-import { useDebounceFn } from '@vueuse/core';
 
 import { infoApi, removeSysMessageApi, sendApi } from '#/api';
 import { ButtonEdit, ButtonRemove } from '#/components/button';
@@ -113,8 +113,7 @@ onMounted(() => {
           class="max-w-xs"
           placeholder="搜索标题"
           @change="debouncedSearch"
-          @press-enter="handleSearch"
-        >
+          @press-enter="handleSearch">
           <template #prefix>
             <LucideSearch class="size-4 text-muted-foreground" />
           </template>
@@ -135,15 +134,13 @@ onMounted(() => {
               value: [dayjs().startOf('month'), dayjs().endOf('month')],
             },
           ]"
-          @change="handleDateChange"
-        />
+          @change="handleDateChange" />
       </div>
       <div class="message-send-list__toolbar-right">
         <Checkbox
           v-if="records.length > 0"
           v-model:checked="allChecked"
-          :indeterminate="indeterminate"
-        >
+          :indeterminate="indeterminate">
           全选
         </Checkbox>
         <ButtonRemove
@@ -155,8 +152,7 @@ onMounted(() => {
               clearSelection();
               fetchList();
             }
-          "
-        />
+          " />
       </div>
     </div>
 
@@ -166,27 +162,23 @@ onMounted(() => {
           v-for="item in records"
           :key="item.id"
           :class="{ 'message-send-card--selected': isSelected(item.id) }"
-          class="message-send-card"
-        >
+          class="message-send-card">
           <div class="message-send-card__checkbox">
             <Checkbox
               :checked="isSelected(item.id)"
-              @change="(e) => toggleSelect(item.id!, e.target.checked)"
-            />
+              @change="(e) => toggleSelect(item.id!, e.target.checked)" />
           </div>
           <div class="message-send-card__main">
             <div
               class="message-send-card__title"
-              @click="handleOpenInfoModel(item.id!)"
-            >
+              @click="handleOpenInfoModel(item.id!)">
               {{ item.title }}
             </div>
             <div class="message-send-card__meta">
               <DictTag
                 v-if="item.type"
                 :code="item.type"
-                dict-type="messageType"
-              />
+                dict-type="messageType" />
               <span v-if="isSent() && item.sendDate">
                 发送：{{ formatToDateTime(item.sendDate) }}
               </span>
@@ -200,8 +192,7 @@ onMounted(() => {
               <Button
                 size="small"
                 type="link"
-                @click="handleOpenReceiverUserDetailDrawer(item.id!)"
-              >
+                @click="handleOpenReceiverUserDetailDrawer(item.id!)">
                 <template #icon>
                   <LucideListOrdered />
                 </template>
@@ -212,21 +203,18 @@ onMounted(() => {
               <ButtonEdit
                 size="small"
                 type="link"
-                @click="handleEdit(item.id!)"
-              />
+                @click="handleEdit(item.id!)" />
               <ButtonRemove
                 :api="removeSysMessageApi"
                 :ids="[item.id!]"
                 size="small"
                 type="link"
-                @success="fetchList()"
-              />
+                @success="fetchList()" />
               <Popconfirm
                 cancel-text="否"
                 ok-text="是"
                 title="发送后无法修改或删除，确定要立即发送吗？"
-                @confirm="handleSend(item.id!)"
-              >
+                @confirm="handleSend(item.id!)">
                 <Button size="small" type="link">
                   <template #icon>
                     <LucideSend />
@@ -247,8 +235,7 @@ onMounted(() => {
         :page-size="pageSize"
         :show-size-changer="true"
         :total="total"
-        @change="handlePageChange"
-      />
+        @change="handlePageChange" />
     </div>
 
     <BaseInfoModal />
@@ -257,5 +244,5 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
-@import '../style/message.scss';
+@use '../style/message.scss';
 </style>

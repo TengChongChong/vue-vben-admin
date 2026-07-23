@@ -42,13 +42,11 @@ const isUnread = computed(
       'message-list-item--unread': isUnread,
     }"
     class="message-list-item"
-    @click="emit('click')"
-  >
+    @click="emit('click')">
     <div v-if="showCheckbox" class="message-list-item__checkbox" @click.stop>
       <Checkbox
         :checked="checked"
-        @change="(e) => emit('check', e.target.checked)"
-      />
+        @change="(e) => emit('check', e.target.checked)" />
     </div>
 
     <div class="message-list-item__avatar-wrap">
@@ -56,8 +54,7 @@ const isUnread = computed(
         <VbenAvatar
           :alt="message.nickname"
           :size="36"
-          :src="message.avatar || preferences.app.defaultAvatar"
-        />
+          :src="message.avatar || preferences.app.defaultAvatar" />
       </Badge>
     </div>
 
@@ -68,8 +65,7 @@ const isUnread = computed(
         <DictTag
           v-if="message.type"
           :code="message.type"
-          dict-type="messageType"
-        />
+          dict-type="messageType" />
       </div>
     </div>
 
@@ -82,5 +78,5 @@ const isUnread = computed(
 </template>
 
 <style lang="scss" scoped>
-@import '../style/message.scss';
+@use '../style/message.scss';
 </style>

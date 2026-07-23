@@ -23,6 +23,7 @@ import { formatToNow, openWindow } from '@vben/utils';
 import {
   getSysConfigByKeyApi,
   infoApi,
+  removeByIdsApi,
   selectReceiveApi,
   setReadApi,
 } from '#/api';
@@ -179,6 +180,24 @@ function handleMakeAllAsRead() {
   });
 }
 
+/**
+ * 清空通知（全部标记为已读）
+ */
+function handleNoticeClear() {
+  setReadApi().then(() => {
+    refreshMessage();
+  });
+}
+
+/**
+ * 删除单条收信记录
+ */
+function remove(id: number | string) {
+  removeByIdsApi(String(id)).then(() => {
+    refreshMessage();
+  });
+}
+
 const handleClick = (item: NotificationItem) => {
   // 如果通知项有链接，点击时跳转
   if (item.link) {
@@ -292,8 +311,7 @@ onMounted(async () => {
         :menus="menus"
         :text="userStore.userInfo?.nickname"
         @logout="handleLogout"
-        @clear-preferences-and-logout="handleLogout"
-      />
+        @clear-preferences-and-logout="handleLogout" />
     </template>
     <template #notification>
       <Notification
@@ -304,14 +322,12 @@ onMounted(async () => {
         @view-all="handleViewAll"
         @clear="handleNoticeClear"
         @remove="(item) => item.id && remove(item.id)"
-        @on-click="handleClick"
-      />
+        @on-click="handleClick" />
     </template>
     <template #extra>
       <AuthenticationLoginExpiredModal
         v-model:open="accessStore.loginExpired"
-        :avatar
-      >
+        :avatar>
         <LoginForm />
       </AuthenticationLoginExpiredModal>
     </template>

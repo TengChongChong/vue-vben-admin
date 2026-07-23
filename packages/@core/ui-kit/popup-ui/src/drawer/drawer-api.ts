@@ -43,6 +43,7 @@ export class DrawerApi {
       closeOnPressEscape: true,
       confirmLoading: false,
       contentClass: '',
+      destroyOnClose: true,
       footer: true,
       header: true,
       isOpen: false,
