@@ -1,5 +1,6 @@
 export * from './auth';
 export * from './base';
+export * from './cms';
 export * from './core';
 export * from './file';
 export * from './generator';
