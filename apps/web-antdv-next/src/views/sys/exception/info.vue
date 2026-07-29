@@ -33,8 +33,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
       :column="2"
       :label-style="{ width: `140px` }"
       bordered
-      class="p-2"
-    >
+      class="p-2">
       <DescriptionsItem :span="2" label="错误ID">
         {{ exceptionInfo?.id }}
       </DescriptionsItem>
@@ -59,8 +58,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
       <DescriptionsItem :span="2" label="调用栈">
         <div v-for="(item, index) in trace" :key="index">
           <TypographyText
-            :type="item.startsWith('com.easy.admin') ? 'danger' : ''"
-          >
+            :type="item.startsWith('com.easy.admin') ? 'danger' : ''">
             {{ item }}
           </TypographyText>
         </div>

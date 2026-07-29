@@ -22,8 +22,7 @@ const value = ref();
     append-to-main
     class="w-[600px]"
     title="基础弹窗示例"
-    title-tooltip="标题提示内容"
-  >
+    title-tooltip="标题提示内容">
     此弹窗指定在内容区域打开
     <Input v-model="value" placeholder="KeepAlive测试" />
   </Modal>

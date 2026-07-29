@@ -39,8 +39,7 @@ onMounted(async () => {
               ? '验证邮箱成功，你可以使用邮箱进行登录或找回密码'
               : errorMessage || '验证失败，请重试'
         "
-        :title="loading ? '验证中...' : result ? '验证成功' : '验证失败'"
-      >
+        :title="loading ? '验证中...' : result ? '验证成功' : '验证失败'">
         <template v-if="!loading" #extra>
           <Button href="/" type="primary"> 登录 </Button>
         </template>

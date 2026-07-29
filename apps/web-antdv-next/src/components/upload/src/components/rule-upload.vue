@@ -222,8 +222,7 @@ function refreshDisplayFileList() {
         :headers="{ Authorization: accessStore.accessToken }"
         :list-type="props.listType"
         :multiple="multiple"
-        @change="handleChange"
-      >
+        @change="handleChange">
         <template v-if="props.useDragger">
           <p class="ant-upload-drag-icon">
             <LucideUpload class="mx-auto text-5xl" />
@@ -242,8 +241,7 @@ function refreshDisplayFileList() {
           </template>
 
           <template
-            v-if="props.listType === 'text' || props.listType === 'picture'"
-          >
+            v-if="props.listType === 'text' || props.listType === 'picture'">
             <Button>
               <template #icon>
                 <LucideHardDriveUpload />

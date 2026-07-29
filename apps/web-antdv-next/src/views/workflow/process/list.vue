@@ -6,16 +6,7 @@ import type { WorkflowProcess } from '#/api';
 import { AccessControl } from '@vben/access';
 import { Page, useVbenModal } from '@vben/common-ui';
 
-import {
-  Button,
-  Divider,
-  Dropdown,
-  Menu,
-  MenuItem,
-  message,
-  Modal,
-  Space,
-} from 'antdv-next';
+import { Button, Divider, Dropdown, Menu, MenuItem, message, Modal, Space } from 'antdv-next';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
@@ -38,7 +29,7 @@ import InputModal from './input.vue';
 
 // 导出按钮状态
 function handleSearch() {
-  gridApi.search();
+  gridApi.query();
 }
 
 const formOptions: VbenFormProps = {
@@ -130,7 +121,10 @@ function handleActivation(processDefinitionId: string) {
  * @param deploymentId 部署id
  * @param dgrmResourceName 资源名
  */
-function handleOpenProcessModal({ deploymentId, dgrmResourceName }) {}
+function handleOpenProcessModal({
+  deploymentId: _deploymentId,
+  dgrmResourceName: _dgrmResourceName,
+}) {}
 </script>
 
 <template>
@@ -142,8 +136,7 @@ function handleOpenProcessModal({ deploymentId, dgrmResourceName }) {}
             :api="removeWorkflowProcessApi"
             :auth-codes="['sample:general:remove']"
             :grid-api="gridApi"
-            @success="handleSearch"
-          />
+            @success="handleSearch" />
 
           <Divider class="h-5" type="vertical" />
         </Space>
@@ -155,15 +148,14 @@ function handleOpenProcessModal({ deploymentId, dgrmResourceName }) {}
           :ids="[row.id]"
           size="small"
           type="link"
-          @success="handleSearch"
-        />
+          @success="handleSearch" />
 
         <Dropdown>
           <Button size="small" type="link" @click.prevent>
             更多
             <LucideChevronDown />
           </Button>
-          <template #overlay>
+          <template #popupRender>
             <Menu>
               <AccessControl :codes="['workflow:model:save']">
                 <MenuItem @click="handleOpenProcessModal(row.id)">

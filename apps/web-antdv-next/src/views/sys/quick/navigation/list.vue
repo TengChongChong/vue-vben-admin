@@ -3,6 +3,7 @@ import type { VbenFormProps } from '#/adapter/form';
 import type { VxeGridProps } from '#/adapter/vxe-table';
 import type { SysQuickNavigation } from '#/api';
 
+import { AccessControl } from '@vben/access';
 import { Page, useVbenModal } from '@vben/common-ui';
 
 import { Button, Space } from 'antdv-next';
@@ -23,7 +24,7 @@ import { initColumns } from './data';
 import InputModal from './input.vue';
 
 function handleSearch() {
-  gridApi.search();
+  gridApi.query();
 }
 
 const formOptions: VbenFormProps = {
@@ -113,20 +114,20 @@ function handleSaveOrderNo() {
         <Space>
           <ButtonAdd
             :auth-codes="['sys:quick:navigation:save']"
-            @click="handleCreate"
-          />
-          <Button @click="handleSaveOrderNo" type="primary">
-            <template #icon>
-              <LucideSave />
-            </template>
-            保存排序
-          </Button>
+            @click="handleCreate" />
+          <AccessControl :codes="['sys:quick:navigation:save']">
+            <Button @click="handleSaveOrderNo" type="primary">
+              <template #icon>
+                <LucideSave />
+              </template>
+              保存排序
+            </Button>
+          </AccessControl>
           <ButtonRemove
             :api="removeSysQuickNavigationApi"
             :auth-codes="['sys:quick:navigation:remove']"
             :grid-api="gridApi"
-            @success="handleSearch"
-          />
+            @success="handleSearch" />
         </Space>
       </template>
       <template #quick-navigation="{ row }">
@@ -139,16 +140,14 @@ function handleSaveOrderNo() {
           :auth-codes="['sys:quick:navigation:save']"
           size="small"
           type="link"
-          @click="handleEdit(row.id)"
-        />
+          @click="handleEdit(row.id)" />
         <ButtonRemove
           :api="removeSysQuickNavigationApi"
           :auth-codes="['sys:quick:navigation:remove']"
           :ids="[row.id]"
           size="small"
           type="link"
-          @success="handleSearch"
-        />
+          @success="handleSearch" />
       </template>
     </Grid>
 

@@ -2,12 +2,15 @@ import type { VxeTableGridOptions } from '@vben/plugins/vxe-table';
 
 import type { ComponentPropsMap, ComponentType } from './component';
 
+import type { WebAntdPreferencesExtension } from '#/preferences';
+
 import { h } from 'vue';
 
 import {
   setupVbenVxeTable,
   useVbenVxeGrid as useGrid,
 } from '@vben/plugins/vxe-table';
+import { getCustomPreferences } from '@vben/preferences';
 import { formatToDate, formatToDuration } from '@vben/utils';
 
 import { Button, Image } from 'antdv-next';
@@ -15,6 +18,26 @@ import { Button, Image } from 'antdv-next';
 import { DictTag } from '#/components/dict';
 
 import { useVbenForm } from './form';
+
+const { defaultTableSize } =
+  getCustomPreferences<WebAntdPreferencesExtension>();
+
+/** 与 Grid 一致的默认每页条数（来自偏好设置） */
+export const DEFAULT_TABLE_PAGE_SIZE = defaultTableSize;
+
+const basePageSizes = [10, 15, 20, 30, 40, 50, 100, 200];
+const pageSizes = [...new Set([...basePageSizes, defaultTableSize])].toSorted(
+  (a, b) => a - b,
+);
+
+/** Ant Design Pagination 的 page-size-options（string[]） */
+export function buildPageSizeOptions(extraSize?: number): string[] {
+  const sizes =
+    extraSize === undefined || extraSize === null
+      ? pageSizes
+      : [...new Set([...pageSizes, extraSize])].toSorted((a, b) => a - b);
+  return sizes.map(String);
+}
 
 setupVbenVxeTable({
   configVxeTable: (vxeUI) => {
@@ -80,9 +103,9 @@ setupVbenVxeTable({
         },
         pagerConfig: {
           // 每页大小
-          pageSize: 15,
+          pageSize: DEFAULT_TABLE_PAGE_SIZE,
           // 每页大小选项列表
-          pageSizes: [10, 15, 20, 30, 40, 50, 100, 200],
+          pageSizes,
         },
         // 列配置信息
         columnConfig: {

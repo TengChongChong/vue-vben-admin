@@ -97,8 +97,7 @@ function handleLoginAccount() {
     <AuthenticationLogin
       :form-schema="formSchema"
       :loading="authStore.loginLoading"
-      @submit="handleLoginClick"
-    />
+      @submit="handleLoginClick" />
 
     <BaseSlideVerifyModal @success="handleVerifySuccess" />
   </div>

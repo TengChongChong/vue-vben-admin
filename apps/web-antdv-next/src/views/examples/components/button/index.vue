@@ -24,10 +24,10 @@ defineComponent({
 });
 
 function handleRemoveSuccess(id: string | string[]) {
-  console.log('remove success', id);
+  console.warn('remove success', id);
 }
 function handleRemoveFail(id: string | string[]) {
-  console.log('remove fail', id);
+  console.warn('remove fail', id);
 }
 </script>
 
@@ -35,7 +35,7 @@ function handleRemoveFail(id: string | string[]) {
   <Page>
     <Row :gutter="16">
       <Col :xl="24" :xxl="12">
-        <Card variant="outlined" class="mb-4" title="基础按钮">
+        <Card :bordered="false" class="mb-4" title="基础按钮">
           <div class="prose mb-6">
             <h3>主按钮</h3>
             <Space :wrap="true">
@@ -75,7 +75,7 @@ function handleRemoveFail(id: string | string[]) {
           <div class="prose mb-6">
             <h3>幽灵按钮</h3>
             <p>常规幽灵按钮通常用于有色背景下</p>
-            <div class="bg-gray-400 p-2">
+            <div class="bg-gray-400 px-2 py-2">
               <Space :wrap="true">
                 <Button ghost type="primary"> 幽灵主要 </Button>
                 <Button ghost type="default"> 幽灵默认 </Button>
@@ -88,7 +88,7 @@ function handleRemoveFail(id: string | string[]) {
         </Card>
       </Col>
       <Col :xl="24" :xxl="12">
-        <Card variant="outlined" class="mb-4" title="常用按钮 - 默认尺寸">
+        <Card :bordered="false" class="mb-4" title="常用按钮 - 默认尺寸">
           <Space :wrap="true">
             <ButtonAdd />
             <ButtonCancel />
@@ -100,14 +100,13 @@ function handleRemoveFail(id: string | string[]) {
               :id="['xxx']"
               :api="removeSysDictApi"
               @fail="handleRemoveFail"
-              @success="handleRemoveSuccess"
-            />
+              @success="handleRemoveSuccess" />
             <ButtonReset />
             <ButtonSave />
             <ButtonSubmit />
           </Space>
         </Card>
-        <Card variant="outlined" title="常用按钮 - 表格操作列">
+        <Card :bordered="false" title="常用按钮 - 表格操作列">
           <Space :wrap="true">
             <ButtonAdd size="small" type="link" />
             <Divider type="vertical" />
@@ -127,8 +126,7 @@ function handleRemoveFail(id: string | string[]) {
               size="small"
               type="link"
               @fail="handleRemoveFail"
-              @success="handleRemoveSuccess"
-            />
+              @success="handleRemoveSuccess" />
             <Divider type="vertical" />
             <ButtonReset size="small" type="link" />
             <Divider type="vertical" />

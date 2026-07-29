@@ -139,6 +139,7 @@ async function handleSubmit(callback: (res: SysDict) => any) {
     if (!valid) {
       return;
     }
+    modalApi.lock();
     const values = await baseFormApi.getValues();
     const parentCode: string =
       values && isArray(values.parentCode) && values.parentCode?.length
@@ -150,8 +151,10 @@ async function handleSubmit(callback: (res: SysDict) => any) {
     });
     message.success('保存成功');
     emit('success');
-    callback(res);
+    await callback(res);
+    modalApi.unlock();
   } catch (error) {
+    modalApi.unlock();
     console.error('保存失败', error);
   } finally {
     saveBtnLoading.value = false;
@@ -198,8 +201,7 @@ const [Modal, modalApi] = useVbenModal({
         <ButtonSave
           :loading="saveBtnLoading"
           text="保存并新增"
-          @click="handleSaveAndAdd"
-        />
+          @click="handleSaveAndAdd" />
       </Space>
     </template>
   </Modal>

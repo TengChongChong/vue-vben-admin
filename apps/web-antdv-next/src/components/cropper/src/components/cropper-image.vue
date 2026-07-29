@@ -145,8 +145,7 @@ const getClass = computed(() => {
       ref="imgElRef"
       :alt="alt"
       :src="src"
-      :style="getImageStyle"
-    />
+      :style="getImageStyle" />
   </div>
 </template>
 

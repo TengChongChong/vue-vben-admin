@@ -31,7 +31,7 @@ import InputDrawer from './input.vue';
 // 导出按钮状态
 const exportBtnLoading = ref<boolean>(false);
 function handleSearch() {
-  gridApi.search();
+  gridApi.query();
 }
 
 const formOptions: VbenFormProps = {
@@ -126,18 +126,15 @@ const handelExportData = async () => {
         <Space>
           <ButtonAdd
             :auth-codes="['sample:general:save']"
-            @click="handleCreate"
-          />
+            @click="handleCreate" />
           <ButtonRemove
             :api="removeSampleGeneralApi"
             :auth-codes="['sample:general:remove']"
             :grid-api="gridApi"
-            @success="handleSearch"
-          />
+            @success="handleSearch" />
           <ButtonImport
             import-code="sample:general"
-            :auth-codes="['sample:general:import:data']"
-          />
+            :auth-codes="['sample:general:import:data']" />
           <ButtonExport :loading="exportBtnLoading" @click="handelExportData" />
 
           <Divider class="h-5" type="vertical" />
@@ -148,16 +145,14 @@ const handelExportData = async () => {
           :auth-codes="['sample:general:save']"
           size="small"
           type="link"
-          @click="handleEdit(row.id)"
-        />
+          @click="handleEdit(row.id)" />
         <ButtonRemove
           :api="removeSampleGeneralApi"
           :auth-codes="['sample:general:remove']"
           :ids="[row.id]"
           size="small"
           type="link"
-          @success="handleSearch"
-        />
+          @success="handleSearch" />
       </template>
     </Grid>
 

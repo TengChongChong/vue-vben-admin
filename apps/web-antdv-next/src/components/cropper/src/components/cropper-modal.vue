@@ -87,15 +87,16 @@ function handlerToolbar(event: string, arg?: number) {
   if (event === 'scaleY') {
     scaleY = arg = scaleY === -1 ? 1 : -1;
   }
-  // @ts-expect-error
-  cropper?.value?.[event]?.(arg);
+  const method = cropper.value?.[event as keyof Cropper];
+  if (typeof method === 'function') {
+    (method as (value?: number) => void)(arg);
+  }
 }
 
 async function handleOk() {
   try {
     // setModalProps({ confirmLoading: true });
-    // @ts-expect-error
-    const result = await fileUpload(cropperModalProps.value?.uploadRuleKey, {
+    const result = await fileUpload(cropperModalProps.value?.uploadRuleKey ?? '', {
       name: 'file',
       file: unref(imageBlob),
       filename: `${filename}.jpg`,
@@ -120,15 +121,13 @@ async function handleOk() {
             :options="{ aspectRatio: cropperModalProps?.aspectRatio }"
             :src="src"
             @cropper-end="handleCropperEnd"
-            @ready="handleReady"
-          />
+            @ready="handleReady" />
         </div>
         <div class="vben-cropper-modal-toolbar">
           <Upload
             :before-upload="handleBeforeUpload"
             :file-list="[]"
-            accept="image/*"
-          >
+            accept="image/*">
             <Tooltip placement="bottom" title="选择图片">
               <Button size="small" type="primary">
                 <template #icon>
@@ -143,8 +142,7 @@ async function handleOk() {
                 :disabled="toolbarDisabled"
                 size="small"
                 type="primary"
-                @click="handlerToolbar('reset')"
-              >
+                @click="handlerToolbar('reset')">
                 <template #icon>
                   <LucideRotateCw />
                 </template>
@@ -155,8 +153,7 @@ async function handleOk() {
                 :disabled="toolbarDisabled"
                 size="small"
                 type="primary"
-                @click="handlerToolbar('rotate', -45)"
-              >
+                @click="handlerToolbar('rotate', -45)">
                 <template #icon>
                   <LucideRotateCcwSquare />
                 </template>
@@ -167,8 +164,7 @@ async function handleOk() {
                 :disabled="toolbarDisabled"
                 size="small"
                 type="primary"
-                @click="handlerToolbar('rotate', 45)"
-              >
+                @click="handlerToolbar('rotate', 45)">
                 <template #icon>
                   <LucideRotateCwSquare />
                 </template>
@@ -179,8 +175,7 @@ async function handleOk() {
                 :disabled="toolbarDisabled"
                 size="small"
                 type="primary"
-                @click="handlerToolbar('scaleX')"
-              >
+                @click="handlerToolbar('scaleX')">
                 <template #icon>
                   <LucideMoveHorizontal />
                 </template>
@@ -191,8 +186,7 @@ async function handleOk() {
                 :disabled="toolbarDisabled"
                 size="small"
                 type="primary"
-                @click="handlerToolbar('scaleY')"
-              >
+                @click="handlerToolbar('scaleY')">
                 <template #icon>
                   <LucideMoveVertical />
                 </template>
@@ -203,8 +197,7 @@ async function handleOk() {
                 :disabled="toolbarDisabled"
                 size="small"
                 type="primary"
-                @click="handlerToolbar('zoom', 0.1)"
-              >
+                @click="handlerToolbar('zoom', 0.1)">
                 <template #icon>
                   <LucideZoomIn />
                 </template>
@@ -215,8 +208,7 @@ async function handleOk() {
                 :disabled="toolbarDisabled"
                 size="small"
                 type="primary"
-                @click="handlerToolbar('zoom', -0.1)"
-              >
+                @click="handlerToolbar('zoom', -0.1)">
                 <template #icon>
                   <LucideZoomOut />
                 </template>
@@ -227,8 +219,7 @@ async function handleOk() {
       </div>
       <div class="vben-cropper-modal-right">
         <div
-          :class="`vben-cropper-modal-preview vben-cropper-modal-preview--${cropperModalProps?.circled ? 'circled' : 'square'}`"
-        >
+          :class="`vben-cropper-modal-preview vben-cropper-modal-preview--${cropperModalProps?.circled ? 'circled' : 'square'}`">
           <img v-if="previewSource" :src="previewSource" alt="" />
         </div>
         <template v-if="previewSource && cropperModalProps">
@@ -239,24 +230,21 @@ async function handleOk() {
               :style="{
                 width: '48px',
                 height: `${48 / cropperModalProps.aspectRatio}px`,
-              }"
-            />
+              }" />
             <Avatar
               :shape="cropperModalProps.circled ? 'circle' : 'square'"
               :src="previewSource"
               :style="{
                 width: '64px',
                 height: `${64 / cropperModalProps.aspectRatio}px`,
-              }"
-            />
+              }" />
             <Avatar
               :shape="cropperModalProps.circled ? 'circle' : 'square'"
               :src="previewSource"
               :style="{
                 width: '80px',
                 height: `${80 / cropperModalProps.aspectRatio}px`,
-              }"
-            />
+              }" />
           </div>
         </template>
       </div>

@@ -17,7 +17,7 @@ import { ButtonClose } from '#/components/button';
 const messageId = ref();
 
 function handleSearch() {
-  gridApi.search();
+  gridApi.query();
 }
 
 const formOptions: VbenFormProps = {

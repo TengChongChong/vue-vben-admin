@@ -143,10 +143,13 @@ async function handleSubmit(callback: (res: SysDept) => any) {
     if (!valid) {
       return;
     }
+    drawerApi.lock();
     const res = await saveSysDeptApi(await baseFormApi.getValues());
     emit('success');
-    callback(res);
+    await callback(res);
+    drawerApi.unlock();
   } catch (error) {
+    drawerApi.unlock();
     console.error('保存失败', error);
   } finally {
     saveBtnLoading.value = false;
@@ -190,8 +193,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
         <ButtonSave
           :loading="saveBtnLoading"
           text="保存并新增"
-          @click="handleSaveAndAdd"
-        />
+          @click="handleSaveAndAdd" />
       </Space>
     </template>
   </Drawer>

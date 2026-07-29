@@ -20,7 +20,7 @@ import { initColumns } from './data';
 import InputModal from './input.vue';
 
 function handleSearch() {
-  gridApi.search();
+  gridApi.query();
 }
 
 const formOptions: VbenFormProps = {
@@ -93,15 +93,13 @@ function handleEdit(id: string) {
         <Space>
           <ButtonAdd
             :auth-codes="['sys:data:source:save']"
-            @click="handleCreate"
-          />
+            @click="handleCreate" />
 
           <ButtonRemove
             :api="removeSysDataSourceApi"
             :auth-codes="['sys:data:source:remove']"
             :grid-api="gridApi"
-            @success="handleSearch"
-          />
+            @success="handleSearch" />
         </Space>
       </template>
       <template #action="{ row }">
@@ -109,8 +107,7 @@ function handleEdit(id: string) {
           :auth-codes="['sys:data:source:save']"
           size="small"
           type="link"
-          @click="handleEdit(row.id)"
-        />
+          @click="handleEdit(row.id)" />
 
         <ButtonRemove
           :api="removeSysDataSourceApi"
@@ -118,8 +115,7 @@ function handleEdit(id: string) {
           :ids="[row.id]"
           size="small"
           type="link"
-          @success="handleSearch"
-        />
+          @success="handleSearch" />
       </template>
     </Grid>
     <!--  编辑  -->

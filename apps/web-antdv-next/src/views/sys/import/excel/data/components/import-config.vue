@@ -54,11 +54,10 @@ function initConfig() {
   if (!checkImportExcelTemplate()) {
     return;
   }
-  // @ts-expect-error
-  startRow.value = props.sysImportExcelTemplate.startRow!;
+  const detailList = props.sysImportExcelTemplate.detailList ?? [];
+  startRow.value = props.sysImportExcelTemplate.startRow ?? 2;
   // 系统预设导入规则
-  // @ts-expect-error
-  columns.value = props.sysImportExcelTemplate.detailList.map((item, index) => {
+  columns.value = detailList.map((item, index) => {
     return {
       title: `${getCellIndex(index)}.${item.title}`,
       dataIndex: item.fieldName,
@@ -81,8 +80,10 @@ function initConfig() {
 
   const data: any = { importField: '导入字段' };
 
-  props.sysImportExcelTemplate?.detailList?.forEach((item) => {
-    data[item.fieldName!] = null;
+  detailList.forEach((item) => {
+    if (item.fieldName) {
+      data[item.fieldName] = null;
+    }
   });
   dataSource.value = [data];
 }
@@ -91,7 +92,10 @@ function initConfig() {
  * 加载导入Excel数据
  */
 async function uploadExcelColumns() {
-  importExcelColumns.value = await analysisExcelApi(props.importFile!);
+  if (!props.importFile) {
+    return;
+  }
+  importExcelColumns.value = await analysisExcelApi(props.importFile);
 
   if (startRow.value > importExcelColumns.value.length) {
     message.warn('起始行大于Excel数据行数，请重新选择文件或更改起始行');
@@ -117,9 +121,12 @@ function autoUpdateDataSource() {
   }
 
   const data: any = { importField: '导入字段' };
-  props.sysImportExcelTemplate?.detailList?.forEach((item) => {
+  const detailList = props.sysImportExcelTemplate.detailList ?? [];
+  detailList.forEach((item) => {
     // 根据系统预设模版字段，到用户上传的Excel中自动匹配
-    data[item.fieldName!] = matchSimilarColumn(item.title!);
+    if (item.fieldName) {
+      data[item.fieldName] = matchSimilarColumn(item.title ?? '');
+    }
   });
   dataSource.value = [data];
 }
@@ -145,7 +152,7 @@ function matchSimilarColumn(title: string) {
     }
   });
   // 2、字段与Excel中部分文字一致
-  if (similarColumn == null) {
+  if (similarColumn === null) {
     importExcelColumns.value[startRow.value - 1].forEach((item, index) => {
       const itemLowerCase = isString(item) ? item.toLowerCase() : `${item}`;
       const titleLowerCase = isString(title) ? title.toLowerCase() : `${title}`;
@@ -165,7 +172,7 @@ const columnOptions = computed(() => {
     importExcelColumns.value.length === 0 ||
     importExcelColumns.value[startRow.value - 1].length === 0
   ) {
-    return;
+    return [];
   }
   return importExcelColumns.value[startRow.value - 1].map((item, index) => {
     return {
@@ -181,18 +188,21 @@ async function handleStepNext() {
     if (!checkImportExcelTemplate()) {
       return;
     }
+    if (!props.importFile) {
+      message.error('请先上传导入文件');
+      return;
+    }
     const importConfig: SysImportExcelTemplateDetailVO[] = [];
+    const detailList = props.sysImportExcelTemplate.detailList ?? [];
     // 1.必填验证
-    for (
-      let i = 0;
-      i < props.sysImportExcelTemplate?.detailList?.length!;
-      i++
-    ) {
-      // @ts-expect-error
-      const detail = props.sysImportExcelTemplate?.detailList[i]!;
+    for (const [i, detail] of detailList.entries()) {
+      if (!detail || !detail.fieldName) {
+        continue;
+      }
+      const selectedColumn = dataSource.value[0][detail.fieldName];
       if (
-        detail?.dataRequired &&
-        dataSource.value[0][detail.fieldName] == null
+        detail.dataRequired &&
+        (selectedColumn === null || selectedColumn === undefined)
       ) {
         message.error(`请选择“${i + 1}.${detail?.title}”导入字段`);
         return;
@@ -206,7 +216,7 @@ async function handleStepNext() {
     const res = await analysisApi(
       props.sysImportExcelTemplate?.id as string,
       startRow.value,
-      props.importFile!,
+      props.importFile,
       importConfig,
     );
     if (res) {
@@ -221,7 +231,7 @@ async function handleStepNext() {
 
 function checkImportExcelTemplate() {
   if (
-    props.sysImportExcelTemplate?.detailList == null ||
+    props.sysImportExcelTemplate?.detailList === null ||
     props.sysImportExcelTemplate?.detailList.length === 0
   ) {
     message.error('导入模版未配置，请联系管理员');
@@ -240,8 +250,7 @@ function checkImportExcelTemplate() {
           v-model:value="startRow"
           :min="1"
           :max="10"
-          @change="handleStartRowChange"
-        />
+          @change="handleStartRowChange" />
       </DescriptionsItem>
     </Descriptions>
 
@@ -251,8 +260,7 @@ function checkImportExcelTemplate() {
       :columns="columns"
       :data-source="dataSource"
       :pagination="false"
-      :scroll="{ x: '100%', y: 100 }"
-    >
+      :scroll="{ x: '100%', y: 100 }">
       <template #headerCell="{ column }">
         <div :class="[column.require ? 'require-mark' : '']">
           {{ column.title }}
@@ -268,8 +276,7 @@ function checkImportExcelTemplate() {
             option-filter-prop="label"
             :options="columnOptions"
             v-model:value="record[column.dataIndex]"
-            style="width: 100%"
-          />
+            style="width: 100%" />
         </template>
       </template>
     </Table>

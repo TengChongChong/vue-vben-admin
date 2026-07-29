@@ -12,12 +12,11 @@ const userStore = useUserStore();
 <template>
   <Page
     :title="`${accessMode === 'frontend' ? '前端' : '后端'}按钮访问权限演示`"
-    description="切换不同的账号，观察按钮变化。"
-  >
+    description="切换不同的账号，观察按钮变化。">
     <Card class="mb-5">
       <template #title>
         <span class="font-semibold">当前角色:</span>
-        <span class="mx-4 text-lg text-primary">
+        <span class="text-primary mx-4 text-lg">
           {{ userStore.roleCodeList }}
         </span>
       </template>
@@ -59,8 +58,7 @@ const userStore = useUserStore();
       </Button>
       <Button
         v-if="hasAccessByCodes(['sys:role:remove', 'sys:role:save'])"
-        class="mr-4"
-      >
+        class="mr-4">
         sys:role:remove & sys:role:save 权限可见
       </Button>
     </Card>

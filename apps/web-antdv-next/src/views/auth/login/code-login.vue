@@ -6,9 +6,14 @@ import { computed, ref } from 'vue';
 import { AuthenticationCodeLogin, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 
+import { message } from 'antdv-next';
+
+import { useAuthStore } from '#/store';
+
 defineOptions({ name: 'CodeLogin' });
 
 const loading = ref(false);
+const authStore = useAuthStore();
 
 const formSchema = computed((): VbenFormSchema[] => {
   return [
@@ -50,8 +55,17 @@ const formSchema = computed((): VbenFormSchema[] => {
  * @param values 登录表单数据
  */
 async function handleLogin(values: LoginCodeParams) {
-  // eslint-disable-next-line no-console
-  console.log(values);
+  try {
+    loading.value = true;
+    await authStore.authLoginSms({
+      phoneNumber: values.phoneNumber,
+      verificationCode: values.code,
+    });
+  } catch {
+    message.error('登录失败，请检查手机号和验证码');
+  } finally {
+    loading.value = false;
+  }
 }
 </script>
 
@@ -59,6 +73,5 @@ async function handleLogin(values: LoginCodeParams) {
   <AuthenticationCodeLogin
     :form-schema="formSchema"
     :loading="loading"
-    @submit="handleLogin"
-  />
+    @submit="handleLogin" />
 </template>

@@ -42,8 +42,7 @@ function handleChange(value) {
     v-model:value="currentValue"
     :options="AREA"
     @change="handleChange"
-    style="width: 100%"
-  />
+    style="width: 100%" />
 </template>
 
 <style scoped></style>

@@ -131,24 +131,21 @@ const id = useId();
     otp
     placeholder="○"
     type="number"
-    @complete="handleComplete"
-  >
+    @complete="handleComplete">
     <div class="relative flex w-full">
       <PinInputGroup class="mr-2">
         <PinInputInput
           v-for="(item, index) in codeLength"
           :key="item"
-          :index="index"
-        />
+          :index="index" />
       </PinInputGroup>
       <VbenButton
         :disabled="disabled"
         :loading="btnLoading"
-        class="grow"
+        class="flex-grow"
         size="lg"
         variant="outline"
-        @click="handleCheckSend"
-      >
+        @click="handleCheckSend">
         {{ btnText }}
       </VbenButton>
     </div>

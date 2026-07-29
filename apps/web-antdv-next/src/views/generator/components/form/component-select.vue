@@ -77,7 +77,7 @@ const initOptions = () => {
   options.value = opt;
 };
 
-function handleChange(value) {
+function handleChange(value: string) {
   currentValue.value = value;
   emit('change', value);
   emit('update:value', value);
@@ -91,8 +91,7 @@ function handleChange(value) {
     v-bind="$attrs"
     v-model:value="currentValue"
     :options="options"
-    @change="handleChange"
-  />
+    @change="handleChange" />
 </template>
 
 <style scoped></style>

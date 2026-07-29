@@ -20,13 +20,12 @@ loadQuickNavigation();
 </script>
 
 <template>
-  <Card variant="outlined" title="快捷导航">
+  <Card :bordered="false" title="快捷导航">
     <div class="grid grid-cols-4 gap-2" v-if="sysQuickNavigationList">
       <Navigation
         v-for="navigation in sysQuickNavigationList"
         :key="navigation.id"
-        :quick-navigation="navigation"
-      />
+        :quick-navigation="navigation" />
     </div>
   </Card>
 </template>

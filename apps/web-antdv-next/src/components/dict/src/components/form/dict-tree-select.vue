@@ -62,8 +62,7 @@ function handleChange() {
     allow-clear
     show-search
     tree-node-filter-prop="label"
-    @change="handleChange"
-  >
+    @change="handleChange">
     <template #title="{ label }">
       <!-- 高亮关键字 -->
       <template v-if="label">

@@ -15,7 +15,7 @@ import { LucideLogOut } from '#/components/icons';
 import { initColumns } from './data';
 
 function handleSearch() {
-  gridApi.search();
+  gridApi.query();
 }
 
 const formOptions: VbenFormProps = {
@@ -76,9 +76,8 @@ function handleForceLogin(token: string) {
         <VbenAvatar
           :alt="row.nickname"
           :size="32"
-          :src="row.avatarUrl"
-          class="mx-auto"
-        />
+          :src="row.avatarUrl || ''"
+          class="mx-auto" />
       </template>
       <template #action="{ row }">
         <AccessControl :codes="['sys:online:force']">
@@ -86,8 +85,7 @@ function handleForceLogin(token: string) {
             cancel-text="否"
             ok-text="是"
             title="确定要强制退出吗？"
-            @confirm="handleForceLogin(row.token)"
-          >
+            @confirm="handleForceLogin(row.token)">
             <Button danger size="small" type="link">
               <template #icon>
                 <LucideLogOut />

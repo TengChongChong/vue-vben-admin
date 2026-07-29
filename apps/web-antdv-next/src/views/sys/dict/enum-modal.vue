@@ -47,15 +47,13 @@ const [Modal, modalApi] = useVbenModal({
       <div class="relative">
         <Divider
           :text="`Java Enum - ${generateDictEnumResponse.javaFileName}.java`"
-          :show-hr="false"
-        />
+          :show-hr="false" />
         <Prism language="java">{{ generateDictEnumResponse.javaCode }}</Prism>
-        <div class="absolute top-8 right-2">
+        <div class="absolute right-2 top-8">
           <Button
             size="small"
             @click="handleCopy(generateDictEnumResponse.javaCode)"
-            type="primary"
-          >
+            type="primary">
             <template #icon> <LucideCopy /> </template>
             复制
           </Button>
@@ -64,15 +62,13 @@ const [Modal, modalApi] = useVbenModal({
       <div class="relative">
         <Divider
           :text="`JavaScript Enum - /src/enums/${generateDictEnumResponse.jsFileName}.ts`"
-          :show-hr="false"
-        />
+          :show-hr="false" />
         <Prism language="js">{{ generateDictEnumResponse.jsCode }}</Prism>
-        <div class="absolute top-8 right-2">
+        <div class="absolute right-2 top-8">
           <Button
             size="small"
             @click="handleCopy(generateDictEnumResponse.jsCode)"
-            type="primary"
-          >
+            type="primary">
             <template #icon> <LucideCopy /> </template>
             复制
           </Button>
@@ -85,8 +81,7 @@ const [Modal, modalApi] = useVbenModal({
         <Alert
           type="info"
           message="如字典编码使用数字，请自行调整枚举内容"
-          banner
-        />
+          banner />
 
         <ButtonClose @click="modalApi.close()" />
       </Space>

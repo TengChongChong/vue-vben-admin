@@ -25,7 +25,7 @@ function openVerifyModal() {
 
 <template>
   <Page>
-    <Card variant="outlined" title="滑块验证码">
+    <Card :bordered="false" title="滑块验证码">
       <Button @click="openVerifyModal">点击完成验证</Button>
 
       <br />
@@ -35,8 +35,7 @@ function openVerifyModal() {
         <Alert
           class="mb-2"
           message="请将下方验证码传到后端进行二次验证"
-          show-icon
-        />
+          show-icon />
         <Tag :bordered="false">{{ captchaVerification }}</Tag>
       </template>
     </Card>

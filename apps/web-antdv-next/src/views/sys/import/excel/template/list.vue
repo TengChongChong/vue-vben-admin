@@ -21,7 +21,7 @@ import DetailsConfigDrawer from './details-config/index.vue';
 import InputDrawer from './input.vue';
 
 function handleSearch() {
-  gridApi.search();
+  gridApi.query();
 }
 
 const formOptions: VbenFormProps = {
@@ -95,15 +95,13 @@ function handleDetailsConfig(row) {
         <Space>
           <ButtonAdd
             :auth-codes="['sys:import:excel:template:save']"
-            @click="handleCreate"
-          />
+            @click="handleCreate" />
 
           <ButtonRemove
             :api="removeSysImportExcelTemplateApi"
             :auth-codes="['sys:import:excel:template:remove']"
             :grid-api="gridApi"
-            @success="handleSearch"
-          />
+            @success="handleSearch" />
 
           <Divider class="h-5" type="vertical" />
         </Space>
@@ -113,8 +111,7 @@ function handleDetailsConfig(row) {
           :auth-codes="['sys:import:excel:template:save']"
           size="small"
           type="link"
-          @click="handleEdit(row.id)"
-        />
+          @click="handleEdit(row.id)" />
 
         <ButtonRemove
           :api="removeSysImportExcelTemplateApi"
@@ -122,8 +119,7 @@ function handleDetailsConfig(row) {
           :ids="[row.id]"
           size="small"
           type="link"
-          @success="handleSearch"
-        />
+          @success="handleSearch" />
 
         <Button size="small" type="link" @click.stop="handleDetailsConfig(row)">
           <template #icon>

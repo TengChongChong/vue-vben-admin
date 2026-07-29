@@ -71,14 +71,12 @@ async function handleExportVerificationFailData() {
           : importSummary.success > 0
             ? 'warning'
             : 'error'
-      "
-    >
+      ">
       <template #extra>
         <Button
           type="primary"
           :loading="continueBtnLoading"
-          @click="handleContinueImport"
-        >
+          @click="handleContinueImport">
           <template #icon>
             <LucideHardDriveUpload />
           </template>
@@ -87,8 +85,7 @@ async function handleExportVerificationFailData() {
         <Button
           v-if="importSummary.fail > 0"
           :loading="downloadBtnLoading"
-          @click="handleExportVerificationFailData"
-        >
+          @click="handleExportVerificationFailData">
           <template #icon>
             <LucideHardDriveDownload />
           </template>

@@ -19,8 +19,7 @@ const props = defineProps<{ currentUser: SessionUser }>();
         :size="100"
         :src="props.currentUser.avatar || preferences.app.defaultAvatar"
         :alt="props.currentUser.nickname"
-        class="size-20"
-      />
+        class="size-20" />
     </div>
     <div class="user-info p-2 pl-6">
       <div class="mb-1 text-lg font-medium">
@@ -39,7 +38,12 @@ const props = defineProps<{ currentUser: SessionUser }>();
   </Flex>
 
   <!-- 用户详情 -->
-  <Descriptions :column="1" class="user-descriptions my-4!">
+  <Descriptions
+    :column="1"
+    :content-style="{ justifyContent: 'end' }"
+    :label-style="{ width: '80px' }"
+    class="mb-4"
+    size="small">
     <DescriptionsItem label="邮箱">
       {{ props.currentUser?.email }}
     </DescriptionsItem>
@@ -50,8 +54,7 @@ const props = defineProps<{ currentUser: SessionUser }>();
       <Tag
         v-for="role in props.currentUser?.roleList"
         :key="role.id"
-        :bordered="false"
-      >
+        :bordered="false">
         {{ role.name }}
       </Tag>
     </DescriptionsItem>
@@ -64,12 +67,6 @@ const props = defineProps<{ currentUser: SessionUser }>();
     font-size: 32px !important;
     background-color: hsl(var(--primary));
     border: 0;
-  }
-}
-
-.user-descriptions {
-  :deep(.ant-descriptions-item-label) {
-    width: 80px;
   }
 }
 </style>

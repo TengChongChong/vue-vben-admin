@@ -60,8 +60,7 @@ function convertDictCode() {
       <Tag
         v-if="dict.color && props.useTag"
         :bordered="false"
-        :color="dict.color"
-      >
+        :color="dict.color">
         {{ dict.name }}
       </Tag>
       <span v-else>{{ dict.name }}</span>

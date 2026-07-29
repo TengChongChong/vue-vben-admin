@@ -210,19 +210,16 @@ function handleCollapseAll() {
         <!-- 隐藏菜单使用opacity: 50% -->
         <div
           class="flex w-full items-center gap-1"
-          :class="[row.hideInMenu === '1' ? 'opacity-50' : '']"
-        >
-          <div class="size-4 shrink-0">
+          :class="[row.hideInMenu === '1' ? 'opacity-50' : '']">
+          <div class="size-4 flex-shrink-0">
             <IconifyIcon
               v-if="row.type === 'button'"
               icon="lucide:shield-check"
-              class="size-full"
-            />
+              class="size-full" />
             <IconifyIcon
               v-else-if="row.icon"
               :icon="row.icon"
-              class="size-full"
-            />
+              class="size-full" />
           </div>
           <span class="flex-auto">
             {{ row.title }}
@@ -234,8 +231,7 @@ function handleCollapseAll() {
           class="menu-badge"
           :badge="row.badge"
           :badge-type="row.badgeType"
-          :badge-variants="row.badgeVariants"
-        />
+          :badge-variants="row.badgeVariants" />
       </template>
     </Grid>
   </Page>

@@ -155,8 +155,7 @@ function goToLogin() {
   <div>
     <div class="mb-7 sm:mx-auto sm:w-full sm:max-w-md">
       <h2
-        class="mb-3 text-3xl/9 font-bold tracking-tight text-foreground lg:text-4xl"
-      >
+        class="mb-3 text-3xl/9 font-bold tracking-tight text-foreground lg:text-4xl">
         找回密码
       </h2>
 
@@ -170,16 +169,14 @@ function goToLogin() {
           <Select
             v-model:value="bindAccountType"
             size="large"
-            style="width: 25%"
-          >
+            style="width: 25%">
             <SelectOption value="mobilePhone"> 手机号 </SelectOption>
             <SelectOption value="email">邮箱</SelectOption>
           </Select>
           <Input
             v-bind="slotProps"
             :placeholder="`${bindAccountType === 'email' ? '请输入邮箱' : '请输入手机号'}`"
-            style="width: 75%"
-          />
+            style="width: 75%" />
         </InputGroup>
       </template>
     </Form>
@@ -189,8 +186,7 @@ function goToLogin() {
         :loading="loading"
         aria-label="submit"
         class="mt-2 w-full"
-        @click="handleReset"
-      >
+        @click="handleReset">
         重置
       </VbenButton>
       <VbenButton class="mt-4 w-full" variant="outline" @click="goToLogin()">

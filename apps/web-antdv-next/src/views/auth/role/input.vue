@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { TreeDataItem } from 'antdv-next/es/tree/Tree';
+import type { TreeDataNode as TreeDataItem } from 'antdv-next';
 
 import type { SysRoleVO } from '#/api';
 
@@ -32,17 +32,18 @@ const { hasAccessByRoles } = useAccess();
 const menuTreeData = ref<TreeDataItem[]>([]);
 const deptTreeData = ref<TreeDataItem[]>([]);
 
-function initData() {
-  selectAllSysMenuApi().then((res) => {
-    menuTreeData.value = listToTree(res);
-  });
-
-  selectAllSysDeptApi().then((res) => {
-    deptTreeData.value = listToTree(res);
-  });
+async function loadTreeData() {
+  try {
+    const [menuList, deptList] = await Promise.all([
+      selectAllSysMenuApi(),
+      selectAllSysDeptApi(),
+    ]);
+    menuTreeData.value = listToTree(menuList);
+    deptTreeData.value = listToTree(deptList);
+  } catch {
+    message.error('加载菜单或部门数据失败，请稍后重试');
+  }
 }
-
-initData();
 
 const [BaseForm, baseFormApi] = useVbenForm({
   showDefaultActions: false,
@@ -149,6 +150,7 @@ async function handleSubmit(callback: (res: SysRoleVO) => any) {
     if (!valid) {
       return;
     }
+    drawerApi.lock();
     const values: SysRoleVO = { ...(await baseFormApi.getValues()) };
     if (!isArray(values.menuIds)) {
       const { checked, halfChecked } = values.menuIds;
@@ -164,9 +166,11 @@ async function handleSubmit(callback: (res: SysRoleVO) => any) {
     const res = await saveSysRoleApi(values);
     message.success('保存成功');
     emit('success');
-    callback(res);
-  } catch (error) {
-    console.error('保存失败', error);
+    await callback(res);
+    drawerApi.unlock();
+  } catch {
+    drawerApi.unlock();
+    message.error('保存失败，请稍后重试');
   } finally {
     saveBtnLoading.value = false;
   }
@@ -190,6 +194,7 @@ async function handleSaveAndAdd() {
 const [Drawer, drawerApi] = useVbenDrawer({
   onOpenChange: async (isOpen: boolean) => {
     if (isOpen) {
+      await loadTreeData();
       // 打开时根据id获取详情
       const data = drawerApi.getData<Record<string, any>>();
       await baseFormApi.resetForm();
@@ -201,6 +206,9 @@ const [Drawer, drawerApi] = useVbenDrawer({
           data.dataPermissionDeptIds,
         ),
       });
+    } else {
+      menuTreeData.value = [];
+      deptTreeData.value = [];
     }
   },
 });
@@ -216,8 +224,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
           checkable
           size="small"
           title="请勾选菜单"
-          v-bind="slotProps"
-        />
+          v-bind="slotProps" />
       </template>
 
       <template #dataPermissionDeptIds="slotProps">
@@ -229,8 +236,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
           checkable
           size="small"
           title="请勾选部门"
-          v-bind="slotProps"
-        />
+          v-bind="slotProps" />
       </template>
     </BaseForm>
 
@@ -241,8 +247,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
         <ButtonSave
           :loading="saveBtnLoading"
           text="保存并新增"
-          @click="handleSaveAndAdd"
-        />
+          @click="handleSaveAndAdd" />
       </Space>
     </template>
   </Drawer>

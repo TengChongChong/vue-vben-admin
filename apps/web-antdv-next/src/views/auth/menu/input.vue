@@ -446,6 +446,7 @@ async function handleSubmit(callback: (res: SysMenu) => any) {
     if (!valid) {
       return;
     }
+    drawerApi.lock();
     const values: SysMenu = await baseFormApi.getValues();
     const res = await saveSysMenuApi({
       ...values,
@@ -457,8 +458,10 @@ async function handleSubmit(callback: (res: SysMenu) => any) {
       hideInTab: values.hideInTab ? '1' : '0',
     });
     emit('success');
-    callback(res);
+    await callback(res);
+    drawerApi.unlock();
   } catch (error) {
+    drawerApi.unlock();
     console.error('保存失败', error);
   } finally {
     saveBtnLoading.value = false;
@@ -532,8 +535,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
         <ButtonSave
           :loading="saveBtnLoading"
           text="保存并新增"
-          @click="handleSaveAndAdd"
-        />
+          @click="handleSaveAndAdd" />
       </Space>
     </template>
   </Drawer>

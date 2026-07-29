@@ -39,8 +39,7 @@ onMounted(() => {
           :height="280"
           :tree-data="menuTreeData"
           class="mb-4"
-          title="基础树"
-        />
+          title="基础树" />
       </Col>
       <Col :lg="12" :md="24" :xl="8">
         <BasicTree
@@ -50,8 +49,7 @@ onMounted(() => {
           :height="280"
           :tree-data="menuTreeData"
           class="mb-4"
-          title="默认展开第一层"
-        />
+          title="默认展开第一层" />
       </Col>
       <Col :lg="12" :md="24" :xl="8">
         <BasicTree
@@ -61,8 +59,7 @@ onMounted(() => {
           :show-toolbar="true"
           :tree-data="menuTreeData"
           class="mb-4"
-          title="支持搜索&工具栏"
-        />
+          title="支持搜索&工具栏" />
       </Col>
       <Col :lg="12" :md="24" :xl="8">
         <BasicTree
@@ -73,8 +70,7 @@ onMounted(() => {
           :tree-data="menuTreeData"
           checkable
           class="mb-4"
-          title="支持勾选"
-        />
+          title="支持勾选" />
       </Col>
       <Col :lg="12" :md="24" :xl="8">
         <BasicTree
@@ -86,8 +82,7 @@ onMounted(() => {
           checkable
           class="mb-4"
           size="small"
-          title="小尺寸"
-        />
+          title="小尺寸" />
       </Col>
     </Row>
   </Page>

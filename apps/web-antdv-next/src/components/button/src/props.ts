@@ -1,5 +1,4 @@
-import type { ButtonType } from 'antdv-next/es/button';
-import type { SizeType } from 'antdv-next/es/config-provider';
+import type { ButtonType, SizeType } from 'antdv-next';
 
 import { VxeGridApi } from '@vben/plugins/src/vxe-table/api';
 

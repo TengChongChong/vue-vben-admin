@@ -6,6 +6,8 @@ import { computed, h, ref } from 'vue';
 import { AuthenticationRegister, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 
+import { message } from 'antdv-next';
+
 defineOptions({ name: 'Register' });
 
 const loading = ref(false);
@@ -86,9 +88,13 @@ const formSchema = computed((): VbenFormSchema[] => {
   ];
 });
 
-function handleSubmit(value: LoginAndRegisterParams) {
-  // eslint-disable-next-line no-console
-  console.log('register submit:', value);
+async function handleSubmit(_value: LoginAndRegisterParams) {
+  try {
+    loading.value = true;
+    message.warning('当前版本暂不支持自助注册，请联系管理员开通账号');
+  } finally {
+    loading.value = false;
+  }
 }
 </script>
 
@@ -96,6 +102,5 @@ function handleSubmit(value: LoginAndRegisterParams) {
   <AuthenticationRegister
     :form-schema="formSchema"
     :loading="loading"
-    @submit="handleSubmit"
-  />
+    @submit="handleSubmit" />
 </template>

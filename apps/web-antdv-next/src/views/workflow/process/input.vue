@@ -92,12 +92,14 @@ async function handleSave() {
     if (!valid) {
       return;
     }
+    ModalApi.lock();
     const values: WorkflowProcess = await baseFormApi.getValues();
     await convertToModelApi(values);
     message.success('保存成功');
     await ModalApi.close();
     emit('success');
   } catch (error) {
+    ModalApi.unlock();
     console.error('保存失败', error);
   } finally {
     saveBtnLoading.value = false;

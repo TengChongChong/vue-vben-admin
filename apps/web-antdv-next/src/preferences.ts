@@ -1,4 +1,13 @@
-import { defineOverridesPreferences } from '@vben/preferences';
+import {
+  defineOverridesPreferences,
+  definePreferencesExtension,
+} from '@vben/preferences';
+
+export interface WebAntdPreferencesExtension {
+  defaultTableSize: number;
+  enableFormFullscreen: boolean;
+  reportTitle: string;
+}
 
 /**
  * @description 项目配置文件
@@ -15,6 +24,11 @@ export const overridesPreferences = defineOverridesPreferences({
     /** 是否开启半深色菜单（只在theme='light'时生效） */
     semiDarkSidebar: true,
   },
+  /** 快捷键配置 */
+  shortcutKeys: {
+    /** 是否启用全局关闭窗口快捷键 */
+    globalEscape: true,
+  },
   app: {
     /** 权限模式 */
     accessMode: 'backend',
@@ -30,3 +44,36 @@ export const overridesPreferences = defineOverridesPreferences({
     languageToggle: false,
   },
 });
+
+export const preferencesExtension =
+  definePreferencesExtension<WebAntdPreferencesExtension>({
+    tabLabel: 'preferences.antd.tabLabel',
+    title: 'preferences.antd.title',
+    fields: [
+      {
+        component: 'switch',
+        defaultValue: true,
+        key: 'enableFormFullscreen',
+        label: 'preferences.antd.fields.enableFormFullscreen.label',
+        tip: 'preferences.antd.fields.enableFormFullscreen.tip',
+      },
+      {
+        component: 'number',
+        componentProps: {
+          max: 200,
+          min: 10,
+          step: 10,
+        },
+        defaultValue: 20,
+        key: 'defaultTableSize',
+        label: 'preferences.antd.fields.defaultTableSize.label',
+      },
+      {
+        component: 'input',
+        defaultValue: '',
+        key: 'reportTitle',
+        label: 'preferences.antd.fields.reportTitle.label',
+        placeholder: 'preferences.antd.fields.reportTitle.placeholder',
+      },
+    ],
+  });

@@ -179,8 +179,7 @@ function handleCollapseAll() {
             :api="removeSysMenuApi"
             :auth-codes="['sys:menu:remove']"
             :grid-api="gridApi"
-            @success="handleSearch"
-          />
+            @success="handleSearch" />
 
           <Divider class="h-5" type="vertical" />
         </Space>
@@ -189,19 +188,16 @@ function handleCollapseAll() {
         <!-- 隐藏菜单使用opacity: 50% -->
         <div
           class="flex w-full items-center gap-1"
-          :class="[row.hideInMenu === '1' ? 'opacity-50' : '']"
-        >
-          <div class="size-4 shrink-0">
+          :class="[row.hideInMenu === '1' ? 'opacity-50' : '']">
+          <div class="size-4 flex-shrink-0">
             <IconifyIcon
               v-if="row.type === 'button'"
               icon="lucide:shield-check"
-              class="size-full"
-            />
+              class="size-full" />
             <IconifyIcon
               v-else-if="row.icon"
               :icon="row.icon"
-              class="size-full"
-            />
+              class="size-full" />
           </div>
           <span class="flex-auto">
             {{ row.title }}
@@ -213,30 +209,27 @@ function handleCollapseAll() {
           class="menu-badge"
           :badge="row.badge"
           :badge-type="row.badgeType"
-          :badge-variants="row.badgeVariants"
-        />
+          :badge-variants="row.badgeVariants" />
       </template>
       <template #action="{ row }">
         <ButtonEdit
           :auth-codes="['sys:menu:save']"
           size="small"
           type="link"
-          @click="handleEdit(row.id)"
-        />
+          @click="handleEdit(row.id)" />
         <ButtonRemove
           :api="removeSysMenuApi"
           :auth-codes="['sys:menu:remove']"
           :ids="[row.id]"
           size="small"
           type="link"
-          @success="handleSearch"
-        />
+          @success="handleSearch" />
         <Dropdown>
           <Button size="small" type="link" @click.prevent>
             更多
             <LucideChevronDown />
           </Button>
-          <template #overlay>
+          <template #popupRender>
             <Menu>
               <AccessControl :codes="['sys:menu:save']">
                 <MenuItem @click="handleCreate(row.id)">

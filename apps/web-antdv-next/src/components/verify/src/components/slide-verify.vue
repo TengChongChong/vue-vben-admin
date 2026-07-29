@@ -161,32 +161,27 @@ async function handleDragEnd() {
           :style="{
             width: `${captchaSize.width}px`,
             height: `${captchaSize.height}px`,
-          }"
-        ></div>
+          }"></div>
       </Spin>
 
       <img
         v-if="!state.loading"
         :src="`data:image/png;base64,${captchaVO.originalImageBase64}`"
-        alt="背景"
-      />
+        alt="背景" />
 
       <div
         v-if="!state.loading"
         :style="state.imgStyle"
-        class="verify-slide-originals-slider"
-      >
+        class="verify-slide-originals-slider">
         <img
           :src="`data:image/png;base64,${captchaVO.jigsawImageBase64}`"
-          alt="滑块"
-        />
+          alt="滑块" />
       </div>
 
       <span
         v-if="state.showTip"
         :class="[state.isPassing ? 'success' : 'error']"
-        class="verify-slide-originals-img__tip"
-      >
+        class="verify-slide-originals-img__tip">
         {{
           state.isPassing
             ? `验证成功，耗时${state.time.toFixed(1)}秒！`
@@ -204,17 +199,12 @@ async function handleDragEnd() {
       success-text=""
       @end="handleDragEnd"
       @move="handleDragBarMove"
-      @start="handleStart"
-    />
+      @start="handleStart" />
   </div>
 </template>
 <style lang="scss">
 .verify-slide {
   width: 310px;
-
-  .ant-spin.ant-spin-section {
-    display: none;
-  }
 
   &-originals {
     position: relative;

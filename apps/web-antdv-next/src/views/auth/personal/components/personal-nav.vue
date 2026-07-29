@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, h, nextTick, ref, unref, watch } from 'vue';
+import { nextTick, ref, unref, watch } from 'vue';
 
-import { Menu } from 'antdv-next';
+import { Menu, MenuItem } from 'antdv-next';
 
 import {
   LockKeyhole,
@@ -22,29 +22,6 @@ const prop = defineProps({
 const emit = defineEmits(['update:selectedKeys']);
 const selectedKeys = ref([prop.selectedKeys]);
 
-const menuItems = computed(() => [
-  {
-    key: 'profile-overview',
-    icon: () => h(LucideLayers),
-    label: '概览',
-  },
-  {
-    key: 'personal-information',
-    icon: () => h(LucideUserRound),
-    label: '我的资料',
-  },
-  {
-    key: 'account-security',
-    icon: () => h(LucideShieldCheck),
-    label: '安全设置',
-  },
-  {
-    key: 'change-password',
-    icon: () => h(LockKeyhole),
-    label: '修改密码',
-  },
-]);
-
 watch(
   () => prop.selectedKeys,
   () => (selectedKeys.value = [prop.selectedKeys]),
@@ -60,13 +37,32 @@ function handleSelect() {
 <template>
   <!-- 导航 -->
   <div class="personal-nav-wrapper">
-    <Menu
-      v-model:selected-keys="selectedKeys"
-      class="personal-nav"
-      :items="menuItems"
-      mode="inline"
-      @select="handleSelect"
-    />
+    <Menu v-model:selected-keys="selectedKeys" class="personal-nav" mode="inline" @select="handleSelect">
+      <MenuItem key="profile-overview">
+        <template #icon>
+          <LucideLayers />
+        </template>
+        概览
+      </MenuItem>
+      <MenuItem key="personal-information">
+        <template #icon>
+          <LucideUserRound />
+        </template>
+        我的资料
+      </MenuItem>
+      <MenuItem key="account-security">
+        <template #icon>
+          <LucideShieldCheck />
+        </template>
+        安全设置
+      </MenuItem>
+      <MenuItem key="change-password">
+        <template #icon>
+          <LockKeyhole />
+        </template>
+        修改密码
+      </MenuItem>
+    </Menu>
   </div>
 </template>
 

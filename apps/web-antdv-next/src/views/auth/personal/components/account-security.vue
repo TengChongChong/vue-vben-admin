@@ -36,11 +36,10 @@ async function handleSuccess() {
 </script>
 
 <template>
-  <Card variant="outlined" title="安全设置">
+  <Card :bordered="false" title="安全设置">
     <div class="flex flex-col gap-4">
       <div
-        class="flex items-start justify-between border-b py-3 last:border-b-0"
-      >
+        class="flex items-start justify-between border-b py-3 last:border-b-0">
         <div class="flex items-start gap-3">
           <div class="text-[1.9rem] leading-none">
             <LucideSmartphone />
@@ -56,11 +55,10 @@ async function handleSuccess() {
         </div>
         <div class="shrink-0">
           <Button
+            class="px-0"
             size="small"
             type="link"
-            class="px-0"
-            @click="handleChangePhone"
-          >
+            @click="handleChangePhone">
             <template #icon>
               <LucideLink />
             </template>
@@ -70,8 +68,7 @@ async function handleSuccess() {
       </div>
 
       <div
-        class="flex items-start justify-between border-b py-3 last:border-b-0"
-      >
+        class="flex items-start justify-between border-b py-3 last:border-b-0">
         <div class="flex items-start gap-3">
           <div class="text-[1.9rem] leading-none">
             <LucideMail />
@@ -87,11 +84,10 @@ async function handleSuccess() {
         </div>
         <div class="shrink-0">
           <Button
+            class="px-0"
             size="small"
             type="link"
-            class="px-0"
-            @click="handleChangeEmail"
-          >
+            @click="handleChangeEmail">
             <template #icon>
               <LucideLink />
             </template>
@@ -106,5 +102,3 @@ async function handleSuccess() {
     <BaseChangePhoneModal @success="handleSuccess" />
   </Card>
 </template>
-
-<style lang="scss" scoped></style>

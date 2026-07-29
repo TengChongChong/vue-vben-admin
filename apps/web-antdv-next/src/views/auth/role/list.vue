@@ -19,6 +19,7 @@ import {
 import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
 import { LucideRefreshCw } from '#/components/icons';
 import { RoleEnum } from '#/enums/roleEnum';
+import { buildTenantGridId } from '#/utils/tenant-grid-id';
 
 import { initColumns } from './data';
 import InputDrawer from './input.vue';
@@ -26,7 +27,7 @@ import InputDrawer from './input.vue';
 const { hasAccessByRoles } = useAccess();
 
 function handleSearch() {
-  gridApi.search();
+  gridApi.query();
 }
 
 const formOptions: VbenFormProps = {
@@ -64,7 +65,7 @@ const formOptions: VbenFormProps = {
 };
 
 const gridOptions: VxeGridProps<SysRole> = {
-  id: 'sys-role',
+  id: buildTenantGridId('sys-role'),
   columns: initColumns(),
   proxyConfig: {
     ajax: {
@@ -117,8 +118,7 @@ function handleReloadCache() {
             :api="removeSysRoleApi"
             :auth-codes="['sys:role:remove']"
             :grid-api="gridApi"
-            @success="handleSearch"
-          />
+            @success="handleSearch" />
 
           <Button @click="handleReloadCache">
             <template #icon> <LucideRefreshCw /> </template>
@@ -133,8 +133,7 @@ function handleReloadCache() {
           :auth-codes="['sys:role:save']"
           size="small"
           type="link"
-          @click="handleEdit(row.id)"
-        />
+          @click="handleEdit(row.id)" />
 
         <ButtonRemove
           :api="removeSysRoleApi"
@@ -142,8 +141,7 @@ function handleReloadCache() {
           :ids="[row.id]"
           size="small"
           type="link"
-          @success="handleSearch"
-        />
+          @success="handleSearch" />
       </template>
     </Grid>
     <!--  编辑  -->

@@ -1,4 +1,4 @@
-import type { TreeDataItem } from 'antdv-next/es/tree/Tree';
+import type { TreeDataNode as TreeDataItem } from 'antdv-next';
 
 import type { ComputedRef, Ref } from 'vue';
 
@@ -26,7 +26,9 @@ export function useTree(
     if (!childrenField || !keyField) return keys;
 
     for (const node of treeData) {
-      keys.push(node[keyField]!);
+      if (node[keyField] !== undefined) {
+        keys.push(node[keyField]);
+      }
       const children = node[childrenField];
       if (children && children.length > 0) {
         keys.push(...(getAllKeys(children) as string[]));
@@ -43,9 +45,13 @@ export function useTree(
     if (!childrenField || !keyField) return keys;
 
     for (const node of treeData) {
-      node.disabled !== true &&
+      if (
+        node.disabled !== true &&
         node.selectable !== false &&
-        keys.push(node[keyField]!);
+        node[keyField] !== undefined
+      ) {
+        keys.push(node[keyField]);
+      }
       const children = node[childrenField];
       if (children && children.length > 0) {
         keys.push(...(getEnabledKeys(children) as string[]));
@@ -62,7 +68,9 @@ export function useTree(
     for (const node of treeData) {
       const children = node[childrenField];
       if (nodeKey === node[keyField]) {
-        keys.push(node[keyField]!);
+        if (node[keyField] !== undefined) {
+          keys.push(node[keyField]);
+        }
         if (children && children.length > 0) {
           keys.push(...(getAllKeys(children) as string[]));
         }
@@ -215,8 +223,9 @@ export function useTree(
         selectedNode = item;
         return;
       }
-      if (item[childrenField!] && item[childrenField!].length > 0) {
-        selectedNode = getSelectedNode(key, item[childrenField!], selectedNode);
+      const children = childrenField ? item[childrenField] : [];
+      if (children && children.length > 0) {
+        selectedNode = getSelectedNode(key, children, selectedNode);
       }
     });
     return selectedNode || null;

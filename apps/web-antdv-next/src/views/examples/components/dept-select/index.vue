@@ -3,12 +3,10 @@ import { defineComponent, onMounted, ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
-import { Card, Col, Descriptions, Row, Tag } from 'antdv-next';
+import { Card, Col, Descriptions, DescriptionsItem, Row, Tag } from 'antdv-next';
 
 import { useVbenForm } from '#/adapter/form';
 import { DeptSelect, DeptTree } from '#/components/dept';
-
-const DescriptionsItem = Descriptions.Item;
 
 defineComponent({
   name: 'SampleCompDeptSelectIndex',
@@ -19,7 +17,7 @@ const deptIds = ref<string[]>(['1', '1531875430343229442']);
 const deptTree = ref<string[]>(['1531875430343229442']);
 
 async function onSubmit(values: Record<string, any>) {
-  console.log('form values:', values);
+  console.warn('form values:', values);
 }
 
 const [BaseForm, baseFormApi] = useVbenForm({
@@ -54,14 +52,13 @@ onMounted(() => {
   <Page>
     <Row :gutter="16">
       <Col :lg="24" :xl="12">
-        <Card variant="outlined" class="mb-4" title="基础示例">
+        <Card :bordered="false" class="mb-4" title="基础示例">
           <Descriptions
             :column="1"
             :label-style="{ width: '150px' }"
             bordered
             class="mb-6"
-            title="DeptSelect - 部门选择器"
-          >
+            title="DeptSelect - 部门选择器">
             <DescriptionsItem label="选择部门">
               <DeptSelect v-model:value="deptId" />
             </DescriptionsItem>
@@ -71,14 +68,14 @@ onMounted(() => {
           </Descriptions>
         </Card>
 
-        <Card variant="outlined" title="DeptTree">
+        <Card :bordered="false" title="DeptTree">
           <Tag :bordered="false" class="mb-2">SelectKey： {{ deptTree }}</Tag>
 
           <DeptTree v-model:value="deptTree" />
         </Card>
       </Col>
       <Col :xl="24" :xxl="12">
-        <Card variant="outlined" class="mb-4" title="在表单中使用">
+        <Card :bordered="false" class="mb-4" title="在表单中使用">
           <BaseForm />
         </Card>
       </Col>

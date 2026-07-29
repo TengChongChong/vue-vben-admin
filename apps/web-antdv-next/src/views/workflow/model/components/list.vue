@@ -8,15 +8,7 @@ import { watch } from 'vue';
 import { AccessControl } from '@vben/access';
 import { useVbenDrawer, useVbenModal } from '@vben/common-ui';
 
-import {
-  Button,
-  Divider,
-  Dropdown,
-  Menu,
-  MenuItem,
-  message,
-  Space,
-} from 'antdv-next';
+import { Button, Divider, Dropdown, Menu, MenuItem, message, Space } from 'antdv-next';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
@@ -42,7 +34,7 @@ const props = defineProps<{
 }>();
 
 function handleSearch() {
-  gridApi.search();
+  gridApi.query();
 }
 
 watch(
@@ -129,15 +121,13 @@ function handleDeploymentProcess(id: string) {
       <Space>
         <ButtonAdd
           :auth-codes="['workflow:model:save']"
-          @click="handleCreate"
-        />
+          @click="handleCreate" />
 
         <ButtonRemove
           :api="removeWorkflowModelApi"
           :auth-codes="['workflow:model:remove']"
           :grid-api="gridApi"
-          @success="handleSearch"
-        />
+          @success="handleSearch" />
 
         <Divider class="h-5" type="vertical" />
       </Space>
@@ -158,15 +148,14 @@ function handleDeploymentProcess(id: string) {
         :ids="[row.id]"
         size="small"
         type="link"
-        @success="handleSearch"
-      />
+        @success="handleSearch" />
 
       <Dropdown>
         <Button size="small" type="link" @click.prevent>
           更多
           <LucideChevronDown />
         </Button>
-        <template #overlay>
+        <template #popupRender>
           <Menu>
             <AccessControl :codes="['workflow:model:save']">
               <MenuItem @click="handleEdit(row.id)">

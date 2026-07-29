@@ -30,7 +30,7 @@ const treeSelectValue = ref<string>('1');
 const multipleTreeSelectValue = ref<string[]>(['1-2', '1-3']);
 
 async function onSubmit(values: Record<string, any>) {
-  console.log('form values:', values);
+  console.warn('form values:', values);
 }
 
 const [BaseForm, baseFormApi] = useVbenForm({
@@ -125,14 +125,13 @@ onMounted(() => {
   <Page description="字典数据来源于系统管理 > 字典管理功能" title="字典 - Dict">
     <Row :gutter="16">
       <Col :lg="24" :xl="12">
-        <Card variant="outlined" title="基础示例">
+        <Card :bordered="false" title="基础示例">
           <Descriptions
             :column="1"
             :label-style="{ width: '150px' }"
             bordered
             class="mb-6"
-            title="DictTag - 名称"
-          >
+            title="DictTag - 名称">
             <DescriptionsItem label="性别">
               <DictTag :use-tag="false" code="1" dict-type="sex" />、
               <DictTag :use-tag="false" code="2" dict-type="sex" />
@@ -157,16 +156,14 @@ onMounted(() => {
             :label-style="{ width: '150px' }"
             bordered
             class="mb-6"
-            title="DictRadio - 单选框"
-          >
+            title="DictRadio - 单选框">
             <DescriptionsItem label="性别">
               <DictRadio v-model:value="sexValue" dict-type="sex" />
             </DescriptionsItem>
             <DescriptionsItem label="用户状态">
               <DictRadio
                 v-model:value="userStatusValue"
-                dict-type="userStatus"
-              />
+                dict-type="userStatus" />
             </DescriptionsItem>
           </Descriptions>
           <Descriptions
@@ -174,16 +171,14 @@ onMounted(() => {
             :label-style="{ width: '150px' }"
             bordered
             class="mb-6"
-            title="DictCheckbox - 多选框"
-          >
+            title="DictCheckbox - 多选框">
             <DescriptionsItem label="性别">
               <DictCheckbox v-model:value="sexArrayValue" dict-type="sex" />
             </DescriptionsItem>
             <DescriptionsItem label="用户状态">
               <DictCheckbox
                 v-model:value="userStatusArrayValue"
-                dict-type="userStatus"
-              />
+                dict-type="userStatus" />
             </DescriptionsItem>
           </Descriptions>
           <Descriptions
@@ -191,8 +186,7 @@ onMounted(() => {
             :label-style="{ width: '150px' }"
             bordered
             class="mb-6"
-            title="DictSelect - 选择器"
-          >
+            title="DictSelect - 选择器">
             <DescriptionsItem label="性别">
               <DictSelect v-model:value="sexValue" dict-type="sex" />
             </DescriptionsItem>
@@ -200,8 +194,7 @@ onMounted(() => {
               <DictSelect
                 v-model:value="userStatusArrayValue"
                 dict-type="userStatus"
-                mode="multiple"
-              />
+                mode="multiple" />
             </DescriptionsItem>
           </Descriptions>
           <Descriptions
@@ -209,20 +202,17 @@ onMounted(() => {
             :label-style="{ width: '150px' }"
             bordered
             class="mb-6"
-            title="DictCascader - 级联选择"
-          >
+            title="DictCascader - 级联选择">
             <DescriptionsItem label="级联选择">
               <DictCascader
                 v-model:value="cascaderValue"
-                dict-type="levelSample"
-              />
+                dict-type="levelSample" />
             </DescriptionsItem>
             <DescriptionsItem label="级联选择 - 多选">
               <DictCascader
                 v-model:value="multipleCascaderValue"
                 dict-type="levelSample"
-                multiple
-              />
+                multiple />
             </DescriptionsItem>
           </Descriptions>
           <Descriptions
@@ -230,29 +220,26 @@ onMounted(() => {
             :label-style="{ width: '150px' }"
             bordered
             class="mb-6"
-            title="DictTreeSelect - 树选择"
-          >
+            title="DictTreeSelect - 树选择">
             <DescriptionsItem label="树选择">
               <DictTreeSelect
                 v-model:value="treeSelectValue"
-                dict-type="levelSample"
-              />
+                dict-type="levelSample" />
             </DescriptionsItem>
             <DescriptionsItem label="树选择 - 多选">
               <DictTreeSelect
                 v-model:value="multipleTreeSelectValue"
                 dict-type="levelSample"
-                multiple
-              />
+                multiple />
             </DescriptionsItem>
           </Descriptions>
         </Card>
       </Col>
       <Col :xl="24" :xxl="12">
-        <Card variant="outlined" class="mb-4" title="在表单中使用">
+        <Card :bordered="false" class="mb-4" title="在表单中使用">
           <BaseForm />
         </Card>
-        <Card variant="outlined" class="mb-4" title="在表格中使用">
+        <Card :bordered="false" class="mb-4" title="在表格中使用">
           todo: 待实现
         </Card>
       </Col>

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { RefSelectProps } from 'antdv-next/es/select';
+import type { SelectProps as RefSelectProps } from 'antdv-next';
 
 import { ref } from 'vue';
 

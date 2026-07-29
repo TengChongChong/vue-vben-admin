@@ -27,7 +27,7 @@ const currentUser = computed(() => {
   <Page>
     <Layout>
       <LayoutSider :width="360" class="rounded-lg" theme="light">
-        <Card variant="outlined" style="height: 100%">
+        <Card :bordered="false" style="height: 100%">
           <!-- 当前登录用户信息 -->
           <PersonalUserInfo :current-user="currentUser!" />
 
@@ -42,8 +42,7 @@ const currentUser = computed(() => {
         <AccountSecurity
           v-if="'account-security' === selectedKeys"
           :email="currentUser?.email"
-          :phone-number="currentUser?.phoneNumber"
-        />
+          :phone-number="currentUser?.phoneNumber" />
         <!-- 修改密码 -->
         <ChangePassword v-if="'change-password' === selectedKeys" />
         <!-- 用户信息 -->

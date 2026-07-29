@@ -6,16 +6,7 @@ import type { SchedulerJob } from '#/api';
 import { AccessControl } from '@vben/access';
 import { Page, useVbenDrawer, useVbenModal } from '@vben/common-ui';
 
-import {
-  Button,
-  Divider,
-  Dropdown,
-  Menu,
-  MenuItem,
-  message,
-  Popconfirm,
-  Space,
-} from 'antdv-next';
+import { Button, Divider, Dropdown, Menu, MenuItem, message, Popconfirm, Space } from 'antdv-next';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
@@ -40,7 +31,7 @@ import { initColumns } from './data';
 import InputDrawer from './input.vue';
 
 function handleSearch() {
-  gridApi.search();
+  gridApi.query();
 }
 
 const formOptions: VbenFormProps = {
@@ -96,38 +87,53 @@ const [BaseInputDrawer, baseInputDrawerApi] = useVbenDrawer({
 });
 
 async function handleCreate() {
-  addSchedulerJobApi().then((res) => {
+  try {
+    const res = await addSchedulerJobApi();
     baseInputDrawerApi.setData(res);
     baseInputDrawerApi.open();
-  });
+  } catch {
+    message.error('初始化新增任务失败，请稍后重试');
+  }
 }
 
-function handleEdit(id: string) {
-  getSchedulerJobApi(id).then((res) => {
+async function handleEdit(id: string) {
+  try {
+    const res = await getSchedulerJobApi(id);
     baseInputDrawerApi.setData(res);
     baseInputDrawerApi.open();
-  });
+  } catch {
+    message.error('加载任务详情失败，请稍后重试');
+  }
 }
 
-const handleImmediateExecution = (id) => {
-  immediateExecutionSchedulerJobApi(id).then(() => {
+const handleImmediateExecution = async (id: string) => {
+  try {
+    await immediateExecutionSchedulerJobApi(id);
     message.success('执行成功');
     handleSearch();
-  });
+  } catch {
+    message.error('执行失败，请稍后重试');
+  }
 };
 
-const handleStartAll = () => {
-  startAllSchedulerJobApi().then(() => {
+const handleStartAll = async () => {
+  try {
+    await startAllSchedulerJobApi();
     message.success('执行成功');
     handleSearch();
-  });
+  } catch {
+    message.error('操作失败，请稍后重试');
+  }
 };
 
-const handlePauseAll = () => {
-  pauseAllSchedulerJobApi().then(() => {
+const handlePauseAll = async () => {
+  try {
+    await pauseAllSchedulerJobApi();
     message.success('执行成功');
     handleSearch();
-  });
+  } catch {
+    message.error('操作失败，请稍后重试');
+  }
 };
 
 async function handleOpenRunLogModal(id: string) {
@@ -143,42 +149,42 @@ async function handleOpenRunLogModal(id: string) {
         <Space>
           <ButtonAdd
             :auth-codes="['scheduler:job:save']"
-            @click="handleCreate"
-          />
+            @click="handleCreate" />
 
           <ButtonRemove
             :api="removeSchedulerJobApi"
             :auth-codes="['scheduler:job:remove']"
             :grid-api="gridApi"
-            @success="handleSearch"
-          />
+            @success="handleSearch" />
 
-          <Popconfirm
-            cancel-text="否"
-            ok-text="是"
-            title="确定要全部开始吗？"
-            @confirm="handleStartAll()"
-          >
-            <Button danger type="primary">
-              <template #icon>
-                <LucideCirclePlay />
-              </template>
-              全部开始
-            </Button>
-          </Popconfirm>
-          <Popconfirm
-            cancel-text="否"
-            ok-text="是"
-            title="确定要全部暂停吗？"
-            @confirm="handlePauseAll()"
-          >
-            <Button danger type="primary">
-              <template #icon>
-                <LucideCirclePause />
-              </template>
-              全部暂停
-            </Button>
-          </Popconfirm>
+          <AccessControl :codes="['scheduler:job:save']">
+            <Popconfirm
+              cancel-text="否"
+              ok-text="是"
+              title="确定要全部开始吗？"
+              @confirm="handleStartAll()">
+              <Button danger type="primary">
+                <template #icon>
+                  <LucideCirclePlay />
+                </template>
+                全部开始
+              </Button>
+            </Popconfirm>
+          </AccessControl>
+          <AccessControl :codes="['scheduler:job:save']">
+            <Popconfirm
+              cancel-text="否"
+              ok-text="是"
+              title="确定要全部暂停吗？"
+              @confirm="handlePauseAll()">
+              <Button danger type="primary">
+                <template #icon>
+                  <LucideCirclePause />
+                </template>
+                全部暂停
+              </Button>
+            </Popconfirm>
+          </AccessControl>
 
           <Divider class="h-5" type="vertical" />
         </Space>
@@ -188,8 +194,7 @@ async function handleOpenRunLogModal(id: string) {
           :auth-codes="['scheduler:job:save']"
           size="small"
           type="link"
-          @click="handleEdit(row.id)"
-        />
+          @click="handleEdit(row.id)" />
 
         <ButtonRemove
           :api="removeSchedulerJobApi"
@@ -197,23 +202,21 @@ async function handleOpenRunLogModal(id: string) {
           :ids="[row.id]"
           size="small"
           type="link"
-          @success="handleSearch"
-        />
+          @success="handleSearch" />
 
         <Dropdown>
           <Button size="small" type="link" @click.prevent>
             更多
             <LucideChevronDown />
           </Button>
-          <template #overlay>
+          <template #popupRender>
             <Menu>
               <AccessControl :codes="['scheduler:job:save']">
                 <Popconfirm
                   cancel-text="否"
                   ok-text="是"
                   title="确定要立即执行吗？"
-                  @confirm="handleImmediateExecution(row.id)"
-                >
+                  @confirm="handleImmediateExecution(row.id)">
                   <MenuItem key="1">
                     <template #icon>
                       <LucideCirclePlay />
@@ -222,12 +225,14 @@ async function handleOpenRunLogModal(id: string) {
                   </MenuItem>
                 </Popconfirm>
               </AccessControl>
-              <MenuItem key="2" @click="handleOpenRunLogModal(row.id)">
-                <template #icon>
-                  <LucideLogs />
-                </template>
-                执行日志
-              </MenuItem>
+              <AccessControl :codes="['scheduler:job:select']">
+                <MenuItem key="2" @click="handleOpenRunLogModal(row.id)">
+                  <template #icon>
+                    <LucideLogs />
+                  </template>
+                  执行日志
+                </MenuItem>
+              </AccessControl>
             </Menu>
           </template>
         </Dropdown>

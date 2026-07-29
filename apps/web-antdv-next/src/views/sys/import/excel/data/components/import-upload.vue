@@ -42,12 +42,11 @@ async function handleStepNext() {
 </script>
 
 <template>
-  <div class="mx-auto w-[680px] pt-24 pb-8">
+  <div class="mx-auto w-[680px] pb-8 pt-24">
     <RuleUpload
       rule-key="sys-import-data-excel"
       v-model:value="file"
-      use-dragger
-    />
+      use-dragger />
 
     <div class="import-tips mt-2 pl-4">
       <ul class="list-decimal">
@@ -57,8 +56,7 @@ async function handleStepNext() {
             type="link"
             size="small"
             @click="handleDownload()"
-            :loading="downloadBtnLoading"
-          >
+            :loading="downloadBtnLoading">
             默认模版（Excel）
           </Button>
           导入数据，使用其他模版需配置导入规则

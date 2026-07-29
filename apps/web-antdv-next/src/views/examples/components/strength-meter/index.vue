@@ -69,7 +69,7 @@ const [BaseForm] = useVbenForm({
 
 <template>
   <Page>
-    <Card variant="outlined" class="mb-4 w-[720px]" title="密码强度">
+    <Card :bordered="false" class="mb-4 w-[720px]" title="密码强度">
       <BaseForm />
     </Card>
   </Page>

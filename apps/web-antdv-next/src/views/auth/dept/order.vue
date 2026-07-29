@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { TreeProps } from 'antdv-next';
-import type { AntTreeNodeDropEvent } from 'antdv-next/lib/tree';
+import type { TreeDataNode as TreeDataItem, TreeProps } from 'antdv-next';
+import type { AntTreeNodeDropEvent } from 'antdv-next/dist/tree/Tree';
 
 import type { SysDept } from '#/api';
 
@@ -9,7 +9,7 @@ import { ref } from 'vue';
 import { useVbenDrawer } from '@vben/common-ui';
 import { listToTree, treeToList } from '@vben/utils';
 
-import { Alert, Space, Tree } from 'antdv-next';
+import { Alert, message, Space, Tree } from 'antdv-next';
 
 import { saveSysDeptOrderApi, selectAllSysDeptApi } from '#/api';
 import { ButtonClose, ButtonSave } from '#/components/button';
@@ -23,6 +23,7 @@ const treeData = ref<TreeProps['treeData']>([]);
 async function handleSave() {
   try {
     saveBtnLoading.value = true;
+    drawerApi.lock();
 
     setProps(treeData.value, undefined);
 
@@ -39,21 +40,26 @@ async function handleSave() {
     await saveSysDeptOrderApi(params);
     emit('success');
     drawerApi.close();
-  } catch (error) {
-    console.error('保存失败', error);
+  } catch {
+    drawerApi.unlock();
+    message.error('保存失败，请稍后重试');
   } finally {
     saveBtnLoading.value = false;
   }
 }
 
 const [Drawer, drawerApi] = useVbenDrawer({
-  onOpenChange(isOpen: boolean) {
+  async onOpenChange(isOpen: boolean) {
     if (isOpen) {
-      drawerApi.setLoading(true);
-      selectAllSysDeptApi().then((res) => {
+      drawerApi.setState({ loading: true });
+      try {
+        const res = await selectAllSysDeptApi();
         treeData.value = listToTree(res);
-      });
-      drawerApi.setLoading(false);
+      } catch {
+        message.error('加载部门数据失败，请稍后重试');
+      } finally {
+        drawerApi.setState({ loading: false });
+      }
     }
   },
 });
@@ -78,7 +84,7 @@ function setProps(
 function onDrop(info: AntTreeNodeDropEvent) {
   const dropKey = info.node.key;
   const dragKey = info.dragNode.key;
-  // @ts-expect-error
+  // @ts-expect-error: pos is not declared on TreeNode
   const dropPos = info.node.pos.split('-');
   const dropPosition = info.dropPosition - Number(dropPos[dropPos.length - 1]);
   const loop = (
@@ -86,7 +92,7 @@ function onDrop(info: AntTreeNodeDropEvent) {
     key: number | string,
     callback: any,
   ) => {
-    // @ts-expect-error
+    // @ts-expect-error: treeData may be undefined in loop
     data.forEach((item, index) => {
       if (item.key === key) {
         return callback(item, index, data);
@@ -96,7 +102,7 @@ function onDrop(info: AntTreeNodeDropEvent) {
       }
     });
   };
-  // @ts-expect-error
+  // @ts-expect-error: treeData ref may be undefined
   const data = [...treeData.value];
 
   // Find dragObject
@@ -105,7 +111,7 @@ function onDrop(info: AntTreeNodeDropEvent) {
     data,
     dragKey,
     (item: TreeDataItem, index: number, arr: TreeProps['treeData']) => {
-      // @ts-expect-error
+      // @ts-expect-error: arr type from tree loop callback
       arr.splice(index, 1);
       dragObj = item;
     },
@@ -139,10 +145,10 @@ function onDrop(info: AntTreeNodeDropEvent) {
       },
     );
     if (dropPosition === -1) {
-      // @ts-expect-error
+      // @ts-expect-error: dragObj assigned in loop callback
       ar.splice(i, 0, dragObj);
     } else {
-      // @ts-expect-error
+      // @ts-expect-error: dragObj assigned in loop callback
       ar.splice(i + 1, 0, dragObj);
     }
   }
@@ -155,22 +161,19 @@ function onDrop(info: AntTreeNodeDropEvent) {
       banner
       class="mb-2"
       message="拖动节点更改部门顺序或结构"
-      type="info"
-    />
+      type="info" />
     <Alert
       banner
       class="mb-2"
       message="更改结构需手动处理相关部门数据，请谨慎操作！！！"
-      type="error"
-    />
+      type="error" />
 
     <Tree
       :tree-data="treeData"
       block-node
       class="draggable-tree"
       draggable
-      @drop="onDrop"
-    />
+      @drop="onDrop" />
 
     <template #footer>
       <Space>

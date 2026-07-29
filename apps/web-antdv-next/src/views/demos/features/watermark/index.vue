@@ -48,13 +48,12 @@ async function createWaterMark() {
 <template>
   <Page title="水印">
     <template #description>
-      <div class="mt-2 text-foreground/80">
+      <div class="text-foreground/80 mt-2">
         水印使用了
         <a
           class="text-primary"
           href="https://zhensherlock.github.io/watermark-js-plus/"
-          target="_blank"
-        >
+          target="_blank">
           watermark-js-plus
         </a>
         开源插件，详细配置可见插件配置。
@@ -66,16 +65,14 @@ async function createWaterMark() {
         :disabled="!!watermark"
         class="mr-2"
         type="primary"
-        @click="recreateWaterMark"
-      >
+        @click="recreateWaterMark">
         创建水印
       </Button>
       <Button
         :disabled="!watermark"
         class="mr-2"
         type="primary"
-        @click="createWaterMark"
-      >
+        @click="createWaterMark">
         更新水印
       </Button>
       <Button :disabled="!watermark" danger @click="destroyWatermark">

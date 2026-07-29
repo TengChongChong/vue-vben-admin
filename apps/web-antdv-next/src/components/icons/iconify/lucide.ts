@@ -3,6 +3,7 @@ import { createIconifyIcon } from '@vben/icons';
 export const LucideLayers = createIconifyIcon('lucide:layers');
 export const LucideShieldCheck = createIconifyIcon('lucide:shield-check');
 export const LucideUserRound = createIconifyIcon('lucide:user-round');
+export const LucideUsers = createIconifyIcon('lucide:users');
 export const LucideUpload = createIconifyIcon('lucide:upload');
 export const LucideRotateCw = createIconifyIcon('lucide:rotate-cw');
 export const LucideRotateCcwSquare = createIconifyIcon(
@@ -49,6 +50,10 @@ export const LucideInfo = createIconifyIcon('lucide:info');
 
 export const LucideSmartphone = createIconifyIcon('lucide:smartphone');
 export const LucideLink = createIconifyIcon('lucide:link');
+export const LucideGlobe = createIconifyIcon('lucide:globe');
+export const LucideFolder = createIconifyIcon('lucide:folder');
+export const LucidePalette = createIconifyIcon('lucide:palette');
+export const LucideHash = createIconifyIcon('lucide:hash');
 
 export const LucideChevronDown = createIconifyIcon('lucide:chevron-down');
 
@@ -76,3 +81,11 @@ export const LucideSquareDashedBottomCode = createIconifyIcon(
 export const LucideCircleStop = createIconifyIcon('lucide:circle-stop');
 
 export const LucideWaypoints = createIconifyIcon('lucide:waypoints');
+
+export const LucideImage = createIconifyIcon('lucide:image');
+export const LucideFileVideo = createIconifyIcon('lucide:file-video');
+export const LucideFileAudio = createIconifyIcon('lucide:file-audio');
+export const LucideFileText = createIconifyIcon('lucide:file-text');
+export const LucideFile = createIconifyIcon('lucide:file');
+export const LucideEye = createIconifyIcon('lucide:eye');
+export const LucideDownload = createIconifyIcon('lucide:download');

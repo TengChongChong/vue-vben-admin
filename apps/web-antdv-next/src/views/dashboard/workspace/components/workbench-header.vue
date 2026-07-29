@@ -41,8 +41,7 @@ function handleToMessage() {
     <VbenAvatar :src="avatar" :alt="nickname" class="size-20" />
     <div
       v-if="$slots.title || $slots.description"
-      class="flex flex-col justify-center md:mt-0 md:ml-6"
-    >
+      class="flex flex-col justify-center md:ml-6 md:mt-0">
       <h1 v-if="$slots.title" class="text-md font-semibold md:text-xl">
         <slot name="title"></slot>
       </h1>
@@ -58,8 +57,7 @@ function handleToMessage() {
 
       <div
         class="flex cursor-pointer flex-col justify-center px-6 text-right"
-        @click="handleToMessage"
-      >
+        @click="handleToMessage">
         <span class="text-foreground/80"> 未读消息 </span>
         <span class="text-2xl">{{ unreadCountCount }}</span>
       </div>

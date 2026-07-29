@@ -3,16 +3,7 @@ import { computed, ref } from 'vue';
 
 import { Page, useVbenModal } from '@vben/common-ui';
 
-import {
-  Alert,
-  Button,
-  Card,
-  Empty,
-  Menu,
-  MenuItem,
-  Spin,
-  Tooltip,
-} from 'antdv-next';
+import { Alert, Button, Card, Empty, Menu, MenuItem, Spin, Tooltip } from 'antdv-next';
 
 import { getSysRedisApi, selectByPrefixApi } from '#/api';
 import { useDictStore } from '#/store';
@@ -65,12 +56,11 @@ async function handleInfo(key: string) {
   <Page>
     <div class="flex flex-wrap">
       <div class="w-[460px]">
-        <Card variant="outlined" title="Key前缀">
+        <Card :bordered="false" title="Key前缀">
           <Menu
             v-model:selected-keys="currentSelectedKeys"
             :border="false"
-            @click="handleMenuClick"
-          >
+            @click="handleMenuClick">
             <MenuItem v-for="item in redisPrefix" :key="item.code">
               {{ item.name }}
             </MenuItem>
@@ -78,27 +68,24 @@ async function handleInfo(key: string) {
         </Card>
       </div>
       <div class="flex-1 pl-4" style="min-width: 500px">
-        <Card variant="outlined" title="Keys">
+        <Card :bordered="false" title="Keys">
           <Alert
             v-if="currentSelectedKeys.length === 0"
             banner
             message="请选择左侧Key前缀"
-            type="info"
-          />
+            type="info" />
 
           <Empty
             v-if="
               currentSelectedKeys.length > 0 && keys.length === 0 && !loading
-            "
-          />
+            " />
 
           <Spin :spinning="loading">
             <div class="flex flex-wrap">
               <div
                 v-for="item in keys"
                 :key="item"
-                class="p-2 lg:w-1/2 xl:w-1/3"
-              >
+                class="p-2 lg:w-1/2 xl:w-1/3">
                 <Tooltip :title="item">
                   <Button block type="primary" @click="handleInfo(item)">
                     {{ item }}

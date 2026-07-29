@@ -11,7 +11,7 @@ import type {
   UserInfo,
 } from '#/api';
 
-import { onMounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
 import { formatSize } from '@vben/utils';
@@ -41,12 +41,24 @@ const hostInfo = ref<HostInfo>();
 const runtimeInfo = ref<RuntimeInfo>();
 
 onMounted(() => {
-  loadData();
+  void loadData();
+  runtimeTimer = setInterval(() => {
+    void refreshRuntimeInfo();
+  }, 1000 * 10);
 });
 
-setInterval(async () => {
+onUnmounted(() => {
+  if (runtimeTimer) {
+    clearInterval(runtimeTimer);
+    runtimeTimer = null;
+  }
+});
+
+let runtimeTimer: null | ReturnType<typeof setInterval> = null;
+
+async function refreshRuntimeInfo() {
   runtimeInfo.value = await getRuntimeInfoApi();
-}, 1000 * 10);
+}
 
 async function loadData() {
   jvmSpecInfo.value = await getJvmSpecInfoApi();
@@ -57,13 +69,13 @@ async function loadData() {
   osInfo.value = await getOsInfoApi();
   userInfo.value = await getSysStatusUserInfoApi();
   hostInfo.value = await getHostInfoApi();
-  runtimeInfo.value = await getRuntimeInfoApi();
+  await refreshRuntimeInfo();
 }
 </script>
 
 <template>
   <Page>
-    <Card variant="outlined" class="mb-4!" title="内存">
+    <Card :bordered="false" class="mb-4!" title="内存">
       <Descriptions :column="4" :label-style="{ width: `160px` }" bordered>
         <DescriptionsItem label="Max Memory">
           {{ formatSize(runtimeInfo?.maxMemory, 1) }}
@@ -82,7 +94,7 @@ async function loadData() {
       </Descriptions>
     </Card>
 
-    <Card variant="outlined" class="mb-4!" title="JAVA">
+    <Card :bordered="false" class="mb-4!" title="JAVA">
       <Descriptions :column="2" :label-style="{ width: `290px` }" bordered>
         <DescriptionsItem label="Java Virtual Machine Specification">
           {{ jvmSpecInfo?.name }} {{ jvmSpecInfo?.version }}
@@ -114,7 +126,7 @@ async function loadData() {
         </DescriptionsItem>
       </Descriptions>
     </Card>
-    <Card variant="outlined" title="系统信息">
+    <Card :bordered="false" title="系统信息">
       <Descriptions :column="2" :label-style="{ width: `160px` }" bordered>
         <DescriptionsItem label="OS">
           {{ osInfo?.name }} {{ osInfo?.arch }} {{ osInfo?.version }}

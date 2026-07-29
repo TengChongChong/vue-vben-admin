@@ -38,15 +38,13 @@ onMounted(() => {
 <template>
   <Page
     description="基于Ant Design Vue 的 Upload 封装，rule 为后端配置的文件上传策略"
-    title="Upload - 文件上传"
-  >
+    title="Upload - 文件上传">
     <Row :gutter="16">
       <Col :xl="24" :xxl="12">
         <Card
           :bordered="false"
           class="mb-4"
-          title="根据文件上传策略上传文件 - Text"
-        >
+          title="根据文件上传策略上传文件 - Text">
           <RuleUpload v-model:value="avatar" rule-key="default-image" />
           <div v-if="avatar" class="mb-2">
             <JsonViewer :value="avatar" copyable :sort="false" boxed />
@@ -56,14 +54,12 @@ onMounted(() => {
         <Card
           :bordered="false"
           class="mb-4"
-          title="根据文件上传策略上传文件 - Picture"
-        >
+          title="根据文件上传策略上传文件 - Picture">
           <RuleUpload
             v-model:value="avatar"
             :show-help-text="true"
             list-type="picture"
-            rule-key="default-image"
-          />
+            rule-key="default-image" />
           <div v-if="avatar" class="mb-2">
             <JsonViewer :value="avatar" copyable :sort="false" boxed />
           </div>
@@ -72,33 +68,30 @@ onMounted(() => {
         <Card
           :bordered="false"
           class="mb-4"
-          title="根据文件上传策略上传文件 - Picture Card"
-        >
+          title="根据文件上传策略上传文件 - Picture Card">
           <RuleUpload
             v-model:value="avatar"
             :show-help-text="true"
             list-type="picture-card"
-            rule-key="default-image"
-          />
+            rule-key="default-image" />
           <div v-if="avatar" class="mb-2">
             <JsonViewer :value="avatar" copyable :sort="false" boxed />
           </div>
         </Card>
       </Col>
       <Col :xl="24" :xxl="12">
-        <Card variant="outlined" class="mb-4" title="根据文件上传策略上传文件">
+        <Card :bordered="false" class="mb-4" title="根据文件上传策略上传文件">
           <RuleUpload
             use-dragger
             v-model:value="avatar"
             :show-help-text="true"
             list-type="picture-card"
-            rule-key="default-image"
-          />
+            rule-key="default-image" />
           <div v-if="avatar" class="mb-2">
             <JsonViewer :value="avatar" copyable :sort="false" boxed />
           </div>
         </Card>
-        <Card variant="outlined" title="在表单中使用">
+        <Card :bordered="false" title="在表单中使用">
           <BaseForm />
         </Card>
       </Col>

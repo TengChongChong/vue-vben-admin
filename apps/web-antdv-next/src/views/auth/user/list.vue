@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { TreeDataItem } from 'antdv-next/es/tree/Tree';
+import type { TreeDataNode as TreeDataItem } from 'antdv-next';
 
 import type { TreeNode } from '#/api';
 
@@ -47,8 +47,7 @@ initData();
     :left-collapsible="false"
     :left-min-width="20"
     :left-width="20"
-    auto-content-height
-  >
+    auto-content-height>
     <template #left>
       <BasicTree
         class="mr-2"
@@ -57,8 +56,7 @@ initData();
         :default-expand-level="1"
         :tree-data="deptTreeData"
         :show-search="true"
-        title="部门"
-      />
+        title="部门" />
     </template>
     <div class="ml-2 h-full">
       <UserList :dept-id="selectedKeys[0]" />

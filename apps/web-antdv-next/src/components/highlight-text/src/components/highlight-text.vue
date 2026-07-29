@@ -12,13 +12,11 @@ defineProps<{
     <template
       v-for="(fragment, i) in text
         .toString()
-        .split(new RegExp(`(?<=${keyword})|(?=${keyword})`, 'i'))"
-    >
+        .split(new RegExp(`(?<=${keyword})|(?=${keyword})`, 'i'))">
       <span
         v-if="fragment.toLowerCase() === keyword.toLowerCase()"
         :key="i"
-        class="highlight-text"
-      >
+        class="highlight-text">
         {{ fragment }}
       </span>
       <template v-else>{{ fragment }}</template>

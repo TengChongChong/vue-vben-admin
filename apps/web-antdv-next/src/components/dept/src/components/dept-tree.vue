@@ -56,8 +56,7 @@ function handleChange(value) {
     v-model:value="currentValue"
     :after-fetch="afterFetch"
     :api="selectAllSysDeptApi"
-    @change="handleChange"
-  />
+    @change="handleChange" />
 </template>
 
 <style scoped></style>

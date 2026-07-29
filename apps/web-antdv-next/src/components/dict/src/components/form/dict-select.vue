@@ -64,6 +64,5 @@ function handleChange() {
     :show-search="options.length > 4"
     allow-clear
     option-filter-prop="label"
-    @change="handleChange"
-  />
+    @change="handleChange" />
 </template>

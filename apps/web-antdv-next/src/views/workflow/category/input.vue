@@ -84,12 +84,15 @@ async function handleSubmit(callback: (res: WorkflowCategoryVO) => any) {
     if (!valid) {
       return;
     }
+    drawerApi.lock();
     const values: WorkflowCategoryVO = await baseFormApi.getValues();
     const res = await saveWorkflowCategoryApi(values);
     message.success('保存成功');
     emit('success');
-    callback(res);
+    await callback(res);
+    drawerApi.unlock();
   } catch (error) {
+    drawerApi.unlock();
     console.error('保存失败', error);
   } finally {
     saveBtnLoading.value = false;
@@ -132,8 +135,7 @@ const [Modal, drawerApi] = useVbenModal({
         <ButtonSave
           :loading="saveBtnLoading"
           text="保存并新增"
-          @click="handleSaveAndAdd"
-        />
+          @click="handleSaveAndAdd" />
       </Space>
     </template>
   </Modal>

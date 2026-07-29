@@ -37,42 +37,39 @@ onMounted(() => {
 <template>
   <Page
     description="基于Cropper封装，Value为后端响应的FileInfo实体"
-    title="Cropper - 图片裁剪"
-  >
+    title="Cropper - 图片裁剪">
     <Row :gutter="16">
       <Col :xl="24" :xxl="12">
-        <Card variant="outlined" class="mb-4" title="头像剪裁 - 方形">
+        <Card :bordered="false" class="mb-4" title="头像剪裁 - 方形">
           <Cropper v-model:value="avatar" :circled="false" alt="头像" />
           <div v-if="avatar" class="mb-2">
             <JsonViewer :value="avatar" copyable :sort="false" boxed />
           </div>
         </Card>
-        <Card variant="outlined" class="mb-4" title="头像剪裁 - 圆形">
+        <Card :bordered="false" class="mb-4" title="头像剪裁 - 圆形">
           <Cropper v-model:value="avatarCircled" alt="头像" />
           <div v-if="avatarCircled" class="mb-2">
             <JsonViewer :value="avatarCircled" copyable :sort="false" boxed />
           </div>
         </Card>
 
-        <Card variant="outlined" title="头像剪裁 - 自定义尺寸">
+        <Card :bordered="false" title="头像剪裁 - 自定义尺寸">
           <Cropper
             v-model:value="avatarCircledCustomSize"
             :width="160"
-            alt="头像"
-          />
+            alt="头像" />
           <div v-if="avatarCircledCustomSize" class="mb-2">
             <JsonViewer
               :value="avatarCircledCustomSize"
               copyable
               :sort="false"
-              boxed
-            />
+              boxed />
           </div>
         </Card>
       </Col>
 
       <Col :xl="24" :xxl="12">
-        <Card variant="outlined" title="在表单中使用">
+        <Card :bordered="false" title="在表单中使用">
           <BaseForm />
         </Card>
       </Col>

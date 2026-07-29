@@ -49,6 +49,5 @@ function handleChange() {
     v-bind="$attrs"
     v-model:value="currentValue"
     :options="options"
-    @change="handleChange"
-  />
+    @change="handleChange" />
 </template>

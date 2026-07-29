@@ -71,8 +71,7 @@ function handleSave() {
       <div
         v-for="item in sysImportExcelTemplateDetailList"
         :key="item.fieldName"
-        class="order-field"
-      >
+        class="order-field">
         <div>
           {{ item.fieldName }}
         </div>

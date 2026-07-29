@@ -67,7 +67,7 @@ async function loadDayjsLocale(lang: SupportedLanguagesType) {
     }
   }
   if (locale) {
-    dayjs.locale(locale);
+    dayjs.locale(locale.default ?? locale);
   } else {
     console.error(`Failed to load dayjs locale for ${lang}`);
   }

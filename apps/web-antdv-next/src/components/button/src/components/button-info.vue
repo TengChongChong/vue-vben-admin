@@ -39,8 +39,7 @@ function handleClick() {
       :class="cn(props.class)"
       :size="props.size"
       :type="props.type"
-      @click.stop="handleClick"
-    >
+      @click.stop="handleClick">
       <template #icon>
         <LucideSearch />
       </template>

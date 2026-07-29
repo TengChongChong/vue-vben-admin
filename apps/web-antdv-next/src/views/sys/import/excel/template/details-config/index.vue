@@ -10,19 +10,7 @@ import { ref, unref } from 'vue';
 
 import { useVbenDrawer, useVbenModal } from '@vben/common-ui';
 
-import {
-  Button,
-  Checkbox,
-  Descriptions,
-  DescriptionsItem,
-  Input,
-  message,
-  Popover,
-  Select,
-  Space,
-  Table,
-  TypographyLink,
-} from 'antdv-next';
+import { Button, Checkbox, Descriptions, DescriptionsItem, Input, message, Popover, Select, Space, Table, TypographyLink } from 'antdv-next';
 
 import {
   getTableInfoApi,
@@ -119,9 +107,12 @@ async function loadInfo(data) {
   sysImportExcelTemplate.value = data;
   sysImportExcelTemplateDetailList.value = [];
   await initCommonData();
-  drawerApi.setLoading(true);
-  await loadData(data);
-  drawerApi.setLoading(false);
+  drawerApi.setState({ loading: true });
+  try {
+    await loadData(data);
+  } finally {
+    drawerApi.setState({ loading: false });
+  }
 }
 
 /**
@@ -140,10 +131,11 @@ async function initCommonData() {
   });
 
   dictTypeArray.value = await selectAllSysDictTypeApi();
-  tableInfo = await getTableInfoApi(
-    'master',
-    sysImportExcelTemplate.value.importTable!,
-  );
+  const importTable = sysImportExcelTemplate.value.importTable;
+  if (!importTable) {
+    return;
+  }
+  tableInfo = await getTableInfoApi('master', importTable);
 }
 
 /**
@@ -168,11 +160,15 @@ async function loadData(data) {
   });
 
   // 未设置
-  tableInfo?.fields.forEach((item) => {
+  if (!tableInfo) {
+    sysImportExcelTemplateDetailList.value = [...detailList];
+    return;
+  }
+  tableInfo.fields.forEach((item) => {
     const { name, propertyType, comment, metaInfo } = item;
 
     if (!inSet(setDetailList, name)) {
-      const dictType = getDictType(tableInfo!, item, dictTypeList);
+      const dictType = getDictType(tableInfo, item, dictTypeList);
       noSetDetailList.push({
         fieldName: name.toLowerCase(),
         title: comment,
@@ -181,7 +177,7 @@ async function loadData(data) {
         needImport: false,
         needReplace: false,
         replaceTable: dictType ? 'sys_dict' : undefined,
-        replaceTableDictType: dictType!,
+        replaceTableDictType: dictType,
         replaceTableFieldName: dictType ? 'name' : undefined,
         replaceTableFieldValue: dictType ? 'code' : undefined,
         dataRequired: false,
@@ -241,13 +237,20 @@ function inSet(
 async function handleSave() {
   try {
     saveBtnLoading.value = true;
+    const templateId = sysImportExcelTemplate.value.id;
+    if (!templateId) {
+      message.warning('模板信息不完整');
+      return;
+    }
+    drawerApi.lock();
     const list = sysImportExcelTemplateDetailList.value.filter(
       (item) => item.needImport,
     );
-    await saveDataApi(sysImportExcelTemplate.value.id!, list);
+    await saveDataApi(templateId, list);
     message.success('保存成功');
     drawerApi.close();
   } catch (error) {
+    drawerApi.unlock();
     console.error('保存失败', error);
   } finally {
     saveBtnLoading.value = false;
@@ -282,8 +285,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
       :data-source="sysImportExcelTemplateDetailList"
       :pagination="false"
       bordered
-      size="small"
-    >
+      size="small">
       <template #bodyCell="{ column, record }">
         <template v-if="column.dataIndex === 'needImport'">
           <Checkbox v-model:checked="record.needImport" />
@@ -311,8 +313,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
             option-filter-prop="label"
             show-search
             style="width: 200px"
-            @change="handleChangeReplaceTable(record)"
-          />
+            @change="handleChangeReplaceTable(record)" />
         </template>
         <template v-if="column.dataIndex === 'replaceTableDictType'">
           <Select
@@ -325,36 +326,31 @@ const [Drawer, drawerApi] = useVbenDrawer({
             :options="dictTypeArray"
             option-filter-prop="label"
             show-search
-            style="width: 200px"
-          />
+            style="width: 200px" />
         </template>
         <template v-if="column.dataIndex === 'replaceTableFieldName'">
           <TableFieldSelect
             v-model="record.replaceTableFieldName"
             :allow-clear="true"
             :disabled="!record.needImport || !record.replaceTable"
-            :table="record.replaceTable"
-          />
+            :table="record.replaceTable" />
         </template>
         <template v-if="column.dataIndex === 'replaceTableFieldValue'">
           <TableFieldSelect
             v-model="record.replaceTableFieldValue"
             :allow-clear="true"
             :disabled="!record.needImport || !record.replaceTable"
-            :table="record.replaceTable"
-          />
+            :table="record.replaceTable" />
         </template>
         <template v-if="column.dataIndex === 'dataRequired'">
           <Checkbox
             v-model:checked="record.dataRequired"
-            :disabled="!record.needImport"
-          />
+            :disabled="!record.needImport" />
         </template>
         <template v-if="column.dataIndex === 'dataOnly'">
           <Checkbox
             v-model:checked="record.dataOnly"
-            :disabled="!record.needImport"
-          />
+            :disabled="!record.needImport" />
         </template>
       </template>
     </Table>

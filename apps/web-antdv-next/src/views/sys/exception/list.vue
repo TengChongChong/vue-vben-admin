@@ -20,7 +20,7 @@ import { initColumns } from './data';
 import InfoDrawer from './info.vue';
 
 function handleSearch() {
-  gridApi.search();
+  gridApi.query();
 }
 
 const formOptions: VbenFormProps = {
@@ -132,8 +132,7 @@ async function handleInfo(id: string) {
             :api="removeSysExceptionApi"
             :auth-codes="['sys:exception:remove']"
             :grid-api="gridApi"
-            @success="handleSearch"
-          />
+            @success="handleSearch" />
 
           <Divider class="h-5" type="vertical" />
         </Space>
@@ -147,8 +146,7 @@ async function handleInfo(id: string) {
           :ids="[row.id]"
           size="small"
           type="link"
-          @success="handleSearch"
-        />
+          @success="handleSearch" />
       </template>
     </Grid>
 

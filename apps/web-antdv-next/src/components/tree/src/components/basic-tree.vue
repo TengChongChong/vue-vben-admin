@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import type { MenuProps } from 'antdv-next';
-import type { TreeProps } from 'antdv-next/es/tree/Tree';
-import type { FieldNames } from 'antdv-next/es/vc-cascader';
+import type { MenuProps, TreeProps } from 'antdv-next';
+import type { FieldNamesType as FieldNames } from 'antdv-next/dist/cascader';
 
 import type { VNode } from 'vue';
 
@@ -30,18 +29,7 @@ import { IconifyIcon } from '@vben/icons';
 import { cn, filter, treeToList } from '@vben/utils';
 
 import { useDebounceFn } from '@vueuse/shared';
-import {
-  Button,
-  Card,
-  Dropdown,
-  Empty,
-  InputSearch,
-  Menu,
-  MenuDivider,
-  MenuItem,
-  Space,
-  Tree,
-} from 'antdv-next';
+import { Button, Card, Dropdown, Empty, InputSearch, Menu, MenuDivider, MenuItem, Space, Tree } from 'antdv-next';
 import { difference, isArray, isString, omit } from 'lodash-es';
 
 import { HighlightText } from '#/components/highlight-text';
@@ -58,6 +46,7 @@ const props = withDefaults(defineProps<BasicTreeProps>(), {
   expandOnSearch: true,
   highlight: false,
   loading: false,
+  useCard: true,
 });
 
 const emit = defineEmits([
@@ -136,17 +125,14 @@ const getBindValues = computed(() => {
       } else {
         state.checkedKeys = v;
       }
-      const rawVal = state.checkStrictly
-        ? toRaw(state.checkedKeys)
-        : {
-            checked: toRaw(state.checkedKeys),
-            halfChecked: e.halfCheckedKeys,
-          };
-      emit('update:value', rawVal);
-      emit('check', rawVal, e);
+      emitCheckedValue(
+        state.checkedKeys,
+        state.checkStrictly ? [] : (e.halfCheckedKeys ?? []),
+        e,
+      );
     },
   };
-  return omit(propsData, 'treeData', 'class') as TreeProps;
+  return omit(propsData, 'treeData', 'class', 'useCard') as TreeProps;
 });
 
 const getTreeSearchData = computed((): TreeItem[] =>
@@ -184,8 +170,25 @@ function getCheckedKeys() {
   return state.checkedKeys;
 }
 
+function emitCheckedValue(
+  checkedKeys: CheckKeys,
+  halfCheckedKeys: KeyType[] = [],
+  e?: any,
+) {
+  const rawVal = state.checkStrictly
+    ? toRaw(checkedKeys)
+    : {
+        checked: toRaw(checkedKeys) as KeyType[],
+        halfChecked: halfCheckedKeys,
+      };
+  emit('update:value', rawVal);
+  emit('check', rawVal, e);
+}
+
 function checkAll(checkAll: boolean) {
-  state.checkedKeys = checkAll ? getEnabledKeys() : ([] as KeyType[]);
+  const keys = checkAll ? getEnabledKeys() : ([] as KeyType[]);
+  state.checkedKeys = keys;
+  emitCheckedValue(keys);
 }
 
 function expandAll(expandAll: boolean) {
@@ -392,13 +395,13 @@ defineExpose(instance);
 
 <template>
   <Card
+    v-if="props.useCard"
     v-bind="$attrs"
     :bordered="false"
     :class="cn(props.class)"
     :head-style="props.headStyle"
     :size="props.size"
-    :title="props.title"
-  >
+    :title="props.title">
     <template #extra>
       <Space class="pl-2">
         <InputSearch
@@ -406,15 +409,14 @@ defineExpose(instance);
           v-model:value="searchState.searchText"
           :size="props.size"
           placeholder="输入节点名称搜索"
-          style="width: 200px"
-        />
+          style="width: 200px" />
         <Dropdown v-if="props.showToolbar">
           <Button :size="props.size">
             <template #icon>
               <LucideEllipsisVertical />
             </template>
           </Button>
-          <template #overlay>
+          <template #popupRender>
             <Menu @click="handleTreeToolbarClick">
               <MenuItem :key="0"> 选择全部 </MenuItem>
               <MenuItem :key="1"> 取消选择 </MenuItem>
@@ -431,15 +433,13 @@ defineExpose(instance);
     </template>
     <div
       :style="{ maxHeight: `${props.height}px` }"
-      class="relative flex-1 overflow-y-auto"
-    >
+      class="relative flex-1 overflow-y-auto">
       <VbenScrollbar shadow shadow-border>
         <Tree
           v-if="!getNotFound"
           v-bind="getBindValues"
           :show-icon="false"
-          :tree-data="getTreeSearchData"
-        >
+          :tree-data="getTreeSearchData">
           <template #title="{ title, icon }">
             <TreeIcon :icon="icon" />
 
@@ -451,6 +451,62 @@ defineExpose(instance);
       </VbenScrollbar>
     </div>
   </Card>
+
+  <div v-else v-bind="$attrs" :class="cn('flex h-full flex-col', props.class)">
+    <div
+      v-if="props.title || props.showSearch || props.showToolbar"
+      class="basic-tree-embed__header mb-2 flex flex-shrink-0 items-center justify-between gap-2">
+      <span v-if="props.title" class="text-sm font-medium">{{
+        props.title
+      }}</span>
+      <Space :class="props.title ? 'ml-auto' : 'w-full justify-end'">
+        <InputSearch
+          v-if="props.showSearch"
+          v-model:value="searchState.searchText"
+          :size="props.size"
+          placeholder="输入节点名称搜索"
+          style="width: 200px" />
+        <Dropdown v-if="props.showToolbar">
+          <Button :size="props.size">
+            <template #icon>
+              <LucideEllipsisVertical />
+            </template>
+          </Button>
+          <template #popupRender>
+            <Menu @click="handleTreeToolbarClick">
+              <MenuItem :key="0"> 选择全部 </MenuItem>
+              <MenuItem :key="1"> 取消选择 </MenuItem>
+              <MenuDivider />
+              <MenuItem :key="2"> 展开全部 </MenuItem>
+              <MenuItem :key="3"> 折叠全部 </MenuItem>
+              <MenuDivider />
+              <MenuItem :key="4"> 层级关联</MenuItem>
+              <MenuItem :key="5">层级独立</MenuItem>
+            </Menu>
+          </template>
+        </Dropdown>
+      </Space>
+    </div>
+    <div
+      :style="{ maxHeight: `${props.height}px` }"
+      class="relative min-h-0 flex-1 overflow-y-auto">
+      <VbenScrollbar shadow shadow-border>
+        <Tree
+          v-if="!getNotFound"
+          v-bind="getBindValues"
+          :show-icon="false"
+          :tree-data="getTreeSearchData">
+          <template #title="{ title, icon }">
+            <TreeIcon :icon="icon" />
+
+            <HighlightText :keyword="searchState.searchText" :text="title" />
+          </template>
+        </Tree>
+
+        <Empty v-if="getNotFound" />
+      </VbenScrollbar>
+    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>

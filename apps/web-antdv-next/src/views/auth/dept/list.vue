@@ -23,6 +23,7 @@ import {
   LucidePlus,
 } from '#/components/icons';
 import { router } from '#/router';
+import { buildTenantGridId } from '#/utils/tenant-grid-id';
 
 import { initColumns } from './data';
 import InputDrawer from './input.vue';
@@ -54,7 +55,7 @@ const formOptions: VbenFormProps = {
 };
 
 const gridOptions: VxeGridProps<SysDept> = {
-  id: 'auth-dept',
+  id: buildTenantGridId('auth-dept'),
   columns: initColumns(),
   pagerConfig: {
     enabled: false,
@@ -163,8 +164,7 @@ function handleCollapseAll() {
             :api="removeSysDeptApi"
             :auth-codes="['sys:dept:remove']"
             :grid-api="gridApi"
-            @success="handleSearch"
-          />
+            @success="handleSearch" />
 
           <Divider class="h-5" type="vertical" />
         </Space>
@@ -175,15 +175,13 @@ function handleCollapseAll() {
           size="small"
           text="新增下级"
           type="link"
-          @click="handleCreate(row.id)"
-        />
+          @click="handleCreate(row.id)" />
 
         <ButtonEdit
           :auth-codes="['sys:dept:save']"
           size="small"
           type="link"
-          @click="handleEdit(row.id)"
-        />
+          @click="handleEdit(row.id)" />
 
         <ButtonRemove
           :api="removeSysDeptApi"
@@ -191,8 +189,7 @@ function handleCollapseAll() {
           :ids="[row.id]"
           size="small"
           type="link"
-          @success="handleSearch"
-        />
+          @success="handleSearch" />
       </template>
     </Grid>
     <!--  编辑  -->

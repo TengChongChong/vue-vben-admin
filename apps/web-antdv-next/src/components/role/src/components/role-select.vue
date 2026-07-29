@@ -54,7 +54,12 @@ function loadOptions() {
       roleList.value = res;
     });
   } else if (props.type === 'current') {
-    selectRoleByDeptApi(userStore.userInfo?.deptId!).then((res) => {
+    const deptId = userStore.userInfo?.deptId;
+    if (!deptId) {
+      roleList.value = [];
+      return;
+    }
+    selectRoleByDeptApi(deptId).then((res) => {
       roleList.value = res;
     });
   } else {
@@ -83,8 +88,7 @@ function handleChange(value) {
     show-search
     v-bind="$attrs"
     :mode="props.mode"
-    @change="handleChange"
-  >
+    @change="handleChange">
     <SelectOption v-for="item in roleList" :key="item.id" :value="item.id">
       {{ item.name }}
     </SelectOption>

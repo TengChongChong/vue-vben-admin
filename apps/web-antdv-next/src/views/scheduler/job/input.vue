@@ -1,50 +1,35 @@
 <script lang="ts" setup>
-import type {
-  SchedulerJob,
-  SchedulerJobMethodOption,
-  SelectModel,
-} from '#/api';
+import type { SchedulerJob } from '#/api';
 
 import { computed, ref } from 'vue';
 
 import { useAccess } from '@vben/access';
 import { useVbenDrawer, z } from '@vben/common-ui';
 
-import {
-  AutoComplete,
-  Button,
-  Dropdown,
-  Input,
-  Menu,
-  MenuDivider,
-  MenuItem,
-  message,
-  Select,
-  Space,
-} from 'antdv-next';
+import { AutoComplete, Button, Dropdown, Input, Menu, MenuDivider, MenuItem, message, Select, Space } from 'antdv-next';
 
 import { useVbenForm } from '#/adapter/form';
-import {
-  addSchedulerJobApi,
-  saveSchedulerJobApi,
-  selectSchedulerJobBeansApi,
-  selectSchedulerJobMethodsApi,
-} from '#/api';
+import { addSchedulerJobApi, saveSchedulerJobApi } from '#/api';
 import { ButtonClose, ButtonSave } from '#/components/button';
 import { LucideChevronDown } from '#/components/icons';
 import { RoleEnum } from '#/enums/roleEnum';
 
 import { validateSchedulerJobParams } from './job-params';
 import JobParamsEditor from './job-params-editor.vue';
+import { useSchedulerJobRemoteOptions } from './use-scheduler-job-remote-options';
 
 const emit = defineEmits(['success']);
 
 const saveBtnLoading = ref(false);
-const beanOptions = ref<SelectModel[]>([]);
-const methodOptions = ref<SchedulerJobMethodOption[]>([]);
+const {
+  beanOptions,
+  clearMethodOptions,
+  loadBeanOptions,
+  loadMethodOptions,
+  methodOptions,
+} = useSchedulerJobRemoteOptions();
 const currentBean = ref('');
 const beanSearchTimer = ref<null | ReturnType<typeof setTimeout>>(null);
-const methodRequestId = ref(0);
 
 const { hasAccessByRoles } = useAccess();
 
@@ -66,10 +51,6 @@ function filterMethodOption(input: string, option: { value: string }) {
   return option.value.toLowerCase().includes(input.toLowerCase());
 }
 
-async function loadBeanOptions(keyword = '') {
-  beanOptions.value = await selectSchedulerJobBeansApi(keyword);
-}
-
 function handleBeanSearch(value: string) {
   const keyword = value?.trim() ?? '';
   if (beanSearchTimer.value) {
@@ -80,26 +61,15 @@ function handleBeanSearch(value: string) {
       beanOptions.value = [];
       return;
     }
-    loadBeanOptions(keyword);
+    void loadBeanOptions(keyword);
   }, 200);
 }
 
-async function loadMethodOptions(bean: string) {
-  const requestId = ++methodRequestId.value;
-  if (!bean?.trim()) {
-    if (requestId === methodRequestId.value) {
-      methodOptions.value = [];
-    }
-    return;
-  }
-  const data = await selectSchedulerJobMethodsApi(bean);
-  if (requestId === methodRequestId.value) {
-    methodOptions.value = data;
-  }
-}
-
 async function handleBeanChange(value: unknown) {
-  const beanValue = value == null || Array.isArray(value) ? '' : String(value);
+  const beanValue =
+    value === null || value === undefined || Array.isArray(value)
+      ? ''
+      : String(value);
   if (beanValue === currentBean.value) {
     return;
   }
@@ -114,7 +84,9 @@ async function handleBeanChange(value: unknown) {
 
 async function handleMethodSelect(value: unknown) {
   const signatureValue =
-    value == null || Array.isArray(value) ? '' : String(value);
+    value === null || value === undefined || Array.isArray(value)
+      ? ''
+      : String(value);
   const option = methodOptions.value.find(
     (item) => item.signature === signatureValue,
   );
@@ -178,7 +150,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
       rules: z
         .string()
         .min(1, { message: '请输入方法' })
-        .max(32, { message: '方法最多输入32个字符' }),
+        .max(64, { message: '方法最多输入64个字符' }),
       description: '类（Bean）中定义的方法',
     },
     {
@@ -238,6 +210,7 @@ async function handleSubmit(callback: (res: SchedulerJob) => any) {
     if (!valid) {
       return;
     }
+    drawerApi.lock();
     const values: SchedulerJob = await baseFormApi.getValues();
     if (!values.params || values.params.trim() === '[]') {
       values.params = undefined;
@@ -245,9 +218,11 @@ async function handleSubmit(callback: (res: SchedulerJob) => any) {
     const res = await saveSchedulerJobApi(values);
     message.success('保存成功');
     emit('success');
-    callback(res);
-  } catch (error) {
-    console.error('保存失败', error);
+    await callback(res);
+    drawerApi.unlock();
+  } catch {
+    drawerApi.unlock();
+    message.error('保存失败，请稍后重试');
   } finally {
     saveBtnLoading.value = false;
   }
@@ -263,10 +238,14 @@ async function handleSaveAndAdd() {
   await handleSubmit(() => {
     baseFormApi.resetForm();
     currentBean.value = '';
-    methodOptions.value = [];
-    addSchedulerJobApi().then((res) => {
-      baseFormApi.setValues(res);
-    });
+    clearMethodOptions();
+    addSchedulerJobApi()
+      .then((res) => {
+        baseFormApi.setValues(res);
+      })
+      .catch(() => {
+        message.error('初始化新增表单失败，请稍后重试');
+      });
   });
 }
 
@@ -283,7 +262,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
       if (data?.bean) {
         await loadMethodOptions(data.bean);
       } else {
-        methodOptions.value = [];
+        clearMethodOptions();
       }
     }
   },
@@ -304,8 +283,7 @@ function handleSetCron({ key }: { key: number | string }) {
           :filter-option="false"
           :options="beanAutoCompleteOptions"
           @change="handleBeanChange"
-          @search="handleBeanSearch"
-        />
+          @search="handleBeanSearch" />
       </template>
       <template #method="slotProps">
         <Select
@@ -315,8 +293,7 @@ function handleSetCron({ key }: { key: number | string }) {
           show-search
           :filter-option="filterMethodOption"
           :options="methodAutoCompleteOptions"
-          @change="handleMethodSelect"
-        />
+          @change="handleMethodSelect" />
       </template>
       <template #params="slotProps">
         <JobParamsEditor v-bind="slotProps" />
@@ -326,45 +303,47 @@ function handleSetCron({ key }: { key: number | string }) {
           <template #addonAfter>
             <Dropdown>
               <Button size="small" type="text">
-                常用Corn表达式
+                常用Cron表达式
                 <LucideChevronDown />
               </Button>
-              <Menu @click="handleSetCron">
-                <MenuItem key="*/5 * * * * ?">每隔5秒执行一次</MenuItem>
-                <MenuItem key="0 */1 * * * ?">每隔1分钟执行一次</MenuItem>
-                <MenuItem key="0 15,30,45 * * * ?">
-                  每小时的15分、30分、45分执行一次
-                </MenuItem>
-                <MenuDivider />
-                <MenuItem key="0 0 1 * * ?">每天1:00执行一次</MenuItem>
-                <MenuItem key="0 0 12 * * ?">每天12:00执行一次</MenuItem>
-                <MenuItem key="0 0 23 * * ?">每天23:00执行一次</MenuItem>
-                <MenuItem key="0 0 0,13,18,21 * * ?">
-                  每天0:00、13:00、18:00、21:00执行一次
-                </MenuItem>
-                <MenuItem key="0 15 10 ? * *">每天10:15执行一次</MenuItem>
-                <MenuItem key="0 * 14 * * ?">
-                  每天从14:00~14:59分每分钟执行一次
-                </MenuItem>
-                <MenuItem key="0 0/5 14 * * ?">
-                  每天从14:00~14:55分每5分钟执行一次
-                </MenuItem>
-                <MenuItem key="0 0/5 14,18 * * ?">
-                  每天的14:00~14:55和18:00~18:55分两个时间段内每5分钟执行一次
-                </MenuItem>
-                <MenuItem key="0 0-5 14 * * ?">
-                  每天14:00至14:05每分钟一次触发
-                </MenuItem>
-                <MenuDivider />
-                <MenuItem key="0 0 1 ? * L">每周日1:00执行一次</MenuItem>
-                <MenuItem key="0 0 1 1 * ?">每月1号1:00执行一次</MenuItem>
-                <MenuItem key="0 0 23 L * ?">
-                  每月最后一天23:00执行一次
-                </MenuItem>
-                <MenuItem key="0 15 10 ? * MON-FRI">
-                  每周一、周二、周三、周四、周五的10:15执行一次
-                </MenuItem>
-              </Menu>
+              <template #popupRender>
+                <Menu @click="handleSetCron">
+                  <MenuItem key="*/5 * * * * ?">每隔5秒执行一次</MenuItem>
+                  <MenuItem key="0 */1 * * * ?">每隔1分钟执行一次</MenuItem>
+                  <MenuItem key="0 15,30,45 * * * ?">
+                    每小时的15分、30分、45分执行一次
+                  </MenuItem>
+                  <MenuDivider />
+                  <MenuItem key="0 0 1 * * ?">每天1:00执行一次</MenuItem>
+                  <MenuItem key="0 0 12 * * ?">每天12:00执行一次</MenuItem>
+                  <MenuItem key="0 0 23 * * ?">每天23:00执行一次</MenuItem>
+                  <MenuItem key="0 0 0,13,18,21 * * ?">
+                    每天0:00、13:00、18:00、21:00执行一次
+                  </MenuItem>
+                  <MenuItem key="0 15 10 ? * *">每天10:15执行一次</MenuItem>
+                  <MenuItem key="0 * 14 * * ?">
+                    每天从14:00~14:59分每分钟执行一次
+                  </MenuItem>
+                  <MenuItem key="0 0/5 14 * * ?">
+                    每天从14:00~14:55分每5分钟执行一次
+                  </MenuItem>
+                  <MenuItem key="0 0/5 14,18 * * ?">
+                    每天的14:00~14:55和18:00~18:55分两个时间段内每5分钟执行一次
+                  </MenuItem>
+                  <MenuItem key="0 0-5 14 * * ?">
+                    每天14:00至14:05每分钟一次触发
+                  </MenuItem>
+                  <MenuDivider />
+                  <MenuItem key="0 0 1 ? * L">每周日1:00执行一次</MenuItem>
+                  <MenuItem key="0 0 1 1 * ?">每月1号1:00执行一次</MenuItem>
+                  <MenuItem key="0 0 23 L * ?">
+                    每月最后一天23:00执行一次
+                  </MenuItem>
+                  <MenuItem key="0 15 10 ? * MON-FRI">
+                    每周一、周二、周三、周四、周五的10:15执行一次
+                  </MenuItem>
+                </Menu>
+              </template>
             </Dropdown>
           </template>
         </Input>
@@ -378,8 +357,7 @@ function handleSetCron({ key }: { key: number | string }) {
         <ButtonSave
           :loading="saveBtnLoading"
           text="保存并新增"
-          @click="handleSaveAndAdd"
-        />
+          @click="handleSaveAndAdd" />
       </Space>
     </template>
   </Drawer>

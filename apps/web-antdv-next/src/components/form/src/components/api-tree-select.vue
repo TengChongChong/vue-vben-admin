@@ -153,8 +153,7 @@ function handleChange() {
     allow-clear
     show-search
     @change="handleChange"
-    @tree-expand="treeExpand"
-  >
+    @tree-expand="treeExpand">
     <template #title="{ label }">
       <!-- 高亮关键字 -->
       <template v-if="label">

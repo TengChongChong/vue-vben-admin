@@ -10,14 +10,7 @@ import type {
 
 import { onMounted, ref, watch } from 'vue';
 
-import {
-  Button,
-  Divider,
-  Popconfirm,
-  Space,
-  Tooltip,
-  TypographyText,
-} from 'antdv-next';
+import { Button, Divider, Popconfirm, Space, Tooltip, TypographyText } from 'antdv-next';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
@@ -140,7 +133,7 @@ function initTable() {
 }
 
 function handleSearch() {
-  gridApi.search();
+  gridApi.query();
 }
 
 const gridOptions: VxeGridProps<SysConfig> = {
@@ -297,8 +290,7 @@ async function handleStepNext() {
             <ButtonRemove
               :api="removeSysImportExcelTemporaryApi"
               :grid-api="gridApi"
-              @success="removeCallback"
-            />
+              @success="removeCallback" />
 
             <Divider class="h-5" type="vertical" />
           </Space>
@@ -312,8 +304,7 @@ async function handleStepNext() {
               <template #title>
                 <template
                   v-for="(item, index) in row.verificationResults.split(';')"
-                  :key="index"
-                >
+                  :key="index">
                   <div>{{ item }}</div>
                 </template>
               </template>
@@ -331,8 +322,7 @@ async function handleStepNext() {
             :ids="[row.id]"
             size="small"
             type="link"
-            @success="removeCallback"
-          />
+            @success="removeCallback" />
         </template>
       </Grid>
     </div>
@@ -343,8 +333,7 @@ async function handleStepNext() {
           title="确定要放弃当前导入数据吗？"
           ok-text="是"
           cancel-text="否"
-          @confirm="handleRestart"
-        >
+          @confirm="handleRestart">
           <Button type="primary" :loading="prevBtnLoading">
             <template #icon>
               <LucideFileX />
@@ -361,8 +350,7 @@ async function handleStepNext() {
         <Button
           v-if="importSummary?.fail"
           @click="handleExportVerificationFailData"
-          :loading="downloadBtnLoading"
-        >
+          :loading="downloadBtnLoading">
           <template #icon>
             <LucideHardDriveDownload />
           </template>
@@ -372,8 +360,7 @@ async function handleStepNext() {
           type="primary"
           v-if="importSummary?.success"
           @click="handleStepNext"
-          :loading="nextBtnLoading"
-        >
+          :loading="nextBtnLoading">
           <template #icon>
             <LucideCheck />
           </template>

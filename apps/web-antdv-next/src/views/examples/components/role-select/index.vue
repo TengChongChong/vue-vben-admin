@@ -16,7 +16,7 @@ const roleId = ref<string>('1531819854540070914');
 const roleIds = ref<string[]>(['3', '1531819854540070914']);
 
 async function onSubmit(values: Record<string, any>) {
-  console.log('form values:', values);
+  console.warn('form values:', values);
 }
 
 const [BaseForm, baseFormApi] = useVbenForm({
@@ -51,14 +51,13 @@ onMounted(() => {
   <Page>
     <Row :gutter="16">
       <Col :lg="24" :xl="12">
-        <Card variant="outlined" title="基础示例">
+        <Card :bordered="false" title="基础示例">
           <Descriptions
             :column="1"
             :label-style="{ width: '150px' }"
             bordered
             class="mb-6"
-            title="RoleSelect - 角色选择器"
-          >
+            title="RoleSelect - 角色选择器">
             <DescriptionsItem label="选择角色">
               <RoleSelect v-model:value="roleId" />
             </DescriptionsItem>
@@ -69,7 +68,7 @@ onMounted(() => {
         </Card>
       </Col>
       <Col :xl="24" :xxl="12">
-        <Card variant="outlined" class="mb-4" title="在表单中使用">
+        <Card :bordered="false" class="mb-4" title="在表单中使用">
           <BaseForm />
         </Card>
       </Col>

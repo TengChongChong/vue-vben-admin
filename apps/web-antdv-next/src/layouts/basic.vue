@@ -33,6 +33,7 @@ import {
   LucideUserRound,
   SvgGithubIcon,
 } from '#/components/icons';
+import TenantSwitcher from '#/components/tenant/tenant-switcher.vue';
 import { $t } from '#/locales';
 import { useAuthStore, useDictStore } from '#/store';
 import LoginForm from '#/views/_core/authentication/login.vue';
@@ -48,6 +49,7 @@ const accessStore = useAccessStore();
 const dictStore = useDictStore();
 
 const { destroyWatermark, updateWatermark } = useWatermark();
+const { isDark } = usePreferences();
 
 // 消息检查定时任务间隔时间
 let timeStamp: null | number = null;
@@ -58,7 +60,6 @@ const [BaseMessageInfoModal, baseMessageInfoModalApi] = useVbenModal({
   connectedComponent: MessageInfoModal,
 });
 
-const { isDark } = usePreferences();
 const showDot = computed(() =>
   notifications.value.some((item) => !item.isRead),
 );
@@ -66,13 +67,6 @@ const showDot = computed(() =>
 dictStore.initDict(true);
 
 const menus = computed(() => [
-  {
-    handler: () => {
-      router.push({ name: 'Profile' });
-    },
-    icon: 'lucide:user',
-    text: $t('page.auth.profile'),
-  },
   {
     handler: () => {
       openWindow(VBEN_DOC_URL, {
@@ -304,6 +298,9 @@ onMounted(async () => {
 
 <template>
   <BasicLayout @clear-preferences-and-logout="handleLogout">
+    <template #header-right-80>
+      <TenantSwitcher />
+    </template>
     <template #user-dropdown>
       <UserDropdown
         :avatar

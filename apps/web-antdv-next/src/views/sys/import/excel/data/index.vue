@@ -95,8 +95,7 @@ function handleStepNext() {
   <Page auto-content-height>
     <Card
       :title="`导入数据 - ${sysImportExcelTemplate?.name ? sysImportExcelTemplate?.name : '错误'}`"
-      :bordered="false"
-    >
+      :bordered="false">
       <Steps
         v-if="isHav"
         :current="current"
@@ -105,24 +104,21 @@ function handleStepNext() {
           { title: '导入规则', description: '匹配模版字段' },
           { title: '查看数据', description: '预览解析数据' },
           { title: '导入数据', description: '保存' },
-        ]"
-      />
+        ]" />
 
       <div class="step-container" v-if="isHav">
         <!-- 上传数据 -->
         <ImportUpload
           v-if="current === 0"
           :sys-import-excel-template="sysImportExcelTemplate"
-          @next="handleSetImportFile"
-        />
+          @next="handleSetImportFile" />
         <!-- 导入规则 -->
         <ImportConfig
           v-if="current === 1"
           :sys-import-excel-template="sysImportExcelTemplate"
           :import-file="importFile"
           @prev="handleStepPrev"
-          @next="handleStepNext"
-        />
+          @next="handleStepNext" />
         <!-- 查看数据 -->
         <ImportPreview
           v-if="current === 2"
@@ -131,22 +127,19 @@ function handleStepNext() {
           @update="updateResult"
           @next="handleStepNext"
           @prev="handleStepPrev"
-          @continue="continueImport"
-        />
+          @continue="continueImport" />
         <!-- 导入数据 -->
         <ImportResult
           v-if="current === 3"
           :sys-import-excel-template="sysImportExcelTemplate"
           :import-summary="importSummary"
-          @continue="continueImport"
-        />
+          @continue="continueImport" />
       </div>
       <Result
         v-else
         title="未找到导入模版"
         :sub-title="`我们未找到当前请求的模版信息（${importCode}），请刷新页面重试或联系管理员`"
-        status="error"
-      />
+        status="error" />
     </Card>
   </Page>
 </template>

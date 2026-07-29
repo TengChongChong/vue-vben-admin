@@ -49,7 +49,7 @@
           display: flex;
           flex-flow: row wrap;
           padding: 0.5rem 1rem;
-          background-color: #fff;
+          background-color: hsl(var(--background));
           border: 1px dashed hsl(var(--primary));
           border-radius: var(--radius);
 
@@ -69,7 +69,7 @@
               max-width: 100%;
               height: 44px;
               font-size: 14px;
-              color: rgb(0 0 0 / 85%);
+              color: hsl(var(--foreground));
               cursor: pointer;
 
               &::after {
@@ -102,11 +102,11 @@
                 border-radius: 50%;
 
                 &.control-mark-1 {
-                  background-color: #1890ff;
+                  background-color: hsl(var(--primary));
                 }
 
                 &.control-mark-2 {
-                  background-color: #13c2c2;
+                  background-color: hsl(var(--success));
                 }
               }
             }

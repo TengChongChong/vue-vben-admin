@@ -42,8 +42,7 @@ function navTo(quickNavigation: SysQuickNavigation) {
 <template>
   <div
     :class="`quick-navigation cursor-pointer quick-navigation--${quickNavigation.color} quick-navigation--${size}`"
-    @click="navTo(quickNavigation)"
-  >
+    @click="navTo(quickNavigation)">
     <div class="quick-navigation__icon mx-auto mb-1 flex items-center p-4">
       <Icon :icon="quickNavigation.icon!" />
     </div>

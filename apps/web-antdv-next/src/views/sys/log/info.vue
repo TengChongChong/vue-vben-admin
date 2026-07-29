@@ -24,8 +24,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
       :column="2"
       :label-style="{ width: `140px` }"
       bordered
-      class="p-2"
-    >
+      class="p-2">
       <DescriptionsItem label="模块">
         {{ logInfo?.modular }}
       </DescriptionsItem>

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { ShowSearchType } from 'antdv-next/es/vc-cascader';
+import type { CascaderProps } from 'antdv-next';
 
 import type { DictCascaderProps } from '../../props';
 
@@ -10,6 +10,8 @@ import { cn } from '@vben/utils';
 import { Cascader } from 'antdv-next';
 
 import { useDictStore } from '#/store';
+
+type ShowSearchType = NonNullable<CascaderProps['showSearch']>;
 
 defineOptions({
   inheritAttrs: false,
@@ -62,6 +64,5 @@ const filter: ShowSearchType['filter'] = (inputValue, path) => {
     :class="cn(props.class, 'w-full')"
     :options="options"
     :show-search="{ filter }"
-    @change="handleChange"
-  />
+    @change="handleChange" />
 </template>

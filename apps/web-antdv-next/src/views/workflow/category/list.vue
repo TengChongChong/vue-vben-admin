@@ -120,8 +120,7 @@ function handleCollapseAll() {
         <Space>
           <ButtonAdd
             :auth-codes="['workflow:category:save']"
-            @click="handleCreate"
-          />
+            @click="handleCreate" />
           <Button @click="handleOrder">
             <template #icon>
               <LucideListOrdered />
@@ -144,8 +143,7 @@ function handleCollapseAll() {
             :api="removeWorkflowCategoryApi"
             :auth-codes="['workflow:category:remove']"
             :grid-api="gridApi"
-            @success="handleSearch"
-          />
+            @success="handleSearch" />
         </Space>
       </template>
       <template #action="{ row }">
@@ -154,22 +152,19 @@ function handleCollapseAll() {
           size="small"
           text="新增下级"
           type="link"
-          @click="handleCreate(row.id)"
-        />
+          @click="handleCreate(row.id)" />
         <ButtonEdit
           :auth-codes="['workflow:category:save']"
           size="small"
           type="link"
-          @click="handleEdit(row.id)"
-        />
+          @click="handleEdit(row.id)" />
         <ButtonRemove
           :api="removeWorkflowCategoryApi"
           :auth-codes="['workflow:category:remove']"
           :ids="[row.id]"
           size="small"
           type="link"
-          @success="handleSearch"
-        />
+          @success="handleSearch" />
       </template>
     </Grid>
 

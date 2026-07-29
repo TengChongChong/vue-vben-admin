@@ -78,8 +78,7 @@ function handleClick() {
       :size="props.size"
       :type="props.type"
       danger
-      @click.stop="handleClick"
-    >
+      @click.stop="handleClick">
       <template #icon>
         <LucideTrash />
       </template>

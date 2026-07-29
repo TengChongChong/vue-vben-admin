@@ -3,7 +3,7 @@ import type { SchedulerJobParam, SchedulerJobParamType } from '#/api';
 
 import { computed, watch } from 'vue';
 
-import { Button, DatePicker, Input, Select, Space, Textarea } from 'antdv-next';
+import { Button, DatePicker, Input, Select, Space, TextArea } from 'antdv-next';
 import dayjs from 'dayjs';
 
 import { LucidePlus, LucideTrash } from '#/components/icons';
@@ -44,7 +44,7 @@ const paramList = computed<SchedulerJobParam[]>({
     }
   },
   set(list) {
-    if (!list.length) {
+    if (list.length === 0) {
       emit('update:value', '');
       return;
     }
@@ -86,15 +86,24 @@ function handleTypeChange(index: number, type: SchedulerJobParamType) {
   if (!current) {
     return;
   }
-  let value = current.value;
-  if (type === 'Boolean') {
+  let value = '';
+  switch (type) {
+  case 'Boolean': {
     value = 'true';
-  } else if (type === 'JSON') {
-    value = '{}';
-  } else if (type === 'Date') {
+  
+  break;
+  }
+  case 'Date': {
     value = dayjs().format('YYYY-MM-DD HH:mm:ss');
-  } else {
-    value = '';
+  
+  break;
+  }
+  case 'JSON': {
+    value = '{}';
+  
+  break;
+  }
+  // No default
   }
   list[index] = { type, value };
   updateParamList(list);
@@ -129,23 +138,20 @@ watch(
     <div
       v-for="(item, index) in paramList"
       :key="index"
-      class="flex items-start gap-2"
-    >
+      class="flex items-start gap-2">
       <Select
         :options="PARAM_TYPE_OPTIONS"
         :value="item.type"
         class="w-[120px]"
         placeholder="类型"
-        @change="(val) => handleTypeChange(index, val as SchedulerJobParamType)"
-      />
+        @change="(val) => handleTypeChange(index, val as SchedulerJobParamType)" />
       <div class="min-w-0 flex-1">
         <Select
           v-if="item.type === 'Boolean'"
           :options="BOOLEAN_OPTIONS"
           :value="item.value"
           class="w-full"
-          @change="(val) => handleValueChange(index, val as string)"
-        />
+          @change="(val) => handleValueChange(index, val as string)" />
         <DatePicker
           v-else-if="item.type === 'Date'"
           :show-time="{ format: 'HH:mm:ss' }"
@@ -153,22 +159,19 @@ watch(
           class="w-full"
           format="YYYY-MM-DD HH:mm:ss"
           value-format="YYYY-MM-DD HH:mm:ss"
-          @change="(val) => handleDateChange(index, val as dayjs.Dayjs | null)"
-        />
-        <Textarea
+          @change="(val) => handleDateChange(index, val as dayjs.Dayjs | null)" />
+        <TextArea
           v-else-if="item.type === 'JSON'"
           :status="jsonErrors[index] ? 'error' : undefined"
           :value="item.value"
           :auto-size="{ minRows: 2, maxRows: 6 }"
-          placeholder='请输入合法 JSON，如 {"key":"value"} 或 [1,2,3]'
-          @change="(e) => handleValueChange(index, e.target.value ?? '')"
-        />
+          placeholder="请输入合法 JSON，如 {&quot;key&quot;:&quot;value&quot;} 或 [1,2,3]"
+          @change="(e) => handleValueChange(index, e.target.value ?? '')" />
         <Input
           v-else
           :value="item.value"
           placeholder="参数值"
-          @change="(e) => handleValueChange(index, e.target.value ?? '')"
-        />
+          @change="(e) => handleValueChange(index, e.target.value ?? '')" />
       </div>
       <Button danger type="text" @click="handleRemove(index)">
         <LucideTrash class="size-4" />

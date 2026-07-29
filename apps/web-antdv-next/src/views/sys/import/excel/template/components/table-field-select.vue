@@ -73,8 +73,7 @@ onMounted(() => {
     allow-clear
     class="w-full"
     option-filter-prop="label"
-    show-search
-  >
+    show-search>
     <template #title="{ label }">
       <!-- 高亮关键字 -->
       <template v-if="label">

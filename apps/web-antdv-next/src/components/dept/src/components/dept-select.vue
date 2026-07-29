@@ -57,8 +57,7 @@ function handleChange(value) {
     :after-fetch="afterFetch"
     :api="selectAllSysDeptApi"
     :multiple="props.multiple"
-    @change="handleChange"
-  />
+    @change="handleChange" />
 </template>
 
 <style scoped></style>

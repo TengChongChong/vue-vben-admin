@@ -22,7 +22,7 @@ import { initColumns } from './data';
 import InputDrawer from './input.vue';
 
 function handleSearch() {
-  gridApi.search();
+  gridApi.query();
 }
 
 const formOptions: VbenFormProps = {
@@ -129,15 +129,13 @@ function handleEdit(id: string) {
         <Space>
           <ButtonAdd
             :auth-codes="['file:upload:rule:save']"
-            @click="handleCreate"
-          />
+            @click="handleCreate" />
 
           <ButtonRemove
             :api="removeFileUploadRuleApi"
             :auth-codes="['file:upload:rule:remove']"
             :grid-api="gridApi"
-            @success="handleSearch"
-          />
+            @success="handleSearch" />
 
           <Divider class="h-5" type="vertical" />
         </Space>
@@ -151,8 +149,7 @@ function handleEdit(id: string) {
           :auth-codes="['file:upload:rule:save']"
           size="small"
           type="link"
-          @click="handleEdit(row.id)"
-        />
+          @click="handleEdit(row.id)" />
 
         <ButtonRemove
           :api="removeFileUploadRuleApi"
@@ -160,8 +157,7 @@ function handleEdit(id: string) {
           :ids="[row.id]"
           size="small"
           type="link"
-          @success="handleSearch"
-        />
+          @success="handleSearch" />
       </template>
     </Grid>
     <!--  编辑  -->

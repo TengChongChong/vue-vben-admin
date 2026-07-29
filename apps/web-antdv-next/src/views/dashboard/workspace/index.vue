@@ -153,8 +153,7 @@ const greeting = computed(() => {
   <div class="p-5">
     <WorkbenchHeader
       :nickname="userStore.userInfo?.nickname"
-      :avatar="userStore.userInfo?.avatar || preferences.app.defaultAvatar"
-    >
+      :avatar="userStore.userInfo?.avatar || preferences.app.defaultAvatar">
       <template #title>
         {{ greeting }}, {{ userStore.userInfo?.nickname }}
       </template>
@@ -173,8 +172,7 @@ const greeting = computed(() => {
           <ReceiveList
             :show-query="false"
             title="未读消息"
-            :params="{ detailsStatus: '0' }"
-          />
+            :params="{ detailsStatus: '0' }" />
         </div>
       </div>
     </div>

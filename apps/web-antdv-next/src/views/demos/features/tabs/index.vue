@@ -41,7 +41,7 @@ function reset() {
 <template>
   <Page description="用于需要操作标签页的场景" title="标签页">
     <Card class="mb-5" title="打开/关闭标签页">
-      <div class="my-3 text-foreground/80">
+      <div class="text-foreground/80 my-3">
         如果标签页存在，直接跳转切换。如果标签页不存在，则打开新的标签页。
       </div>
       <div class="flex flex-wrap gap-3">
@@ -53,7 +53,7 @@ function reset() {
     </Card>
 
     <Card class="mb-5" title="标签页操作">
-      <div class="my-3 text-foreground/80">用于动态控制标签页的各种操作</div>
+      <div class="text-foreground/80 my-3">用于动态控制标签页的各种操作</div>
       <div class="flex flex-wrap gap-3">
         <Button type="primary" @click="closeCurrentTab()">
           关闭当前标签页
@@ -74,15 +74,14 @@ function reset() {
 
     <Card class="mb-5" title="动态标题">
       <div class="text-lg font-semibold">动态标题</div>
-      <div class="my-3 text-foreground/80">
+      <div class="text-foreground/80 my-3">
         该操作不会影响页面标题，仅修改Tab标题
       </div>
       <div class="flex flex-wrap items-center gap-3">
         <Input
           v-model:value="newTabTitle"
           class="w-40"
-          placeholder="请输入新标题"
-        />
+          placeholder="请输入新标题" />
         <Button type="primary" @click="() => setTabTitle(newTabTitle)">
           修改
         </Button>
@@ -92,7 +91,7 @@ function reset() {
 
     <Card class="mb-5" title="最大打开数量">
       <div class="text-lg font-semibold">最大打开数量</div>
-      <div class="my-3 text-foreground/80">
+      <div class="text-foreground/80 my-3">
         限制带参数的tab打开的最大数量，由 `route.meta.maxNumOfOpenTab` 控制
       </div>
       <div class="flex flex-wrap items-center gap-3">

@@ -92,6 +92,5 @@ const formSchema = computed((): VbenFormSchema[] => {
 <template>
   <AuthenticationLogin
     :form-schema="formSchema"
-    :loading="authStore.loginLoading"
-  />
+    :loading="authStore.loginLoading" />
 </template>

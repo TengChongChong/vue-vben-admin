@@ -21,7 +21,7 @@ import { downloadFileById } from '#/util/download';
 // 导出按钮状态
 const exportBtnLoading = ref<boolean>(false);
 function handleSearch() {
-  gridApi.search();
+  gridApi.query();
 }
 
 const formOptions: VbenFormProps = {
@@ -177,12 +177,10 @@ const handelExportData = async () => {
             :api="removeSampleGeneralApi"
             :auth-codes="['sample:general:remove']"
             :grid-api="gridApi"
-            @success="handleSearch"
-          />
+            @success="handleSearch" />
           <ButtonImport
             import-code="sample:general"
-            :auth-codes="['sample:general:import:data']"
-          />
+            :auth-codes="['sample:general:import:data']" />
           <ButtonExport :loading="exportBtnLoading" @click="handelExportData" />
 
           <Divider class="h-5" type="vertical" />
@@ -195,8 +193,7 @@ const handelExportData = async () => {
           :ids="[row.id]"
           size="small"
           type="link"
-          @success="handleSearch"
-        />
+          @success="handleSearch" />
       </template>
     </Grid>
   </Page>

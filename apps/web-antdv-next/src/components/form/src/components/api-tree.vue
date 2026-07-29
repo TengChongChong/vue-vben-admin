@@ -93,6 +93,5 @@ function treeExpand(keys) {
     v-model:selected-keys="currentValue"
     :tree-data="treeData"
     @select="handleChange"
-    @tree-expand="treeExpand"
-  />
+    @tree-expand="treeExpand" />
 </template>

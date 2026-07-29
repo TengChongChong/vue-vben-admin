@@ -26,12 +26,12 @@ const props = withDefaults(defineProps<CropperProps>(), {
 
 const emit = defineEmits(['update:value', 'change']);
 
-const currentValue = ref<FileInfo>(props.value!);
+const currentValue = ref<FileInfo | null>(props.value ?? null);
 
 watch(
   () => props.value,
   () => {
-    currentValue.value = props.value!;
+    currentValue.value = props.value ?? null;
   },
 );
 
@@ -77,8 +77,7 @@ function handleOpenCropperModal() {
       </div>
       <div
         :style="getImageWrapperStyle"
-        :class="`vben-cropper-image-mask ${currentValue?.url ? '' : 'vben-cropper-image-mask--show'}`"
-      >
+        :class="`vben-cropper-image-mask ${currentValue?.url ? '' : 'vben-cropper-image-mask--show'}`">
         <LucideUpload />
       </div>
     </div>

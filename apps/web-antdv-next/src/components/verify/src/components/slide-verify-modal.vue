@@ -30,13 +30,10 @@ function handleChange(isPassing) {
 </script>
 <template>
   <Modal class="w-[340px]" title="请完成安全验证">
-    <div class="slide-verify-modal-wrapper">
-      <SlideVerify
-        ref="slideVerify"
-        v-model:value="captchaVerification"
-        @change="handleChange"
-        @success="handleSuccess"
-      />
-    </div>
+    <SlideVerify
+      ref="slideVerify"
+      v-model:value="captchaVerification"
+      @change="handleChange"
+      @success="handleSuccess" />
   </Modal>
 </template>

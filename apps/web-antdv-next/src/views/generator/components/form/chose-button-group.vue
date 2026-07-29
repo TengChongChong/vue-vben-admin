@@ -31,7 +31,7 @@ onMounted(() => {
   currentValue.value = props.value;
 });
 
-function handleChange(value) {
+function handleChange(value: string) {
   currentValue.value = value;
   emit('change', value);
   emit('update:value', value);
@@ -49,8 +49,7 @@ function handleChange(value) {
               value === item.value ? 'chose-button-group-item-active' : '',
             ]"
             class="chose-button-group-item"
-            @click="handleChange(item.value)"
-          >
+            @click="handleChange(item.value)">
             <span class="chose-button-group-item-name">{{ item.name }}</span>
             <span class="chose-button-group-item-label">{{ item.label }}</span>
           </div>
@@ -61,8 +60,7 @@ function handleChange(value) {
             value === item.value ? 'chose-button-group-item-active' : '',
           ]"
           class="chose-button-group-item"
-          @click="handleChange(item.value)"
-        >
+          @click="handleChange(item.value)">
           <span class="chose-button-group-item-name">{{ item.name }}</span>
           <span class="chose-button-group-item-label">{{ item.label }}</span>
         </div>

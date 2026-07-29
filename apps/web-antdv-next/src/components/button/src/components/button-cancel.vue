@@ -32,8 +32,7 @@ function handleClick() {
       :class="cn(props.class)"
       :size="props.size"
       :type="props.type"
-      @click="handleClick"
-    >
+      @click="handleClick">
       <template #icon>
         <LucideX />
       </template>

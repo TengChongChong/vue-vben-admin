@@ -1,5 +1,5 @@
 import type { UploadFile } from 'antdv-next';
-import type { UploadListType } from 'antdv-next/lib/upload/interface';
+import type { UploadListType } from 'antdv-next/dist/upload/interface';
 
 import type { FileInfo } from '#/api';
 
@@ -23,8 +23,8 @@ export interface RuleUploadProps {
 /**
  * 用于 Ant Design of Vue 文件上传数据回显
  */
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+ 
+// @ts-expect-error: UploadFile and FileInfo share partial fields intentionally.
 export interface UploadFileModel extends FileInfo, UploadFile {
   // 两个对象不一致的在下方声明，避免错误提示
   name: string;
