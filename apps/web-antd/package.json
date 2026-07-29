@@ -26,10 +26,10 @@
     "#/*": "./src/*"
   },
   "dependencies": {
-    "@vben/api": "workspace:*",
     "@tanstack/vue-query": "catalog:",
     "@vben-core/menu-ui": "workspace:*",
     "@vben/access": "workspace:*",
+    "@vben/api": "workspace:*",
     "@vben/common-ui": "workspace:*",
     "@vben/constants": "workspace:*",
     "@vben/hooks": "workspace:*",
@@ -52,10 +52,10 @@
     "dayjs": "catalog:",
     "lodash-es": "catalog:",
     "pinia": "catalog:",
-    "vue": "catalog:",
-    "vue-router": "catalog:",
     "prismjs": "catalog:",
-    "vue-prism-component": "catalog:"
+    "vue": "catalog:",
+    "vue-prism-component": "catalog:",
+    "vue-router": "catalog:"
   },
   "devDependencies": {
     "@types/lodash-es": "catalog:"

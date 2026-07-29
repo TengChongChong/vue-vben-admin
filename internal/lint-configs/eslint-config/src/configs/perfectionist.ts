@@ -77,6 +77,7 @@ export async function perfectionist(): Promise<Linter.Config[]> {
             type: 'natural',
           },
         ],
+        'perfectionist/sort-interfaces': 'off',
         'perfectionist/sort-modules': 'off',
         'perfectionist/sort-named-exports': [
           'error',

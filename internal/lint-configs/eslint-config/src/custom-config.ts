@@ -11,19 +11,6 @@ const customConfig: Linter.Config[] = [
     },
   },
   {
-    files: [
-      'apps/**/**',
-      'packages/effects/**/**',
-      'packages/utils/**/**',
-      'packages/types/**/**',
-      'packages/locales/**/**',
-    ],
-    ignores: restrictedImportIgnores,
-    rules: {
-      'perfectionist/sort-interfaces': 'off',
-    },
-  },
-  {
     // apps内部的一些基础规则
     files: ['apps/**/**'],
     ignores: restrictedImportIgnores,
