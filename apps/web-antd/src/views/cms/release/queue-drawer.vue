@@ -7,7 +7,6 @@ import { computed, ref, watch } from 'vue';
 
 import { AccessControl } from '@vben/access';
 import { useVbenDrawer } from '@vben/common-ui';
-import { formatToDuration } from '@vben/utils';
 
 import { Button, message, Modal } from 'ant-design-vue';
 
@@ -117,7 +116,7 @@ const gridOptions: VxeGridProps<CmsReleaseQueue> = {
           if (row.duration === null || row.duration === undefined) {
             return '';
           }
-          return formatToDuration(row.duration / 1000);
+          return `${(row.duration / 1000).toFixed(2)}s`;
         },
       },
     },
@@ -162,10 +161,7 @@ watch(
     <Grid>
       <template #action="{ row }">
         <AccessControl :codes="['cms:release']">
-          <Button
-            v-if="row.status !== '1' && row.status !== '2'"
-            size="small"
-            type="link"
+          <Button v-if="row.status !== '1' && row.status !== '2'" size="small" type="link"
             @click="handleReleaseItem(row)">
             <template #icon>
               <LucideSend />

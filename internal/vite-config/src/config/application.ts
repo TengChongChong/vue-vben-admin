@@ -29,6 +29,9 @@ function defineApplicationConfig(userConfigPromise?: DefineApplicationOptions) {
       archiverPluginOptions: {},
       compress: false,
       compressTypes: ['brotli', 'gzip'],
+      // 强制走 dayjs/esm，避免 CJS locale 跨 chunk 循环依赖导致
+      // TypeError: require_zh_cn is not a function
+      dayjs: true,
       devtools: true,
       env,
       extraAppConfig: true,

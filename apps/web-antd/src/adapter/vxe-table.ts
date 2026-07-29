@@ -30,6 +30,15 @@ const pageSizes = [...new Set([...basePageSizes, defaultTableSize])].toSorted(
   (a, b) => a - b,
 );
 
+/** Ant Design Pagination 的 page-size-options（string[]） */
+export function buildPageSizeOptions(extraSize?: number): string[] {
+  const sizes =
+    extraSize === undefined || extraSize === null
+      ? pageSizes
+      : [...new Set([...pageSizes, extraSize])].toSorted((a, b) => a - b);
+  return sizes.map(String);
+}
+
 setupVbenVxeTable({
   configVxeTable: (vxeUI) => {
     vxeUI.setConfig({
