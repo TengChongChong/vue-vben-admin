@@ -76,6 +76,16 @@ const [BaseForm, baseFormApi] = useVbenForm({
       formItemClass: hasAccessByRoles([RoleEnum.SYS_ADMIN]) ? '' : 'hidden',
     },
     {
+      fieldName: 'publicAccess',
+      label: '公开访问',
+      rules: 'selectRequired',
+      component: 'DictRadio',
+      componentProps: {
+        dictType: 'whether',
+      },
+      description: '开启后可通过 /api/sys/config/key/{key} 读取该参数',
+    },
+    {
       fieldName: 'remarks',
       label: '备注',
       component: 'Textarea',
@@ -164,8 +174,13 @@ async function handleSave() {
 async function handleSaveAndAdd() {
   await handleSubmit((res) => {
     baseFormApi.resetForm();
-    const { category, type, sys } = res;
-    baseFormApi.setValues({ category, type, sys });
+    const { category, type, sys, publicAccess } = res;
+    baseFormApi.setValues({
+      category,
+      type,
+      sys,
+      publicAccess: publicAccess || '0',
+    });
   });
 }
 
@@ -192,8 +207,7 @@ const [Modal, modalApi] = useVbenModal({
         <ButtonSave
           :loading="saveBtnLoading"
           text="保存并新增"
-          @click="handleSaveAndAdd"
-        />
+          @click="handleSaveAndAdd" />
       </Space>
     </template>
   </Modal>

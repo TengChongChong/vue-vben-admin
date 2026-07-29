@@ -106,6 +106,7 @@ async function handleCreate() {
     category,
     type: type || 'text',
     sys: sys || '0',
+    publicAccess: '0',
   });
   baseInputModalApi.open();
 }
@@ -135,8 +136,7 @@ function handleReloadCache() {
             :api="removeSysConfigApi"
             :auth-codes="['sys:config:remove']"
             :grid-api="gridApi"
-            @success="handleSearch"
-          />
+            @success="handleSearch" />
 
           <AccessControl :codes="['sys:config:save']">
             <Button @click="handleReloadCache">
@@ -153,8 +153,7 @@ function handleReloadCache() {
           :auth-codes="['sys:config:save']"
           size="small"
           type="link"
-          @click="handleEdit(row.id)"
-        />
+          @click="handleEdit(row.id)" />
 
         <ButtonRemove
           :api="removeSysConfigApi"
@@ -162,8 +161,7 @@ function handleReloadCache() {
           :ids="[row.id]"
           size="small"
           type="link"
-          @success="handleSearch"
-        />
+          @success="handleSearch" />
       </template>
     </Grid>
     <!--  编辑  -->

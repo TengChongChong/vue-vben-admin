@@ -47,6 +47,13 @@ export const initColumns = (): VxeGridPropTypes.Columns => {
       cellRender: { name: 'DictTag', props: { dictType: 'whether' } },
     },
     {
+      title: '公开访问',
+      field: 'publicAccess',
+      sortable: true,
+      width: 100,
+      cellRender: { name: 'DictTag', props: { dictType: 'whether' } },
+    },
+    {
       title: '备注',
       field: 'remarks',
       sortable: true,

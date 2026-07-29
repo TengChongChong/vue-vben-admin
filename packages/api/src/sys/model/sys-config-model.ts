@@ -6,6 +6,8 @@ import type { BasicModel } from '#/api/base/model/base-model';
 export interface SysConfig extends BasicModel {
   // 分类
   category: string;
+  // 是否允许公开访问
+  publicAccess?: string;
   // 是否系统
   sys: string;
   // key
