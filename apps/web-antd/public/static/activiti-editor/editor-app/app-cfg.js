@@ -18,7 +18,7 @@
  */
 'use strict'
 
-const ACTIVITI = ACTIVITI || {}
+var ACTIVITI = ACTIVITI || {}
 
 ACTIVITI.CONFIG = {
   token: 'Authorization',

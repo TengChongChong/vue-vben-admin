@@ -20,13 +20,13 @@
 /**
  * Utility methods are grouped together here.
  */
-const EDITOR = EDITOR || {};
+var EDITOR = EDITOR || {};
 
 EDITOR.UTIL = {
 
     getParameterByName: function (name) {
-        name = name.replace(/[[]/, "\\[").replace(/[\]]/, "\\]");
-        const regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
             results = regex.exec(location.search);
         return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
     },
@@ -37,8 +37,8 @@ EDITOR.UTIL = {
      * to the return result list.
      */
     collectPropertiesFromPrecedingElements: function (startElement, propertyType) {
-        const visitedElements = [];
-        const collectedProperties = [];
+        var visitedElements = [];
+        var collectedProperties = [];
         EDITOR.UTIL._visitElementAndCollectProperty(startElement, propertyType, visitedElements, collectedProperties);
         return collectedProperties;
     },
@@ -49,13 +49,13 @@ EDITOR.UTIL = {
      * to the return result list.
      */
     collectElementsFromPrecedingElements: function (startElement, stencilId) {
-        const visitedElements = [];
-        const collectedElements = [];
+        var visitedElements = [];
+        var collectedElements = [];
 
-        const incomingShapesIterator = startElement.getIncomingShapes();
+        var incomingShapesIterator = startElement.getIncomingShapes();
         if (incomingShapesIterator) {
-            for (let i = 0; i < incomingShapesIterator.length; i++) {
-                const incomingShape = incomingShapesIterator[i];
+            for (var i = 0; i < incomingShapesIterator.length; i++) {
+                var incomingShape = incomingShapesIterator[i];
                 if (visitedElements.indexOf(incomingShape.id) < 0) {
                     EDITOR.UTIL._visitElementAndCollectElement(incomingShape, stencilId, visitedElements, collectedElements);
                 }
@@ -69,15 +69,15 @@ EDITOR.UTIL = {
 
         visitedElementsArray.push(element.id);
 
-        const property = element.properties[propertyType]
+        var property = element.properties[propertyType]
         if (property) {
             collectedProperties.push(property);
         }
 
-        const incomingShapesIterator = element.getIncomingShapes();
+        var incomingShapesIterator = element.getIncomingShapes();
         if (incomingShapesIterator) {
-            for (let i = 0; i < incomingShapesIterator.length; i++) {
-                const incomingShape = incomingShapesIterator[i];
+            for (var i = 0; i < incomingShapesIterator.length; i++) {
+                var incomingShape = incomingShapesIterator[i];
                 if (visitedElementsArray.indexOf(incomingShape.id) < 0) {
                     EDITOR.UTIL._visitElementAndCollectProperty(incomingShape, propertyType, visitedElementsArray, collectedProperties);
                 }
@@ -89,15 +89,15 @@ EDITOR.UTIL = {
 
         visitedElementsArray.push(element.id);
 
-        const elementStencilId = element.getStencil().id();
+        var elementStencilId = element.getStencil().id();
         if (elementStencilId && elementStencilId.indexOf(stencilId) >= 0) {
             collectedElements.push(element);
         }
 
-        const incomingShapesIterator = element.getIncomingShapes();
+        var incomingShapesIterator = element.getIncomingShapes();
         if (incomingShapesIterator) {
-            for (let i = 0; i < incomingShapesIterator.length; i++) {
-                const incomingShape = incomingShapesIterator[i];
+            for (var i = 0; i < incomingShapesIterator.length; i++) {
+                var incomingShape = incomingShapesIterator[i];
                 if (visitedElementsArray.indexOf(incomingShape.id) < 0) {
                     EDITOR.UTIL._visitElementAndCollectElement(incomingShape, stencilId, visitedElementsArray, collectedElements);
                 }
@@ -120,7 +120,7 @@ EDITOR.UTIL = {
     },
 
     _getPropertyFromParent: function (parentElement, propertyType) {
-        const property = parentElement.properties[propertyType];
+        var property = parentElement.properties[propertyType];
         if (property) {
             return property;
         }

@@ -6,7 +6,7 @@
 angular.module('pascalprecht.translate').factory('$translateCookieStorage', [
   '$cookieStore',
   function ($cookieStore) {
-    const $translateCookieStorage = {
+    var $translateCookieStorage = {
         get: function (name) {
           return $cookieStore.get(name);
         },

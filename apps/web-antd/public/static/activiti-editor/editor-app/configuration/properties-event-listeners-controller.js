@@ -21,7 +21,7 @@
  * Execution listeners
  */
 
-const KisBpmEventListenersCtrl = [ '$scope', '$modal', '$timeout', '$translate', function($scope, $modal, $timeout, $translate) {
+var KisBpmEventListenersCtrl = [ '$scope', '$modal', '$timeout', '$translate', function($scope, $modal, $timeout, $translate) {
 
     // Config for the modal window
     var opts = {
@@ -35,7 +35,7 @@ const KisBpmEventListenersCtrl = [ '$scope', '$modal', '$timeout', '$translate',
 
 //Need a separate controller for the modal window due to https://github.com/angular-ui/bootstrap/issues/259
 // Will be fixed in a newer version of Angular UI
-const KisBpmEventListenersPopupCtrl = [ '$scope', '$q', '$translate', function($scope, $q, $translate) {
+var KisBpmEventListenersPopupCtrl = [ '$scope', '$q', '$translate', function($scope, $q, $translate) {
 
     // Put json representing form properties on scope
     if ($scope.property.value !== undefined && $scope.property.value !== null

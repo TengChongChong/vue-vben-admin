@@ -21,7 +21,7 @@
  * Sequence flow order controller
  */
 
-const KisBpmSequenceFlowOrderCtrl = [ '$scope', '$modal', '$timeout', '$translate', function($scope, $modal, $timeout, $translate) {
+var KisBpmSequenceFlowOrderCtrl = [ '$scope', '$modal', '$timeout', '$translate', function($scope, $modal, $timeout, $translate) {
 
     // Config for the modal window
     var opts = {
@@ -32,7 +32,7 @@ const KisBpmSequenceFlowOrderCtrl = [ '$scope', '$modal', '$timeout', '$translat
     $modal(opts);
 }];
 
-const KisBpmSequenceFlowOrderPopupCtrl = ['$scope', '$translate', function($scope, $translate) {
+var KisBpmSequenceFlowOrderPopupCtrl = ['$scope', '$translate', function($scope, $translate) {
 
     // Find the outgoing sequence flow of the current selected shape
     var outgoingSequenceFlow = [];

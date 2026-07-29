@@ -1,12 +1,12 @@
 beforeEach(function() {
     this.addMatchers({
         toExactlyMatch: function(expected) {
-            let a1, a2,
+            var a1, a2,
                 l, i,
                 key,
                 actual = this.actual;
             
-            const getKeys = function(o) {
+            var getKeys = function(o) {
                 var a = [];
                 for(key in o) {
                     if(o.hasOwnProperty(key)) {

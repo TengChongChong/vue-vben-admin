@@ -18,7 +18,7 @@
  */
 'use strict'
 
-const activitiModeler = angular.module('activitiModeler', [
+var activitiModeler = angular.module('activitiModeler', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
@@ -31,7 +31,7 @@ const activitiModeler = angular.module('activitiModeler', [
   'duScroll'
 ])
 
-const activitiModule = activitiModeler
+var activitiModule = activitiModeler
 
 activitiModeler
   // Initialize routes
@@ -72,7 +72,7 @@ activitiModeler
        * A 'safer' apply that avoids concurrent updates (which $apply allows).
        */
       $rootScope.safeApply = function (fn) {
-        const phase = this.$root.$$phase
+        var phase = this.$root.$$phase
         if (phase == '$apply' || phase == '$digest') {
           if (fn && (typeof (fn) === 'function')) {
             fn()
@@ -90,9 +90,9 @@ activitiModeler
 
       /* Helper method to fetch model from server (always needed) */
       function fetchModel (modelId) {
-        const modelUrl = KISBPM.URL.getModel(modelId)
-        const headers = {}
-        let token = EDITOR.UTIL.getParameterByName('token')
+        var modelUrl = KISBPM.URL.getModel(modelId)
+        var headers = {}
+        var token = EDITOR.UTIL.getParameterByName('token')
         token = token && token.replace(/^"|"$/g, '')
         headers[$rootScope.config.token] = token
         $http({
@@ -106,17 +106,17 @@ activitiModeler
             $rootScope.editorFactory.resolve()
           })
           .error(function (data, status, headers, config) {
-            console.log(`Error loading model with id ${  modelId  } ${  data}`)
+            console.log('Error loading model with id ' + modelId + ' ' + data)
           })
       }
 
       function initScrollHandling () {
-        const canvasSection = jQuery('#canvasSection')
+        var canvasSection = jQuery('#canvasSection')
         canvasSection.scroll(function () {
           // Hides the resizer and quick menu items during scrolling
 
-          const selectedElements = $rootScope.editor.selection
-          const subSelectionElements = $rootScope.editor._subSelection
+          var selectedElements = $rootScope.editor.selection
+          var subSelectionElements = $rootScope.editor._subSelection
 
           $rootScope.selectedElements = selectedElements
           $rootScope.subSelectionElements = subSelectionElements
@@ -176,11 +176,11 @@ activitiModeler
         if (!$rootScope.editorInitialized) {
           ORYX._loadPlugins()
 
-          const modelId = EDITOR.UTIL.getParameterByName('modelId')
+          var modelId = EDITOR.UTIL.getParameterByName('modelId')
           fetchModel(modelId)
 
           $rootScope.window = {}
-          const updateWindowSize = function () {
+          var updateWindowSize = function () {
             $rootScope.window.width = $window.innerWidth
             $rootScope.window.height = $window.innerHeight
           }
@@ -205,9 +205,9 @@ activitiModeler
           // TODO: perhaps move to a separate JS-file?
           jQuery(window).resize(function () {
             // Calculate the offset based on the bottom of the module header
-            const offset = jQuery('#editor-header').offset()
-            const propSectionHeight = jQuery('#propertySection').height()
-            const canvas = jQuery('#canvasSection')
+            var offset = jQuery('#editor-header').offset()
+            var propSectionHeight = jQuery('#propertySection').height()
+            var canvas = jQuery('#canvasSection')
 
             if (offset == undefined || offset === null ||
               propSectionHeight === undefined || propSectionHeight === null ||
@@ -216,8 +216,8 @@ activitiModeler
             }
 
             if ($rootScope.editor) {
-              const selectedElements = $rootScope.editor.selection
-              const subSelectionElements = $rootScope.editor._subSelection
+              var selectedElements = $rootScope.editor.selection
+              var subSelectionElements = $rootScope.editor._subSelection
 
               $rootScope.selectedElements = selectedElements
               $rootScope.subSelectionElements = subSelectionElements
@@ -231,25 +231,25 @@ activitiModeler
               }
             }
 
-            const totalAvailable = jQuery(window).height() - offset.top - 40 - 21
+            var totalAvailable = jQuery(window).height() - offset.top - 40 - 21
             canvas.height(totalAvailable - propSectionHeight)
             jQuery('#paletteSection').height(totalAvailable)
 
             // Update positions of the resize-markers, according to the canvas
 
-            let actualCanvas = null
+            var actualCanvas = null
             if (canvas && canvas[0].children[1]) {
               actualCanvas = canvas[0].children[1]
             }
 
-            const canvasTop = canvas.position().top
-            let canvasLeft = canvas.position().left
-            const canvasHeight = canvas[0].clientHeight
-            let canvasWidth = canvas[0].clientWidth
-            const iconCenterOffset = 8
-            let widthDiff = 0
+            var canvasTop = canvas.position().top
+            var canvasLeft = canvas.position().left
+            var canvasHeight = canvas[0].clientHeight
+            var canvasWidth = canvas[0].clientWidth
+            var iconCenterOffset = 8
+            var widthDiff = 0
 
-            let actualWidth = 0
+            var actualWidth = 0
             if (actualCanvas) {
               // In some browsers, the SVG-element clientwidth isn't available, so we revert to the parent
               actualWidth = actualCanvas.clientWidth || actualCanvas.parentNode.clientWidth
@@ -262,48 +262,48 @@ activitiModeler
               canvasWidth += widthDiff
             }
 
-            const iconWidth = 17
-            const iconOffset = 20
+            var iconWidth = 17
+            var iconOffset = 20
 
-            let north = jQuery('#canvas-grow-N')
-            north.css('top', `${canvasTop + iconOffset  }px`)
-            north.css('left', `${canvasLeft - 10 + (canvasWidth - iconWidth) / 2  }px`)
+            var north = jQuery('#canvas-grow-N')
+            north.css('top', canvasTop + iconOffset + 'px')
+            north.css('left', canvasLeft - 10 + (canvasWidth - iconWidth) / 2 + 'px')
 
-            let south = jQuery('#canvas-grow-S')
-            south.css('top', `${canvasTop + canvasHeight - iconOffset - iconCenterOffset  }px`)
-            south.css('left', `${canvasLeft - 10 + (canvasWidth - iconWidth) / 2  }px`)
+            var south = jQuery('#canvas-grow-S')
+            south.css('top', (canvasTop + canvasHeight - iconOffset - iconCenterOffset) + 'px')
+            south.css('left', canvasLeft - 10 + (canvasWidth - iconWidth) / 2 + 'px')
 
-            let east = jQuery('#canvas-grow-E')
-            east.css('top', `${canvasTop - 10 + (canvasHeight - iconWidth) / 2  }px`)
-            east.css('left', `${canvasLeft + canvasWidth - iconOffset - iconCenterOffset  }px`)
+            var east = jQuery('#canvas-grow-E')
+            east.css('top', canvasTop - 10 + (canvasHeight - iconWidth) / 2 + 'px')
+            east.css('left', (canvasLeft + canvasWidth - iconOffset - iconCenterOffset) + 'px')
 
-            let west = jQuery('#canvas-grow-W')
-            west.css('top', `${canvasTop - 10 + (canvasHeight - iconWidth) / 2  }px`)
-            west.css('left', `${canvasLeft + iconOffset  }px`)
+            var west = jQuery('#canvas-grow-W')
+            west.css('top', canvasTop - 10 + (canvasHeight - iconWidth) / 2 + 'px')
+            west.css('left', canvasLeft + iconOffset + 'px')
 
             north = jQuery('#canvas-shrink-N')
-            north.css('top', `${canvasTop + iconOffset  }px`)
-            north.css('left', `${canvasLeft + 10 + (canvasWidth - iconWidth) / 2  }px`)
+            north.css('top', canvasTop + iconOffset + 'px')
+            north.css('left', canvasLeft + 10 + (canvasWidth - iconWidth) / 2 + 'px')
 
             south = jQuery('#canvas-shrink-S')
-            south.css('top', `${canvasTop + canvasHeight - iconOffset - iconCenterOffset  }px`)
-            south.css('left', `${canvasLeft + 10 + (canvasWidth - iconWidth) / 2  }px`)
+            south.css('top', (canvasTop + canvasHeight - iconOffset - iconCenterOffset) + 'px')
+            south.css('left', canvasLeft + 10 + (canvasWidth - iconWidth) / 2 + 'px')
 
             east = jQuery('#canvas-shrink-E')
-            east.css('top', `${canvasTop + 10 + (canvasHeight - iconWidth) / 2  }px`)
-            east.css('left', `${canvasLeft + canvasWidth - iconOffset - iconCenterOffset  }px`)
+            east.css('top', canvasTop + 10 + (canvasHeight - iconWidth) / 2 + 'px')
+            east.css('left', (canvasLeft + canvasWidth - iconOffset - iconCenterOffset) + 'px')
 
             west = jQuery('#canvas-shrink-W')
-            west.css('top', `${canvasTop + 10 + (canvasHeight - iconWidth) / 2  }px`)
-            west.css('left', `${canvasLeft + iconOffset  }px`)
+            west.css('top', canvasTop + 10 + (canvasHeight - iconWidth) / 2 + 'px')
+            west.css('left', canvasLeft + iconOffset + 'px')
           })
 
           jQuery(window).trigger('resize')
 
           jQuery.fn.scrollStopped = function (callback) {
             jQuery(this).scroll(function () {
-              const self = this
-              const $this = jQuery(self)
+              var self = this
+              var $this = jQuery(self)
               if ($this.data('scrollTimeout')) {
                 clearTimeout($this.data('scrollTimeout'))
               }
@@ -327,7 +327,7 @@ activitiModeler
       $rootScope.editorFactory.promise.then(function () {
         KISBPM.eventBus.editor = $rootScope.editor
 
-        const eventMappings = [
+        var eventMappings = [
           { oryxType: ORYX.CONFIG.EVENT_SELECTION_CHANGED, kisBpmType: KISBPM.eventBus.EVENT_TYPE_SELECTION_CHANGE },
           { oryxType: ORYX.CONFIG.EVENT_DBLCLICK, kisBpmType: KISBPM.eventBus.EVENT_TYPE_DOUBLE_CLICK },
           { oryxType: ORYX.CONFIG.EVENT_MOUSEOUT, kisBpmType: KISBPM.eventBus.EVENT_TYPE_MOUSE_OUT },
@@ -342,7 +342,7 @@ activitiModeler
         })
 
         $rootScope.editor.registerOnEvent(ORYX.CONFIG.EVENT_SHAPEREMOVED, function (event) {
-          const validateButton = document.getElementById(event.shape.resourceId + '-validate-button')
+          var validateButton = document.getElementById(event.shape.resourceId + '-validate-button')
           if (validateButton) {
             validateButton.style.display = 'none'
           }
@@ -376,7 +376,7 @@ activitiModeler
       }
 
       $rootScope.addAlert = function (message, type) {
-        const newAlert = { message: message, type: type }
+        var newAlert = { message: message, type: type }
         if (!$rootScope.alerts.timeout) {
           // Timeout for message queue is not running, start one
           $rootScope.alerts.queue.push(newAlert)

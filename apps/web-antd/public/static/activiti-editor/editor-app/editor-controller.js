@@ -46,11 +46,11 @@ activitiModule
         compile: function($element, attr) {
 
             return function(_scope, _element, _attrs) {
-                const firstChild = (_attrs.focusFirstChild !== undefined);
+                var firstChild = (_attrs.focusFirstChild !== undefined);
                 $timeout(function () {
                     if (firstChild) {
                         // look for first input-element in child-tree and focus that
-                        const inputs = _element.find('input');
+                        var inputs = _element.find('input');
                         if (inputs && inputs.length > 0) {
                             inputs[0].focus();
                         }

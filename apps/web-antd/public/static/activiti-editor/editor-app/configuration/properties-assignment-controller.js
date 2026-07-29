@@ -17,21 +17,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-const APPLY_USER = {
+var APPLY_USER = {
   id: '${applyUserId}',
   nickname: '发起人',
   username: '-',
   departName: '-'
 }
 
-const CUSTOM_EXPRESSION = 'customExpression'
+var CUSTOM_EXPRESSION = 'customExpression'
 
 function getHeaders (tokenKey) {
-  const headers = {
+  var headers = {
     'Accept': 'application/json',
     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
   }
-  let token = EDITOR.UTIL.getParameterByName('token')
+  var token = EDITOR.UTIL.getParameterByName('token')
   token = token && token.replace(/^"|"$/g, '')
   headers[tokenKey] = token
   return headers
@@ -40,7 +40,7 @@ function getHeaders (tokenKey) {
 /*
  * Assignment
  */
-const KisBpmAssignmentCtrl = ['$scope', '$modal', function ($scope, $modal) {
+var KisBpmAssignmentCtrl = ['$scope', '$modal', function ($scope, $modal) {
   // Config for the modal window
   var opts = {
     template: 'editor-app/configuration/properties/assignment-popup.html?version=' + Date.now(),
@@ -51,7 +51,7 @@ const KisBpmAssignmentCtrl = ['$scope', '$modal', function ($scope, $modal) {
   $modal(opts)
 }]
 
-const KisBpmAssignmentPopupCtrl = ['$scope', '$modal', '$http', function ($scope, $modal, $http) {
+var KisBpmAssignmentPopupCtrl = ['$scope', '$modal', '$http', function ($scope, $modal, $http) {
   var headers = getHeaders($scope.config.token)
 
   $scope.customExpression = CUSTOM_EXPRESSION
@@ -390,7 +390,7 @@ const KisBpmAssignmentPopupCtrl = ['$scope', '$modal', '$http', function ($scope
  *
  * @type {(string|(function(...[*]=)))[]}
  */
-const KisBpmChoseAssignmentCtrl = ['$scope', '$http', function ($scope, $http) {
+var KisBpmChoseAssignmentCtrl = ['$scope', '$http', function ($scope, $http) {
   var headers = getHeaders($scope.config.token)
 
   $scope.query = {
@@ -502,7 +502,7 @@ const KisBpmChoseAssignmentCtrl = ['$scope', '$http', function ($scope, $http) {
 }]
 
 // 组选择模态框的控制器
-const KisBpmChoseCandidateGroupsCtrl = ['$scope', '$http', function ($scope, $http) {
+var KisBpmChoseCandidateGroupsCtrl = ['$scope', '$http', function ($scope, $http) {
   var headers = getHeaders($scope.config.token)
   $http({
     method: 'get',

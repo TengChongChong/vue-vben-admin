@@ -21,7 +21,7 @@
  * Execution listeners
  */
 
-const KisBpmMultiInstanceCtrl = [ '$scope', function($scope) {
+var KisBpmMultiInstanceCtrl = [ '$scope', function($scope) {
 
     if ($scope.property.value == undefined && $scope.property.value == null)
     {

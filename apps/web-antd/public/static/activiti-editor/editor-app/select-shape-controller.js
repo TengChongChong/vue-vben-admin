@@ -21,7 +21,7 @@
  * Controller for morph shape selection
  */
 
-const KisBpmShapeSelectionCtrl = [ '$rootScope', '$scope', '$timeout', '$translate', function($rootScope, $scope, $timeout, $translate) {
+var KisBpmShapeSelectionCtrl = [ '$rootScope', '$scope', '$timeout', '$translate', function($rootScope, $scope, $timeout, $translate) {
 
     $scope.selectedMorphShapes = [];
     

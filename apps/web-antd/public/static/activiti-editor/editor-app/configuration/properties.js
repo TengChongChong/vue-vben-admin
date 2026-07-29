@@ -18,7 +18,7 @@
  */
 'use strict';
 
-const KISBPM = KISBPM || {};
+var KISBPM = KISBPM || {};
 KISBPM.PROPERTY_CONFIG =
 {
     "string": {

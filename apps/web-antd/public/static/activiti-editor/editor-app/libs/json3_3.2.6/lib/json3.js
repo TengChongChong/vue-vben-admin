@@ -1,18 +1,18 @@
 /*! JSON v3.2.6 | http://bestiejs.github.io/json3 | Copyright 2012-2013, Kit Cambridge | http://kit.mit-license.org */
 ;(function (window) {
   // Convenience aliases.
-  let getClass = {}.toString, isProperty, forEach, undef;
+  var getClass = {}.toString, isProperty, forEach, undef;
 
   // Detect the `define` function exposed by asynchronous module loaders. The
   // strict `define` check is necessary for compatibility with `r.js`.
-  const isLoader = typeof define === "function" && define.amd;
+  var isLoader = typeof define === "function" && define.amd;
 
   // Detect native implementations.
-  const nativeJSON = typeof JSON == "object" && JSON;
+  var nativeJSON = typeof JSON == "object" && JSON;
 
   // Set up the JSON 3 namespace, preferring the CommonJS `exports` object if
   // available.
-  let JSON3 = typeof exports == "object" && exports && !exports.nodeType && exports;
+  var JSON3 = typeof exports == "object" && exports && !exports.nodeType && exports;
 
   if (JSON3 && nativeJSON) {
     // Explicitly delegate to the native `stringify` and `parse`
@@ -26,7 +26,7 @@
   }
 
   // Test the `Date#getUTC*` methods. Based on work by @Yaffle.
-  let isExtended = new Date(-3509827334573292);
+  var isExtended = new Date(-3509827334573292);
   try {
     // The `getUTCFullYear`, `Month`, and `Date` methods return nonsensical
     // results for certain dates in Opera >= 10.53.
@@ -45,7 +45,7 @@
       return has[name];
     }
 
-    let isSupported;
+    var isSupported;
     if (name == "bug-string-char-index") {
       // IE <= 7 doesn't support accessing string characters using square
       // bracket notation. IE 8 only supports this for primitives.
@@ -55,10 +55,10 @@
       // supported.
       isSupported = has("json-stringify") && has("json-parse");
     } else {
-      let value, serialized = '{"a":[1,true,false,null,"\\u0000\\b\\n\\f\\r\\t"]}';
+      var value, serialized = '{"a":[1,true,false,null,"\\u0000\\b\\n\\f\\r\\t"]}';
       // Test `JSON.stringify`.
       if (name == "json-stringify") {
-        let stringify = JSON3.stringify, stringifySupported = typeof stringify == "function" && isExtended;
+        var stringify = JSON3.stringify, stringifySupported = typeof stringify == "function" && isExtended;
         if (stringifySupported) {
           // A test function object with a custom `toJSON` method.
           (value = function () {
@@ -71,8 +71,8 @@
               stringify(0) === "0" &&
               // FF 3.1b1, b2, and JSON 2 serialize wrapped primitives as object
               // literals.
-              stringify(Number()) === "0" &&
-              stringify(String()) == '""' &&
+              stringify(new Number()) === "0" &&
+              stringify(new String()) == '""' &&
               // FF 3.1b1, 2 throw an error if the value is `null`, `undefined`, or
               // does not define a canonical JSON representation (this applies to
               // objects with `toJSON` properties as well, *unless* they are nested
@@ -126,8 +126,8 @@
       }
       // Test `JSON.parse`.
       if (name == "json-parse") {
-        const parse = JSON3.parse;
-        if (typeof parse === "function") {
+        var parse = JSON3.parse;
+        if (typeof parse == "function") {
           try {
             // FF 3.1b1, b2 will throw an exception if a bare literal is provided.
             // Conforming implementations should also coerce the initial argument to
@@ -171,22 +171,22 @@
 
   if (!has("json")) {
     // Common `[[Class]]` name aliases.
-    const functionClass = "[object Function]";
-    const dateClass = "[object Date]";
-    const numberClass = "[object Number]";
-    const stringClass = "[object String]";
-    const arrayClass = "[object Array]";
-    const booleanClass = "[object Boolean]";
+    var functionClass = "[object Function]";
+    var dateClass = "[object Date]";
+    var numberClass = "[object Number]";
+    var stringClass = "[object String]";
+    var arrayClass = "[object Array]";
+    var booleanClass = "[object Boolean]";
 
     // Detect incomplete support for accessing string characters by index.
-    const charIndexBuggy = has("bug-string-char-index");
+    var charIndexBuggy = has("bug-string-char-index");
 
     // Define additional utility methods if the `Date` methods are buggy.
     if (!isExtended) {
       var floor = Math.floor;
       // A mapping between the months of the year and the number of days between
       // January 1st and the first of the respective month.
-      const Months = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+      var Months = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
       // Internal: Calculates the number of days between the Unix epoch and the
       // first day of the given month.
       var getDay = function (year, month) {
@@ -198,7 +198,7 @@
     // object. Delegates to the native `Object#hasOwnProperty` method.
     if (!(isProperty = {}.hasOwnProperty)) {
       isProperty = function (property) {
-        let members = {}, constructor;
+        var members = {}, constructor;
         if ((members.__proto__ = null, members.__proto__ = {
           // The *proto* property cannot be set multiple times in recent
           // versions of Firefox and SeaMonkey.
@@ -210,7 +210,7 @@
             // Capture and break the object's prototype chain (see section 8.6.2
             // of the ES 5.1 spec). The parenthesized expression prevents an
             // unsafe transformation by the Closure Compiler.
-            const original = this.__proto__, result = property in (this.__proto__ = null, this);
+            var original = this.__proto__, result = property in (this.__proto__ = null, this);
             // Restore the original prototype chain.
             this.__proto__ = original;
             return result;
@@ -221,7 +221,7 @@
           // Use the `constructor` property to simulate `Object#hasOwnProperty` in
           // other environments.
           isProperty = function (property) {
-            const parent = (this.constructor || constructor).prototype;
+            var parent = (this.constructor || constructor).prototype;
             return property in this && !(property in parent && this[property] === parent[property]);
           };
         }
@@ -231,7 +231,7 @@
     }
 
     // Internal: A set of primitive types used by `isHostType`.
-    const PrimitiveTypes = {
+    var PrimitiveTypes = {
       'boolean': 1,
       'number': 1,
       'string': 1,
@@ -240,7 +240,7 @@
 
     // Internal: Determines if the given object `property` value is a
     // non-primitive.
-    const isHostType = function (object, property) {
+    var isHostType = function (object, property) {
       var type = typeof object[property];
       return type == 'object' ? !!object[property] : !PrimitiveTypes[type];
     };
@@ -248,7 +248,7 @@
     // Internal: Normalizes the `for...in` iteration algorithm across
     // environments. Each enumerated key is yielded to a `callback` function.
     forEach = function (object, callback) {
-      let size = 0, Properties, members, property;
+      var size = 0, Properties, members, property;
 
       // Tests for bugs in the current environment's `for...in` algorithm. The
       // `valueOf` property inherits the non-enumerable flag from
@@ -274,8 +274,8 @@
         // IE <= 8, Mozilla 1.0, and Netscape 6.2 ignore shadowed non-enumerable
         // properties.
         forEach = function (object, callback) {
-          let isFunction = getClass.call(object) == functionClass, property, length;
-          const hasProperty = !isFunction && typeof object.constructor != 'function' && isHostType(object, 'hasOwnProperty') ? object.hasOwnProperty : isProperty;
+          var isFunction = getClass.call(object) == functionClass, property, length;
+          var hasProperty = !isFunction && typeof object.constructor != 'function' && isHostType(object, 'hasOwnProperty') ? object.hasOwnProperty : isProperty;
           for (property in object) {
             // Gecko <= 1.0 enumerates the `prototype` property of functions under
             // certain conditions; IE does not.
@@ -290,7 +290,7 @@
         // Safari <= 2.0.4 enumerates shadowed properties twice.
         forEach = function (object, callback) {
           // Create a set of iterated properties.
-          let members = {}, isFunction = getClass.call(object) == functionClass, property;
+          var members = {}, isFunction = getClass.call(object) == functionClass, property;
           for (property in object) {
             // Store each property name to prevent double enumeration. The
             // `prototype` property of functions is not enumerated due to cross-
@@ -303,7 +303,7 @@
       } else {
         // No bugs detected; use the standard `for...in` algorithm.
         forEach = function (object, callback) {
-          let isFunction = getClass.call(object) == functionClass, property, isConstructor;
+          var isFunction = getClass.call(object) == functionClass, property, isConstructor;
           for (property in object) {
             if (!(isFunction && property == "prototype") && isProperty.call(object, property) && !(isConstructor = property === "constructor")) {
               callback(property);
@@ -327,7 +327,7 @@
     // level of the output.
     if (!has("json-stringify")) {
       // Internal: A map of control characters and their escaped equivalents.
-      const Escapes = {
+      var Escapes = {
         92: "\\\\",
         34: '\\"',
         8: "\\b",
@@ -339,8 +339,8 @@
 
       // Internal: Converts `value` into a zero-padded string such that its
       // length is at least equal to `width`. The `width` must be <= 6.
-      const leadingZeroes = "000000";
-      const toPaddedString = function (width, value) {
+      var leadingZeroes = "000000";
+      var toPaddedString = function (width, value) {
         // The `|| 0` expression is necessary to work around a bug in
         // Opera <= 7.54u2 where `0 == -0`, but `String(-0) !== "0"`.
         return (leadingZeroes + (value || 0)).slice(-width);
@@ -350,8 +350,8 @@
       // characters (characters with code unit values between 0 and 31) with
       // their escaped equivalents. This is an implementation of the
       // `Quote(value)` operation defined in ES 5.1 section 15.12.3.
-      const unicodePrefix = "\\u00";
-      const quote = function (value) {
+      var unicodePrefix = "\\u00";
+      var quote = function (value) {
         var result = '"', index = 0, length = value.length, isLarge = length > 10 && charIndexBuggy, symbols;
         if (isLarge) {
           symbols = value.split("");
@@ -377,7 +377,7 @@
 
       // Internal: Recursively serializes an object. Implements the
       // `Str(key, holder)`, `JO(value)`, and `JA(value)` operations.
-      const serialize = function (property, object, callback, properties, whitespace, indentation, stack) {
+      var serialize = function (property, object, callback, properties, whitespace, indentation, stack) {
         var value, className, year, month, date, time, hours, minutes, seconds, milliseconds, results, element, index, length, prefix, result;
         try {
           // Necessary for host object support.
@@ -506,8 +506,8 @@
 
       // Public: `JSON.stringify`. See ES 5.1 section 15.12.3.
       JSON3.stringify = function (source, filter, width) {
-        let whitespace, callback, properties, className;
-        if (typeof filter === "function" || typeof filter === "object" && filter) {
+        var whitespace, callback, properties, className;
+        if (typeof filter == "function" || typeof filter == "object" && filter) {
           if ((className = getClass.call(filter)) == functionClass) {
             callback = filter;
           } else if (className == arrayClass) {
@@ -536,11 +536,11 @@
 
     // Public: Parses a JSON source string.
     if (!has("json-parse")) {
-      const fromCharCode = String.fromCharCode;
+      var fromCharCode = String.fromCharCode;
 
       // Internal: A map of escaped control characters and their unescaped
       // equivalents.
-      const Unescapes = {
+      var Unescapes = {
         92: "\\",
         34: '"',
         47: "/",
@@ -552,10 +552,10 @@
       };
 
       // Internal: Stores the parser state.
-      let Index, Source;
+      var Index, Source;
 
       // Internal: Resets the parser state and throws a `SyntaxError`.
-      const abort = function() {
+      var abort = function() {
         Index = Source = null;
         throw SyntaxError();
       };
@@ -563,7 +563,7 @@
       // Internal: Returns the next token, or `"$"` if the parser has reached
       // the end of the source string. A token may be a string, number, `null`
       // literal, or Boolean literal.
-      const lex = function () {
+      var lex = function () {
         var source = Source, length = source.length, value, begin, position, isSigned, charCode;
         while (Index < length) {
           charCode = source.charCodeAt(Index);
@@ -721,7 +721,7 @@
       };
 
       // Internal: Parses a JSON `value` token.
-      const get = function (value) {
+      var get = function (value) {
         var results, hasMembers;
         if (value == "$") {
           // Unexpected end of input.
@@ -804,7 +804,7 @@
       };
 
       // Internal: Updates a traversed object member.
-      const update = function(source, property, callback) {
+      var update = function(source, property, callback) {
         var element = walk(source, property, callback);
         if (element === undef) {
           delete source[property];
@@ -816,7 +816,7 @@
       // Internal: Recursively traverses a parsed JSON object, invoking the
       // `callback` function for each value. This is an implementation of the
       // `Walk(holder, name)` operation defined in ES 5.1 section 15.12.2.
-      const walk = function (source, property, callback) {
+      var walk = function (source, property, callback) {
         var value = source[property], length;
         if (typeof value == "object" && value) {
           // `forEach` can't be used to traverse an array in Opera <= 8.54
@@ -837,9 +837,9 @@
 
       // Public: `JSON.parse`. See ES 5.1 section 15.12.2.
       JSON3.parse = function (source, callback) {
-        let result, value;
+        var result, value;
         Index = 0;
-        Source = `${  source}`;
+        Source = "" + source;
         result = get(lex());
         // If a JSON string contains multiple tokens, it is invalid.
         if (lex() != "$") {
