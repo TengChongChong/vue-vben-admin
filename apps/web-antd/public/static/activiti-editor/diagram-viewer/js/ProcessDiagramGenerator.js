@@ -5,7 +5,7 @@
  * @author (Javascript) Dmitry Farafonov
  */
  
-const ProcessDiagramGenerator = {	
+var ProcessDiagramGenerator = {	
 	options: {},
 	
 	processDiagramCanvas: [],
@@ -1068,7 +1068,7 @@ const ProcessDiagramGenerator = {
 	vvoid: function(){}
 };
 
-const Lang = {
+var Lang = {
 	SUBREGEX: /\{\s*([^\|\}]+?)\s*(?:\|([^\}]*))?\s*\}/g,
 	UNDEFINED: 'undefined',
 	isUndefined: function(o) {

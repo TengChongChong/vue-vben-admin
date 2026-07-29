@@ -9,7 +9,7 @@
 */
 (function($){
     $.AsyncQueue = function() {
-        let that = this,
+        var that = this,
             queue = [],
 			completeFunc,
             failureFunc,
@@ -21,7 +21,7 @@
 			defaultTimeOut = 10;
 
         _run = function() {
-            const f = queue.shift();
+            var f = queue.shift();
 
             if (f) {
 				inQueue++;
@@ -60,20 +60,20 @@
         this.add = function(func) {
 			// TODO: add callback for queue[i] complete
 			
-			const obj = arguments[0];
+			var obj = arguments[0];
 			if (obj && Object.prototype.toString.call(obj) === "[object Array]") {
-				const fn = arguments[1];
-				var timeOut = (typeof(arguments[2]) !== "undefined")? arguments[2] : defaultTimeOut;
-				if (typeof(fn) === "function") {
-					for(let i = 0; i < obj.length; i++) {
-						const f = function(objx){
+				var fn = arguments[1];
+				var timeOut = (typeof(arguments[2]) != "undefined")? arguments[2] : defaultTimeOut;
+				if (typeof(fn) == "function") {
+					for(var i = 0; i < obj.length; i++) {
+						var f = function(objx){
 							queue.push({isParallel: true, fn: function(){fn.apply(that, [that, objx]);}, timeOut: timeOut});
 						}(obj[i])
 					}
 				}
 			} else {
 				var fn = arguments[0];
-				var timeOut = (typeof(arguments[1]) !== "undefined")? arguments[2] : defaultTimeOut;
+				var timeOut = (typeof(arguments[1]) != "undefined")? arguments[2] : defaultTimeOut;
 				queue.push({isParallel: false, fn: func, timeOut: timeOut});
 			}
             return this;
@@ -108,7 +108,7 @@
         this.failure = function() {
             paused = true;
             if (failureFunc) {
-                const args = [that];
+                var args = [that];
                 for(i = 0; i < arguments.length; i++) {
                     args.push(arguments[i]);
                 }

@@ -4,7 +4,7 @@
  * @author Dmitry Farafonov
  */
 
-const Color = {
+var Color = {
    /**
    * The color white.  In the default sRGB space.
    */

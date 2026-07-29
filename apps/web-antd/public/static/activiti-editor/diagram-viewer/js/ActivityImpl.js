@@ -4,7 +4,7 @@
  * @author (Javascript) Dmitry Farafonov
  */
  
-const ActivityImpl = function(activityJson){
+var ActivityImpl = function(activityJson){
 	this.outgoingTransitions = [];
 	this.outgoingTransitions = [];
 	this.incomingTransitions = [];
@@ -85,7 +85,7 @@ ActivityImpl.prototype = {
 	},
 	
 	toString: function(id) {
-		return `Activity(${id})`;
+		return "Activity("+id+")";
 	},
 	
 	getParentActivity: function(){

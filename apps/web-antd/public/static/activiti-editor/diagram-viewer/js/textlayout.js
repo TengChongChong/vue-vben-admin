@@ -1,14 +1,14 @@
 	window.onload = function () {
-			const paper = Raphael("holder");
+			var paper = Raphael("holder");
 
 			//var curve = paper.ellipse(100, 100, 1, 1).attr({"stroke-width": 0, fill: Color.red});
 			
-			const text = "Betty Botter bought some butter but, she said, the butter's bitter. If I put it in my batter, it will make my batter bitter. But a bit of better butter will make my batter better. So, she bought a bit of butter, better than her bitter butter, and she put it in her batter, and the batter was not bitter. It was better Betty Botter bought a bit better butter.";
-			const font = {font: "11px Arial", "font-style":"italic", opacity: 1, "fill": LABEL_COLOR, stroke: LABEL_COLOR, "stroke-width":.3};
-			const font = {font: "11px Arial", opacity: 1, "fill": LABEL_COLOR};
-			const boxWidth = 100
+			var text = "Betty Botter bought some butter but, she said, the butter's bitter. If I put it in my batter, it will make my batter bitter. But a bit of better butter will make my batter better. So, she bought a bit of butter, better than her bitter butter, and she put it in her batter, and the batter was not bitter. It was better Betty Botter bought a bit better butter.";
+			var font = {font: "11px Arial", "font-style":"italic", opacity: 1, "fill": LABEL_COLOR, stroke: LABEL_COLOR, "stroke-width":.3};
+			var font = {font: "11px Arial", opacity: 1, "fill": LABEL_COLOR};
+			var boxWidth = 100
 			
-			const AttributedStringIterator = function(text){
+			var AttributedStringIterator = function(text){
 				//this.text = this.rtrim(this.ltrim(text));
 				text = text.replace(/(\s)+/, " ");
 				this.text = this.rtrim(text);
@@ -60,12 +60,12 @@
 			};
 			AttributedStringIterator.prototype = {
 				getEndIndex: function(pos){
-					if (typeof(pos) === "undefined")
+					if (typeof(pos) == "undefined")
 						return this.endIndex;
 						
-					const string = this.text.substr(pos, this.endIndex - pos);
+					var string = this.text.substr(pos, this.endIndex - pos);
 					
-					const posEndOfLine = string.search(/[\n]/);
+					var posEndOfLine = string.search(/[\n]/);
 					if (posEndOfLine == -1)
 						return this.endIndex;
 					else
@@ -75,21 +75,21 @@
 					return this.beginIndex;
 				},
 				isWhitespace: function(pos){
-					const str = this.text[pos];
-					const whitespaceChars = " \t\n\f";
+					var str = this.text[pos];
+					var whitespaceChars = " \t\n\f";
 					
 					return (whitespaceChars.indexOf(str) != -1);
 				},
 				isNewLine: function(pos){
-					const str = this.text[pos];
-					const whitespaceChars = "\n";
+					var str = this.text[pos];
+					var whitespaceChars = "\n";
 					
 					return (whitespaceChars.indexOf(str) != -1);
 				},
 				preceding: function(pos){
 					//console.group("[AttributedStringIterator.preceding]");
 					for(var i in this.startWordOffsets) {
-						const startWordOffset = this.startWordOffsets[i];
+						var startWordOffset = this.startWordOffsets[i];
 						if (pos < startWordOffset && i>0) {
 							//console.log("startWordOffset: " + this.startWordOffsets[i-1]);
 							//console.groupEnd();
@@ -103,7 +103,7 @@
 				following: function(pos){
 					//console.group("[AttributedStringIterator.following]");
 					for(var i in this.startWordOffsets) {
-						const startWordOffset = this.startWordOffsets[i];
+						var startWordOffset = this.startWordOffsets[i];
 						if (pos < startWordOffset && i>0) {
 							//console.log("startWordOffset: " + this.startWordOffsets[i]);
 							//console.groupEnd();
@@ -115,11 +115,11 @@
 					return this.startWordOffsets[i];
 				},
 				ltrim: function(str){
-					const patt2=/^\s+/g;
+					var patt2=/^\s+/g;
 					return str.replace(patt2, "");
 				}, 
 				rtrim: function(str){
-					const patt2=/\s+$/g;
+					var patt2=/\s+$/g;
 					return str.replace(patt2, "");
 				},
 				getLayout: function(start, limit){
@@ -149,7 +149,7 @@
 			*/
 			
 			
-			const LineBreakMeasurer = function(paper, text, fontAttrs){
+			var LineBreakMeasurer = function(paper, text, fontAttrs){
 				this.paper = paper;
 				this.text = new AttributedStringIterator(text);
 				this.fontAttrs = fontAttrs;
@@ -168,13 +168,13 @@
 			LineBreakMeasurer.prototype = {
 				nextOffset: function(wrappingWidth, offsetLimit, requireNextWord) {
 					//console.group("[nextOffset]");
-					let nextOffset = this.pos;
+					var nextOffset = this.pos;
 					if (this.pos < this.limit) {
 						if (offsetLimit <= this.pos) {
 							throw {message: "offsetLimit must be after current position", code: "IllegalArgumentException"};
 						}
 						
-						const charAtMaxAdvance = this.getLineBreakIndex(this.pos, wrappingWidth);
+						var charAtMaxAdvance = this.getLineBreakIndex(this.pos, wrappingWidth);
 						//charAtMaxAdvance --;
 						//console.log("charAtMaxAdvance:", charAtMaxAdvance, ", [" + this.text.getCharAtPos(charAtMaxAdvance) + "]");
 						
@@ -215,14 +215,14 @@
 				nextLayout: function(wrappingWidth) {
 					//console.groupCollapsed("[nextLayout]");
 					if (this.pos < this.limit) {
-						const requireNextWord = false;
-						const layoutLimit = this.nextOffset(wrappingWidth, this.limit, requireNextWord);
+						var requireNextWord = false;
+						var layoutLimit = this.nextOffset(wrappingWidth, this.limit, requireNextWord);
 						//console.log("layoutLimit:", layoutLimit);
 						if (layoutLimit == this.pos) {
 							//console.groupEnd();
 							return null;
 						}
-						const result = this.text.getLayout(this.pos, layoutLimit);
+						var result = this.text.getLayout(this.pos, layoutLimit);
 						//console.log("layout: \"" + result + "\"");
 						
 						// remove end of line
@@ -244,11 +244,11 @@
 					//console.group("[getLineBreakIndex]");
 					//console.log("pos:"+pos + ", text: \""+ this.text.text.replace(/\n/g, "_").substr(pos, 1) + "\"");
 					
-					const bb = this.rafaelTextObject.getBBox();
+					var bb = this.rafaelTextObject.getBBox();
 					
-					let charNum = -1;
+					var charNum = -1;
 					try {
-						const svgPoint = this.svgTextObject.getStartPositionOfChar(pos);
+						var svgPoint = this.svgTextObject.getStartPositionOfChar(pos);
 						//var dot = this.paper.ellipse(svgPoint.x, svgPoint.y, 1, 1).attr({"stroke-width": 0, fill: Color.blue});
 						svgPoint.x = svgPoint.x + wrappingWidth;
 						//svgPoint.y = bb.y;
@@ -258,7 +258,7 @@
 					
 						charNum = this.svgTextObject.getCharNumAtPosition(svgPoint);
 					} catch (e){
-						console.warn(`getStartPositionOfChar error, pos:${  pos}`);
+						console.warn("getStartPositionOfChar error, pos:" + pos);
 						/*
 						var testPos = pos + 1;
 						if (testPos < this.limit) {
@@ -272,16 +272,16 @@
 						return this.text.getEndIndex(pos);
 					} else {
 						// When case there is new line between pos and charnum then use this new line
-						const newLineIndex = this.text.getEndIndex(pos);
+						var newLineIndex = this.text.getEndIndex(pos);
 						if (newLineIndex < charNum ) {
-							console.log(`newLineIndex <= charNum, newLineIndex:${newLineIndex}, charNum:${charNum}`, `"${  this.text.text.substr(newLineIndex+1).replace(/\n/g, "↵")  }"`);
+							console.log("newLineIndex <= charNum, newLineIndex:"+newLineIndex+", charNum:"+charNum, "\"" + this.text.text.substr(newLineIndex+1).replace(/\n/g, "↵") + "\"");
 							//console.groupEnd();
 							
 							return newLineIndex;
 						}
 							
 						//var charAtMaxAdvance  = this.text.text.substring(charNum, charNum + 1);
-						const charAtMaxAdvance  = this.text.getCharAtPos(charNum);
+						var charAtMaxAdvance  = this.text.getCharAtPos(charNum);
 						//console.log("!!charAtMaxAdvance: " + charAtMaxAdvance);
 						//console.groupEnd();
 						return charNum;
@@ -296,32 +296,32 @@
 			
 			// ******
 			function drawMultilineText(text, x, y, boxWidth, boxHeight, options) {
-				const TEXT_PADDING = 3;
-				const width = boxWidth - (2 * TEXT_PADDING);
+				var TEXT_PADDING = 3;
+				var width = boxWidth - (2 * TEXT_PADDING);
 				if (boxHeight)
 					var height = boxHeight - (2 * TEXT_PADDING);
 			
-				const layouts = [];
+				var layouts = [];
 				
-				const measurer = new LineBreakMeasurer(paper, text, font);
-				const lineHeight = measurer.rafaelTextObject.getBBox().height;
+				var measurer = new LineBreakMeasurer(paper, text, font);
+				var lineHeight = measurer.rafaelTextObject.getBBox().height;
 				console.log("text: ", text.replace(/\n/g, "↵"));
 				
 				if (height) {
 					var availableLinesCount = parseInt(height/lineHeight);
-					console.log(`availableLinesCount: ${  availableLinesCount}`);
+					console.log("availableLinesCount: " + availableLinesCount);
 				}
 				
-				let i = 1;
+				var i = 1;
 				while (measurer.getPosition() < measurer.text.getEndIndex()) {
-					const layout = measurer.nextLayout(width);
+					var layout = measurer.nextLayout(width);
 					//console.log("LAYOUT: " + layout + ", getPosition: " + measurer.getPosition());
 					
 					if (layout != null) {
 						if (!availableLinesCount || i < availableLinesCount) {
 							layouts.push(layout);
 						} else {
-							layouts.push(fitTextToWidth(`${layout  }...`, boxWidth));
+							layouts.push(fitTextToWidth(layout + "...", boxWidth));
 							break;
 						}
 					}
@@ -335,7 +335,7 @@
 				if (options)
 					measurer.rafaelTextObject.attr({"text-anchor": options["text-anchor"]});
 					
-				const bb = measurer.rafaelTextObject.getBBox();
+				var bb = measurer.rafaelTextObject.getBBox();
 				//measurer.rafaelTextObject.attr({"x": x + boxWidth/2});
 				if (options["vertical-align"] == "top")
 					measurer.rafaelTextObject.attr({"y": y + bb.height/2 + TEXT_PADDING});
@@ -350,25 +350,25 @@
 				else 
 					measurer.rafaelTextObject.attr("x", x + boxWidth/2 - bb.width/2 + TEXT_PADDING/2);
 				
-				const boxStyle = {stroke: Color.LightSteelBlue2, "stroke-width": 1.0, "stroke-dasharray": "- "};
+				var boxStyle = {stroke: Color.LightSteelBlue2, "stroke-width": 1.0, "stroke-dasharray": "- "};
 				/*
 				var box = paper.rect(x+.0 + boxWidth/2 - bb.width/2+ TEXT_PADDING/2, y + .5 + boxHeight/2 - bb.height/2, width, height).attr(boxStyle);
 				box.attr("height", bb.height);
 				*/
 				//var box = paper.rect(bb.x - .5 + bb.width/2 + TEXT_PADDING, bb.y + bb.height/2, bb.width, bb.height).attr(boxStyle);
 				
-				const textAreaCX = x + boxWidth/2;
-				const textAreaCY = y + height/2;
-				const dotLeftTop = paper.ellipse(x, y, 3, 3).attr({"stroke-width": 0, fill: Color.LightSteelBlue, stroke: "none"});
-				const dotCenter = paper.ellipse(textAreaCX, textAreaCY, 3, 3).attr({fill: Color.LightSteelBlue2, stroke: "none"});
+				var textAreaCX = x + boxWidth/2;
+				var textAreaCY = y + height/2;
+				var dotLeftTop = paper.ellipse(x, y, 3, 3).attr({"stroke-width": 0, fill: Color.LightSteelBlue, stroke: "none"});
+				var dotCenter = paper.ellipse(textAreaCX, textAreaCY, 3, 3).attr({fill: Color.LightSteelBlue2, stroke: "none"});
 
 				/*
 				// real bbox
 				var bb = measurer.rafaelTextObject.getBBox();
 				var rect = paper.rect(bb.x+.5, bb.y + .5, bb.width, bb.height).attr({"stroke-width": 1});
 				*/
-				const boxStyle = {stroke: Color.LightSteelBlue2, "stroke-width": 1.0, "stroke-dasharray": "- "};
-				const rect = paper.rect(x+.5, y + .5, boxWidth, boxHeight).attr(boxStyle);
+				var boxStyle = {stroke: Color.LightSteelBlue2, "stroke-width": 1.0, "stroke-dasharray": "- "};
+				var rect = paper.rect(x+.5, y + .5, boxWidth, boxHeight).attr(boxStyle);
 			}
 			
 			
@@ -401,7 +401,7 @@
 			*/
 			
 			
-			const fitTextToWidth = function(original, width) {
+			var fitTextToWidth = function(original, width) {
 				var text = original;
 
 				// TODO: move attr on parameters
@@ -434,8 +434,8 @@
 			}
 			
 			
-			const x=100, y=90, height=20;
-			const options = {"text-anchor": "middle", "boxHeight": 150, "vertical-align": "top"};
-			const options = {"boxHeight": 150, "vertical-align": "top"};
+			var x=100, y=90, height=20;
+			var options = {"text-anchor": "middle", "boxHeight": 150, "vertical-align": "top"};
+			var options = {"boxHeight": 150, "vertical-align": "top"};
 			drawMultilineText(text, x, y, 150, 100, options);
 	};
