@@ -4,14 +4,17 @@ import type { CmsSite } from '#/api';
 import { computed, onMounted, ref } from 'vue';
 
 import { AccessControl } from '@vben/access';
-import { Page, useVbenDrawer } from '@vben/common-ui';
+import { Page, useVbenDrawer, useVbenModal } from '@vben/common-ui';
 import { formatToDateTime } from '@vben/utils';
 
 import {
   Button,
   Card,
   Checkbox,
+  Dropdown,
   Empty,
+  Menu,
+  MenuItem,
   message,
   Modal,
   Spin,
@@ -25,15 +28,17 @@ import {
   removeCmsSiteApi,
   selectCmsSiteApi,
 } from '#/api';
-import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
+import { ButtonAdd, ButtonEdit } from '#/components/button';
 import { DictTag } from '#/components/dict';
 import {
+  LucideChevronDown,
   LucideEye,
   LucideFolder,
   LucideGlobe,
   LucideHash,
   LucideListOrdered,
   LucidePalette,
+  LucideSettings,
   LucideTrash,
 } from '#/components/icons';
 import { $t } from '#/locales';
@@ -45,6 +50,7 @@ import {
   openCmsPreview,
 } from '../utils/cms-preview';
 import InputDrawer from './input.vue';
+import NginxConfigModal from './nginx-config-modal.vue';
 import OrderDrawer from './order.vue';
 
 const cmsSiteStore = useCmsSiteStore();
@@ -131,6 +137,9 @@ const [BaseInputDrawer, baseInputDrawerApi] = useVbenDrawer({
 });
 const [BaseOrderDrawer, baseOrderDrawerApi] = useVbenDrawer({
   connectedComponent: OrderDrawer,
+});
+const [BaseNginxConfigModal, baseNginxConfigModalApi] = useVbenModal({
+  connectedComponent: NginxConfigModal,
 });
 
 function resetSelection() {
@@ -235,6 +244,11 @@ function getSiteSummary(item: CmsSite) {
 
 function isActiveSite(id: string) {
   return cmsSiteStore.activeSiteId === id;
+}
+
+function handleViewNginx(item: CmsSite) {
+  baseNginxConfigModalApi.setData(item);
+  baseNginxConfigModalApi.open();
 }
 
 onMounted(async () => {
@@ -391,12 +405,6 @@ onMounted(async () => {
                 {{ formatDateLabel(item.editDate) }}
               </div>
               <div class="flex flex-wrap items-center justify-end gap-0.5">
-                <ButtonAdd
-                  :auth-codes="['cms:site:save']"
-                  size="small"
-                  text="新增下级"
-                  type="link"
-                  @click="handleCreate(item.id)" />
                 <ButtonEdit
                   :auth-codes="['cms:site:save']"
                   size="small"
@@ -411,13 +419,35 @@ onMounted(async () => {
                     预览
                   </Button>
                 </AccessControl>
-                <ButtonRemove
-                  :api="removeCmsSiteApi"
-                  :auth-codes="['cms:site:remove']"
-                  :ids="[item.id]"
-                  size="small"
-                  type="link"
-                  @success="handleSearch" />
+                <Dropdown>
+                  <Button size="small" type="link" @click.prevent>
+                    更多
+                    <LucideChevronDown />
+                  </Button>
+                  <template #overlay>
+                    <Menu>
+                      <MenuItem
+                        key="nginx"
+                        @click="handleViewNginx(item)">
+                        <template #icon>
+                          <LucideSettings />
+                        </template>
+                        查看 Nginx 配置
+                      </MenuItem>
+                      <AccessControl :codes="['cms:site:remove']">
+                        <MenuItem
+                          key="remove"
+                          danger
+                          @click="handleRemove([item.id])">
+                          <template #icon>
+                            <LucideTrash />
+                          </template>
+                          删除
+                        </MenuItem>
+                      </AccessControl>
+                    </Menu>
+                  </template>
+                </Dropdown>
               </div>
             </div>
           </div>
@@ -430,5 +460,6 @@ onMounted(async () => {
 
     <BaseInputDrawer @success="handleSearch" />
     <BaseOrderDrawer @success="handleSearch" />
+    <BaseNginxConfigModal />
   </Page>
 </template>

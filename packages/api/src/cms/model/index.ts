@@ -2,6 +2,7 @@ export * from './cms-article-model';
 export * from './cms-column-model';
 export * from './cms-feedback-model';
 export * from './cms-media-model';
+export * from './cms-menu-model';
 export * from './cms-page-model';
 export * from './cms-release-model';
 export * from './cms-resource-model';

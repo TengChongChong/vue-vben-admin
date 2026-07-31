@@ -2,6 +2,8 @@ export * from './cms-article';
 export * from './cms-column';
 export * from './cms-feedback';
 export * from './cms-media';
+export * from './cms-menu';
+export * from './cms-menu-item';
 export * from './cms-page';
 export * from './cms-release';
 export * from './cms-release-queue';
