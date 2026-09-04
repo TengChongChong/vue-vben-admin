@@ -295,6 +295,7 @@ const fieldProps = computed(() => {
 // 判定：form 固有属性均不为 undefined（''、0、null、对象、函数），
 // 而 form 上不存在的命名属性访问返回 undefined——以此区分冲突与否。
 const fieldNameConflictCache = new Map<string, boolean>();
+
 function conflictsWithFormProperty(fieldName: string): boolean {
   let cached = fieldNameConflictCache.get(fieldName);
   if (cached === undefined) {
@@ -331,10 +332,12 @@ function declaresNameProp(comp: unknown): boolean {
 
 function createFieldSlotProps(slotProps: RuntimeFieldSlotProps) {
   const { field } = slotProps;
+
   function handleChange(value: any) {
     getFormApi().setFieldError(fieldName);
     field.handleChange(value);
   }
+
   return {
     ...slotProps,
     componentField: {
@@ -500,7 +503,6 @@ onUnmounted(() => {
           'form-valid-error': shouldApplyInvalidStyle,
           'form-is-required': shouldRequired,
           'flex-col': isVertical,
-          'flex-row items-center': !isVertical,
           'pb-4': !compact,
           'pb-2': compact,
         }"
@@ -511,7 +513,7 @@ onUnmounted(() => {
           ref="labelRef"
           :class="
             cn(
-              'flex leading-6',
+              'flex leading-6 h-[32px]',
               {
                 'flex-shrink-0 justify-end pr-3': !isVertical,
                 'mb-1 flex-row': isVertical,
