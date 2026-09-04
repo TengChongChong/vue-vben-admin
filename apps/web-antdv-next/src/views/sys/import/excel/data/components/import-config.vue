@@ -40,6 +40,9 @@ const importExcelColumns = ref<Array<Array<string>>>([]);
 // 起始行
 const startRow = ref(2);
 
+const START_ROW_MAX = 10;
+const START_ROW_MIN = 1;
+
 watch(
   () => [props.sysImportExcelTemplate, props.importFile],
   () => initConfig(),
@@ -55,7 +58,17 @@ function initConfig() {
     return;
   }
   const detailList = props.sysImportExcelTemplate.detailList ?? [];
-  startRow.value = props.sysImportExcelTemplate.startRow ?? 2;
+  const templateStartRow =
+    props.sysImportExcelTemplate.startRow ?? START_ROW_MIN;
+  if (templateStartRow > START_ROW_MAX || templateStartRow < START_ROW_MIN) {
+    message.warning(
+      `起始行仅支持 ${START_ROW_MIN}-${START_ROW_MAX}，已自动调整`,
+    );
+  }
+  startRow.value = Math.min(
+    START_ROW_MAX,
+    Math.max(START_ROW_MIN, templateStartRow),
+  );
   // 系统预设导入规则
   columns.value = detailList.map((item, index) => {
     return {
@@ -78,7 +91,7 @@ function initConfig() {
     uploadExcelColumns();
   }
 
-  const data: any = { importField: '导入字段' };
+  const data: Record<string, null | string> = { importField: '导入字段' };
 
   detailList.forEach((item) => {
     if (item.fieldName) {
@@ -120,13 +133,15 @@ function autoUpdateDataSource() {
     return;
   }
 
-  const data: any = { importField: '导入字段' };
-  const detailList = props.sysImportExcelTemplate.detailList ?? [];
-  detailList.forEach((item) => {
-    // 根据系统预设模版字段，到用户上传的Excel中自动匹配
-    if (item.fieldName) {
-      data[item.fieldName] = matchSimilarColumn(item.title ?? '');
+  const data: Record<string, null | number | string | undefined> = {
+    importField: '导入字段',
+  };
+  props.sysImportExcelTemplate?.detailList?.forEach((item) => {
+    if (!item.fieldName) {
+      return;
     }
+    // 根据系统预设模版字段，到用户上传的Excel中自动匹配
+    data[item.fieldName] = matchSimilarColumn(item.title ?? '');
   });
   dataSource.value = [data];
 }
@@ -145,20 +160,21 @@ function matchSimilarColumn(title: string) {
     return;
   }
   let similarColumn: null | number = null;
+  const headerRow = importExcelColumns.value[startRow.value - 1];
+  const titleLowerCase = isString(title) ? title.toLowerCase() : `${title}`;
   // 1、字段与Excel中字段完全一致
-  importExcelColumns.value[startRow.value - 1].forEach((item, index) => {
+  headerRow.forEach((item, index) => {
     if (item === title) {
       similarColumn = index;
     }
   });
-  // 2、字段与Excel中部分文字一致
+  // 2、字段与Excel中部分文字一致（包含双向包含）
   if (similarColumn === null) {
-    importExcelColumns.value[startRow.value - 1].forEach((item, index) => {
+    headerRow.forEach((item, index) => {
       const itemLowerCase = isString(item) ? item.toLowerCase() : `${item}`;
-      const titleLowerCase = isString(title) ? title.toLowerCase() : `${title}`;
       if (
-        itemLowerCase.includes(itemLowerCase) ||
-        itemLowerCase.includes(titleLowerCase)
+        itemLowerCase.includes(titleLowerCase) ||
+        titleLowerCase.includes(itemLowerCase)
       ) {
         similarColumn = index;
       }
@@ -168,13 +184,11 @@ function matchSimilarColumn(title: string) {
 }
 
 const columnOptions = computed(() => {
-  if (
-    importExcelColumns.value.length === 0 ||
-    importExcelColumns.value[startRow.value - 1].length === 0
-  ) {
+  const headerRow = importExcelColumns.value[startRow.value - 1];
+  if (!headerRow || headerRow.length === 0) {
     return [];
   }
-  return importExcelColumns.value[startRow.value - 1].map((item, index) => {
+  return headerRow.map((item, index) => {
     return {
       value: index,
       label: `${getCellIndex(index)}.${item}`,
@@ -192,29 +206,33 @@ async function handleStepNext() {
       message.error('请先上传导入文件');
       return;
     }
-    const importConfig: SysImportExcelTemplateDetailVO[] = [];
     const detailList = props.sysImportExcelTemplate.detailList ?? [];
+    const rowData = dataSource.value[0] as Record<string, unknown> | undefined;
+    const importConfig: SysImportExcelTemplateDetailVO[] = [];
     // 1.必填验证
-    for (const [i, detail] of detailList.entries()) {
-      if (!detail || !detail.fieldName) {
+    for (let i = 0; i < detailList.length; i++) {
+      const detail = detailList[i];
+      if (!detail) {
         continue;
       }
-      const selectedColumn = dataSource.value[0][detail.fieldName];
+      const fieldValue = detail.fieldName
+        ? rowData?.[detail.fieldName]
+        : undefined;
       if (
         detail.dataRequired &&
-        (selectedColumn === null || selectedColumn === undefined)
+        (fieldValue === null || fieldValue === undefined)
       ) {
-        message.error(`请选择“${i + 1}.${detail?.title}”导入字段`);
+        message.error(`请选择“${i + 1}.${detail.title}”导入字段`);
         return;
       }
       importConfig.push({
         fieldName: detail.fieldName,
-        index: dataSource.value[0][detail.fieldName],
+        index: fieldValue as number,
       });
     }
     // 解析Excel
     const res = await analysisApi(
-      props.sysImportExcelTemplate?.id as string,
+      props.sysImportExcelTemplate.id as string,
       startRow.value,
       props.importFile,
       importConfig,
@@ -230,9 +248,11 @@ async function handleStepNext() {
 }
 
 function checkImportExcelTemplate() {
+  const detailList = props.sysImportExcelTemplate?.detailList;
   if (
-    props.sysImportExcelTemplate?.detailList === null ||
-    props.sysImportExcelTemplate?.detailList.length === 0
+    detailList === null ||
+    detailList === undefined ||
+    detailList.length === 0
   ) {
     message.error('导入模版未配置，请联系管理员');
     return false;
@@ -248,8 +268,8 @@ function checkImportExcelTemplate() {
         <InputNumber
           id="inputNumber"
           v-model:value="startRow"
-          :min="1"
-          :max="10"
+          :min="START_ROW_MIN"
+          :max="START_ROW_MAX"
           @change="handleStartRowChange" />
       </DescriptionsItem>
     </Descriptions>

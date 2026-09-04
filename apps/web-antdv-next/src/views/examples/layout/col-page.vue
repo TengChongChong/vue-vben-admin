@@ -4,7 +4,15 @@ import { reactive, ref } from 'vue';
 import { ColPage } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
 
-import { Alert, Button, Card, Checkbox, Slider, Tag, Tooltip } from 'antdv-next';
+import {
+  Alert,
+  Button,
+  Card,
+  Checkbox,
+  Slider,
+  Tag,
+  Tooltip,
+} from 'antdv-next';
 
 const props = reactive({
   leftCollapsedWidth: 5,
@@ -35,7 +43,7 @@ const leftMaxWidth = ref(props.leftMaxWidth || 100);
         <Tooltip title="点击展开左侧">
           <Button shape="circle" type="primary">
             <template #icon>
-              <IconifyIcon class="text-2xl" icon="bi:arrow-right" />
+              <IconifyIcon class="text-2xl" icon="ph:arrow-right" />
             </template>
           </Button>
         </Tooltip>

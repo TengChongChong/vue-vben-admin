@@ -6,8 +6,8 @@ import { Popover, TypographyLink } from 'antdv-next';
 defineProps<{
   field: TableField & {
     comment?: string;
-    dictType?: string;
     format?: string;
+    dictType?: string;
     sorter?: boolean;
     width?: number;
   };

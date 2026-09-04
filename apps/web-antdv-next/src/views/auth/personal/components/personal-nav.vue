@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { nextTick, ref, unref, watch } from 'vue';
+import { ref, unref, watch } from 'vue';
 
 import { Menu, MenuItem } from 'antdv-next';
 
 import {
-  LockKeyhole,
   LucideLayers,
+  LucideLockKeyhole,
   LucideShieldCheck,
   LucideUserRound,
 } from '#/components/icons';
@@ -28,16 +28,18 @@ watch(
 );
 
 function handleSelect() {
-  nextTick(() => {
-    emit('update:selectedKeys', unref(selectedKeys)[0]);
-  });
+  emit('update:selectedKeys', unref(selectedKeys)[0]);
 }
 </script>
 
 <template>
   <!-- 导航 -->
   <div class="personal-nav-wrapper">
-    <Menu v-model:selected-keys="selectedKeys" class="personal-nav" mode="inline" @select="handleSelect">
+    <Menu
+      v-model:selected-keys="selectedKeys"
+      class="personal-nav"
+      mode="inline"
+      @select="handleSelect">
       <MenuItem key="profile-overview">
         <template #icon>
           <LucideLayers />
@@ -58,7 +60,7 @@ function handleSelect() {
       </MenuItem>
       <MenuItem key="change-password">
         <template #icon>
-          <LockKeyhole />
+          <LucideLockKeyhole />
         </template>
         修改密码
       </MenuItem>

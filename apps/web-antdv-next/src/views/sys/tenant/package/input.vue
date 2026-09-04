@@ -170,7 +170,7 @@ async function handleSave() {
 
 async function handleSaveAndAdd() {
   await handleSubmit((res, menuChanged) => {
-    baseFormApi.resetForm();
+    baseFormApi.reset();
     baseFormApi.setValues({ status: '1' });
     initialMenuIds.value = [];
     if (menuChanged && res.id) {
@@ -196,7 +196,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
     if (isOpen) {
       await loadMenuTree();
       const data = drawerApi.getData<Record<string, any>>();
-      await baseFormApi.resetForm();
+      await baseFormApi.reset();
       await baseFormApi.setValues({
         status: '1',
         ...data,
@@ -235,7 +235,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
           checkable
           size="small"
           title="请勾选菜单与按钮权限"
-          v-bind="slotProps" />
+          v-bind="slotProps.componentProps" />
       </template>
     </BaseForm>
 

@@ -7,7 +7,17 @@ import { computed, ref } from 'vue';
 import { useVbenModal } from '@vben/common-ui';
 import { listToTree } from '@vben/utils';
 
-import { Modal as AModal, Col, Divider, message, Progress, Result, Row, Space, Steps } from 'antdv-next';
+import {
+  Modal as AModal,
+  Col,
+  Divider,
+  message,
+  Progress,
+  Result,
+  Row,
+  Space,
+  Steps,
+} from 'antdv-next';
 
 import { useVbenForm } from '#/adapter/form';
 import {
@@ -328,7 +338,7 @@ function handleViewQueue() {
 
 async function handleRetry() {
   resetReleaseState();
-  await baseFormApi.resetForm();
+  await baseFormApi.reset();
   await baseFormApi.setValues({ releaseArticle: '1' });
   checkedKeys.value = [];
 }
@@ -351,7 +361,7 @@ const [Modal, modalApi] = useVbenModal({
   onOpenChange: async (isOpen: boolean) => {
     if (isOpen) {
       resetReleaseState();
-      await baseFormApi.resetForm();
+      await baseFormApi.reset();
       await baseFormApi.setValues({ releaseArticle: '1' });
       await loadAssets();
     } else {

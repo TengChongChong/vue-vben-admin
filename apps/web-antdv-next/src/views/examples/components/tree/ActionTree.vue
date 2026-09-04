@@ -5,13 +5,13 @@ import { defineComponent, ref, unref } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
-import { Button as AButton, message } from 'antdv-next';
+import { Button, message } from 'antdv-next';
 
 import { BasicTree } from '#/components/tree';
 
 export default defineComponent({
   name: 'SampleCompTreeActionTree',
-  components: { Page, BasicTree, AButton },
+  components: { Page, BasicTree, Button },
   setup() {
     const treeRef = ref(null);
 
@@ -153,34 +153,34 @@ export default defineComponent({
 <template>
   <Page>
     <div class="mb-4">
-      <AButton class="mr-2" @click="expandAll(true)"> 展开全部 </AButton>
-      <AButton class="mr-2" @click="expandAll(false)"> 折叠全部 </AButton>
-      <AButton class="mr-2" @click="checkAll(true)"> 全选 </AButton>
-      <AButton class="mr-2" @click="checkAll(false)"> 全不选 </AButton>
-      <AButton class="mr-2" @click="handleLevel(2)"> 显示到第2级 </AButton>
-      <AButton class="mr-2" @click="handleLevel(1)"> 显示到第1级 </AButton>
+      <Button class="mr-2" @click="expandAll(true)"> 展开全部 </Button>
+      <Button class="mr-2" @click="expandAll(false)"> 折叠全部 </Button>
+      <Button class="mr-2" @click="checkAll(true)"> 全选 </Button>
+      <Button class="mr-2" @click="checkAll(false)"> 全不选 </Button>
+      <Button class="mr-2" @click="handleLevel(2)"> 显示到第2级 </Button>
+      <Button class="mr-2" @click="handleLevel(1)"> 显示到第1级 </Button>
     </div>
     <div class="mb-4">
-      <AButton class="mr-2" @click="handleSetCheckData"> 设置勾选数据 </AButton>
-      <AButton class="mr-2" @click="handleGetCheckData"> 获取勾选数据 </AButton>
-      <AButton class="mr-2" @click="handleSetSelectData"> 设置选中数据 </AButton>
-      <AButton class="mr-2" @click="handleGetSelectData"> 获取选中数据 </AButton>
-      <AButton class="mr-2" @click="handleGetSelectNode"> 获取选中节点 </AButton>
+      <Button class="mr-2" @click="handleSetCheckData"> 设置勾选数据 </Button>
+      <Button class="mr-2" @click="handleGetCheckData"> 获取勾选数据 </Button>
+      <Button class="mr-2" @click="handleSetSelectData"> 设置选中数据 </Button>
+      <Button class="mr-2" @click="handleGetSelectData"> 获取选中数据 </Button>
+      <Button class="mr-2" @click="handleGetSelectNode"> 获取选中节点 </Button>
 
-      <AButton class="mr-2" @click="handleSetExpandData"> 设置展开数据 </AButton>
-      <AButton class="mr-2" @click="handleGetExpandData"> 获取展开数据 </AButton>
+      <Button class="mr-2" @click="handleSetExpandData"> 设置展开数据 </Button>
+      <Button class="mr-2" @click="handleGetExpandData"> 获取展开数据 </Button>
     </div>
     <div class="mb-4">
-      <AButton class="mr-2" @click="appendNodeByKey(null)"> 添加根节点 </AButton>
-      <AButton class="mr-2" @click="appendNodeByKey('2-2')">
+      <Button class="mr-2" @click="appendNodeByKey(null)"> 添加根节点 </Button>
+      <Button class="mr-2" @click="appendNodeByKey('2-2')">
         添加在parent3内添加节点
-      </AButton>
-      <AButton class="mr-2" @click="deleteNodeByKey('2-2')">
+      </Button>
+      <Button class="mr-2" @click="deleteNodeByKey('2-2')">
         删除parent3节点
-      </AButton>
-      <AButton class="mr-2" @click="updateNodeByKey('1-1')">
+      </Button>
+      <Button class="mr-2" @click="updateNodeByKey('1-1')">
         更新parent2节点
-      </AButton>
+      </Button>
     </div>
     <BasicTree
       ref="treeRef"

@@ -90,7 +90,7 @@ function updateMenuBadge() {
     <Card title="徽标更新">
       <Form>
         <template #badgeVariants="slotProps">
-          <RadioGroup v-bind="slotProps">
+          <RadioGroup v-bind="slotProps.componentProps">
             <Radio
               v-for="color in colors"
               :key="color.value"

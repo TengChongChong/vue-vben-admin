@@ -7,7 +7,17 @@ import { AccessControl } from '@vben/access';
 import { Page, useVbenDrawer } from '@vben/common-ui';
 import { formatToDateTime, listToTree } from '@vben/utils';
 
-import { Alert, Button, Card, Checkbox, Empty, message, Modal, Pagination, Spin } from 'antdv-next';
+import {
+  Alert,
+  Button,
+  Card,
+  Checkbox,
+  Empty,
+  message,
+  Modal,
+  Pagination,
+  Spin,
+} from 'antdv-next';
 import dayjs from 'dayjs';
 
 import { useVbenForm } from '#/adapter/form';
@@ -37,10 +47,7 @@ import {
 import { $t } from '#/locales';
 import { useCmsSiteStore } from '#/store';
 
-import {
-  buildArticlePreviewUrl,
-  openCmsPreview,
-} from '../utils/cms-preview';
+import { buildArticlePreviewUrl, openCmsPreview } from '../utils/cms-preview';
 import InputDrawer from './input.vue';
 
 const cmsSiteStore = useCmsSiteStore();
@@ -61,7 +68,7 @@ function showTotal(t: number) {
 
 const [FilterForm, filterFormApi] = useVbenForm({
   handleReset: async () => {
-    filterFormApi.resetForm();
+    filterFormApi.reset();
     current.value = 1;
     await fetchList();
   },
@@ -354,7 +361,8 @@ function handleRebuildSearchIndex() {
   }
   Modal.confirm({
     title: '确定要重建当前站点的搜索索引吗？',
-    content: '将重新同步该站点已发布文章到 Elasticsearch，期间可能短暂影响前台搜索。',
+    content:
+      '将重新同步该站点已发布文章到 Elasticsearch，期间可能短暂影响前台搜索。',
     onOk: async () => {
       await rebuildCmsArticleSearchIndexApi(cmsSiteStore.activeSiteId);
       message.success('搜索索引重建成功');
@@ -502,7 +510,9 @@ onMounted(async () => {
                     <div
                       class="truncate text-[15px] font-semibold"
                       :title="item.title">
-                      <DictTag :code="item.status" dict-type="cmsArticleStatus" />
+                      <DictTag
+                        :code="item.status"
+                        dict-type="cmsArticleStatus" />
                       {{ item.title }}
                     </div>
                   </div>
@@ -524,10 +534,7 @@ onMounted(async () => {
                   size="small"
                   type="link"
                   @click="handleEdit(item.id)" />
-                <Button
-                  size="small"
-                  type="link"
-                  @click="handlePreview(item)">
+                <Button size="small" type="link" @click="handlePreview(item)">
                   <template #icon><LucideEye /></template>
                   预览
                 </Button>

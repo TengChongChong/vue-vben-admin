@@ -25,6 +25,17 @@ export const overridesPreferences = defineOverridesPreferences({
     /** 是否开启半深色菜单（只在theme='light'时生效） */
     semiDarkSidebar: true,
   },
+  // 标签栏风格
+  tabbar: {
+    /**
+     * 标签栏风格
+     * brisk 轻快
+     * card 卡片
+     * chrome 谷歌
+     * plain 朴素
+     */
+    styleType: 'brisk',
+  },
   /** 快捷键配置 */
   shortcutKeys: {
     /** 是否启用全局关闭窗口快捷键 */

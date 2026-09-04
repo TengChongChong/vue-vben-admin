@@ -8,7 +8,17 @@ import { computed, onMounted, ref } from 'vue';
 import { useVbenModal } from '@vben/common-ui';
 
 import { useDebounceFn } from '@vueuse/core';
-import { Button, Card, Checkbox, Drawer, Empty, Input, Pagination, Segmented, Spin } from 'antdv-next';
+import {
+  Button,
+  Card,
+  Checkbox,
+  Drawer,
+  Empty,
+  Input,
+  Pagination,
+  Segmented,
+  Spin,
+} from 'antdv-next';
 
 import { removeByIdsApi } from '#/api';
 import { ButtonRemove } from '#/components/button';
@@ -47,7 +57,7 @@ const inboxBodyStyle: CSSProperties = {
   height: '100%',
   minHeight: 0,
   overflow: 'hidden',
-  padding: 0,
+  padding: '2px',
 };
 
 const listBodyStyle: CSSProperties = {

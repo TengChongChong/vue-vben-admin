@@ -13,7 +13,6 @@ const emit = defineEmits(['update:value', 'change']);
 
 const COMPONENT_TYPE = [
   'Input',
-  'InputGroup',
   'InputPassword',
   'InputSearch',
   'Textarea',

@@ -192,7 +192,7 @@ function handleCollapseAll() {
           <div class="size-4 flex-shrink-0">
             <IconifyIcon
               v-if="row.type === 'button'"
-              icon="lucide:shield-check"
+              icon="ph:shield-check"
               class="size-full" />
             <IconifyIcon
               v-else-if="row.icon"

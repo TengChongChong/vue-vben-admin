@@ -184,7 +184,7 @@ async function handleSave() {
 
 async function handleSaveAndAdd() {
   await handleSubmit(() => {
-    baseFormApi.resetForm();
+    baseFormApi.reset();
     addSysRoleApi().then((res) => {
       baseFormApi.setValues(res);
     });
@@ -197,7 +197,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
       await loadTreeData();
       // 打开时根据id获取详情
       const data = drawerApi.getData<Record<string, any>>();
-      await baseFormApi.resetForm();
+      await baseFormApi.reset();
       await baseFormApi.setValues({
         ...data,
         menuIds: convertCheckedKeys(unref(menuTreeData), data.menuIds),
@@ -224,7 +224,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
           checkable
           size="small"
           title="请勾选菜单"
-          v-bind="slotProps" />
+          v-bind="slotProps.componentProps" />
       </template>
 
       <template #dataPermissionDeptIds="slotProps">
@@ -236,7 +236,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
           checkable
           size="small"
           title="请勾选部门"
-          v-bind="slotProps" />
+          v-bind="slotProps.componentProps" />
       </template>
     </BaseForm>
 

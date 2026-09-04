@@ -6,7 +6,18 @@ import { computed, ref } from 'vue';
 import { useAccess } from '@vben/access';
 import { useVbenDrawer, z } from '@vben/common-ui';
 
-import { AutoComplete, Button, Dropdown, Input, Menu, MenuDivider, MenuItem, message, Select, Space } from 'antdv-next';
+import {
+  AutoComplete,
+  Button,
+  Dropdown,
+  Input,
+  Menu,
+  MenuDivider,
+  MenuItem,
+  message,
+  Select,
+  Space,
+} from 'antdv-next';
 
 import { useVbenForm } from '#/adapter/form';
 import { addSchedulerJobApi, saveSchedulerJobApi } from '#/api';
@@ -236,7 +247,7 @@ async function handleSave() {
 
 async function handleSaveAndAdd() {
   await handleSubmit(() => {
-    baseFormApi.resetForm();
+    baseFormApi.reset();
     currentBean.value = '';
     clearMethodOptions();
     addSchedulerJobApi()
@@ -253,7 +264,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
   onOpenChange: async (isOpen: boolean) => {
     if (isOpen) {
       const data = drawerApi.getData<Record<string, any>>();
-      await baseFormApi.resetForm();
+      await baseFormApi.reset();
       await loadBeanOptions();
       currentBean.value = data?.bean ?? '';
       await baseFormApi.setValues({
@@ -277,7 +288,7 @@ function handleSetCron({ key }: { key: number | string }) {
     <BaseForm>
       <template #bean="slotProps">
         <AutoComplete
-          v-bind="slotProps"
+          v-bind="slotProps.componentProps"
           allow-clear
           class="w-full"
           :filter-option="false"
@@ -287,7 +298,7 @@ function handleSetCron({ key }: { key: number | string }) {
       </template>
       <template #method="slotProps">
         <Select
-          v-bind="slotProps"
+          v-bind="slotProps.componentProps"
           allow-clear
           class="w-full"
           show-search
@@ -296,10 +307,10 @@ function handleSetCron({ key }: { key: number | string }) {
           @change="handleMethodSelect" />
       </template>
       <template #params="slotProps">
-        <JobParamsEditor v-bind="slotProps" />
+        <JobParamsEditor v-bind="slotProps.componentProps" />
       </template>
       <template #cron="slotProps">
-        <Input v-bind="slotProps">
+        <Input v-bind="slotProps.componentProps">
           <template #addonAfter>
             <Dropdown>
               <Button size="small" type="text">

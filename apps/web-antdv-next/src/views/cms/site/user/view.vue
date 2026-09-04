@@ -9,7 +9,16 @@ import { AccessControl } from '@vben/access';
 import { ColPage, useVbenModal } from '@vben/common-ui';
 import { formatToDateTime } from '@vben/utils';
 
-import { Button, Empty, Input, message, Modal, Popconfirm, Space, Tag } from 'antdv-next';
+import {
+  Button,
+  Empty,
+  Input,
+  message,
+  Modal,
+  Popconfirm,
+  Space,
+  Tag,
+} from 'antdv-next';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
@@ -38,7 +47,8 @@ const filteredSites = computed(() => {
 });
 
 const activeSite = computed(
-  () => siteOptions.value.find((site) => site.id === activeSiteId.value) ?? null,
+  () =>
+    siteOptions.value.find((site) => site.id === activeSiteId.value) ?? null,
 );
 
 const formOptions: VbenFormProps = {
@@ -72,7 +82,12 @@ const gridOptions: VxeGridProps<CmsSiteMember> = {
       minWidth: 160,
       formatter: ({ cellValue }) => formatToDateTime(cellValue) || '-',
     },
-    { title: '操作', field: 'action', width: 140, slots: { default: 'action' } },
+    {
+      title: '操作',
+      field: 'action',
+      width: 140,
+      slots: { default: 'action' },
+    },
   ],
   proxyConfig: {
     ajax: {
@@ -80,7 +95,11 @@ const gridOptions: VxeGridProps<CmsSiteMember> = {
         if (!activeSiteId.value) {
           return { records: [], total: 0 };
         }
-        return await selectCmsSiteMembersApi(activeSiteId.value, formValues, page);
+        return await selectCmsSiteMembersApi(
+          activeSiteId.value,
+          formValues,
+          page,
+        );
       },
     },
   },

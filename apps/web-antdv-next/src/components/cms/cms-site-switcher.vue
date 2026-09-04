@@ -64,7 +64,7 @@ onMounted(() => {
             :class="{ 'cms-site-fab__btn--loading': spinning }"
             type="button"
             :disabled="spinning">
-            <Icon class="cms-site-fab__icon" icon="lucide:globe" />
+            <Icon class="cms-site-fab__icon" icon="ph:globe" />
           </button>
         </Tooltip>
         <template #popupRender>
@@ -77,7 +77,7 @@ onMounted(() => {
           :class="{ 'cms-site-fab__btn--loading': spinning }"
           type="button"
           :disabled="spinning">
-          <Icon class="cms-site-fab__icon" icon="lucide:globe" />
+          <Icon class="cms-site-fab__icon" icon="ph:globe" />
         </button>
       </Tooltip>
     </div>

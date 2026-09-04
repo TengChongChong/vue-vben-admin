@@ -162,7 +162,9 @@ watch(
       <template #action="{ row }">
         <AccessControl :codes="['cms:release']">
           <Button
-v-if="row.status !== '1' && row.status !== '2'" size="small" type="link"
+            v-if="row.status !== '1' && row.status !== '2'"
+            size="small"
+            type="link"
             @click="handleReleaseItem(row)">
             <template #icon>
               <LucideSend />

@@ -6,7 +6,16 @@ import type { WorkflowProcess } from '#/api';
 import { AccessControl } from '@vben/access';
 import { Page, useVbenModal } from '@vben/common-ui';
 
-import { Button, Divider, Dropdown, Menu, MenuItem, message, Modal, Space } from 'antdv-next';
+import {
+  Button,
+  Divider,
+  Dropdown,
+  Menu,
+  MenuItem,
+  message,
+  Modal,
+  Space,
+} from 'antdv-next';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
@@ -121,10 +130,7 @@ function handleActivation(processDefinitionId: string) {
  * @param deploymentId 部署id
  * @param dgrmResourceName 资源名
  */
-function handleOpenProcessModal({
-  deploymentId: _deploymentId,
-  dgrmResourceName: _dgrmResourceName,
-}) {}
+function handleOpenProcessModal({ deploymentId, dgrmResourceName }) {}
 </script>
 
 <template>

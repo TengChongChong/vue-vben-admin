@@ -16,11 +16,7 @@ import { selectAllSysDictTypeApi } from '#/api';
 import { useDictStore } from '#/store';
 
 import { FORM_TYPE } from '../types/generator.data';
-import {
-  getVisibleSteps,
-  pruneStaleConfigs,
-  STEP_META,
-} from '../util/generator-helpers';
+import { getVisibleSteps, pruneStaleConfigs } from '../util/generator-helpers';
 import {
   getDefaultExport,
   getDefaultForm,
@@ -30,7 +26,11 @@ import {
 } from '../util/util';
 import { useGeneratorDraft } from './use-generator-draft';
 
-export { getVisibleSteps, STEP_META,  };
+export {
+  getVisibleSteps,
+  STEP_META,
+  type StepKey,
+} from '../util/generator-helpers';
 
 export function useGeneratorWizard() {
   const dictStore = useDictStore();
@@ -164,5 +164,3 @@ export function useGeneratorWizard() {
     visibleSteps,
   };
 }
-
-export {type StepKey} from '../util/generator-helpers';

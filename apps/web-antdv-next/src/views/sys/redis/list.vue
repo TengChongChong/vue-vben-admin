@@ -3,7 +3,16 @@ import { computed, ref } from 'vue';
 
 import { Page, useVbenModal } from '@vben/common-ui';
 
-import { Alert, Button, Card, Empty, Menu, MenuItem, Spin, Tooltip } from 'antdv-next';
+import {
+  Alert,
+  Button,
+  Card,
+  Empty,
+  Menu,
+  MenuItem,
+  Spin,
+  Tooltip,
+} from 'antdv-next';
 
 import { getSysRedisApi, selectByPrefixApi } from '#/api';
 import { useDictStore } from '#/store';

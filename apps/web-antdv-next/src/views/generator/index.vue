@@ -45,10 +45,7 @@ function handleStepChange(index: number) {
 <template>
   <Page content-class="generator">
     <Card :bordered="false">
-      <Steps
-        :current="current"
-        :items="stepItems"
-        @change="handleStepChange" />
+      <Steps :current="current" :items="stepItems" @change="handleStepChange" />
       <div class="step-content mt-8">
         <BasicsConfig
           v-if="currentStepKey === 'basics'"

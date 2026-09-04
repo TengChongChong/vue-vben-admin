@@ -18,7 +18,7 @@ const messageRoutes: RouteRecordRaw[] = [
           title: '消息',
           keepAlive: true,
           hideInMenu: true,
-          icon: 'lucide:bell',
+          icon: 'ph:bell',
         },
         path: '/sys/message/:key',
         name: 'SysMessageIndex',

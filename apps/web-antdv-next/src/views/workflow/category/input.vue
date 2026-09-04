@@ -106,7 +106,7 @@ async function handleSave() {
 }
 async function handleSaveAndAdd() {
   await handleSubmit(() => {
-    baseFormApi.resetForm();
+    baseFormApi.reset();
     addWorkflowCategoryApi().then((res) => {
       baseFormApi.setValues(res);
     });
@@ -118,7 +118,7 @@ const [Modal, drawerApi] = useVbenModal({
     if (isOpen) {
       // 打开时根据id获取详情
       const data = drawerApi.getData<Record<string, any>>();
-      await baseFormApi.resetForm();
+      await baseFormApi.reset();
       await baseFormApi.setValues(data);
     }
   },

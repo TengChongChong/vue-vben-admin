@@ -11,7 +11,15 @@ import { AccessControl } from '@vben/access';
 import { ColPage, useVbenModal } from '@vben/common-ui';
 import { formatToDateTime, listToTree } from '@vben/utils';
 
-import { Alert, Button, Empty, message, Modal, Popconfirm, Space } from 'antdv-next';
+import {
+  Alert,
+  Button,
+  Empty,
+  message,
+  Modal,
+  Popconfirm,
+  Space,
+} from 'antdv-next';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
@@ -83,7 +91,12 @@ const gridOptions: VxeGridProps<CmsColumnMember> = {
       minWidth: 160,
       formatter: ({ cellValue }) => formatToDateTime(cellValue) || '-',
     },
-    { title: '操作', field: 'action', width: 140, slots: { default: 'action' } },
+    {
+      title: '操作',
+      field: 'action',
+      width: 140,
+      slots: { default: 'action' },
+    },
   ],
   proxyConfig: {
     ajax: {
@@ -276,10 +289,7 @@ onMounted(async () => {
               text="添加成员"
               @click="openPicker" />
             <AccessControl :codes="['cms:column:user:remove']">
-              <Button
-                :disabled="!activeColumnId"
-                danger
-                @click="batchRemove">
+              <Button :disabled="!activeColumnId" danger @click="batchRemove">
                 批量移除
               </Button>
             </AccessControl>

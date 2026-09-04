@@ -11,7 +11,7 @@ const projectItems: WorkbenchProjectItem[] = [
     content: '不要等待机会，而要创造机会。',
     date: '2021-04-01',
     group: '开源组',
-    icon: 'carbon:logo-github',
+    icon: 'ph:github-logo',
     title: 'Github',
   },
   {
@@ -19,7 +19,7 @@ const projectItems: WorkbenchProjectItem[] = [
     content: '现在的你决定将来的你。',
     date: '2021-04-01',
     group: '算法组',
-    icon: 'ion:logo-vue',
+    icon: 'ph:file-vue',
     title: 'Vue',
   },
   {
@@ -27,7 +27,7 @@ const projectItems: WorkbenchProjectItem[] = [
     content: '没有什么才能比努力更重要。',
     date: '2021-04-01',
     group: '上班摸鱼',
-    icon: 'ion:logo-html5',
+    icon: 'ph:file-html',
     title: 'Html5',
   },
   {
@@ -35,7 +35,7 @@ const projectItems: WorkbenchProjectItem[] = [
     content: '热情和欲望可以突破一切难关。',
     date: '2021-04-01',
     group: 'UI',
-    icon: 'ion:logo-angular',
+    icon: 'ph:angular-logo',
     title: 'Angular',
   },
   {
@@ -43,7 +43,7 @@ const projectItems: WorkbenchProjectItem[] = [
     content: '健康的身体是实现目标的基石。',
     date: '2021-04-01',
     group: '技术牛',
-    icon: 'bx:bxl-react',
+    icon: 'ph:atom',
     title: 'React',
   },
   {
@@ -51,7 +51,7 @@ const projectItems: WorkbenchProjectItem[] = [
     content: '路是走出来的，而不是空想出来的。',
     date: '2021-04-01',
     group: '架构组',
-    icon: 'ion:logo-javascript',
+    icon: 'ph:file-js',
     title: 'Js',
   },
 ];

@@ -10,7 +10,19 @@ import { ref, unref } from 'vue';
 
 import { useVbenDrawer, useVbenModal } from '@vben/common-ui';
 
-import { Button, Checkbox, Descriptions, DescriptionsItem, Input, message, Popover, Select, Space, Table, TypographyLink } from 'antdv-next';
+import {
+  Button,
+  Checkbox,
+  Descriptions,
+  DescriptionsItem,
+  Input,
+  message,
+  Popover,
+  Select,
+  Space,
+  Table,
+  TypographyLink,
+} from 'antdv-next';
 
 import {
   getTableInfoApi,

@@ -159,6 +159,7 @@ const handelExportData = async () => {
     :left-collapsible="false"
     :left-min-width="30"
     :left-width="40"
+    :right-width="60"
     auto-content-height>
     <template #left>
       <div class="h-full">

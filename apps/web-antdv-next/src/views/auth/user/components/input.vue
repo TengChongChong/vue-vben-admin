@@ -137,7 +137,7 @@ async function handleSave() {
 
 async function handleSaveAndAdd() {
   await handleSubmit((res) => {
-    baseFormApi.resetForm();
+    baseFormApi.reset();
     const { deptId } = res;
     addSysUserApi(deptId).then((res) => {
       baseFormApi.setValues(res);
@@ -150,7 +150,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
     if (isOpen) {
       // 打开时根据id获取详情
       const data = drawerApi.getData<Record<string, any>>();
-      await baseFormApi.resetForm();
+      await baseFormApi.reset();
       await baseFormApi.setValues(data);
       baseFormApi.updateSchema([
         {

@@ -275,7 +275,7 @@ async function handleSave() {
 
 async function handleSaveAndAdd() {
   await handleSubmit(() => {
-    baseFormApi.resetForm();
+    baseFormApi.reset();
     baseFormApi.setValues({ status: '1', createAdmin: false });
     maxUserCountTouched.value = false;
     isEdit.value = false;
@@ -289,7 +289,7 @@ const [Modal, modalApi] = useVbenModal({
       const data = modalApi.getData<Record<string, any>>();
       isEdit.value = !!data.id;
       maxUserCountTouched.value = !!data.id;
-      await baseFormApi.resetForm();
+      await baseFormApi.reset();
       await baseFormApi.setValues({
         status: '1',
         createAdmin: false,
@@ -320,10 +320,7 @@ const [Modal, modalApi] = useVbenModal({
 
     <template #footer>
       <Space>
-        <Button
-          v-if="isEdit"
-          type="default"
-          @click="handleSyncFromPackage">
+        <Button v-if="isEdit" type="default" @click="handleSyncFromPackage">
           从套餐同步菜单
         </Button>
         <ButtonClose @click="modalApi.close()" />

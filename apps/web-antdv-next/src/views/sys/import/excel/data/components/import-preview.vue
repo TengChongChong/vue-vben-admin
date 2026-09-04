@@ -10,7 +10,14 @@ import type {
 
 import { onMounted, ref, watch } from 'vue';
 
-import { Button, Divider, Popconfirm, Space, Tooltip, TypographyText } from 'antdv-next';
+import {
+  Button,
+  Divider,
+  Popconfirm,
+  Space,
+  Tooltip,
+  TypographyText,
+} from 'antdv-next';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {

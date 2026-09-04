@@ -72,9 +72,27 @@ import { isEmpty } from '@vben/utils';
 
 import { message, Modal, notification } from 'antdv-next';
 
-import { upload_file } from '#/api';
+import { fileUpload } from '#/api';
+import { AreaCascader } from '#/components/area-cascader';
+import { Cropper } from '#/components/cropper';
+import { DeptSelect } from '#/components/dept';
+import {
+  DictCascader,
+  DictCheckbox,
+  DictRadio,
+  DictSelect,
+  DictTreeSelect,
+} from '#/components/dict';
+import { Divider as BizDivider } from '#/components/divider';
+import { Editor } from '#/components/editor';
+import { ApiTreeSelect } from '#/components/form';
+import { RoleSelect } from '#/components/role';
+import { SmsVerificationCode } from '#/components/sms-verification-code';
+import { RuleUpload } from '#/components/upload';
+import { UserPicker, UserSelect } from '#/components/user';
 
 import { createThemeAwareButton } from './theme-aware-button';
+
 type AdapterUploadProps = UploadProps & {
   aspectRatio?: string;
   crop?: boolean;
@@ -101,9 +119,7 @@ const CheckboxGroup = defineAsyncComponent(() =>
 const DatePicker = defineAsyncComponent(
   () => import('antdv-next/dist/date-picker/index'),
 );
-const Divider = defineAsyncComponent(
-  () => import('antdv-next/dist/divider/index'),
-);
+// Divider 使用业务封装组件 BizDivider
 const Input = defineAsyncComponent(() => import('antdv-next/dist/input/index'));
 const InputNumber = defineAsyncComponent(
   () => import('antdv-next/dist/input-number/index'),
@@ -229,7 +245,7 @@ function createDefaultUploadSlots(listType: string, placeholder: string) {
         Button,
         {
           icon: h(IconifyIcon, {
-            icon: 'ant-design:upload-outlined',
+            icon: 'ph:upload',
             class: 'mb-1 size-4',
           }),
         },
@@ -623,14 +639,23 @@ export type ComponentType =
   | 'ApiCascader'
   | 'ApiSelect'
   | 'ApiTreeSelect'
+  | 'AreaCascader'
   | 'AutoComplete'
   | 'Cascader'
   | 'Checkbox'
   | 'CheckboxGroup'
   | 'CollapsibleParams'
+  | 'Cropper'
   | 'DatePicker'
   | 'DefaultButton'
+  | 'DeptSelect'
+  | 'DictCascader'
+  | 'DictCheckbox'
+  | 'DictRadio'
+  | 'DictSelect'
+  | 'DictTreeSelect'
   | 'Divider'
+  | 'Editor'
   | 'IconPicker'
   | 'Input'
   | 'InputNumber'
@@ -642,13 +667,18 @@ export type ComponentType =
   | 'RangePicker'
   | 'Rate'
   | 'RichEditor'
+  | 'RoleSelect'
+  | 'RuleUpload'
   | 'Select'
+  | 'SmsVerificationCode'
   | 'Space'
   | 'Switch'
   | 'Textarea'
   | 'TimePicker'
   | 'TreeSelect'
   | 'Upload'
+  | 'UserPicker'
+  | 'UserSelect'
   | BaseFormComponentType;
 
 /**
@@ -694,6 +724,8 @@ async function initComponentAdapter() {
 
     ApiCascader: withDefaultPlaceholder(ApiComponent, 'select', {
       component: Cascader,
+      showSearch: true,
+      style: { width: '100%' },
       fieldNames: { label: 'label', value: 'value', children: 'children' },
       loadingSlot: 'suffixIcon',
       modelPropName: 'value',
@@ -701,70 +733,131 @@ async function initComponentAdapter() {
     }),
     ApiSelect: withDefaultPlaceholder(ApiComponent, 'select', {
       component: Select,
+      showSearch: true,
+      optionFilterProp: 'label',
+      style: { width: '100%' },
       loadingSlot: 'suffixIcon',
       modelPropName: 'value',
-      visibleEvent: 'onOpenChange',
-    }),
-    ApiTreeSelect: withDefaultPlaceholder(ApiComponent, 'select', {
-      component: TreeSelect,
-      fieldNames: { label: 'label', value: 'value', children: 'children' },
-      loadingSlot: 'suffixIcon',
-      modelPropName: 'value',
-      optionsPropName: 'treeData',
       visibleEvent: 'onOpenChange',
     }),
     AutoComplete,
-    Cascader,
+    Cropper,
+    Cascader: withDefaultPlaceholder(Cascader, 'select', {
+      showSearch: true,
+      style: { width: '100%' },
+    }),
     Checkbox,
     CheckboxGroup,
     DatePicker,
     // 自定义默认按钮
     DefaultButton: createThemeAwareButton(Button, 'default'),
-    Divider,
+    Divider: BizDivider,
     IconPicker: withDefaultPlaceholder(IconPicker, 'select', {
       iconSlot: 'addonAfter',
       inputComponent: Input,
       modelValueProp: 'value',
+      prefix: 'ph',
+      iconExcludeSuffixes: ['-thin', '-light', '-bold', '-fill', '-duotone'],
     }),
     Input: withDefaultPlaceholder(Input, 'input'),
-    InputNumber: withDefaultPlaceholder(InputNumber, 'input'),
+    InputNumber: withDefaultPlaceholder(InputNumber, 'input', {
+      style: { width: '100%' },
+    }),
     InputPassword: withDefaultPlaceholder(InputPassword, 'input'),
     Mentions: withDefaultPlaceholder(Mentions, 'input'),
     // 自定义主要按钮
     PrimaryButton: createThemeAwareButton(Button, 'primary'),
+    RuleUpload,
     Radio,
     RadioGroup,
     RangePicker,
     Rate,
     RichEditor: withDefaultPlaceholder(VbenTiptap, 'input', {
       imageUpload: {
-        upload: (file: any, onProgress: any) => {
-          return new Promise((resolve, reject) => {
-            upload_file({
-              file,
-              onProgress({ percent }) {
-                onProgress?.(percent);
-              },
-              onSuccess(response) {
-                // 从响应中提取图片URL
-                resolve(response?.data?.url ?? response?.url ?? '');
-              },
-              onError() {
-                reject(new Error($t('ui.tiptap.upload.uploadFailed')));
-              },
-            });
-          });
+        upload: async (file: File, onProgress?: (percent: number) => void) => {
+          try {
+            onProgress?.(0);
+            const result = await fileUpload('default-image', { file });
+            onProgress?.(100);
+            const url =
+              (result as { data?: { url?: string }; url?: string })?.url ??
+              (result as { data?: { url?: string } })?.data?.url ??
+              '';
+            if (!url) {
+              throw new Error($t('ui.tiptap.upload.uploadFailed'));
+            }
+            return url;
+          } catch (error) {
+            throw error instanceof Error
+              ? error
+              : new Error($t('ui.tiptap.upload.uploadFailed'));
+          }
+        },
+        onUploadError: (error) => {
+          message.error(
+            error instanceof Error
+              ? error.message
+              : $t('ui.tiptap.upload.uploadFailed'),
+          );
         },
       },
     }),
-    Select: withDefaultPlaceholder(Select, 'select'),
+    Select: withDefaultPlaceholder(Select, 'select', {
+      showSearch: true,
+      optionFilterProp: 'label',
+      style: { width: '100%' },
+    }),
+    SmsVerificationCode,
     Space,
     Switch,
     Textarea: withDefaultPlaceholder(Textarea, 'input'),
     TimePicker,
-    TreeSelect: withDefaultPlaceholder(TreeSelect, 'select'),
+    TreeSelect: withDefaultPlaceholder(TreeSelect, 'select', {
+      showSearch: true,
+      style: { width: '100%' },
+      treeNodeFilterProp: 'label',
+    }),
     Upload: withPreviewUpload(),
     CollapsibleParams: VbenCollapsibleParams,
+    ApiTreeSelect: withDefaultPlaceholder(ApiTreeSelect, 'select', {
+      showSearch: true,
+      style: { width: '100%' },
+    }),
+    DictCascader: withDefaultPlaceholder(DictCascader, 'select', {
+      showSearch: true,
+      style: { width: '100%' },
+    }),
+    DictCheckbox,
+    DictRadio,
+    Editor,
+    DictSelect: withDefaultPlaceholder(DictSelect, 'select', {
+      showSearch: true,
+      optionFilterProp: 'label',
+      style: { width: '100%' },
+    }),
+    AreaCascader: withDefaultPlaceholder(AreaCascader, 'select', {
+      showSearch: true,
+      style: { width: '100%' },
+    }),
+    DictTreeSelect: withDefaultPlaceholder(DictTreeSelect, 'select', {
+      showSearch: true,
+      style: { width: '100%' },
+      treeNodeFilterProp: 'label',
+    }),
+    DeptSelect: withDefaultPlaceholder(DeptSelect, 'select', {
+      style: { width: '100%' },
+    }),
+    RoleSelect: withDefaultPlaceholder(RoleSelect, 'select', {
+      showSearch: true,
+      optionFilterProp: 'label',
+      style: { width: '100%' },
+    }),
+    UserPicker: withDefaultPlaceholder(UserPicker, 'select', {
+      style: { width: '100%' },
+    }),
+    UserSelect: withDefaultPlaceholder(UserSelect, 'select', {
+      style: { width: '100%' },
+    }),
   };
 
   // 将组件注册到全局共享状态中

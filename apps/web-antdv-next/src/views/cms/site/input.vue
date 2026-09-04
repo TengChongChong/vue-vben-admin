@@ -70,7 +70,8 @@ const [BaseForm, baseFormApi] = useVbenForm({
         .string()
         .min(1, { message: '请输入部署路径' })
         .max(255, { message: '部署路径不能超过255个字符' }),
-      description: '静态站点输出目录，必须位于服务端 cms.deployment-root 配置的根目录下',
+      description:
+        '静态站点输出目录，必须位于服务端 cms.deployment-root 配置的根目录下',
     },
     {
       fieldName: 'theme',
@@ -158,7 +159,7 @@ async function handleSave() {
 
 async function handleSaveAndAdd() {
   await handleSubmit((res) => {
-    baseFormApi.resetForm();
+    baseFormApi.reset();
     addCmsSiteApi(res.parentId).then((data) => {
       baseFormApi.setValues(data);
     });
@@ -169,7 +170,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
   onOpenChange: async (isOpen: boolean) => {
     if (isOpen) {
       const data = drawerApi.getData<Record<string, any>>();
-      await baseFormApi.resetForm();
+      await baseFormApi.reset();
       await baseFormApi.setValues(data);
     }
   },

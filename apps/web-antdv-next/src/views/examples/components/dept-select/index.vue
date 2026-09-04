@@ -3,7 +3,14 @@ import { defineComponent, onMounted, ref } from 'vue';
 
 import { Page } from '@vben/common-ui';
 
-import { Card, Col, Descriptions, DescriptionsItem, Row, Tag } from 'antdv-next';
+import {
+  Card,
+  Col,
+  Descriptions,
+  DescriptionsItem,
+  Row,
+  Tag,
+} from 'antdv-next';
 
 import { useVbenForm } from '#/adapter/form';
 import { DeptSelect, DeptTree } from '#/components/dept';

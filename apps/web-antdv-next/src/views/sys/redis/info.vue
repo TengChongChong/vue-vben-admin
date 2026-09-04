@@ -6,7 +6,14 @@ import { ref } from 'vue';
 import { AccessControl } from '@vben/access';
 import { JsonViewer, useVbenModal, VbenScrollbar } from '@vben/common-ui';
 
-import { Button, Descriptions, DescriptionsItem, message, Popconfirm, Space } from 'antdv-next';
+import {
+  Button,
+  Descriptions,
+  DescriptionsItem,
+  message,
+  Popconfirm,
+  Space,
+} from 'antdv-next';
 
 import { removeSysRedisApi } from '#/api';
 import { ButtonClose } from '#/components/button';

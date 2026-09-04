@@ -11,7 +11,7 @@ export function sanitizeMessageHtml(html?: string) {
     node.remove();
   });
   doc.querySelectorAll('*').forEach((node) => {
-    for (const attr of node.attributes) {
+    for (const attr of [...node.attributes]) {
       const attrName = attr.name.toLowerCase();
       const attrValue = attr.value.trim().toLowerCase();
       if (attrName.startsWith('on')) {

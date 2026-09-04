@@ -87,23 +87,12 @@ function handleTypeChange(index: number, type: SchedulerJobParamType) {
     return;
   }
   let value = '';
-  switch (type) {
-  case 'Boolean': {
+  if (type === 'Boolean') {
     value = 'true';
-  
-  break;
-  }
-  case 'Date': {
-    value = dayjs().format('YYYY-MM-DD HH:mm:ss');
-  
-  break;
-  }
-  case 'JSON': {
+  } else if (type === 'JSON') {
     value = '{}';
-  
-  break;
-  }
-  // No default
+  } else if (type === 'Date') {
+    value = dayjs().format('YYYY-MM-DD HH:mm:ss');
   }
   list[index] = { type, value };
   updateParamList(list);

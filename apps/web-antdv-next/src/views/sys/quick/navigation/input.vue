@@ -42,7 +42,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
       fieldName: 'icon',
       label: '图标',
       component: 'IconPicker',
-      rules: z.string().max(32, { message: '图标最多输入32个字符' }).optional(),
+      rules: z.string().max(64, { message: '图标最多输入64个字符' }).optional(),
     },
     {
       fieldName: 'color',
@@ -105,7 +105,7 @@ async function handleSave() {
 }
 async function handleSaveAndAdd() {
   await handleSubmit(() => {
-    baseFormApi.resetForm();
+    baseFormApi.reset();
     addSysQuickNavigationApi().then((res) => {
       baseFormApi.setValues(res);
     });
@@ -117,7 +117,7 @@ const [Modal, drawerApi] = useVbenModal({
     if (isOpen) {
       // 打开时根据id获取详情
       const data = drawerApi.getData<Record<string, any>>();
-      await baseFormApi.resetForm();
+      await baseFormApi.reset();
       await baseFormApi.setValues(data);
     }
   },

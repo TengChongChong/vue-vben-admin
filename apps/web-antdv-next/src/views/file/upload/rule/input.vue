@@ -209,7 +209,7 @@ async function handleSave() {
 
 async function handleSaveAndAdd() {
   await handleSubmit(() => {
-    baseFormApi.resetForm();
+    baseFormApi.reset();
     addFileUploadRuleApi().then((res) => {
       // lowerLimit.value = res.lowerLimit;
       // upperLimit.value = res.upperLimit;
@@ -225,7 +225,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
     if (isOpen) {
       // 打开时根据id获取详情
       const data = drawerApi.getData<Record<string, any>>();
-      await baseFormApi.resetForm();
+      await baseFormApi.reset();
       await baseFormApi.setValues({
         ...data,
       });
@@ -246,14 +246,13 @@ function containImage(suffix: string) {
   <Drawer class="w-[600px]" title="文件上传策略">
     <BaseForm>
       <template #fileSizeLimit>
-        <SpaceCompact compact>
+        <SpaceCompact>
           <InputNumber
             id="inputNumber"
             v-model:value="lowerLimit"
             :max="Math.max(upperLimit - 1, 1)"
             :min="1"
             style="width: 120px" />
-
           <Input
             disabled
             placeholder="~"
@@ -268,12 +267,8 @@ function containImage(suffix: string) {
       </template>
 
       <template #maxSize>
-        <SpaceCompact compact>
-          <InputNumber
-            v-model:value="maxWidth"
-            :min="1"
-            style="width: 120px" />
-
+        <SpaceCompact>
+          <InputNumber v-model:value="maxWidth" :min="1" style="width: 120px" />
           <Input
             disabled
             placeholder=":"

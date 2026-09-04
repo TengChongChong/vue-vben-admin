@@ -87,16 +87,15 @@ function handlerToolbar(event: string, arg?: number) {
   if (event === 'scaleY') {
     scaleY = arg = scaleY === -1 ? 1 : -1;
   }
-  const method = cropper.value?.[event as keyof Cropper];
-  if (typeof method === 'function') {
-    (method as (value?: number) => void)(arg);
-  }
+  // @ts-expect-error Cropper method names are dynamic event keys
+  cropper?.value?.[event]?.(arg);
 }
 
 async function handleOk() {
   try {
     // setModalProps({ confirmLoading: true });
-    const result = await fileUpload(cropperModalProps.value?.uploadRuleKey ?? '', {
+    // @ts-expect-error uploadRuleKey may be undefined at call site; guarded by modal props
+    const result = await fileUpload(cropperModalProps.value?.uploadRuleKey, {
       name: 'file',
       file: unref(imageBlob),
       filename: `${filename}.jpg`,
@@ -219,7 +218,7 @@ async function handleOk() {
       </div>
       <div class="vben-cropper-modal-right">
         <div
-          :class="`vben-cropper-modal-preview vben-cropper-modal-preview--${cropperModalProps?.circled ? 'circled' : 'square'}`">
+          :class="`vben-cropper-modal-preview vben-cropper-modal-preview--${cropperModalProps?.circled ? 'circled' : 'square'} `">
           <img v-if="previewSource" :src="previewSource" alt="" />
         </div>
         <template v-if="previewSource && cropperModalProps">

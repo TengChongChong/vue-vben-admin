@@ -6,7 +6,7 @@ import { VbenButton, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 import { HashingFactory } from '@vben/utils';
 
-import { Input, InputGroup, message, Select, SelectOption } from 'antdv-next';
+import { Input, message, Select, SelectOption, SpaceCompact } from 'antdv-next';
 
 import { useVbenForm } from '#/adapter/form';
 import { resetMyPasswordApi, sendEmailApi, sendSmsApi } from '#/api';
@@ -165,7 +165,7 @@ function goToLogin() {
     </div>
     <Form>
       <template #bindAccount="slotProps">
-        <InputGroup compact>
+        <SpaceCompact class="w-full">
           <Select
             v-model:value="bindAccountType"
             size="large"
@@ -174,10 +174,10 @@ function goToLogin() {
             <SelectOption value="email">邮箱</SelectOption>
           </Select>
           <Input
-            v-bind="slotProps"
+            v-bind="slotProps.componentProps"
             :placeholder="`${bindAccountType === 'email' ? '请输入邮箱' : '请输入手机号'}`"
             style="width: 75%" />
-        </InputGroup>
+        </SpaceCompact>
       </template>
     </Form>
 

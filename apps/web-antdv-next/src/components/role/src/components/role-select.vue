@@ -55,13 +55,11 @@ function loadOptions() {
     });
   } else if (props.type === 'current') {
     const deptId = userStore.userInfo?.deptId;
-    if (!deptId) {
-      roleList.value = [];
-      return;
+    if (deptId) {
+      selectRoleByDeptApi(deptId).then((res) => {
+        roleList.value = res;
+      });
     }
-    selectRoleByDeptApi(deptId).then((res) => {
-      roleList.value = res;
-    });
   } else {
     if (props.deptId) {
       selectRoleByDeptApi(props.deptId).then((res) => {

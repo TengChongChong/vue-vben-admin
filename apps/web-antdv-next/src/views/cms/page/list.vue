@@ -7,7 +7,17 @@ import { AccessControl } from '@vben/access';
 import { Page, useVbenDrawer } from '@vben/common-ui';
 import { formatToDateTime } from '@vben/utils';
 
-import { Alert, Button, Card, Checkbox, Empty, message, Modal, Pagination, Spin } from 'antdv-next';
+import {
+  Alert,
+  Button,
+  Card,
+  Checkbox,
+  Empty,
+  message,
+  Modal,
+  Pagination,
+  Spin,
+} from 'antdv-next';
 
 import { useVbenForm } from '#/adapter/form';
 import {
@@ -47,7 +57,7 @@ function showTotal(t: number) {
 
 const [FilterForm, filterFormApi] = useVbenForm({
   handleReset: async () => {
-    filterFormApi.resetForm();
+    filterFormApi.reset();
     current.value = 1;
     await fetchList();
   },

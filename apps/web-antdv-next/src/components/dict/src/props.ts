@@ -48,6 +48,8 @@ export interface DictSelectProps extends BaseDictProps {
 export interface DictCascaderProps extends BaseDictProps {
   // value
   value: Array<number> | Array<string> | undefined;
+  // 支持多选
+  multiple?: boolean;
 }
 
 /**

@@ -7,9 +7,10 @@ import type {
 import { ref } from 'vue';
 
 import { Page, SliderCaptcha } from '@vben/common-ui';
-import { Bell, Sun } from '@vben/icons';
 
 import { Button, Card, message } from 'antdv-next';
+
+import { LucideBell, LucideSun } from '#/components/icons';
 
 function handleSuccess(data: CaptchaVerifyPassingData) {
   const { time } = data;
@@ -70,8 +71,8 @@ const el6 = ref<SliderCaptchaActionType>();
       <div class="flex items-center justify-center p-4 px-[30%]">
         <SliderCaptcha ref="el4" @success="handleSuccess">
           <template #actionIcon="{ isPassing }">
-            <Bell v-if="isPassing" />
-            <Sun v-else />
+            <LucideBell v-if="isPassing" />
+            <LucideSun v-else />
           </template>
         </SliderCaptcha>
         <Button class="ml-2" type="primary" @click="handleBtnClick(el4)">
@@ -96,12 +97,12 @@ const el6 = ref<SliderCaptchaActionType>();
         <SliderCaptcha ref="el6" @success="handleSuccess">
           <template #text="{ isPassing }">
             <template v-if="isPassing">
-              <Bell class="mr-2 size-4" />
+              <LucideBell class="mr-2 size-4" />
               成功
             </template>
             <template v-else>
               拖动
-              <Sun class="ml-2 size-4" />
+              <LucideSun class="ml-2 size-4" />
             </template>
           </template>
         </SliderCaptcha>

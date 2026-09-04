@@ -6,7 +6,17 @@ import { computed, onMounted, ref, watch } from 'vue';
 import { Page, useVbenDrawer } from '@vben/common-ui';
 import { formatSize, formatToDateTime } from '@vben/utils';
 
-import { Alert, Button, Card, Empty, message, Pagination, Spin, Tabs, Tag } from 'antdv-next';
+import {
+  Alert,
+  Button,
+  Card,
+  Empty,
+  message,
+  Pagination,
+  Spin,
+  Tabs,
+  Tag,
+} from 'antdv-next';
 import dayjs from 'dayjs';
 
 import { useVbenForm } from '#/adapter/form';
@@ -58,7 +68,7 @@ function showTotal(t: number) {
 
 const [FilterForm, filterFormApi] = useVbenForm({
   handleReset: async () => {
-    filterFormApi.resetForm();
+    filterFormApi.reset();
     current.value = 1;
     await fetchList();
   },

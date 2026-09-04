@@ -33,7 +33,7 @@ export function useUserSelect(
   }
 
   async function fetchUsers(keyword = '') {
-    const keywordValue = keyword;
+    const keywordValue = keyword ?? '';
     searchKeyword.value = keywordValue;
     lastFetchId += 1;
     const fetchId = lastFetchId;

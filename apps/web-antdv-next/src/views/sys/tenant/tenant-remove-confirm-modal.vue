@@ -5,7 +5,14 @@ import { computed, ref } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
 
-import { Alert, Button, Descriptions, DescriptionsItem, message, Space } from 'antdv-next';
+import {
+  Alert,
+  Button,
+  Descriptions,
+  DescriptionsItem,
+  message,
+  Space,
+} from 'antdv-next';
 
 import { removeSysTenantApi } from '#/api';
 

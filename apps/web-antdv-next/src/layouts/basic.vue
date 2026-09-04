@@ -28,8 +28,8 @@ import {
   setReadApi,
 } from '#/api';
 import {
-  BookOpenText,
-  CircleHelp,
+  LucideBookOpenText,
+  LucideCircleHelp,
   LucideUserRound,
   SvgGithubIcon,
 } from '#/components/icons';
@@ -73,7 +73,7 @@ const menus = computed(() => [
         target: '_blank',
       });
     },
-    icon: BookOpenText,
+    icon: LucideBookOpenText,
     text: $t('ui.widgets.document'),
   },
   {
@@ -91,7 +91,7 @@ const menus = computed(() => [
         target: '_blank',
       });
     },
-    icon: CircleHelp,
+    icon: LucideCircleHelp,
     text: $t('ui.widgets.qa'),
   },
   {
@@ -302,7 +302,7 @@ onMounted(async () => {
     :text="userStore.userInfo?.nickname"
     @clear-preferences-and-logout="handleLogout"
     @logout="handleLogout">
-    <template #header-right-80>
+    <template #header-right-105>
       <TenantSwitcher />
     </template>
     <template #user-dropdown>

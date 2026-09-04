@@ -102,8 +102,8 @@ async function handleMergeSubmit() {
       <div class="mx-auto max-w-lg">
         <Steps
           :current="currentTab"
-          class="steps"
-          :items="[{ title: '表单1' }, { title: '表单2' }]" />
+          :items="[{ title: '表单1' }, { title: '表单2' }]"
+          class="steps" />
         <div class="p-20">
           <FirstForm v-show="currentTab === 0" />
           <SecondForm v-show="currentTab === 1" />

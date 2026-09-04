@@ -6,7 +6,19 @@ import { reactive } from 'vue';
 import { CountTo, Page, TransitionPresetsKeys } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
 
-import { Button, Card, Col, Form, FormItem, Input, InputNumber, message, Row, Select, Switch } from 'antdv-next';
+import {
+  Button,
+  Card,
+  Col,
+  Form,
+  FormItem,
+  Input,
+  InputNumber,
+  message,
+  Row,
+  Select,
+  Switch,
+} from 'antdv-next';
 
 const props = reactive<CountToProps & { transition: TransitionPresets }>({
   decimal: '.',
@@ -93,7 +105,7 @@ function onFinished() {
                   <IconifyIcon
                     v-tippy="`设置一个随机值`"
                     class="size-5 cursor-pointer outline-none"
-                    icon="ix:random-filled"
+                    icon="ph:shuffle"
                     @click="changeNumber" />
                 </template>
               </InputNumber>

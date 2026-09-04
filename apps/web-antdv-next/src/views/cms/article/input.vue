@@ -38,7 +38,10 @@ function stringifyTags(tags?: string[]): string {
   if (!tags?.length) {
     return '';
   }
-  return tags.map((item) => item.trim()).filter(Boolean).join(',');
+  return tags
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .join(',');
 }
 
 function toFormValues(data: Record<string, any>) {
@@ -241,8 +244,8 @@ async function handleSave() {
 
 async function handleSaveAndAdd() {
   await handleSubmit(() => {
-    mainFormApi.resetForm();
-    metaFormApi.resetForm();
+    mainFormApi.reset();
+    metaFormApi.reset();
     addCmsArticleApi().then((data) => {
       const formValues = toFormValues(data);
       mainFormApi.setValues(formValues);
@@ -256,7 +259,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
     if (isOpen) {
       const data = drawerApi.getData<Record<string, any>>();
       const formValues = toFormValues(data);
-      await Promise.all([mainFormApi.resetForm(), metaFormApi.resetForm()]);
+      await Promise.all([mainFormApi.reset(), metaFormApi.reset()]);
       await Promise.all([
         mainFormApi.setValues(formValues),
         metaFormApi.setValues(formValues),
@@ -272,7 +275,8 @@ const [Drawer, drawerApi] = useVbenDrawer({
       <div class="min-w-0 flex-1 overflow-y-auto pr-1">
         <MainForm />
       </div>
-      <div class="border-border w-[340px] shrink-0 overflow-y-auto border-l pl-4">
+      <div
+        class="border-border w-[340px] shrink-0 overflow-y-auto border-l pl-4">
         <MetaForm />
       </div>
     </div>

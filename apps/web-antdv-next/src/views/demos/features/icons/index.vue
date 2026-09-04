@@ -20,12 +20,19 @@ import {
 
 import { Card, Input } from 'antdv-next';
 
-const iconValue1 = ref('ant-design:trademark-outlined');
+const iconValue1 = ref('ph:trademark');
 const iconValue2 = ref('svg:avatar-1');
-const iconValue3 = ref('mdi:alien-outline');
-const iconValue4 = ref('mdi-light:book-multiple');
+const iconValue3 = ref('ph:alien');
+const iconValue4 = ref('ph:books');
 
 const inputComponent = h(Input);
+const phosphorRegularExclude = [
+  '-thin',
+  '-light',
+  '-bold',
+  '-fill',
+  '-duotone',
+];
 </script>
 
 <template>
@@ -39,7 +46,16 @@ const inputComponent = h(Input);
           target="_blank">
           Iconify
         </a>
-        中查找，支持多种图标库，如 Material Design, Font Awesome, Jam Icons 等。
+        中查找。本系统菜单与业务图标统一使用
+        <a
+          class="text-primary"
+          href="https://icon-sets.iconify.design/ph/?prefix=ph&icon=house"
+          target="_blank">
+          Phosphor Regular
+        </a>
+        （
+        <code>ph:house</code>
+        ）。
       </div>
     </template>
 
@@ -68,19 +84,23 @@ const inputComponent = h(Input);
 
     <Card class="mb-5" title="Tailwind CSS">
       <div class="flex items-center gap-5 text-3xl">
-        <span class="icon-[ant-design--alipay-circle-outlined]"></span>
-        <span class="icon-[ant-design--account-book-filled]"></span>
-        <span class="icon-[ant-design--container-outlined]"></span>
+        <span class="icon-[ph--house]"></span>
+        <span class="icon-[ph--book]"></span>
+        <span class="icon-[ph--package]"></span>
         <span class="icon-[svg-spinners--wind-toy]"></span>
         <span class="icon-[svg-spinners--blocks-wave]"></span>
-        <span class="icon-[line-md--compass-filled-loop]"></span>
+        <span class="icon-[ph--compass]"></span>
       </div>
     </Card>
 
     <Card class="mb-5" title="图标选择器">
       <div class="mb-5 flex items-center gap-5">
         <span>原始样式(Iconify):</span>
-        <IconPicker v-model="iconValue1" class="w-[200px]" />
+        <IconPicker
+          v-model="iconValue1"
+          class="w-[200px]"
+          prefix="ph"
+          :icon-exclude-suffixes="phosphorRegularExclude" />
       </div>
       <div class="mb-5 flex items-center gap-5">
         <span>原始样式(svg):</span>
@@ -93,7 +113,8 @@ const inputComponent = h(Input);
           v-model="iconValue3"
           icon-slot="addonAfter"
           model-value-prop="value"
-          prefix="mdi" />
+          prefix="ph"
+          :icon-exclude-suffixes="phosphorRegularExclude" />
       </div>
       <div class="flex items-center gap-5">
         <span>显示为一个Icon:</span>
@@ -103,7 +124,11 @@ const inputComponent = h(Input);
           placeholder="点击这里选择图标"
           style="width: 300px">
           <template #addonAfter>
-            <IconPicker v-model="iconValue4" prefix="mdi-light" type="icon" />
+            <IconPicker
+              v-model="iconValue4"
+              prefix="ph"
+              :icon-exclude-suffixes="phosphorRegularExclude"
+              type="icon" />
           </template>
         </Input>
       </div>

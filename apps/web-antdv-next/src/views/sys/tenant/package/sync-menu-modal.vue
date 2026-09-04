@@ -209,7 +209,7 @@ const [Modal, modalApi] = useVbenModal({
       packageId.value = data?.packageId ?? '';
       tenantId.value = data?.tenantId ?? '';
       packageName.value = data?.packageName ?? '';
-      await syncFormApi.resetForm();
+      await syncFormApi.reset();
       await syncFormApi.setValues({ mode: 'add_only', scope: 'admin_only' });
       if (isPackageMode.value) {
         await nextTick();
@@ -244,7 +244,7 @@ defineExpose({
 
       <SyncForm>
         <template #mode="slotProps">
-          <RadioGroup v-bind="slotProps" class="sync-mode-group">
+          <RadioGroup v-bind="slotProps.componentProps" class="sync-mode-group">
             <Radio
               v-for="item in modeOptions"
               :key="item.value"

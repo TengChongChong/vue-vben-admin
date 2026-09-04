@@ -16,7 +16,15 @@ import { RouterLink } from 'vue-router';
 import { useUserStore } from '@vben/stores';
 import { isArray, isBlank, listToTree } from '@vben/utils';
 
-import { Affix, Alert, Button, Input, message, Modal, Select } from 'antdv-next';
+import {
+  Affix,
+  Alert,
+  Button,
+  Input,
+  message,
+  Modal,
+  Select,
+} from 'antdv-next';
 
 import { useVbenForm } from '#/adapter/form';
 import {
@@ -272,7 +280,7 @@ const [BaseForm, baseFormApi] = useVbenForm({
     {
       fieldName: 'backEndPath',
       label: '后端项目路径',
-      component: 'InputGroup',
+      component: 'Input',
       description: 'idea中的项目绝对路径，无需/结尾',
       rules: 'required',
       formItemClass: 'xl:col-span-2 2xl:col-span-4',
@@ -636,12 +644,12 @@ async function handleListGeneratorTemplateChange(generatorTemplate: string) {
   const values = (await baseFormApi.getValues()) as BasicsConfigModel;
   const hasCustomGenFile =
     values.genFile?.length > 0 &&
-    JSON.stringify(values.genFile.toSorted()) !==
-      JSON.stringify(config.file.toSorted());
+    JSON.stringify([...values.genFile].toSorted()) !==
+      JSON.stringify([...config.file].toSorted());
   const hasCustomGenMethod =
     values.genMethod?.length > 0 &&
-    JSON.stringify(values.genMethod.toSorted()) !==
-      JSON.stringify(config.method.toSorted());
+    JSON.stringify([...values.genMethod].toSorted()) !==
+      JSON.stringify([...config.method].toSorted());
 
   if (hasCustomGenFile || hasCustomGenMethod) {
     const confirmed = await new Promise<boolean>((resolve) => {
@@ -766,18 +774,18 @@ async function handleStepNext() {
       type="warning" />
     <BaseForm>
       <template #generatorTemplate="slotProps">
-        <ChoseButtonGroup v-bind="slotProps" />
+        <ChoseButtonGroup v-bind="slotProps.componentProps" />
       </template>
       <template #listGeneratorTemplate="slotProps">
         <ChoseButtonGroup
-          v-bind="slotProps"
+          v-bind="slotProps.componentProps"
           @change="handleListGeneratorTemplateChange" />
       </template>
       <template #formGeneratorTemplate="slotProps">
-        <ChoseButtonGroup v-bind="slotProps" />
+        <ChoseButtonGroup v-bind="slotProps.componentProps" />
       </template>
       <template #backEndPath="slotProps">
-        <Input v-bind="slotProps">
+        <Input v-bind="slotProps.componentProps">
           <template #addonBefore>
             <Select
               v-model:value="moduleValue"
@@ -791,7 +799,7 @@ async function handleStepNext() {
       <template #mainTableField="slotProps">
         <Select
           v-if="tableInfo"
-          v-bind="slotProps"
+          v-bind="slotProps.componentProps"
           :options="
             tableInfo.fields.map((item) => ({
               label: `${item.columnName} - ${item.comment}`,

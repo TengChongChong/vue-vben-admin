@@ -53,7 +53,7 @@ async function handleSubmit() {
 const [Modal, modalApi] = useVbenModal({
   onOpenChange: async (isOpen: boolean) => {
     if (isOpen) {
-      await baseFormApi.resetForm();
+      await baseFormApi.reset();
     }
   },
 });

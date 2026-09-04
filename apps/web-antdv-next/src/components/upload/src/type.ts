@@ -23,8 +23,7 @@ export interface RuleUploadProps {
 /**
  * 用于 Ant Design of Vue 文件上传数据回显
  */
- 
-// @ts-expect-error: UploadFile and FileInfo share partial fields intentionally.
+// @ts-expect-error FileInfo and UploadFile have overlapping incompatible fields
 export interface UploadFileModel extends FileInfo, UploadFile {
   // 两个对象不一致的在下方声明，避免错误提示
   name: string;

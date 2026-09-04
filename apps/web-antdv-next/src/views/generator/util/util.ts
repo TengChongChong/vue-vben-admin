@@ -78,11 +78,11 @@ export function needGeneratorImportOrExport(
 }
 
 export function needGeneratorImport(basicsConfig: BasicsConfigModel): boolean {
-  return basicsConfig?.genMethod?.indexOf(GenMethod.IMPORT_DATA) > -1;
+  return basicsConfig?.genMethod?.includes(GenMethod.IMPORT_DATA);
 }
 
 export function needGeneratorExport(basicsConfig: BasicsConfigModel): boolean {
-  return basicsConfig?.genMethod?.indexOf(GenMethod.EXPORT_DATA) > -1;
+  return basicsConfig?.genMethod?.includes(GenMethod.EXPORT_DATA);
 }
 
 /**

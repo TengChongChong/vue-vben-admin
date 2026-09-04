@@ -51,7 +51,7 @@ const btnLoading = computed(() => {
 watch(
   () => modelValue.value,
   () => {
-    inputValue.value = modelValue.value?.split('') ?? [];
+    inputValue.value = [...modelValue.value];
   },
 );
 

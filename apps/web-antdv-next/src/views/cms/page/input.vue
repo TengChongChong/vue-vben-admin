@@ -141,8 +141,8 @@ async function handleSave() {
 
 async function handleSaveAndAdd() {
   await handleSubmit(() => {
-    mainFormApi.resetForm();
-    metaFormApi.resetForm();
+    mainFormApi.reset();
+    metaFormApi.reset();
     addCmsPageApi().then((data) => {
       mainFormApi.setValues(data);
       metaFormApi.setValues(data);
@@ -154,7 +154,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
   onOpenChange: async (isOpen: boolean) => {
     if (isOpen) {
       const data = drawerApi.getData<Record<string, any>>();
-      await Promise.all([mainFormApi.resetForm(), metaFormApi.resetForm()]);
+      await Promise.all([mainFormApi.reset(), metaFormApi.reset()]);
       await Promise.all([
         mainFormApi.setValues(data),
         metaFormApi.setValues(data),
@@ -170,7 +170,8 @@ const [Drawer, drawerApi] = useVbenDrawer({
       <div class="min-w-0 flex-1 overflow-y-auto pr-1">
         <MainForm />
       </div>
-      <div class="border-border w-[340px] shrink-0 overflow-y-auto border-l pl-4">
+      <div
+        class="border-border w-[340px] shrink-0 overflow-y-auto border-l pl-4">
         <MetaForm />
       </div>
     </div>

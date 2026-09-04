@@ -27,7 +27,7 @@ const routes: RouteRecordRaw[] = [
         path: 'document',
         component: IFrameView,
         meta: {
-          icon: 'lucide:book-open-text',
+          icon: 'ph:book-open-text',
           link: VBEN_DOC_URL,
           title: $t('demos.vben.document'),
         },
@@ -37,7 +37,7 @@ const routes: RouteRecordRaw[] = [
         path: 'github',
         component: IFrameView,
         meta: {
-          icon: 'mdi:github',
+          icon: 'ph:github-logo',
           link: VBEN_GITHUB_URL,
           title: 'Github',
         },
@@ -59,7 +59,7 @@ const routes: RouteRecordRaw[] = [
         component: IFrameView,
         meta: {
           badgeType: 'dot',
-          icon: 'simple-icons:tencentqq',
+          icon: 'ph:chat-teardrop-dots',
           link: VBEN_TD_PREVIEW_URL,
           title: $t('demos.vben.tdesign'),
         },
@@ -71,7 +71,7 @@ const routes: RouteRecordRaw[] = [
     path: '/vben-admin/about',
     component: () => import('#/views/_core/about/index.vue'),
     meta: {
-      icon: 'lucide:copyright',
+      icon: 'ph:copyright',
       title: $t('demos.vben.about'),
       order: 9999,
     },
@@ -81,7 +81,7 @@ const routes: RouteRecordRaw[] = [
     path: '/profile',
     component: () => import('#/views/_core/profile/index.vue'),
     meta: {
-      icon: 'lucide:user',
+      icon: 'ph:user',
       hideInMenu: true,
       title: $t('page.auth.profile'),
     },
