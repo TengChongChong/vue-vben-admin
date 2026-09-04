@@ -57,7 +57,7 @@ const inboxBodyStyle: CSSProperties = {
   height: '100%',
   minHeight: 0,
   overflow: 'hidden',
-  padding: 0,
+  padding: '2px',
 };
 
 const listBodyStyle: CSSProperties = {

@@ -48,10 +48,7 @@ watch(selectedKeys, (key) => {
       </LayoutSider>
 
       <LayoutContent :style="{ marginLeft: '24px', overflow: 'initial' }">
-        <Card
-          :bordered="false"
-          class="message-page-content h-full"
-          size="small">
+        <div class="message-page-content h-full">
           <Edit v-if="'edit' === selectedKeys" :id="messageId" />
 
           <ReceiveList
@@ -66,7 +63,7 @@ watch(selectedKeys, (key) => {
           <List
             v-if="'has-been-sent' === selectedKeys"
             :page-type="SysMessageStatus.HAS_BEEN_SENT" />
-        </Card>
+        </div>
       </LayoutContent>
     </Layout>
   </Page>
