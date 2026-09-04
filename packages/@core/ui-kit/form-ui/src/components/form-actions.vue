@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, toRaw, unref, watch } from 'vue';
+import { computed, toRaw, unref, watch } from 'vue';
 
 import { useSimpleLocale } from '@vben-core/composables';
 import { VbenExpandableArrow } from '@vben-core/shadcn-ui';
@@ -13,7 +13,6 @@ const { $t } = useSimpleLocale();
 const [rootProps, form] = injectFormProps();
 
 const collapsed = defineModel({ default: false });
-const submitLoading = ref(false);
 
 const resetButtonOptions = computed(() => {
   return {
@@ -27,7 +26,6 @@ const submitButtonOptions = computed(() => {
   return {
     content: `${$t.value('submit')}`,
     show: true,
-    loading: submitLoading.value,
     ...unref(rootProps).submitButtonOptions,
   };
 });
@@ -40,20 +38,7 @@ async function handleSubmit(e: Event) {
     return;
   }
 
-  const { valid } = await props.formApi.validate();
-  if (!valid) {
-    return;
-  }
-
-  const values = toRaw(await props.formApi.getValues()) ?? {};
-  try {
-    submitLoading.value = true;
-    await props.handleSubmit?.(values);
-  } catch (error) {
-    console.error('form submit error:', error);
-  } finally {
-    submitLoading.value = false;
-  }
+  await props.formApi.validateAndSubmit();
 }
 
 async function handleReset(e: Event) {
@@ -66,7 +51,7 @@ async function handleReset(e: Event) {
   if (isFunction(props.handleReset)) {
     await props.handleReset?.(values);
   } else {
-    form.resetForm();
+    form.reset();
   }
 }
 
@@ -142,8 +127,7 @@ defineExpose({
         v-if="submitButtonOptions.show"
         type="button"
         @click="handleSubmit"
-        v-bind="submitButtonOptions"
-      >
+        v-bind="submitButtonOptions">
         {{ submitButtonOptions.content }}
       </component>
     </template>
@@ -156,8 +140,7 @@ defineExpose({
       v-if="resetButtonOptions.show"
       type="button"
       @click="handleReset"
-      v-bind="resetButtonOptions"
-    >
+      v-bind="resetButtonOptions">
       {{ resetButtonOptions.content }}
     </component>
 
@@ -170,8 +153,7 @@ defineExpose({
         v-if="submitButtonOptions.show"
         type="button"
         @click="handleSubmit"
-        v-bind="submitButtonOptions"
-      >
+        v-bind="submitButtonOptions">
         {{ submitButtonOptions.content }}
       </component>
     </template>
@@ -182,8 +164,7 @@ defineExpose({
     <VbenExpandableArrow
       class="ml-[-0.3em]"
       v-if="rootProps.showCollapseButton"
-      v-model:model-value="collapsed"
-    >
+      v-model:model-value="collapsed">
       <span>{{ collapsed ? $t('expand') : $t('collapse') }}</span>
     </VbenExpandableArrow>
 

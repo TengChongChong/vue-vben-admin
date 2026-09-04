@@ -297,16 +297,21 @@ onMounted(async () => {
 </script>
 
 <template>
-  <BasicLayout @clear-preferences-and-logout="handleLogout">
+  <BasicLayout
+    :avatar
+    :text="userStore.userInfo?.nickname"
+    @clear-preferences-and-logout="handleLogout"
+    @logout="handleLogout">
     <template #header-right-80>
       <TenantSwitcher />
     </template>
     <template #user-dropdown>
       <UserDropdown
         :avatar
-        :description="userStore.userInfo?.dept?.name"
-        :menus="menus"
+        :menus
         :text="userStore.userInfo?.nickname"
+        :description="userStore.userInfo?.dept?.name"
+        tag-text="Pro"
         @logout="handleLogout"
         @clear-preferences-and-logout="handleLogout" />
     </template>

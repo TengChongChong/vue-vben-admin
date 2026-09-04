@@ -14,7 +14,7 @@ interface Props extends MenuRecordBadgeRaw {
 const props = withDefaults(defineProps<Props>(), {});
 
 const variantsMap: Record<string, string> = {
-  default: 'bg-green-500',
+  default: 'bg-gray-500',
   destructive: 'bg-destructive',
   primary: 'bg-primary',
   success: 'bg-green-500',
@@ -49,8 +49,7 @@ const badgeStyle = computed(() => {
       v-else
       :class="badgeClass"
       :style="badgeStyle"
-      class="flex-center rounded-xl px-1.5 py-0.5 text-[10px] text-primary-foreground"
-    >
+      class="flex-center rounded-xl px-1.5 py-0.5 text-[10px] text-primary-foreground">
       {{ badge }}
     </div>
   </span>

@@ -219,7 +219,7 @@ watch(
         },
         content:
           content ||
-          `${userStore.userInfo?.username} - ${userStore.userInfo?.realName}`,
+          `${userStore.userInfo?.username} - ${userStore.userInfo?.nickname}`,
       });
     } else {
       destroyWatermark();
@@ -239,20 +239,21 @@ onBeforeMount(() => {
 
 <template>
   <BasicLayout
+    :avatar
+    :text="userStore.userInfo?.nickname"
     @clear-preferences-and-logout="handleLogout"
     @click-logo="handleClickLogo"
-  >
+    @logout="handleLogout">
     <template #user-dropdown>
       <UserDropdown
         :avatar
         :menus
-        :text="userStore.userInfo?.realName"
+        :text="userStore.userInfo?.nickname"
         description="ann.vben@gmail.com"
         tag-text="Pro"
         trigger="both"
         @logout="handleLogout"
-        @clear-preferences-and-logout="handleLogout"
-      />
+        @clear-preferences-and-logout="handleLogout" />
     </template>
     <template #notification>
       <Notification
@@ -263,14 +264,12 @@ onBeforeMount(() => {
         @remove="(item) => item.id && remove(item.id)"
         @make-all="handleMakeAll"
         @on-click="handleClick"
-        @view-all="viewAll"
-      />
+        @view-all="viewAll" />
     </template>
     <template #extra>
       <AuthenticationLoginExpiredModal
         v-model:open="accessStore.loginExpired"
-        :avatar
-      >
+        :avatar>
         <LoginForm />
       </AuthenticationLoginExpiredModal>
     </template>

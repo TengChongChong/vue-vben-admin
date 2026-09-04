@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { Page } from '@vben/common-ui';
+
 import { Button, Card, message, notification, Space } from 'ant-design-vue';
 
 type NotificationType = 'error' | 'info' | 'success' | 'warning';
@@ -11,7 +12,8 @@ function info() {
 function error() {
   message.error({
     content: 'Once upon a time you dressed so fine',
-    duration: 2500,
+    // ant-design-vue 的 message.duration 单位是「秒」, 不是毫秒
+    duration: 2.5,
   });
 }
 
@@ -24,7 +26,8 @@ function success() {
 
 function notify(type: NotificationType) {
   notification[type]({
-    duration: 2500,
+    // ant-design-vue 的 notification.duration 单位是「秒」, 不是毫秒
+    duration: 2.5,
     message: '说点啥呢',
     type,
   });
@@ -34,8 +37,7 @@ function notify(type: NotificationType) {
 <template>
   <Page
     description="支持多语言，主题功能集成切换等"
-    title="Ant Design Vue组件使用演示"
-  >
+    title="Ant Design Vue组件使用演示">
     <Card class="mb-5" title="按钮">
       <Space>
         <Button>Default</Button>

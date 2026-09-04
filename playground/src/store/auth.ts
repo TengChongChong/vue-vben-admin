@@ -48,7 +48,6 @@ export const useAuthStore = defineStore('auth', () => {
 
         userInfo = fetchUserInfoResult;
 
-        userStore.setUserInfo(userInfo);
         accessStore.setAccessCodes(accessCodes);
 
         if (accessStore.loginExpired) {
@@ -61,9 +60,9 @@ export const useAuthStore = defineStore('auth', () => {
               );
         }
 
-        if (userInfo?.realName) {
+        if (userInfo?.nickname) {
           notification.success({
-            description: `${$t('authentication.loginSuccessDesc')}:${userInfo?.realName}`,
+            description: `${$t('authentication.loginSuccessDesc')}:${userInfo?.nickname}`,
             duration: 3,
             title: $t('authentication.loginSuccess'),
           });

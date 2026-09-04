@@ -22,8 +22,8 @@ const layout = ref<FormLayout>('vertical');
 
 function getNumberValidator(key: string, limit?: [number?, number?]) {
   let validator = z.number({
-    required_error: `${key} 值不能为空`,
-    invalid_type_error: `${key} 值只能为数字`,
+    error: (issue) =>
+      issue.input === undefined ? `${key} 值不能为空` : `${key} 值只能为数字`,
   });
 
   if (limit) {
@@ -257,14 +257,14 @@ function handleSetFormValue() {
 }
 
 function handleResetFormValue() {
-  baseFormApi.resetForm(undefined, { force: true });
+  baseFormApi.reset(undefined, { force: true });
 }
 
 async function handleSubmitFormValue() {
   const { valid } = await baseFormApi.validate();
 
   if (valid) {
-    baseFormApi.submitForm();
+    baseFormApi.submit();
   }
 }
 </script>
@@ -273,8 +273,7 @@ async function handleSubmitFormValue() {
   <Page
     auto-content-height
     content-class="flex flex-col gap-4"
-    title="可折叠表单项"
-  >
+    title="可折叠表单项">
     <template #description>
       <div class="text-muted-foreground">
         <p>可折叠表单项、以及可折叠参数配置组件示例</p>
@@ -290,8 +289,7 @@ async function handleSubmitFormValue() {
             :options="layouts"
             option-type="button"
             v-model:value="layout"
-            @change="onLayoutChange"
-          />
+            @change="onLayoutChange" />
           <Button type="primary" @click="handleSetFormValue">
             设置表单值
           </Button>

@@ -217,7 +217,11 @@ watch(
 </script>
 
 <template>
-  <BasicLayout @clear-preferences-and-logout="handleLogout">
+  <BasicLayout
+    :avatar
+    :text="userStore.userInfo?.nickname"
+    @clear-preferences-and-logout="handleLogout"
+    @logout="handleLogout">
     <template #user-dropdown>
       <UserDropdown
         :avatar
@@ -225,9 +229,8 @@ watch(
         :text="userStore.userInfo?.nickname"
         description="ann.vben@gmail.com"
         tag-text="Pro"
-        @logout="handleLogout"
         @clear-preferences-and-logout="handleLogout"
-      />
+        @logout="handleLogout" />
     </template>
     <template #notification>
       <Notification
@@ -238,14 +241,12 @@ watch(
         @remove="(item) => item.id && remove(item.id)"
         @make-all="handleMakeAll"
         @on-click="handleClick"
-        @view-all="viewAll"
-      />
+        @view-all="viewAll" />
     </template>
     <template #extra>
       <AuthenticationLoginExpiredModal
         v-model:open="accessStore.loginExpired"
-        :avatar
-      >
+        :avatar>
         <LoginForm />
       </AuthenticationLoginExpiredModal>
     </template>

@@ -1,4 +1,5 @@
 import {
+  appCopyrightPreferences,
   defineOverridesPreferences,
   definePreferencesExtension,
 } from '@vben/preferences';
@@ -43,6 +44,7 @@ export const overridesPreferences = defineOverridesPreferences({
     /** 是否启用语言切换部件 */
     languageToggle: false,
   },
+  copyright: appCopyrightPreferences,
 });
 
 export const preferencesExtension =

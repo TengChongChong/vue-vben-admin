@@ -26,7 +26,7 @@ const routes: RouteRecordRaw[] = [
     children: [
       {
         name: 'VbenDocument',
-        path: '/vben-admin/document',
+        path: 'document',
         component: IFrameView,
         meta: {
           icon: 'lucide:book-open-text',
@@ -36,7 +36,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'VbenGithub',
-        path: '/vben-admin/github',
+        path: 'github',
         component: IFrameView,
         meta: {
           icon: 'mdi:github',
@@ -46,7 +46,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'VbenNaive',
-        path: '/vben-admin/naive',
+        path: 'naive',
         component: IFrameView,
         meta: {
           badgeType: 'dot',
@@ -57,7 +57,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'VbenAntdv',
-        path: '/vben-admin/antdv',
+        path: 'antdv',
         component: IFrameView,
         meta: {
           badgeType: 'dot',
@@ -68,7 +68,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'VbenAntdVNext',
-        path: '/vben-admin/antdv-next',
+        path: 'antdv-next',
         component: IFrameView,
         meta: {
           badgeType: 'dot',
@@ -79,7 +79,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         name: 'VbenElementPlus',
-        path: '/vben-admin/ele',
+        path: 'ele',
         component: IFrameView,
         meta: {
           badgeType: 'dot',

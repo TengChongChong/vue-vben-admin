@@ -32,11 +32,11 @@ const accessStore = useAuthStore();
 const router = useRouter();
 
 function roleButtonType(role: string) {
-  return userStore.userRoles.includes(role) ? 'primary' : 'default';
+  return userStore.roleCodeList.includes(role) ? 'primary' : 'default';
 }
 
 async function changeAccount(role: string) {
-  if (userStore.userRoles.includes(role)) {
+  if (userStore.roleCodeList.includes(role)) {
     return;
   }
 

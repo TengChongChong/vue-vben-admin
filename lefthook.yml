@@ -42,14 +42,25 @@
 #       runner: go run
 
 pre-commit:
-  parallel: true
-  commands:
-    lint-js:
-      glob: '*.{js,jsx,mjs,cjs,ts,tsx,mts,cts,vue}'
-      run: pnpm exec oxlint {staged_files} && pnpm exec eslint --cache {staged_files}
-    lint-style:
+  # 串行执行（不设 parallel），避免低配机内存/CPU 瞬时飙升。
+  # lint 仅检查暂存文件并自动修复后回填；全量 typecheck 请使用 pnpm check:type。
+  jobs:
+    - name: oxlint
+      glob: '*.{js,jsx,ts,tsx,vue,cjs,mjs,cts,mts}'
+      run: pnpm exec oxlint --fix --type-aware --threads=4 --no-error-on-unmatched-pattern {staged_files}
+      stage_fixed: true
+    - name: oxfmt
+      glob: '*.{js,jsx,ts,tsx,vue,cjs,mjs,cts,mts,json,jsonc}'
+      run: pnpm exec oxfmt --threads=4 --no-error-on-unmatched-pattern {staged_files}
+      stage_fixed: true
+    - name: eslint
+      glob: '*.{js,jsx,ts,tsx,vue,cjs,mjs,cts,mts}'
+      run: pnpm exec eslint --fix {staged_files}
+      stage_fixed: true
+    - name: stylelint
       glob: '*.{vue,css,less,scss}'
-      run: pnpm exec stylelint {staged_files} --cache
+      run: pnpm exec stylelint --fix {staged_files}
+      stage_fixed: true
 
 post-merge:
   commands:

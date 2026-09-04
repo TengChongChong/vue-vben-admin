@@ -348,8 +348,7 @@ function getActivePaths() {
       is('menu-align', mode === 'horizontal'),
     ]"
     :style="menuStyle"
-    role="menu"
-  >
+    role="menu">
     <template v-if="mode === 'horizontal' && getSlot.showSlotMore">
       <template v-for="(item, index) in getSlot.slotDefault" :key="index">
         <component :is="item" />
@@ -747,7 +746,7 @@ $namespace: vben;
     width: 100%;
     height: var(--menu-item-height);
 
-    span {
+    .#{$namespace}-menu__name {
       @include menu-title;
     }
   }
@@ -823,10 +822,6 @@ $namespace: vben;
   font-size: var(--menu-font-size) !important;
 
   @include menu-item;
-
-  * {
-    font-size: inherit !important;
-  }
 
   &__icon-arrow {
     position: absolute;

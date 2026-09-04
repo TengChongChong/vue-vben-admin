@@ -24,10 +24,16 @@ defineOptions({
 });
 
 const props = withDefaults(
-  defineProps<{ enableShortcutKey?: boolean; menus?: MenuRecordRaw[] }>(),
+  defineProps<{
+    enableShortcutKey?: boolean;
+    menus?: MenuRecordRaw[];
+    /** 是否显示触发按钮（嵌在 dropdown 等容器里时可关掉） */
+    showButton?: boolean;
+  }>(),
   {
     enableShortcutKey: true,
     menus: () => [],
+    showButton: true,
   },
 );
 
@@ -94,6 +100,13 @@ onMounted(() => {
     window.removeEventListener('keydown', preventDefaultBrowserSearchHotKey);
   });
 });
+
+// 暴露给父组件，允许从外部触发搜索弹框（如 user-dropdown 里点击菜单项触发）
+defineExpose({
+  open: () => modalApi.open(),
+  close: () => modalApi.close(),
+  toggle: toggleOpen,
+});
 </script>
 
 <template>
@@ -101,8 +114,7 @@ onMounted(() => {
     <Modal
       :fullscreen-button="false"
       class="w-150"
-      header-class="py-2 border-b"
-    >
+      header-class="py-2 border-b">
       <template #title>
         <div class="flex items-center">
           <Search class="mr-2 size-4 text-muted-foreground" />
@@ -110,8 +122,7 @@ onMounted(() => {
             ref="searchInputRef"
             v-model="keyword"
             :placeholder="$t('ui.widgets.search.searchNavigate')"
-            class="ring-none w-[80%] rounded-md border border-none bg-transparent p-2 pl-0 text-sm font-normal ring-0 ring-offset-transparent outline-hidden placeholder:text-muted-foreground focus-visible:ring-transparent"
-          />
+            class="ring-none w-[80%] rounded-md border border-none bg-transparent p-2 pl-0 text-sm font-normal ring-0 ring-offset-transparent outline-hidden placeholder:text-muted-foreground focus-visible:ring-transparent" />
         </div>
       </template>
 
@@ -135,21 +146,18 @@ onMounted(() => {
       </template>
     </Modal>
     <div
+      v-if="showButton"
       class="group flex h-8 cursor-pointer items-center gap-3 rounded-2xl border-none bg-none px-2 py-0.5 outline-hidden md:bg-accent"
-      @click="toggleOpen()"
-    >
+      @click="toggleOpen()">
       <Search
-        class="size-4 text-muted-foreground group-hover:text-foreground group-hover:opacity-100"
-      />
+        class="size-4 text-muted-foreground group-hover:text-foreground group-hover:opacity-100" />
       <span
-        class="hidden text-xs text-muted-foreground duration-300 group-hover:text-foreground md:block"
-      >
+        class="hidden text-xs text-muted-foreground duration-300 group-hover:text-foreground md:block">
         {{ $t('ui.widgets.search.title') }}
       </span>
       <span
         v-if="enableShortcutKey"
-        class="relative hidden rounded-sm rounded-r-xl border-foreground/60 bg-background px-1.5 py-1 text-xs leading-none text-muted-foreground group-hover:text-foreground group-hover:opacity-100 md:block"
-      >
+        class="relative hidden rounded-sm rounded-r-xl border-foreground/60 bg-background px-1.5 py-1 text-xs leading-none text-muted-foreground group-hover:text-foreground group-hover:opacity-100 md:block">
         {{ isWindowsOs() ? 'Ctrl' : '⌘' }}
         <kbd>K</kbd>
       </span>

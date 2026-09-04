@@ -18,6 +18,7 @@ import {
 } from 'reka-ui';
 
 import DialogOverlay from './DialogOverlay.vue';
+import { useDialogStateEvents } from './use-dialog-state-events';
 
 defineOptions({
   inheritAttrs: false,
@@ -81,16 +82,14 @@ const position = computed(() => {
 const forwarded = useForwardPropsEmits(delegatedProps, emits);
 
 const contentRef = ref<InstanceType<typeof DialogContent> | null>(null);
-function onAnimationEnd(event: AnimationEvent) {
-  // 只有在 contentRef 的动画结束时才触发 opened/closed 事件
-  if (event.target === contentRef.value?.$el) {
-    if (props.open) {
-      emits('opened');
-    } else {
-      emits('closed');
-    }
-  }
-}
+
+const { handleAnimationEvent } = useDialogStateEvents({
+  contentRef,
+  isOpen: () => props.open,
+  onClosed: () => emits('closed'),
+  onOpened: () => emits('opened'),
+});
+
 defineExpose({
   getContentRef: () => contentRef.value,
 });
@@ -104,14 +103,14 @@ defineExpose({
         :overlay-blur="overlayBlur"
         :position="position"
         :z-index="zIndex"
-        @click="() => emits('close')"
-      />
+        @click="() => emits('close')" />
     </Transition>
     <DialogContent
       ref="contentRef"
       :style="{ ...(zIndex ? { zIndex } : {}), position }"
       data-slot="dialog-content"
-      @animationend="onAnimationEnd"
+      @animationend="handleAnimationEvent"
+      @animationcancel="handleAnimationEvent"
       v-bind="forwarded"
       :class="
         cn(
@@ -122,8 +121,7 @@ defineExpose({
           },
           props.class,
         )
-      "
-    >
+      ">
       <slot></slot>
 
       <DialogClose
@@ -136,8 +134,7 @@ defineExpose({
             props.closeClass,
           )
         "
-        @click="() => emits('close')"
-      >
+        @click="() => emits('close')">
         <X class="size-4" />
       </DialogClose>
     </DialogContent>

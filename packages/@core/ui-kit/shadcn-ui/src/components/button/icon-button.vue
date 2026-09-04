@@ -12,7 +12,7 @@ import VbenButton from './button.vue';
 interface Props extends VbenButtonProps {
   class?: any;
   disabled?: boolean;
-  onClick?: () => void;
+  onClick?: ((e?: MouseEvent) => void)[] | ((e?: MouseEvent) => void);
   tooltip?: string;
   tooltipDelayDuration?: number;
   tooltipSide?: 'bottom' | 'left' | 'right' | 'top';
@@ -30,6 +30,16 @@ const props = withDefaults(defineProps<Props>(), {
 const slots = useSlots();
 
 const showTooltip = computed(() => !!slots.tooltip || !!props.tooltip);
+
+function handleClick(e: MouseEvent) {
+  if (Array.isArray(props.onClick)) {
+    for (const fn of props.onClick) {
+      fn?.(e);
+    }
+  } else {
+    props.onClick?.(e);
+  }
+}
 </script>
 
 <template>
@@ -39,24 +49,21 @@ const showTooltip = computed(() => !!slots.tooltip || !!props.tooltip);
     :disabled="disabled"
     :variant="variant"
     size="icon"
-    @click="onClick"
-  >
+    @click="handleClick">
     <slot></slot>
   </VbenButton>
 
   <VbenTooltip
     v-else
     :delay-duration="tooltipDelayDuration"
-    :side="tooltipSide"
-  >
+    :side="tooltipSide">
     <template #trigger>
       <VbenButton
         :class="cn('rounded-full', props.class)"
         :disabled="disabled"
         :variant="variant"
         size="icon"
-        @click="onClick"
-      >
+        @click="handleClick">
         <slot></slot>
       </VbenButton>
     </template>

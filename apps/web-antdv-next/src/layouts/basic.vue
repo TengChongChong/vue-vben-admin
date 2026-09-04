@@ -297,7 +297,11 @@ onMounted(async () => {
 </script>
 
 <template>
-  <BasicLayout @clear-preferences-and-logout="handleLogout">
+  <BasicLayout
+    :avatar
+    :text="userStore.userInfo?.nickname"
+    @clear-preferences-and-logout="handleLogout"
+    @logout="handleLogout">
     <template #header-right-80>
       <TenantSwitcher />
     </template>
