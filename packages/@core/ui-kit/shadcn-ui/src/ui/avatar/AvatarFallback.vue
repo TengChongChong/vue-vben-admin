@@ -21,11 +21,10 @@ const delegatedProps = reactiveOmit(props, 'class');
     v-bind="delegatedProps"
     :class="
       cn(
-        'bg-muted flex size-full items-center justify-center rounded-full',
+        'bg-muted flex size-full items-center justify-center rounded-full text-xs',
         props.class,
       )
-    "
-  >
+    ">
     <slot></slot>
   </AvatarFallback>
 </template>

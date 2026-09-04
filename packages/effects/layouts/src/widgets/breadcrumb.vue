@@ -47,7 +47,7 @@ const breadcrumbs = computed((): IBreadcrumb[] => {
   }
   if (props.showHome) {
     resultBreadcrumb.unshift({
-      icon: 'mdi:home-outline',
+      icon: 'ph:house',
       isHome: true,
       path: '/',
     });
@@ -69,6 +69,5 @@ function handleSelect(path: string) {
     :show-icon="showIcon"
     :style-type="type"
     class="ml-2"
-    @select="handleSelect"
-  />
+    @select="handleSelect" />
 </template>

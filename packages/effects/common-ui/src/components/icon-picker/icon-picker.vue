@@ -34,6 +34,8 @@ const props = withDefaults(defineProps<IconPickerProps>(), {
   icons: () => [],
   iconSlot: 'default',
   iconClass: 'size-4',
+  iconSuffix: undefined,
+  iconExcludeSuffixes: () => [],
   autoFetchApi: true,
   modelValueProp: 'modelValue',
   inputComponent: undefined,
@@ -66,22 +68,34 @@ watchDebounced(
 
 const currentList = computed(() => {
   try {
+    let icons: string[] = [];
     if (props.prefix) {
       if (
         props.prefix !== 'svg' &&
         props.autoFetchApi &&
         props.icons.length === 0
       ) {
-        return innerIcons.value;
+        icons = innerIcons.value;
+      } else {
+        icons = listIcons('', props.prefix);
+        if (icons.length === 0) {
+          console.warn(`No icons found for prefix: ${props.prefix}`);
+        }
       }
-      const icons = listIcons('', props.prefix);
-      if (icons.length === 0) {
-        console.warn(`No icons found for prefix: ${props.prefix}`);
-      }
-      return icons;
     } else {
-      return props.icons;
+      icons = props.icons;
     }
+    const iconSuffix = props.iconSuffix;
+    if (iconSuffix) {
+      icons = icons.filter((item) => item.endsWith(iconSuffix));
+    }
+    if (props.iconExcludeSuffixes?.length) {
+      icons = icons.filter(
+        (item) =>
+          !props.iconExcludeSuffixes.some((suffix) => item.endsWith(suffix)),
+      );
+    }
+    return icons;
   } catch (error) {
     console.error('Failed to load icons:', error);
     return [];

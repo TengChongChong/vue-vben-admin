@@ -208,7 +208,10 @@ const rightSlots = computed(() => {
   for (const key of preferences.widget.order) {
     const check = widgetChecks[key];
     if (check?.visible) {
-      list.push({ index: REFERENCE_VALUE + list.length, name: check.slotName });
+      list.push({
+        index: REFERENCE_VALUE + list.length * 10,
+        name: check.slotName,
+      });
     }
   }
 

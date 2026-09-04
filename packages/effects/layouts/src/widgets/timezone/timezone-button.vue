@@ -14,7 +14,7 @@ import {
 
 withDefaults(defineProps<{ showButton?: boolean }>(), { showButton: true });
 
-const TimezoneIcon = createIconifyIcon('fluent-mdl2:world-clock');
+const TimezoneIcon = createIconifyIcon('ph:globe-stand');
 
 const timezoneStore = useTimezoneStore();
 

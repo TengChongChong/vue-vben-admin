@@ -5,6 +5,7 @@ import { Bell, CircleCheckBig, CircleX, MailCheck } from '@vben/icons';
 import { $t } from '@vben/locales';
 
 import {
+  VbenAvatar,
   VbenButton,
   VbenIconButton,
   VbenPopover,
@@ -88,16 +89,12 @@ defineExpose({ toggle });
               class="relative flex w-full cursor-pointer items-start gap-5 border-t border-border p-3 hover:bg-accent"
               @click="emit('onClick', item)">
               <slot name="content" :item="item">
-                <span
-                  v-if="!item.isRead"
-                  class="absolute top-2 right-2 size-2 rounded-sm bg-primary"></span>
-
-                <span
-                  class="relative flex size-10 shrink-0 overflow-hidden rounded-full">
-                  <img
-                    :src="item.avatar"
-                    class="aspect-square size-full object-cover" />
-                </span>
+                <VbenAvatar
+                  :alt="item.nickname"
+                  :dot="!item.isRead"
+                  :size="36"
+                  :src="item.avatar"
+                  dot-class="bg-red-500" />
                 <div class="flex flex-col gap-1 leading-none">
                   <p class="font-semibold">{{ item.title }}</p>
                   <p class="my-1 line-clamp-2 text-xs text-muted-foreground">

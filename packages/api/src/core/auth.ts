@@ -38,15 +38,6 @@ export async function refreshTokenApi() {
 }
 
 /**
- * 退出登录
- */
-export async function logoutApi() {
-  return baseRequestClient.post('/auth/logout', undefined, {
-    withCredentials: true,
-  });
-}
-
-/**
  * 获取用户权限码
  */
 export async function getAccessCodesApi() {
