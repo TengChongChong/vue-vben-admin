@@ -23,14 +23,6 @@
       "types": "./src/style-exports.d.ts",
       "default": "./src/antdv-next/index.css"
     },
-    "./ele": {
-      "types": "./src/style-exports.d.ts",
-      "default": "./src/ele/index.css"
-    },
-    "./naive": {
-      "types": "./src/style-exports.d.ts",
-      "default": "./src/naive/index.css"
-    },
     "./global": {
       "types": "./src/style-exports.d.ts",
       "default": "./src/global/index.scss"

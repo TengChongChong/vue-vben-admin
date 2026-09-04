@@ -4,10 +4,8 @@ import {
   VBEN_ANT_PREVIEW_URL,
   VBEN_ANTDV_NEXT_PREVIEW_URL,
   VBEN_DOC_URL,
-  VBEN_ELE_PREVIEW_URL,
   VBEN_GITHUB_URL,
   VBEN_LOGO_URL,
-  VBEN_NAIVE_PREVIEW_URL,
   VBEN_TD_PREVIEW_URL,
 } from '@vben/constants';
 import {
@@ -70,29 +68,6 @@ const routes: RouteRecordRaw[] = [
           icon: SvgAntdvNextLogoIcon,
           link: VBEN_ANTDV_NEXT_PREVIEW_URL,
           title: $t('demos.vben.antdv-next'),
-        },
-      },
-
-      {
-        name: 'VbenNaive',
-        path: 'naive',
-        component: IFrameView,
-        meta: {
-          badgeType: 'dot',
-          icon: 'logos:naiveui',
-          link: VBEN_NAIVE_PREVIEW_URL,
-          title: $t('demos.vben.naive-ui'),
-        },
-      },
-      {
-        name: 'VbenElementPlus',
-        path: 'ele',
-        component: IFrameView,
-        meta: {
-          badgeType: 'dot',
-          icon: 'logos:element',
-          link: VBEN_ELE_PREVIEW_URL,
-          title: $t('demos.vben.element-plus'),
         },
       },
       {

@@ -3,10 +3,8 @@ import type { RouteRecordRaw } from 'vue-router';
 import {
   VBEN_ANTDV_NEXT_PREVIEW_URL,
   VBEN_DOC_URL,
-  VBEN_ELE_PREVIEW_URL,
   VBEN_GITHUB_URL,
   VBEN_LOGO_URL,
-  VBEN_NAIVE_PREVIEW_URL,
   VBEN_TD_PREVIEW_URL,
 } from '@vben/constants';
 
@@ -56,17 +54,6 @@ const routes: RouteRecordRaw[] = [
         },
       },
       {
-        name: 'VbenNaive',
-        path: 'naive',
-        component: IFrameView,
-        meta: {
-          badgeType: 'dot',
-          icon: 'logos:naiveui',
-          link: VBEN_NAIVE_PREVIEW_URL,
-          title: $t('demos.vben.naive-ui'),
-        },
-      },
-      {
         name: 'VbenTDesign',
         path: 'tdesign',
         component: IFrameView,
@@ -75,17 +62,6 @@ const routes: RouteRecordRaw[] = [
           icon: 'simple-icons:tencentqq',
           link: VBEN_TD_PREVIEW_URL,
           title: $t('demos.vben.tdesign'),
-        },
-      },
-      {
-        name: 'VbenElementPlus',
-        path: 'ele',
-        component: IFrameView,
-        meta: {
-          badgeType: 'dot',
-          icon: 'logos:element',
-          link: VBEN_ELE_PREVIEW_URL,
-          title: $t('demos.vben.element-plus'),
         },
       },
     ],

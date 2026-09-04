@@ -1,15 +1,12 @@
 import type { RouteRecordRaw } from 'vue-router';
 
 import {
-  VBEN_ANT_PREVIEW_URL,
+  VBEN_ANTDV_NEXT_PREVIEW_URL,
   VBEN_DOC_URL,
-  VBEN_ELE_PREVIEW_URL,
   VBEN_GITHUB_URL,
   VBEN_LOGO_URL,
-  VBEN_NAIVE_PREVIEW_URL,
   VBEN_TD_PREVIEW_URL,
 } from '@vben/constants';
-import { SvgAntdvLogoIcon, SvgTDesignIcon } from '@vben/icons';
 
 import { IFrameView } from '#/layouts';
 import { $t } from '#/locales';
@@ -46,25 +43,14 @@ const routes: RouteRecordRaw[] = [
         },
       },
       {
-        name: 'VbenAntd',
-        path: 'antd',
+        name: 'VbenAntdVNext',
+        path: 'antdv-next',
         component: IFrameView,
         meta: {
           badgeType: 'dot',
-          icon: SvgAntdvLogoIcon,
-          link: VBEN_ANT_PREVIEW_URL,
-          title: $t('demos.vben.antdv'),
-        },
-      },
-      {
-        name: 'VbenNaive',
-        path: 'naive',
-        component: IFrameView,
-        meta: {
-          badgeType: 'dot',
-          icon: 'logos:naiveui',
-          link: VBEN_NAIVE_PREVIEW_URL,
-          title: $t('demos.vben.naive-ui'),
+          icon: 'svg:antdv-next',
+          link: VBEN_ANTDV_NEXT_PREVIEW_URL,
+          title: $t('demos.vben.antdv-next'),
         },
       },
       {
@@ -73,20 +59,9 @@ const routes: RouteRecordRaw[] = [
         component: IFrameView,
         meta: {
           badgeType: 'dot',
-          icon: SvgTDesignIcon,
+          icon: 'simple-icons:tencentqq',
           link: VBEN_TD_PREVIEW_URL,
           title: $t('demos.vben.tdesign'),
-        },
-      },
-      {
-        name: 'VbenElementPlus',
-        path: 'ele',
-        component: IFrameView,
-        meta: {
-          badgeType: 'dot',
-          icon: 'logos:element',
-          link: VBEN_ELE_PREVIEW_URL,
-          title: $t('demos.vben.element-plus'),
         },
       },
     ],
