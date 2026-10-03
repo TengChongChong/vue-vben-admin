@@ -1,0 +1,100 @@
+package com.easy.admin.{{module}}.controller;
+
+import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.easy.admin.{{module}}.model.{{EntityName}};
+import com.easy.admin.{{module}}.service.{{EntityName}}Service;
+import com.easy.admin.common.core.annotation.ResponseResult;
+import com.easy.admin.common.core.base.BaseController;
+import com.easy.admin.common.core.common.pagination.Page;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import jakarta.validation.Valid;
+import java.util.List;
+
+/**
+ * {{tableComment}}管理
+ *
+ * @author {{author}}
+ * @date {{date}}
+ */
+@RestController
+@ResponseResult
+@RequestMapping("/api/{{module}}/{{entity-name}}")
+public class {{EntityName}}Controller extends BaseController {
+
+    @Autowired
+    private {{EntityName}}Service service;
+
+    /**
+     * 列表
+     *
+     * @param {{entityName}} 查询条件
+     * @return Page<{{EntityName}}>
+     */
+    @GetMapping
+    @SaCheckPermission("{{module.name}}:{{entity-name}}:select")
+    public Page<{{EntityName}}> select({{EntityName}} {{entityName}}, Page<{{EntityName}}> page) {
+        return service.select({{entityName}}, page);
+    }
+
+    /**
+     * 详情
+     *
+     * @param id id
+     * @return {{EntityName}}
+     */
+    @GetMapping("{id}")
+    @SaCheckPermission("{{module.name}}:{{entity-name}}:select")
+    public {{EntityName}} get(@PathVariable("id") String id) {
+        return service.get(id);
+    }
+
+    /**
+     * 新增
+     *
+     * @return {{EntityName}}
+     */
+    @GetMapping("add")
+    @SaCheckPermission("{{module.name}}:{{entity-name}}:save")
+    public {{EntityName}} add() {
+        return service.add();
+    }
+
+    /**
+     * 删除
+     *
+     * @param ids 要删除的id（多个用逗号分隔）
+     * @return true/false
+     */
+    @DeleteMapping("{ids}")
+    @SaCheckPermission("{{module.name}}:{{entity-name}}:remove")
+    public boolean remove(@PathVariable("ids") String ids) {
+        return service.remove(ids);
+    }
+
+    /**
+     * 保存
+     *
+     * @param {{entityName}} 表单内容
+     * @return {{EntityName}}
+     */
+    @PostMapping
+    @SaCheckPermission("{{module.name}}:{{entity-name}}:save")
+    public {{EntityName}} save(@RequestBody @Valid {{EntityName}} {{entityName}}) {
+        return service.saveData({{entityName}});
+    }
+
+    /**
+     * 设置状态
+     *
+     * @param ids    数据ids
+     * @param status 状态
+     * @return true/false
+     */
+    @PostMapping("{ids}/status/{status}")
+    @SaCheckPermission("{{module.name}}:{{entity-name}}:save")
+    public boolean setStatus(@PathVariable("ids") String ids, @PathVariable("status") String status) {
+        return service.setStatus(ids, status);
+    }
+}

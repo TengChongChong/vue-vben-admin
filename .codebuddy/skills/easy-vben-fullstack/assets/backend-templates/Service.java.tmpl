@@ -1,0 +1,64 @@
+package com.easy.admin.{{module}}.service;
+
+import com.easy.admin.{{module}}.model.{{EntityName}};
+import com.easy.admin.common.core.common.pagination.Page;
+
+import java.util.List;
+
+/**
+ * {{tableComment}}管理
+ *
+ * @author {{author}}
+ * @date {{date}}
+ */
+public interface {{EntityName}}Service {
+
+    /**
+     * 列表
+     *
+     * @param {{entityName}} 查询条件
+     * @param page    分页
+     * @return Page<{{EntityName}}>
+     */
+    Page<{{EntityName}}> select({{EntityName}} {{entityName}}, Page<{{EntityName}}> page);
+
+    /**
+     * 详情
+     *
+     * @param id id
+     * @return {{EntityName}}
+     */
+    {{EntityName}} get(String id);
+
+    /**
+     * 新增
+     *
+     * @return {{EntityName}}
+     */
+    {{EntityName}} add();
+
+    /**
+     * 删除
+     *
+     * @param ids 要删除的id 1,2,3 或 1
+     * @return true/false
+     */
+    boolean remove(String ids);
+
+    /**
+     * 保存
+     *
+     * @param {{entityName}} 表单内容
+     * @return {{EntityName}}
+     */
+    {{EntityName}} saveData({{EntityName}} {{entityName}});
+
+    /**
+     * 设置状态
+     *
+     * @param ids    数据id
+     * @param status 状态
+     * @return true/false
+     */
+    boolean setStatus(String ids, String status);
+}

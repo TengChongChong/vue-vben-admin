@@ -1,0 +1,114 @@
+<script lang="ts" setup>
+import type { VbenFormProps } from '#/adapter/form';
+import type { VxeGridProps } from '#/adapter/vxe-table';
+import type { {{EntityName}} } from '#/api';
+
+import { useVbenDrawer } from '@vben/common-ui';
+
+import { Divider, Space } from 'ant-design-vue';
+
+import { useVbenVxeGrid } from '#/adapter/vxe-table';
+import {
+  add{{EntityName}}Api,
+  get{{EntityName}}Api,
+  remove{{EntityName}}Api,
+  select{{EntityName}}Api,
+} from '#/api';
+import { ButtonAdd, ButtonEdit, ButtonRemove } from '#/components/button';
+import { buildTenantGridId } from '#/utils/tenant-grid-id';
+
+import { initColumns } from './data';
+import {{EntityName}}Modal from './{{entity-name}}-modal.vue';
+
+/* ---- 搜索表单 ---- */
+const formOptions: VbenFormProps = {
+  collapsed: true,
+  schema: [
+    // TODO: 根据实体字段添加搜索条件
+  ],
+};
+
+/* ---- 表格配置 ---- */
+const gridOptions: VxeGridProps<{{EntityName}}> = {
+  id: buildTenantGridId('{{entity-name}}'),
+  columns: initColumns(),
+  proxyConfig: {
+    ajax: {
+      query: async ({ page }, formValues) => {
+        return await select{{EntityName}}Api(formValues, page);
+      },
+    },
+  },
+};
+
+const [Grid, gridApi] = useVbenVxeGrid({
+  tableTitle: '{{tableComment}}',
+  formOptions,
+  gridOptions,
+});
+
+/* ---- 新增/编辑弹窗 ---- */
+const [{{EntityName}}ModalComp, {{entityName}}ModalApi] = useVbenDrawer({
+  connectedComponent: {{EntityName}}Modal,
+});
+
+function handleSearch() {
+  gridApi.query();
+}
+
+async function handleCreate() {
+  add{{EntityName}}Api().then((res) => {
+    {{entityName}}ModalApi.setData(res);
+    {{entityName}}ModalApi.open();
+  });
+}
+
+function handleEdit(id: string) {
+  get{{EntityName}}Api(id).then((res) => {
+    {{entityName}}ModalApi.setData(res);
+    {{entityName}}ModalApi.open();
+  });
+}
+</script>
+
+<template>
+  <Grid>
+    <template #toolbar-tools>
+      <Space>
+        <ButtonAdd
+          :auth-codes="['{{module.name}}:{{entity-name}}:save']"
+          @click="handleCreate"
+        />
+
+        <ButtonRemove
+          :api="remove{{EntityName}}Api"
+          :auth-codes="['{{module.name}}:{{entity-name}}:remove']"
+          :grid-api="gridApi"
+          @success="handleSearch"
+        />
+
+        <Divider class="h-5" type="vertical" />
+      </Space>
+    </template>
+
+    <template #action="{ row }">
+      <ButtonEdit
+        :auth-codes="['{{module.name}}:{{entity-name}}:save']"
+        size="small"
+        type="link"
+        @click="handleEdit(row.id)"
+      />
+
+      <ButtonRemove
+        :api="remove{{EntityName}}Api"
+        :auth-codes="['{{module.name}}:{{entity-name}}:remove']"
+        :ids="[row.id]"
+        size="small"
+        type="link"
+        @success="handleSearch"
+      />
+    </template>
+  </Grid>
+
+  <{{EntityName}}ModalComp @success="handleSearch" />
+</template>

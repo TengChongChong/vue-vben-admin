@@ -1,0 +1,19 @@
+-- {{tableComment}}
+DROP TABLE IF EXISTS `{{entity_names}}`;
+CREATE TABLE `{{entity_names}}` (
+  `id` varchar(19) NOT NULL COMMENT '主键（雪花ID）',
+  -- TODO: 添加业务字段，参考以下示例
+  -- `name` varchar(100) DEFAULT NULL COMMENT '名称',
+  -- `description` varchar(500) DEFAULT NULL COMMENT '描述',
+  -- `status` varchar(1) DEFAULT '1' COMMENT '状态(1.正常 2.冻结 0.已删除)',
+  -- `sort_no` int DEFAULT 0 COMMENT '排序号',
+
+  `version` int DEFAULT 0 COMMENT '乐观锁',
+  `tenant_id` varchar(50) DEFAULT NULL COMMENT '租户标识',
+  `status` varchar(1) DEFAULT '1' COMMENT '状态(1.正常 2.冻结 0.已删除)',
+  `create_user` varchar(50) DEFAULT NULL COMMENT '创建人',
+  `create_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `edit_user` varchar(50) DEFAULT NULL COMMENT '修改人',
+  `edit_date` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='{{tableComment}}';

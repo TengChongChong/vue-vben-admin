@@ -1,0 +1,65 @@
+import { requestClient } from '#/api/request';
+
+// TODO: 根据后端 {{EntityName}} 实体定义类型
+export interface {{EntityName}} {
+  id?: string;
+  // TODO: 添加业务字段
+  // name?: string;
+  // status?: string;
+}
+
+export interface PageParams {
+  current?: number;
+  size?: number;
+}
+
+export interface PageResult<T> {
+  total: number;
+  current: number;
+  size: number;
+  page_result: T[];
+}
+
+/**
+ * 分页列表查询
+ */
+export function select{{EntityName}}Api(params: Partial<{{EntityName}}>, page: PageParams) {
+  return requestClient.get<PageResult<{{EntityName}}>>('/{{module}}/{{entity-name}}', {
+    params: { ...params, ...page },
+  });
+}
+
+/**
+ * 获取详情
+ */
+export function get{{EntityName}}Api(id: string) {
+  return requestClient.get<{{EntityName}}>(`/{{module}}/{{entity-name}}/${id}`);
+}
+
+/**
+ * 新增（获取默认值）
+ */
+export function add{{EntityName}}Api() {
+  return requestClient.get<{{EntityName}}>('/{{module}}/{{entity-name}}/add');
+}
+
+/**
+ * 保存
+ */
+export function save{{EntityName}}Api(data: {{EntityName}}) {
+  return requestClient.post<{{EntityName}}>('/{{module}}/{{entity-name}}', data);
+}
+
+/**
+ * 删除
+ */
+export function remove{{EntityName}}Api(ids: string) {
+  return requestClient.delete<boolean>(`/{{module}}/{{entity-name}}/${ids}`);
+}
+
+/**
+ * 设置状态
+ */
+export function set{{EntityName}}StatusApi(id: string, status: string) {
+  return requestClient.post<boolean>(`/{{module}}/{{entity-name}}/${id}/status/${status}`);
+}

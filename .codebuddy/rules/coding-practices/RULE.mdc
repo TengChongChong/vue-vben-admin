@@ -1,0 +1,168 @@
+---
+description: 开发实践规范：样式编写、目录组织、注释、国际化、API 请求、Store、安全与工具配置
+alwaysApply: true
+enabled: true
+updatedAt: 2026-07-02T06:23:00.000Z
+provider:
+---
+
+# 开发实践规范
+
+## 1. 样式规范
+
+### 1.1 优先级
+
+1. **Tailwind CSS** — 首选，用于布局和通用样式
+2. **Scoped SCSS** — 组件特定样式
+3. **CSS 变量** — 主题化和全局 Design Token
+
+### 1.2 Tailwind 使用
+
+优先 Tailwind，避免过长的 class 列表（考虑提取为组件）。复杂样式使用 Scoped SCSS：
+
+```scss
+// ✅ 使用 CSS 变量实现主题化
+.user-card {
+  padding: var(--spacing-md);
+  background: var(--color-bg-container);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+
+  &:hover { box-shadow: var(--shadow-sm); }
+
+  @media (min-width: 768px) { padding: var(--spacing-lg); }
+}
+```
+
+### 1.3 响应式断点
+
+sm:640px / md:768px / lg:1024px / xl:1280px / 2xl:1536px（移动优先）
+
+---
+
+## 2. 目录组织规范
+
+```
+src/
+├── api/modules/     # API 请求（按模块：user.ts, auth.ts）
+├── components/      # 全局组件（业务组件按分类组织）
+├── composables/     # 全局组合式函数
+├── layouts/         # 布局组件
+├── locales/langs/   # 国际化（en-US/, zh-CN/）
+├── router/          # 路由配置（routes/ + guard.ts）
+├── store/modules/   # Pinia Store
+├── styles/          # 全局样式
+├── types/           # 类型定义
+├── utils/           # 工具函数
+└── views/<module>/  # 页面（components/ 放私有组件）
+```
+
+---
+
+## 3. 注释规范
+
+### 3.1 JSDoc
+
+公共函数、接口使用 JSDoc 描述用途、参数和返回值：
+
+```typescript
+/**
+ * 获取用户列表
+ * @param params.page - 页码
+ * @param params.pageSize - 每页数量
+ * @returns 分页用户列表
+ */
+async function getUserList(params: PageParams): Promise<PageResult<UserItem>> { ... }
+```
+
+### 3.2 行内注释
+
+- 解释 **why**（为什么这样做），而非 what（代码做了什么）
+- TODO/FIXME 格式：`// TODO(@name): YYYY-MM-DD 说明`
+- 避免无意义的注释（如 `// 设置名字` 对着 `name.value = 'admin'`）
+
+---
+
+## 4. 国际化规范
+
+### 4.1 Key 格式
+
+`模块.页面.元素`，使用 `.` 分隔：
+
+```json
+{
+  "user.list.title": "用户列表",
+  "user.list.action.create": "新建用户",
+  "user.detail.basic.name": "姓名"
+}
+```
+
+### 4.2 使用
+
+- 模板：`{{ $t('key') }}` 或 `{{ $t('key', { param }) }}`
+- 脚本：`const { t } = useI18n(); t('key')`
+
+---
+
+## 5. API 规范
+
+- 统一使用 `requestClient`，禁止直接使用 axios
+- 方法命名：`getXxx` / `createXxx` / `updateXxx` / `deleteXxx`
+- 路径 kebab-case：`/user-profile`, `/order-detail`
+
+```typescript
+// api/modules/user.ts
+import { requestClient } from '#/api/request';
+import type { PageResult, UserItem } from '#/types';
+
+export function getUserList(params: PageParams) {
+  return requestClient.get<PageResult<UserItem>>('/user/list', { params });
+}
+export function createUser(data: CreateUserParams) {
+  return requestClient.post('/user/create', data);
+}
+```
+
+---
+
+## 6. Store 规范
+
+使用 Pinia Setup Store 语法（组合式），定义 State、Getters、Actions 三部分：
+
+```typescript
+export const useUserStore = defineStore('user', () => {
+  // State
+  const userInfo = ref<UserInfo | null>(null);
+  const token = ref('');
+  // Getters
+  const isLoggedIn = computed(() => !!token.value);
+  // Actions
+  async function login(params: LoginParams) {
+    const res = await apiLogin(params);
+    token.value = res.token;
+    userInfo.value = res.user;
+  }
+  return { userInfo, token, isLoggedIn, login };
+});
+```
+
+---
+
+## 7. 安全规范
+
+1. **XSS**：避免 `v-html`，必须使用时先 DOMPurify 消毒
+2. **敏感信息**：前端代码不硬编码密钥、Token
+3. **依赖安全**：定期 `pnpm audit`，及时升级漏洞依赖
+4. **CSP**：生产环境配置 Content-Security-Policy
+
+---
+
+## 8. 工具与编辑器
+
+### VS Code 推荐插件
+
+Vue - Official (Volar) / Tailwind CSS IntelliSense / ESLint / i18n Ally / Error Lens
+
+### 工作区
+
+使用 `vben-admin.code-workspace` 打开项目以获得完整配置。

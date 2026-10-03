@@ -1,0 +1,27 @@
+package com.easy.admin.{{module}}.dao;
+
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.easy.admin.{{module}}.model.{{EntityName}};
+import com.easy.admin.common.core.common.pagination.Page;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+
+/**
+ * {{tableComment}}
+ *
+ * @author {{author}}
+ * @date {{date}}
+ */
+public interface {{EntityName}}Mapper extends BaseMapper<{{EntityName}}> {
+
+    /**
+     * 列表查询
+     *
+     * @param page         分页
+     * @param queryWrapper 查询条件
+     * @return List<{{EntityName}}>
+     */
+    List<{{EntityName}}> select(Page<{{EntityName}}> page, @Param("ew") QueryWrapper<{{EntityName}}> queryWrapper);
+}

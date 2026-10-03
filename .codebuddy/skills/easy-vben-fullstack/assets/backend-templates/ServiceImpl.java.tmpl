@@ -1,0 +1,88 @@
+package com.easy.admin.{{module}}.service.impl;
+
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.easy.admin.{{module}}.dao.{{EntityName}}Mapper;
+import com.easy.admin.{{module}}.model.{{EntityName}};
+import com.easy.admin.{{module}}.service.{{EntityName}}Service;
+import com.easy.admin.common.core.common.pagination.Page;
+import com.easy.admin.common.core.constant.CommonConst;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * {{tableComment}}管理
+ *
+ * @author {{author}}
+ * @date {{date}}
+ */
+@Service
+public class {{EntityName}}ServiceImpl extends ServiceImpl<{{EntityName}}Mapper, {{EntityName}}> implements {{EntityName}}Service {
+
+    @Override
+    public Page<{{EntityName}}> select({{EntityName}} {{entityName}}, Page<{{EntityName}}> page) {
+        QueryWrapper<{{EntityName}}> queryWrapper = new QueryWrapper<>();
+        // TODO: 根据实体字段添加查询条件
+        // 示例：
+        // if (StrUtil.isNotBlank({{entityName}}.getName())) {
+        //     queryWrapper.like("t.name", {{entityName}}.getName());
+        // }
+        // if (StrUtil.isNotBlank({{entityName}}.getStatus())) {
+        //     if ({{entityName}}.getStatus().contains(CommonConst.SPLIT)) {
+        //         queryWrapper.in("t.status", {{entityName}}.getStatus().split(CommonConst.SPLIT));
+        //     } else {
+        //         queryWrapper.eq("t.status", {{entityName}}.getStatus());
+        //     }
+        // }
+        page.setDefaultDesc("t.create_date");
+        page.setRecords(baseMapper.select(page, queryWrapper));
+        return page;
+    }
+
+    @Override
+    public {{EntityName}} get(String id) {
+        return baseMapper.selectById(id);
+    }
+
+    @Override
+    public {{EntityName}} add() {
+        return new {{EntityName}}();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean remove(String ids) {
+        List<String> idList = Arrays.asList(ids.split(","));
+        return removeByIds(idList);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public {{EntityName}} saveData({{EntityName}} {{entityName}}) {
+        if (StrUtil.isBlank({{entityName}}.getId())) {
+            baseMapper.insert({{entityName}});
+        } else {
+            baseMapper.updateById({{entityName}});
+        }
+        return {{entityName}};
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean setStatus(String ids, String status) {
+        QueryWrapper<{{EntityName}}> queryWrapper = new QueryWrapper<>();
+        if (ids.contains(",")) {
+            queryWrapper.in("id", Arrays.asList(ids.split(",")));
+        } else {
+            queryWrapper.eq("id", ids);
+        }
+        {{EntityName}} {{entityName}} = new {{EntityName}}();
+        {{entityName}}.setStatus(status);
+        return update({{entityName}}, queryWrapper);
+    }
+}

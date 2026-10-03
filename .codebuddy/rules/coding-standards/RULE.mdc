@@ -1,0 +1,161 @@
+---
+description: 核心编码规范：命名规范、TypeScript 类型规范、Vue 组件编写标准
+alwaysApply: true
+enabled: true
+updatedAt: 2026-07-02T06:23:00.000Z
+provider:
+---
+
+# 核心编码规范
+
+## 1. 命名规范
+
+### 1.1 文件命名
+
+| 类型 | 规则 | 示例 |
+|------|------|------|
+| Vue 组件 | kebab-case | `user-profile.vue`, `data-table.vue` |
+| TypeScript 模块 | kebab-case | `user-service.ts`, `format-date.ts` |
+| 类型/测试/Store | kebab-case | `user-types.ts`, `*.spec.ts`, `user-store.ts` |
+| 组合式函数 | `use-*.ts` | `use-user-info.ts`, `use-pagination.ts` |
+
+### 1.2 变量命名
+
+- 变量：`camelCase`，如 `userName`, `isActive`
+- 常量：`UPPER_SNAKE_CASE`，如 `MAX_RETRY_COUNT`, `API_BASE_URL`
+- 类型/接口：`PascalCase`，如 `UserInfo`, `PageResult`
+- 枚举：`PascalCase` 枚举名 + `SCREAMING_SNAKE_CASE` 成员；优先用字面量联合类型替代 enum
+- 泛型：以 `T` 开头，`PascalCase`，如 `TValue`, `TData`
+
+### 1.3 函数命名
+
+```typescript
+// 获取→get/fetch, 设置→set/update, 判断→is/has/can, 事件→handle, 转换→to/format
+function getUserList(): Promise<User[]>;
+function setTheme(mode: ThemeMode): void;
+function isAdmin(): boolean;
+function handleSubmit(): void;
+function formatDate(date: Date): string;
+```
+
+### 1.4 Vue 组件命名
+
+组件名必须多词命名，避免与 HTML 元素冲突。使用 `<script setup lang="ts">` 作为默认写法。
+
+---
+
+## 2. TypeScript 规范
+
+### 2.1 核心原则
+
+- 优先用 `interface` 定义对象类型，`type` 定义联合/交叉/函数类型
+- 禁止使用 `any`，不确定类型用 `unknown` + 类型守卫
+- 使用 `import type` 标记仅类型导入
+- 复杂类型提取到独立的类型文件，通过 barrel export 统一导出
+
+### 2.2 类型约束
+
+```typescript
+// ✅ 明确标记只读和可选
+interface Options {
+  readonly id: number;
+  title: string;
+  description?: string;
+  config?: Partial<Config>;
+}
+
+// ✅ 使用 as const 确保字面量类型
+const COLORS = ['primary', 'success', 'danger'] as const;
+type Color = (typeof COLORS)[number];
+```
+
+### 2.3 错误处理
+
+始终处理 Promise 错误，使用 `try/catch` + 类型守卫，无法处理的错误继续向上抛出，不吞异常。
+
+```typescript
+async function fetchData() {
+  try {
+    const res = await api.get<UserList>(url);
+    return res.data;
+  } catch (error) {
+    if (error instanceof ApiError) {
+      message.error(error.message);
+      return [];
+    }
+    throw error;
+  }
+}
+```
+
+---
+
+## 3. Vue 组件规范
+
+### 3.1 组件结构顺序
+
+使用 `<script setup lang="ts">`，按以下顺序组织代码：
+
+```
+1. imports
+2. defineOptions({ name: 'ComponentName' })
+3. Props 定义（interface Props + withDefaults）
+4. Emits 定义（interface Emits + defineEmits）
+5. Slots 定义（defineSlots，如需要）
+6. 组合式函数（useRouter/useStore/composables）
+7. 响应式状态（ref/reactive）
+8. 计算属性（computed）
+9. 侦听器（watch/watchEffect）
+10. 方法（function）
+```
+
+### 3.2 Props / Emits 定义模式
+
+```typescript
+interface Props {
+  user: UserItem;
+  showActions?: boolean;
+}
+const props = withDefaults(defineProps<Props>(), { showActions: false });
+
+interface Emits {
+  (e: 'edit', userId: number): void;
+}
+const emit = defineEmits<Emits>();
+```
+
+### 3.3 组件通信
+
+- 父子：Props + Emits 优先
+- 跨层级：Pinia Store
+- 可复用组件库内：provide/inject
+- 禁止使用 eventBus（Vue 3 已移除）
+- v-model 用 `defineModel`
+
+### 3.4 模板要求
+
+- v-for 必须绑定 `:key`，使用唯一 ID，禁止用 index
+- v-if / v-else-if / v-else 链使用 `<template>` 包裹
+- 复杂表达式提取为 computed
+
+### 3.5 组合式函数
+
+命名 `use` 开头，单一职责，返回只暴露需要的状态和方法，类型明确标注：
+
+```typescript
+function usePagination<T>(fetchFn: (page: number) => Promise<T[]>) {
+  const loading = ref(false);
+  const data = ref<T[]>([]) as Ref<T[]>;
+  const page = ref(1);
+
+  async function load() {
+    loading.value = true;
+    try {
+      data.value = await fetchFn(page.value);
+    } finally {
+      loading.value = false;
+    }
+  }
+  return { loading, data, page, load };
+}
+```

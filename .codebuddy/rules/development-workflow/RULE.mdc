@@ -1,0 +1,322 @@
+---
+description: Vue Vben Admin 开发流程规范，涵盖环境搭建、分支管理、提交规范、Code Review、测试、调试、性能优化、发布流程
+alwaysApply: false
+enabled: true
+updatedAt: 2026-07-02T03:41:00.000Z
+provider:
+---
+
+# 开发流程规范
+
+## 1. 环境准备
+
+### 1.1 必备工具
+
+| 工具 | 版本要求 | 说明 |
+|------|------|------|
+| Node.js | `^22.18.0` 或 `^24.0.0` | 推荐使用 `.node-version` 中指定的版本 |
+| pnpm | `>= 9.0.0` | 必须使用 pnpm，禁止使用 npm/yarn |
+| Git | `>= 2.0` | 版本控制 |
+
+### 1.2 快速启动
+
+```bash
+# 1. 克隆项目
+git clone <repo-url>
+cd vue-vben-admin
+
+# 2. 安装依赖
+pnpm install
+
+# 3. 启动开发服务器（以 web-antd 为例）
+pnpm --filter @vben/web-antd dev
+
+# 或使用 turbo 启动
+pnpm dev:antd
+```
+
+### 1.3 常用命令
+
+```bash
+# 启动指定应用
+pnpm dev:antd      # Ant Design Vue
+pnpm dev:tdesign   # TDesign
+
+# 构建
+pnpm build:antd     # 生产构建
+pnpm build:analyze  # 构建分析
+
+# 类型检查
+pnpm typecheck      # 全量类型检查
+pnpm --filter @vben/web-antd typecheck  # 单包类型检查
+
+# 代码检查
+pnpm lint           # ESLint + Stylelint
+pnpm format         # Oxfmt 格式化
+
+# 测试
+pnpm test           # 运行所有测试
+pnpm test:unit      # 仅单元测试
+pnpm test:e2e       # E2E 测试
+
+# 文档
+pnpm docs:dev       # 启动文档站点
+```
+
+---
+
+## 2. 分支管理
+
+### 2.1 分支策略
+
+```
+main          # 主分支，始终可发布
+  ├── feat/*  # 功能分支
+  ├── fix/*   # 修复分支
+  ├── refactor/* # 重构分支
+  └── chore/* # 杂项分支
+```
+
+### 2.2 分支命名
+
+```
+feat/user-management      # 新功能
+fix/table-pagination      # Bug 修复
+refactor/api-client       # 重构
+chore/update-deps         # 依赖更新
+docs/api-reference        # 文档更新
+```
+
+### 2.3 工作流
+
+```bash
+# 1. 从 main 创建新分支
+git checkout main
+git pull origin main
+git checkout -b feat/my-feature
+
+# 2. 开发完成后提交
+git add .
+git commit -m "feat: 添加用户导出功能"  # 遵循提交规范
+
+# 3. 推送并创建 PR
+git push origin feat/my-feature
+# 在 GitHub 上创建 Pull Request
+```
+
+---
+
+## 3. 提交规范
+
+### 3.1 提交格式
+
+```
+<type>(<scope>): <subject>
+
+[optional body]
+
+[optional footer]
+```
+
+### 3.2 Type 类型
+
+| Type | 说明 | 示例 |
+|------|------|------|
+| `feat` | 新功能 | `feat: 添加用户批量删除功能` |
+| `fix` | Bug 修复 | `fix: 修复表格分页总数错误` |
+| `docs` | 文档更新 | `docs: 更新 API 文档` |
+| `style` | 代码格式 | `style: 统一缩进格式` |
+| `refactor` | 重构 | `refactor: 重构用户模块 Store` |
+| `perf` | 性能优化 | `perf: 优化列表渲染性能` |
+| `test` | 测试相关 | `test: 添加用户模块单元测试` |
+| `chore` | 构建/工具 | `chore: 升级 vite 至 8.x` |
+| `ci` | CI/CD | `ci: 更新构建流水线` |
+
+### 3.3 提交检查
+
+项目通过 **lefthook** 在 `commit-msg` 阶段自动检查提交信息格式：
+
+```bash
+# 如果提交被拦截，使用交互式提交工具
+pnpm cz
+```
+
+---
+
+## 4. 代码审查 (Code Review)
+
+### 4.1 PR 要求
+
+- PR 描述需清楚说明改动内容和原因
+- 关联对应的 Issue（如有）
+- 确保 CI 流水线全部通过
+- 至少一位 Reviewer 审批通过
+- 所有讨论线程已解决
+
+### 4.2 Review 清单
+
+| 检查项 | 说明 |
+|------|------|
+| 功能正确性 | 代码是否正确实现了需求 |
+| 代码风格 | 是否符合项目编码规范 |
+| 类型安全 | TypeScript 类型是否完整 |
+| 性能影响 | 是否有性能劣化 |
+| 可维护性 | 代码是否易于理解和维护 |
+| 测试覆盖 | 关键逻辑是否有测试 |
+| 国际化 | 文本是否已国际化 |
+| 安全性 | 是否有安全风险 |
+
+### 4.3 合并策略
+
+- 默认使用 **Squash and Merge**，保持 main 分支历史整洁
+- 多分支并行开发的大型功能可使用 **Merge Commit**
+- 禁止直接 push 到 main 分支
+
+---
+
+## 5. 测试规范
+
+### 5.1 测试分层
+
+```
+单元测试 (Vitest)       ← 工具函数、Composables、Store
+    ↓
+组件测试 (Vitest)       ← 组件渲染、交互、Props/Emits 验证
+    ↓
+E2E 测试 (Playwright)   ← 关键业务路径端到端验证
+```
+
+### 5.2 测试文件位置
+
+```
+src/
+├── utils/
+│   ├── format-date.ts
+│   └── __tests__/
+│       └── format-date.spec.ts
+├── composables/
+│   ├── use-table.ts
+│   └── __tests__/
+│       └── use-table.spec.ts
+```
+
+### 5.3 测试示例
+
+```typescript
+// __tests__/format-date.spec.ts
+import { describe, it, expect } from 'vitest';
+import { formatDate } from '../format-date';
+
+describe('formatDate', () => {
+  it('should format date correctly', () => {
+    const result = formatDate(new Date('2025-01-15'), 'YYYY-MM-DD');
+    expect(result).toBe('2025-01-15');
+  });
+
+  it('should handle empty value', () => {
+    expect(formatDate(null)).toBe('-');
+  });
+});
+```
+
+---
+
+## 6. 调试
+
+### 6.1 VS Code 调试配置
+
+在 `.vscode/launch.json` 中配置：
+
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Debug Vben Admin",
+      "url": "http://localhost:5173",
+      "webRoot": "${workspaceFolder}/apps/web-antd",
+      "sourceMapPathOverrides": {
+        "webpack:///./src/*": "${webRoot}/src/*"
+      }
+    }
+  ]
+}
+```
+
+### 6.2 Vue DevTools
+
+1. 安装 [Vue DevTools](https://devtools.vuejs.org/) 浏览器扩展
+2. 开发模式下自动启用，可查看组件树、Pinia Store、路由状态
+
+---
+
+## 7. 性能优化清单
+
+### 7.1 开发阶段
+
+- [ ] 路由使用 `defineAsyncComponent` 懒加载
+- [ ] 大列表使用虚拟滚动
+- [ ] 图片使用懒加载和 WebP 格式
+- [ ] 第三方库按需引入
+- [ ] 合理使用 `computed` 和 `watch`，避免不必要的副作用
+
+### 7.2 检查阶段
+
+```bash
+# 构建分析
+pnpm build:analyze  # 会生成分析报告
+```
+
+---
+
+## 8. 故障排查
+
+### 8.1 常见问题
+
+```bash
+# 问题：依赖安装失败
+rm -rf node_modules pnpm-lock.yaml
+pnpm install
+
+# 问题：类型检查报错但代码能运行
+pnpm --filter <package> typecheck  # 先定位具体包
+
+# 问题：lint 报错
+pnpm lint --fix  # 自动修复
+```
+
+### 8.2 问题报告
+
+提交 Bug 时需包含：
+1. 环境信息（Node 版本、浏览器版本）
+2. 复现步骤
+3. 预期行为 vs 实际行为
+4. 控制台错误信息
+5. 最小复现 Demo（如能提供）
+
+---
+
+## 9. 发布流程
+
+```
+1. 功能开发 → feat branch → PR → 合并到 main
+2. 版本管理 → pnpm changeset → 记录变更
+3. 版本发布 → pnpm changeset version → pnpm changeset publish
+4. 部署上线 → CI/CD 自动构建和发布
+```
+
+---
+
+## 10. 学习资源
+
+| 资源 | 链接 |
+|------|------|
+| Vue 3 文档 | https://cn.vuejs.org/ |
+| TypeScript 手册 | https://www.typescriptlang.org/docs/ |
+| Vite 文档 | https://cn.vitejs.dev/ |
+| Pinia 文档 | https://pinia.vuejs.org/zh/ |
+| pnpm 文档 | https://pnpm.io/zh/ |
+| Turborepo 文档 | https://turbo.build/repo/docs |
+| Tailwind CSS | https://tailwindcss.com/docs |

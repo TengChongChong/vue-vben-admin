@@ -1,0 +1,39 @@
+import type { VxeGridPropTypes } from '@vben/plugins/vxe-table';
+
+/**
+ * {{tableComment}} - 表格列定义
+ */
+export const initColumns = (): VxeGridPropTypes.Columns => {
+  return [
+    { type: 'checkbox', width: 50, fixed: 'left' },
+    { title: '序号', type: 'seq', width: 50, fixed: 'left' },
+    // TODO: 根据实体字段添加列，参考以下示例：
+    // {
+    //   title: '名称',
+    //   field: 'name',
+    //   sortable: true,
+    //   minWidth: 140,
+    // },
+    // {
+    //   title: '状态',
+    //   field: 'status',
+    //   sortable: true,
+    //   width: 100,
+    //   cellRender: { name: 'DictTag', props: { dictType: 'status' } },
+    // },
+    // {
+    //   title: '创建时间',
+    //   field: 'createDate',
+    //   sortable: true,
+    //   width: 160,
+    //   formatter: 'dateTime',
+    // },
+    {
+      title: '操作',
+      field: 'action',
+      width: 200,
+      fixed: 'right',
+      slots: { default: 'action' },
+    },
+  ];
+};

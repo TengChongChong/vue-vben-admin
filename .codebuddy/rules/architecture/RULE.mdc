@@ -1,0 +1,349 @@
+---
+description: Vue Vben Admin 架构设计规范，涵盖 Monorepo 分层、包依赖关系、多 UI 框架适配、状态管理、数据流等架构决策
+alwaysApply: true
+enabled: true
+updatedAt: 2026-07-02T03:41:00.000Z
+provider:
+---
+
+# 架构设计规范
+
+## 1. Monorepo 结构
+
+本项目采用 **pnpm workspace + turborepo** 的 Monorepo 架构，分为四个层次：
+
+```
+vue-vben-admin/
+├── apps/           # 应用层：可独立部署的应用入口
+├── packages/       # 包层：跨应用共享的功能模块
+├── internal/       # 工具层：内部构建工具和配置
+└── scripts/        # 脚本层：辅助脚本（CI/CD等）
+```
+
+### 1.1 依赖关系方向
+
+```
+apps (应用)
+  └── packages (功能包)
+        └── @core (核心包，不依赖业务)
+        └── internal (仅开发时依赖，不打包到产物)
+```
+
+**核心原则**：
+- `@vben-core/*` 是最底层，不依赖任何业务包
+- `@vben/*` (packages/) 可以依赖 `@vben-core/*`
+- `apps/*` 可以依赖 `@vben/*` 和 `@vben-core/*`
+- `internal/*` 仅供开发时使用，不进入最终产物
+
+---
+
+## 2. 包分层详解
+
+### 2.1 核心层 `packages/@core/`
+
+提供与 UI 框架无关的基础能力：
+
+| 包 | 职责 | 独立性 |
+|------|------|------|
+| `base/shared` | 通用工具函数 | 零依赖 |
+| `base/typings` | 基础类型定义 | 零依赖 |
+| `base/design` | CSS 设计 Token | 零依赖 |
+| `base/icons` | 图标基础能力 | 低依赖 |
+| `composables` | Vue 通用组合式函数 | 低依赖 |
+| `preferences` | 偏好设置核心 | 低依赖 |
+| `ui-kit/*` | 无业务耦合的 UI 组件 | 低依赖 |
+
+### 2.2 功能层 `packages/effects/`
+
+提供完整的业务功能模块：
+
+| 包 | 职责 |
+|------|------|
+| `access` | 权限控制（路由、按钮级） |
+| `common-ui` | 带业务属性的通用 UI |
+| `hooks` | 业务通用 Hooks |
+| `layouts` | 页面布局组件 |
+| `plugins` | 插件集合（图表、富文本等） |
+| `request` | HTTP 请求封装 |
+
+### 2.3 适配层 `packages/`
+
+与具体业务场景绑定的模块：
+
+| 包 | 职责 |
+|------|------|
+| `stores` | Pinia 状态管理 |
+| `locales` | 国际化 |
+| `api` | 业务 API 层 |
+| `styles` | 全局样式 |
+| `types` | 业务类型定义 |
+| `utils` | 业务工具函数 |
+
+### 2.4 应用层 `apps/`
+
+每个应用是一组完整的前端入口：
+
+| 应用 | UI 框架 | 用途 |
+|------|------|------|
+| `web-antd` | Ant Design Vue | 主开发应用 |
+| `web-antdv-next` | Ant Design Vue Next | 试验性版本 |
+| `web-tdesign` | TDesign Vue Next | TDesign 生态 |
+
+---
+
+## 3. 目录组织原则
+
+### 3.1 包内部结构
+
+```
+packages/<package-name>/
+├── src/
+│   ├── index.ts       # 包公共入口，导出所有 API
+│   ├── types.ts       # 包的类型定义
+│   └── ...            # 其他模块文件
+├── package.json       # 包元信息
+├── tsconfig.json      # TS 配置（extends @vben/tsconfig）
+└── README.md          # 包文档
+```
+
+### 3.2 配置共享原则
+
+```
+internal/
+├── tsconfig/          # 共享 tsconfig 模板
+├── vite-config/       # 共享 vite 配置
+├── lint-configs/      # 共享 lint 规则
+│   ├── eslint-config/
+│   ├── stylelint-config/
+│   └── commitlint-config/
+└── tailwind-config/   # 共享 tailwind 配置
+```
+
+---
+
+## 4. 核心设计决策
+
+### 4.1 多 UI 框架支持
+
+通过 **适配器模式** 实现同一套核心逻辑适配多个 UI 框架：
+
+```
+界面层 (apps)     →  UI 框架绑定 (antd / antdv-next / tdesign)
+                      ↓
+功能层 (packages)  →  业务逻辑（不依赖具体 UI 框架）
+                      ↓
+核心层 (@core)     →  基础工具（零业务依赖）
+```
+
+**约束**：
+- `@vben-core/*` 包不能使用任何 UI 框架组件
+- `packages/effects/*` 应尽量使用 `@core/ui-kit/*` 的通用组件
+- 仅在 `apps/*` 中使用具体的 UI 框架组件
+
+### 4.2 样式体系
+
+```
+设计 Token (CSS 变量)        ← internal/tailwind-config + @core/design
+      ↓
+Tailwind 原子类              ← 布局、间距、颜色等
+      ↓
+组件级 Scoped SCSS           ← 复杂组件样式
+      ↓
+UI 框架样式覆盖              ← 在 apps 层覆盖默认样式
+```
+
+### 4.3 状态管理
+
+```typescript
+// 全局状态：Pinia Store
+// 组件状态：ref / reactive
+// 跨组件共享：组合式函数 (composables)
+// 服务端缓存：@tanstack/vue-query
+```
+
+**选择原则**：
+| 场景 | 使用方案 |
+|------|------|
+| 全局共享（用户、主题等） | Pinia Store |
+| 组件内部状态 | reactive/ref |
+| 多组件复用的状态逻辑 | 组合式函数 |
+| 服务端数据缓存 | vue-query |
+| URL 状态（筛选、分页） | useRoute/useRouter |
+
+---
+
+## 5. 设计模式约定
+
+### 5.1 组合式函数模式
+
+```typescript
+// ✅ 命名：use 开头
+// ✅ 返回：只暴露需要的状态和方法
+// ✅ 单一职责：一个 composable 只做一件事
+
+export function usePagination(fetchFn: FetchFunction) {
+  const page = ref(1);
+  const pageSize = ref(10);
+  const total = ref(0);
+  // ... 逻辑
+  return { page, pageSize, total, goToPage, changeSize };
+}
+```
+
+### 5.2 表现组件 vs 容器组件
+
+```typescript
+// 表现组件（Presentational）：只负责渲染，通过 props 接收数据
+// 位置：components/ui/ 或 components/common/
+<DataTable :columns="columns" :data="data" @sort="handleSort" />
+
+// 容器组件（Container）：负责数据获取和状态管理
+// 位置：views/<module>/components/
+<UserListPage />
+```
+
+### 5.3 错误边界
+
+```vue
+<!-- 使用 onErrorCaptured 处理子组件错误 -->
+<script setup lang="ts">
+import { onErrorCaptured, ref } from 'vue';
+
+const error = ref<Error | null>(null);
+
+onErrorCaptured((err) => {
+  error.value = err;
+  return false; // 阻止错误继续向上传播
+});
+</script>
+```
+
+---
+
+## 6. 构建与部署
+
+### 6.1 构建链路
+
+```
+源代码 (TS/SCSS/Vue)
+    ↓ Vite
+生产代码 (JS/CSS/HTML)
+    ↓ 部署
+CDN / 静态服务器
+```
+
+### 6.2 环境变量
+
+```bash
+# .env                 # 所有环境共享
+# .env.development     # 开发环境
+# .env.production      # 生产环境
+
+VITE_APP_TITLE=应用名称
+VITE_API_BASE_URL=/api
+VITE_PROXY=[["/api","http://localhost:8080"]]
+```
+
+### 6.3 性能要求
+
+| 指标 | 目标值 | 监控方式 |
+|------|------|------|
+| 首屏加载 (FCP) | < 1.5s | Lighthouse |
+| 最大内容绘制 (LCP) | < 2.5s | Lighthouse |
+| 交互时间 (TTI) | < 3s | Lighthouse |
+| 打包体积 (gzip) | < 500KB | vite-plugin-compression |
+
+---
+
+## 7. 依赖管理
+
+### 7.1 版本锁定
+
+所有依赖版本在 `pnpm-workspace.yaml` 中的 `catalog:` 字段统一管理：
+
+```yaml
+# pnpm-workspace.yaml
+catalog:
+  vue: ^3.5.35
+  vue-router: ^5.1.0
+  pinia: ^3.0.4
+```
+
+### 7.2 包依赖分类
+
+```json
+{
+  "dependencies": { /* 运行时必需 */ },
+  "devDependencies": { /* 仅开发时需要 */ },
+  "peerDependencies": { /* 宿主应用提供 */ }
+}
+```
+
+### 7.3 changeset 版本管理
+
+```bash
+1. pnpm changeset        # 创建变更记录
+2. pnpm changeset version # 更新版本号
+3. pnpm changeset publish # 发布
+```
+
+---
+
+## 8. 路由设计
+
+### 8.1 路由组织
+
+```typescript
+// router/routes/modules/user.ts
+export const userRoutes: RouteRecordRaw[] = [
+  {
+    path: '/user',
+    name: 'User',
+    redirect: '/user/list',
+    meta: { title: '用户管理', icon: 'user' },
+    children: [
+      {
+        path: 'list',
+        name: 'UserList',
+        component: () => import('#/views/user/list.vue'),
+        meta: { title: '用户列表', access: 'user:list' },
+      },
+    ],
+  },
+];
+```
+
+### 8.2 权限路由
+
+- 静态路由：不受权限控制（登录、404 等）
+- 动态路由：根据用户权限动态注册
+- 路由守卫：在 `router/guard.ts` 中统一处理
+
+---
+
+## 9. 数据流约定
+
+```
+用户操作
+  → 组件事件处理
+    → Store Action / Composable
+      → API 请求 (via requestClient)
+        → 后端服务
+      ← 响应数据
+    ← 更新 Store 状态
+  ← 组件响应式更新
+```
+
+**原则**：
+- 组件不直接调用 API，通过 Store 或 Composable 中转
+- API 层只负责请求定义，不包含业务逻辑
+- Store 负责状态管理和业务逻辑
+
+---
+
+## 参考
+
+- [pnpm Workspace](https://pnpm.io/workspaces)
+- [Turborepo](https://turbo.build/repo/docs)
+- [Vue 3 组合式 API](https://cn.vuejs.org/guide/extras/composition-api-faq)
+- [Changesets](https://github.com/changesets/changesets)

@@ -1,0 +1,28 @@
+import type { RouteRecordRaw } from 'vue-router';
+
+import { $t } from '#/locales';
+
+const routes: RouteRecordRaw[] = [
+  {
+    meta: {
+      icon: 'ph:{{menu-icon}}',
+      order: {{menu-order}},
+      title: $t('page.{{entity-name}}.title'),
+    },
+    name: '{{EntityName}}',
+    path: '/{{entity-name}}',
+    children: [
+      {
+        name: '{{EntityName}}List',
+        path: '/{{entity-name}}/list',
+        component: () => import('#/views/{{module-path}}/{{entity-name}}/list.vue'),
+        meta: {
+          icon: 'ph:list',
+          title: $t('page.{{entity-name}}.list'),
+        },
+      },
+    ],
+  },
+];
+
+export default routes;

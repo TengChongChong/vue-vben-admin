@@ -1,0 +1,68 @@
+<script lang="ts" setup>
+import type { {{EntityName}} } from '#/api';
+import type { VbenFormSchema } from '@vben/common-ui';
+
+import { watch } from 'vue';
+
+import { useVbenForm } from '@vben/common-ui';
+
+import { message, Modal } from 'ant-design-vue';
+
+import { save{{EntityName}}Api } from '#/api';
+
+const props = defineProps<{
+  data: {{EntityName}};
+}>();
+
+const emits = defineEmits<{
+  (e: 'success'): void;
+}>();
+
+/* ---- 表单 Schema ---- */
+const schema: VbenFormSchema[] = [
+  // TODO: 根据实体字段添加表单项
+  // 基础示例：
+  // { fieldName: 'name', label: '名称', component: 'Input', rules: 'required' },
+  // { fieldName: 'status', label: '状态', component: 'Select', componentProps: { options: [{ label: '正常', value: '1' }, { label: '禁用', value: '2' }] }, rules: 'required' },
+  // { fieldName: 'description', label: '描述', component: 'Textarea' },
+
+  // 字典选择器示例：
+  // { fieldName: 'sex', label: '性别', component: 'ApiSelect', componentProps: { api: selectDictApi, params: { dictType: 'sex' } } },
+];
+
+const [BaseForm, baseFormApi] = useVbenForm({
+  schema,
+  showDefaultActions: false,
+});
+
+/* ---- 提交 ---- */
+async function handleSubmit() {
+  const { valid } = await baseFormApi.validate();
+  if (!valid) return;
+
+  const formData = await baseFormApi.getValues();
+  await save{{EntityName}}Api(formData);
+  message.success('保存成功');
+  emits('success');
+}
+
+/* ---- 初始化数据 ---- */
+watch(
+  () => props.data,
+  (val) => {
+    if (val) {
+      baseFormApi.setValues(val);
+    }
+  },
+  { immediate: true },
+);
+</script>
+
+<template>
+  <Modal
+    :title="data?.id ? '编辑{{tableComment}}' : '新增{{tableComment}}'"
+    @ok="handleSubmit"
+  >
+    <BaseForm />
+  </Modal>
+</template>
