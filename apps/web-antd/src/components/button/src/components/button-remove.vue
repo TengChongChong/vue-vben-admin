@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import type { ButtonRemoveProps } from '../props';
 
-import { LucideTrash } from '#/components/icons';
+import { createVNode, ref } from 'vue';
+
 import { AccessControl } from '@vben/access';
 import { cn, isFunction } from '@vben/utils';
+
 import { Button, message, Modal } from 'ant-design-vue';
-import { createVNode, ref } from 'vue';
+
+import { LucideTrash } from '#/components/icons';
 
 defineOptions({
   inheritAttrs: false,
@@ -24,9 +27,9 @@ const emit = defineEmits(['click', 'success', 'fail']);
 const loading = ref(false);
 
 function handleClick() {
-  let selectRecordIds: string = props.ids;
-  if (!selectRecordIds?.length) {
-    selectRecordIds = props.gridApi.getCheckboxRecordIds();
+  let selectRecordIds: string[] = props.ids ?? [];
+  if (selectRecordIds.length === 0) {
+    selectRecordIds = props.gridApi?.getCheckboxRecordIds() ?? [];
     if (selectRecordIds.length === 0) {
       message.warning('请选择要删除的数据后重试');
       return;
@@ -75,8 +78,7 @@ function handleClick() {
       :size="props.size"
       :type="props.type"
       danger
-      @click.stop="handleClick"
-    >
+      @click.stop="handleClick">
       <template #icon>
         <LucideTrash />
       </template>

@@ -95,6 +95,36 @@ export class VxeGridApi<
   }
 
   /**
+   * 获取当前勾选行（含分页保留勾选）的主键 ID 列表
+   */
+  getCheckboxRecordIds(keyField?: string): string[] {
+    const grid = this.grid;
+    if (!grid || !isFunction(grid.getCheckboxRecords)) {
+      return [];
+    }
+
+    const field =
+      keyField ||
+      (this.state?.gridOptions?.rowConfig as undefined | { keyField?: string })
+        ?.keyField ||
+      'id';
+
+    const current = (grid.getCheckboxRecords() ?? []) as T[];
+    const reserved = isFunction(grid.getCheckboxReserveRecords)
+      ? ((grid.getCheckboxReserveRecords() ?? []) as T[])
+      : [];
+
+    const ids = new Set<string>();
+    for (const record of [...current, ...reserved]) {
+      const id = (record as Record<string, unknown>)?.[field];
+      if (id !== undefined && id !== null && id !== '') {
+        ids.add(String(id));
+      }
+    }
+    return [...ids];
+  }
+
+  /**
    * 获取所有已读的 key 集合（返回副本，避免外部修改内部状态）
    */
   getViewedKeys(): Set<number | string> {

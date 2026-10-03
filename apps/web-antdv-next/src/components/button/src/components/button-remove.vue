@@ -27,9 +27,9 @@ const emit = defineEmits(['click', 'success', 'fail']);
 const loading = ref(false);
 
 function handleClick() {
-  let selectRecordIds: string = props.ids;
-  if (!selectRecordIds?.length) {
-    selectRecordIds = props.gridApi.getCheckboxRecordIds();
+  let selectRecordIds: string[] = props.ids ?? [];
+  if (selectRecordIds.length === 0) {
+    selectRecordIds = props.gridApi?.getCheckboxRecordIds() ?? [];
     if (selectRecordIds.length === 0) {
       message.warning('请选择要删除的数据后重试');
       return;
