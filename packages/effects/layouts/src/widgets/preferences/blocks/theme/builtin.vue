@@ -19,7 +19,9 @@ const props = defineProps<{ isDark: boolean }>();
 
 const colorInput = ref();
 const modelValue = defineModel<BuiltinThemeType>({ default: 'default' });
-const themeColorPrimary = defineModel<string>('themeColorPrimary');
+const themeColorPrimary = defineModel<string | undefined>('themeColorPrimary', {
+  default: undefined,
+});
 
 const updateThemeColorPrimary = useThrottleFn(
   (value: string) => {
@@ -126,27 +128,23 @@ watch(
           :class="{
             'outline-box-active': theme.type === modelValue,
           }"
-          class="group outline-box flex-center cursor-pointer"
-        >
+          class="group outline-box flex-center cursor-pointer">
           <template v-if="theme.type !== 'custom'">
             <div
               :style="{ backgroundColor: theme.color }"
-              class="mx-9 my-2 size-5 rounded-md"
-            ></div>
+              class="mx-9 my-2 size-5 rounded-md"></div>
           </template>
           <template v-else>
             <div class="size-full px-9 py-2" @click.stop="selectColor">
               <div class="relative flex-center size-5 rounded-sm">
                 <UserRoundPen
-                  class="absolute z-1 size-5 opacity-60 group-hover:opacity-100"
-                />
+                  class="absolute z-1 size-5 opacity-60 group-hover:opacity-100" />
                 <input
                   ref="colorInput"
                   :value="inputValue"
                   class="absolute inset-0 opacity-0"
                   type="color"
-                  @input="handleInputChange"
-                />
+                  @input="handleInputChange" />
               </div>
             </div>
           </template>

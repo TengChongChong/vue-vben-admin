@@ -35,6 +35,11 @@ const gridOptions: VxeGridProps<RowType> = {
     {
       align: 'center',
       cellRender: {
+        props: {
+          renderMode: 'menu',
+          // 指定收集到菜单中的按钮（默认收集所有操作按钮）
+          menuCodes: ['edit'],
+        },
         attrs: {
           nameField: 'category',
           onClick: onActionClick,
@@ -53,7 +58,7 @@ const gridOptions: VxeGridProps<RowType> = {
       headerAlign: 'center',
       showOverflow: false,
       title: $t('system.menu.operation'),
-      width: 200,
+      width: 120,
     },
   ],
   exportConfig: {},
@@ -188,8 +193,7 @@ function onClearViewed() {
     默认使用memory存储，当设置custom时需要自己实现getKeys()/setKeys()/removeKeys()。
     具体属性查看packages/effects/plugins/src/vxe-table/types.ts。可通过gridApi调用
     clearViewedRows()/getViewedKeys()/isRowViewed()/markKeysAsViewed()/markRowAsViewed()/removeViewedKeys()"
-    title="表格行标记示例"
-  >
+    title="表格行标记示例">
     <Modal class="w-150" title="数据修改"> 数据修改完成后设置行标记</Modal>
     <Grid table-title="已查看行标记" table-title-help="提示">
       <template #toolbar-tools>

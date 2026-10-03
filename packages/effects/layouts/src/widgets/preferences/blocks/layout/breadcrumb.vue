@@ -16,7 +16,12 @@ const props = defineProps<{ disabled?: boolean }>();
 
 const breadcrumbEnable = defineModel<boolean>('breadcrumbEnable');
 const breadcrumbShowIcon = defineModel<boolean>('breadcrumbShowIcon');
-const breadcrumbStyleType = defineModel<string>('breadcrumbStyleType');
+const breadcrumbStyleType = defineModel<string | undefined>(
+  'breadcrumbStyleType',
+  {
+    default: undefined,
+  },
+);
 const breadcrumbShowHome = defineModel<boolean>('breadcrumbShowHome');
 const breadcrumbHideOnlyOne = defineModel<boolean>('breadcrumbHideOnlyOne');
 
@@ -42,15 +47,13 @@ const disableItem = computed(() => {
   </SwitchItem>
   <SwitchItem
     v-model="breadcrumbShowHome"
-    :disabled="disableItem || !breadcrumbShowIcon"
-  >
+    :disabled="disableItem || !breadcrumbShowIcon">
     {{ $t('preferences.breadcrumb.home') }}
   </SwitchItem>
   <ToggleItem
     v-model="breadcrumbStyleType"
     :disabled="disableItem"
-    :items="typeItems"
-  >
+    :items="typeItems">
     {{ $t('preferences.breadcrumb.style') }}
   </ToggleItem>
 </template>

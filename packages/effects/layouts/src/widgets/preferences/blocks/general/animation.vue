@@ -11,7 +11,9 @@ const transitionProgress = defineModel<boolean>('transitionProgress', {
   // 默认值
   default: false,
 });
-const transitionName = defineModel<string>('transitionName');
+const transitionName = defineModel<string | undefined>('transitionName', {
+  default: undefined,
+});
 const transitionEnable = defineModel<boolean>('transitionEnable');
 const transitionLoading = defineModel<boolean>('transitionLoading');
 
@@ -34,8 +36,7 @@ function handleClick(value: string) {
   </SwitchItem>
   <div
     v-if="transitionEnable"
-    class="mt-3 mb-2 flex justify-between gap-3 px-2"
-  >
+    class="mt-3 mb-2 flex justify-between gap-3 px-2">
     <div
       v-for="item in transitionPreset"
       :key="item"
@@ -43,12 +44,10 @@ function handleClick(value: string) {
         'outline-box-active': transitionName === item,
       }"
       class="outline-box p-2"
-      @click="handleClick(item)"
-    >
+      @click="handleClick(item)">
       <div
         :class="`${item}-slow`"
-        class="h-10 w-12 rounded-md bg-primary"
-      ></div>
+        class="h-10 w-12 rounded-md bg-primary"></div>
     </div>
   </div>
 </template>
