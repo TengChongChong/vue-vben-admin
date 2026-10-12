@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { SelectProps as RefSelectProps } from 'antdv-next';
+import type { SelectProps } from 'antdv-next';
 
 import { ref } from 'vue';
 
@@ -8,6 +8,12 @@ import { Page } from '@vben/common-ui';
 import { Button, Card, message, Space } from 'antdv-next';
 
 import { useVbenForm } from '#/adapter/form';
+
+/** antdv-next 未导出 Select 的实例类型，这里按需补充 focus/blur */
+type RefSelectProps = SelectProps & {
+  blur: () => void;
+  focus: () => void;
+};
 
 const isReverseActionButtons = ref(false);
 

@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import type { CascaderProps } from 'antdv-next';
-
 import type { DictCascaderProps } from '../../props';
 
 import { computed, onMounted, ref, watch } from 'vue';
@@ -12,8 +10,16 @@ import { isEqual } from 'lodash-es';
 
 import { useDictStore } from '#/store';
 
-type ShowSearchType = NonNullable<CascaderProps['showSearch']>;
-type CascaderValue = Array<number> | Array<string> | undefined;
+/**
+ * Cascader 的 showSearch 在 antdv-next 中被放宽为 `boolean | Record<string, any>`，
+ * 无法再通过 `CascaderProps['showSearch']['filter']` 取到过滤函数类型，这里自行声明
+ */
+type ShowSearchFilter = (
+  inputValue: string,
+  path: Array<{ label: string }>,
+) => boolean;
+
+type CascaderValue = Array<number | string> | undefined;
 
 defineOptions({
   inheritAttrs: false,
@@ -57,7 +63,7 @@ function handleChange(value: CascaderValue) {
   emit('update:value', relValue);
 }
 
-const filter: ShowSearchType['filter'] = (inputValue, path) => {
+const filter: ShowSearchFilter = (inputValue, path) => {
   return path.some((option) =>
     option.label.toLowerCase().includes(inputValue.toLowerCase()),
   );

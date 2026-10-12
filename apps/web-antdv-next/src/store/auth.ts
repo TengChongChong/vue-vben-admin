@@ -81,7 +81,7 @@ export const useAuthStore = defineStore('auth', () => {
           notification.success({
             description: `${$t('authentication.loginSuccessDesc')}:${userInfo?.nickname}`,
             duration: 3,
-            message: $t('authentication.loginSuccess'),
+            title: $t('authentication.loginSuccess'),
           });
         }
       }
@@ -122,7 +122,7 @@ export const useAuthStore = defineStore('auth', () => {
           notification.success({
             description: `${$t('authentication.loginSuccessDesc')}:${userInfo?.nickname}`,
             duration: 3,
-            message: $t('authentication.loginSuccess'),
+            title: $t('authentication.loginSuccess'),
           });
         }
       }
@@ -202,7 +202,7 @@ export const useAuthStore = defineStore('auth', () => {
         tenantStore.tenantList.find((item) => item.id === tenantId)?.name ??
         tenantId;
       notification.success({
-        message: '租户切换成功',
+        title: '租户切换成功',
         description: tenantName,
         duration: 2,
       });

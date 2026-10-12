@@ -40,20 +40,20 @@ onMounted(() => {
     title="Cropper - 图片裁剪">
     <Row :gutter="16">
       <Col :xl="24" :xxl="12">
-        <Card :bordered="false" class="mb-4" title="头像剪裁 - 方形">
+        <Card variant="borderless" class="mb-4" title="头像剪裁 - 方形">
           <Cropper v-model:value="avatar" :circled="false" alt="头像" />
           <div v-if="avatar" class="mb-2">
             <JsonViewer :value="avatar" copyable :sort="false" boxed />
           </div>
         </Card>
-        <Card :bordered="false" class="mb-4" title="头像剪裁 - 圆形">
+        <Card variant="borderless" class="mb-4" title="头像剪裁 - 圆形">
           <Cropper v-model:value="avatarCircled" alt="头像" />
           <div v-if="avatarCircled" class="mb-2">
             <JsonViewer :value="avatarCircled" copyable :sort="false" boxed />
           </div>
         </Card>
 
-        <Card :bordered="false" title="头像剪裁 - 自定义尺寸">
+        <Card variant="borderless" title="头像剪裁 - 自定义尺寸">
           <Cropper
             v-model:value="avatarCircledCustomSize"
             :width="160"
@@ -69,7 +69,7 @@ onMounted(() => {
       </Col>
 
       <Col :xl="24" :xxl="12">
-        <Card :bordered="false" title="在表单中使用">
+        <Card variant="borderless" title="在表单中使用">
           <BaseForm />
         </Card>
       </Col>

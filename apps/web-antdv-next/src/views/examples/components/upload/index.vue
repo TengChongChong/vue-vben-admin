@@ -42,7 +42,7 @@ onMounted(() => {
     <Row :gutter="16">
       <Col :xl="24" :xxl="12">
         <Card
-          :bordered="false"
+          variant="borderless"
           class="mb-4"
           title="根据文件上传策略上传文件 - Text">
           <RuleUpload v-model:value="avatar" rule-key="default-image" />
@@ -52,7 +52,7 @@ onMounted(() => {
         </Card>
 
         <Card
-          :bordered="false"
+          variant="borderless"
           class="mb-4"
           title="根据文件上传策略上传文件 - Picture">
           <RuleUpload
@@ -66,7 +66,7 @@ onMounted(() => {
         </Card>
 
         <Card
-          :bordered="false"
+          variant="borderless"
           class="mb-4"
           title="根据文件上传策略上传文件 - Picture Card">
           <RuleUpload
@@ -80,7 +80,10 @@ onMounted(() => {
         </Card>
       </Col>
       <Col :xl="24" :xxl="12">
-        <Card :bordered="false" class="mb-4" title="根据文件上传策略上传文件">
+        <Card
+          variant="borderless"
+          class="mb-4"
+          title="根据文件上传策略上传文件">
           <RuleUpload
             use-dragger
             v-model:value="avatar"
@@ -91,7 +94,7 @@ onMounted(() => {
             <JsonViewer :value="avatar" copyable :sort="false" boxed />
           </div>
         </Card>
-        <Card :bordered="false" title="在表单中使用">
+        <Card variant="borderless" title="在表单中使用">
           <BaseForm />
         </Card>
       </Col>

@@ -6,7 +6,7 @@ import { useUserStore } from '@vben/stores';
 import { Card, message, Space } from 'antdv-next';
 
 import { useVbenForm } from '#/adapter/form';
-import {currentUserApi, getCurrentUserApi, saveUserInfoApi} from '#/api';
+import { currentUserApi, getCurrentUserApi, saveUserInfoApi } from '#/api';
 import { ButtonSave } from '#/components/button';
 
 const saveBtnLoading = ref(false);
@@ -81,7 +81,7 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <Card :bordered="false" title="我的资料">
+  <Card variant="borderless" title="我的资料">
     <div class="form-wrapper">
       <BaseForm />
 

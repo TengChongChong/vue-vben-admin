@@ -8,12 +8,12 @@ import { useDebounceFn } from '@vueuse/core';
 import {
   Button,
   Checkbox,
+  DateRangePicker,
   Empty,
   Input,
   message,
   Pagination,
   Popconfirm,
-  RangePicker,
   Spin,
 } from 'antdv-next';
 import dayjs from 'dayjs';
@@ -118,7 +118,7 @@ onMounted(() => {
             <LucideSearch class="size-4 text-muted-foreground" />
           </template>
         </Input>
-        <RangePicker
+        <DateRangePicker
           v-if="isSent()"
           :presets="[
             {

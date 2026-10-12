@@ -400,7 +400,7 @@ function cropImage(file: File, aspectRatio: string | undefined) {
               width: 548,
               zIndex: 9999,
               keyboard: false,
-              maskClosable: false,
+              mask: { closable: false },
               closable: false,
               cancelText: $t('common.cancel'),
               okText: $t('ui.crop.confirm'),
@@ -793,7 +793,7 @@ async function initComponentAdapter() {
               : new Error($t('ui.tiptap.upload.uploadFailed'));
           }
         },
-        onUploadError: (error) => {
+        onUploadError: (error: unknown) => {
           message.error(
             error instanceof Error
               ? error.message

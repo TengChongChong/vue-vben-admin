@@ -106,7 +106,7 @@ function handleChange() {
     v-model:value="currentValue"
     :class="cn(props.class, 'w-full')"
     @change="handleChange"
-    @dropdown-visible-change="handleDropdownVisibleChange"
+    @open-change="handleDropdownVisibleChange"
     @search="handleSearch">
     <SelectOption
       v-for="item in options"

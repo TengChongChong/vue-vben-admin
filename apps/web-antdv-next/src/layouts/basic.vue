@@ -122,16 +122,12 @@ function loadNotification() {
     { pageSize: 10 },
   ).then((res) => {
     notifications.value = res.records.map((item: SysMessage) => {
-      const { id, messageId, avatar, title, detailsStatus } = item;
-
       return {
-        id,
-        messageId,
-        avatar,
-        title,
+        ...item,
         date: formatToNow(item.sendDate),
         isRead:
-          detailsStatus === SysMessageDetailsStatus.RECEIVE_STATUS_ALREADY_READ,
+          item.detailsStatus ===
+          SysMessageDetailsStatus.RECEIVE_STATUS_ALREADY_READ,
       };
     });
   });

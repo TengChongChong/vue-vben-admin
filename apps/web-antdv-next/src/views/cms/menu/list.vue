@@ -191,7 +191,7 @@ onMounted(async () => {
       message="请先选择当前编辑站点"
       type="warning" />
 
-    <Card :bordered="false" class="mb-4!">
+    <Card variant="borderless" class="mb-4!">
       <FilterForm />
     </Card>
 
@@ -228,7 +228,7 @@ onMounted(async () => {
               ? 'border-primary shadow-sm shadow-primary/10'
               : 'hover:border-primary/50 hover:shadow-sm',
           ]"
-          :body-style="{ padding: '10px 14px' }">
+          :styles="{ body: { padding: '10px 14px' } }">
           <div class="flex flex-col gap-2 md:flex-row md:items-stretch">
             <Checkbox
               class="shrink-0 self-start md:self-center"
@@ -279,7 +279,7 @@ onMounted(async () => {
           </div>
         </Card>
       </div>
-      <Card v-else :bordered="false">
+      <Card v-else variant="borderless">
         <Empty class="py-14" description="暂无导航菜单" />
       </Card>
     </Spin>

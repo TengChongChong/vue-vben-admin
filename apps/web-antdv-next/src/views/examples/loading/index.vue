@@ -71,9 +71,11 @@ const loadingV = refAutoReset(false, 3000);
       title="Vben Spinner"
       v-spinning="spinningV"
       class="mt-4 overflow-hidden"
-      :body-style="{
-        position: 'relative',
-        overflow: 'hidden',
+      :styles="{
+        body: {
+          position: 'relative',
+          overflow: 'hidden',
+        },
       }">
       <template #extra>
         <Button type="primary" @click="spinningV = true">

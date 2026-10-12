@@ -90,7 +90,7 @@ const [BaseForm] = useVbenForm({
 </script>
 
 <template>
-  <Card :bordered="false" title="修改密码">
+  <Card variant="borderless" title="修改密码">
     <div class="form-wrapper">
       <BaseForm />
     </div>

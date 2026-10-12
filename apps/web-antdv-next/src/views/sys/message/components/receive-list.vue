@@ -150,10 +150,10 @@ onMounted(() => {
 
 <template>
   <Card
-    :bordered="compact"
-    :body-style="inboxBodyStyle"
     class="h-full"
-    :title="title">
+    :styles="{ body: inboxBodyStyle }"
+    :title="title"
+    :variant="compact ? 'outlined' : 'borderless'">
     <div
       v-if="showQuery"
       class="flex shrink-0 flex-wrap items-center justify-between gap-3 border-b border-border px-4 py-3">
@@ -205,9 +205,9 @@ onMounted(() => {
 
     <div class="flex min-h-0 flex-1 overflow-hidden">
       <Card
-        :body-style="listBodyStyle"
-        :bordered="false"
+        :styles="{ body: listBodyStyle }"
         class="flex min-h-0 flex-col overflow-hidden rounded-none"
+        variant="borderless"
         :class="[
           compact
             ? 'w-full flex-1'
@@ -253,7 +253,7 @@ onMounted(() => {
     <Drawer
       v-if="!compact"
       v-model:open="detailDrawerOpen"
-      :body-style="{ padding: 0 }"
+      :styles="{ body: { padding: 0 } }"
       class="lg:hidden"
       placement="right"
       title="消息详情"

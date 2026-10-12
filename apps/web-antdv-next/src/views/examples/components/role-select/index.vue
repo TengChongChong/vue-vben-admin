@@ -51,7 +51,7 @@ onMounted(() => {
   <Page>
     <Row :gutter="16">
       <Col :lg="24" :xl="12">
-        <Card :bordered="false" title="基础示例">
+        <Card variant="borderless" title="基础示例">
           <Descriptions
             :column="1"
             :label-style="{ width: '150px' }"
@@ -68,7 +68,7 @@ onMounted(() => {
         </Card>
       </Col>
       <Col :xl="24" :xxl="12">
-        <Card :bordered="false" class="mb-4" title="在表单中使用">
+        <Card variant="borderless" class="mb-4" title="在表单中使用">
           <BaseForm />
         </Card>
       </Col>

@@ -36,7 +36,7 @@ async function handleSuccess() {
 </script>
 
 <template>
-  <Card :bordered="false" title="安全设置">
+  <Card variant="borderless" title="安全设置">
     <div class="flex flex-col gap-4">
       <div
         class="flex items-start justify-between border-b py-3 last:border-b-0">

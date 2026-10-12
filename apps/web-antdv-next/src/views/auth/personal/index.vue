@@ -27,7 +27,7 @@ const currentUser = computed(() => {
   <Page>
     <Layout>
       <LayoutSider :width="360" class="rounded-lg" theme="light">
-        <Card :bordered="false" style="height: 100%">
+        <Card variant="borderless" style="height: 100%">
           <!-- 当前登录用户信息 -->
           <PersonalUserInfo :current-user="currentUser!" />
 

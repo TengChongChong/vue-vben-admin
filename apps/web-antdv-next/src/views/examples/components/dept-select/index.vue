@@ -59,7 +59,7 @@ onMounted(() => {
   <Page>
     <Row :gutter="16">
       <Col :lg="24" :xl="12">
-        <Card :bordered="false" class="mb-4" title="基础示例">
+        <Card class="mb-4" title="基础示例" variant="borderless">
           <Descriptions
             :column="1"
             :label-style="{ width: '150px' }"
@@ -75,14 +75,14 @@ onMounted(() => {
           </Descriptions>
         </Card>
 
-        <Card :bordered="false" title="DeptTree">
-          <Tag :bordered="false" class="mb-2">SelectKey： {{ deptTree }}</Tag>
+        <Card title="DeptTree" variant="borderless">
+          <Tag class="mb-2" variant="filled">SelectKey： {{ deptTree }}</Tag>
 
           <DeptTree v-model:value="deptTree" />
         </Card>
       </Col>
       <Col :xl="24" :xxl="12">
-        <Card :bordered="false" class="mb-4" title="在表单中使用">
+        <Card class="mb-4" title="在表单中使用" variant="borderless">
           <BaseForm />
         </Card>
       </Col>

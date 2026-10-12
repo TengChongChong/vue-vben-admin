@@ -30,7 +30,7 @@ const props = defineProps<{ currentUser: SessionUser }>();
       </div>
       <div class="user-tag">
         <DictTag :code="props.currentUser.sex!" dict-type="sex" />
-        <Tag v-if="props.currentUser.age" :bordered="false">
+        <Tag v-if="props.currentUser.age" variant="filled">
           {{ props.currentUser.age }} 岁
         </Tag>
       </div>
@@ -54,7 +54,7 @@ const props = defineProps<{ currentUser: SessionUser }>();
       <Tag
         v-for="role in props.currentUser?.roleList"
         :key="role.id"
-        :bordered="false">
+        variant="filled">
         {{ role.name }}
       </Tag>
     </DescriptionsItem>

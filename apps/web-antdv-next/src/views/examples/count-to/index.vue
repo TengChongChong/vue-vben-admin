@@ -17,6 +17,7 @@ import {
   message,
   Row,
   Select,
+  SelectOption,
   Switch,
 } from 'antdv-next';
 
@@ -148,12 +149,12 @@ function onFinished() {
           <Col :span="8">
             <FormItem label="动画" name="transition">
               <Select v-model:value="props.transition">
-                <Select.Option
+                <SelectOption
                   v-for="preset in TransitionPresetsKeys"
                   :key="preset"
                   :value="preset">
                   {{ preset }}
-                </Select.Option>
+                </SelectOption>
               </Select>
             </FormItem>
           </Col>

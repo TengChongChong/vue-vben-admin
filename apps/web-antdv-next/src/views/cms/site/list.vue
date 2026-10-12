@@ -258,7 +258,7 @@ onMounted(async () => {
 
 <template>
   <Page auto-content-height>
-    <Card :bordered="false" class="mb-4!">
+    <Card variant="borderless" class="mb-4!">
       <FilterForm />
     </Card>
 
@@ -310,12 +310,14 @@ onMounted(async () => {
               ? 'border-primary shadow-md shadow-primary/10'
               : 'hover:border-primary/40 hover:shadow-md',
           ]"
-          :body-style="{
-            display: 'flex',
-            flexDirection: 'column',
-            height: '100%',
-            padding: '14px',
-            width: '100%',
+          :styles="{
+            body: {
+              display: 'flex',
+              flexDirection: 'column',
+              height: '100%',
+              padding: '14px',
+              width: '100%',
+            },
           }">
           <div class="flex min-h-0 flex-1 flex-col gap-2.5">
             <div class="flex items-start gap-2.5">
@@ -448,7 +450,7 @@ onMounted(async () => {
           </div>
         </Card>
       </div>
-      <Card v-else :bordered="false">
+      <Card v-else variant="borderless">
         <Empty class="py-14" description="暂无站点" />
       </Card>
     </Spin>

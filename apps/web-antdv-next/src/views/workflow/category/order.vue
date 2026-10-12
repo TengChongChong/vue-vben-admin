@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type { TreeDataNode as TreeDataItem, TreeProps } from 'antdv-next';
-import type { AntTreeNodeDropEvent } from 'antdv-next/dist/tree/Tree';
 
 import type { WorkflowCategory } from '#/api';
 
@@ -18,6 +17,9 @@ import {
 import { ButtonClose, ButtonSave } from '#/components/button';
 
 const emit = defineEmits(['success']);
+
+/** Tree 拖拽事件类型（antdv-next 的 onDrop 事件参数） */
+type TreeDropInfo = Parameters<NonNullable<TreeProps['onDrop']>>[0];
 
 const saveBtnLoading = ref(false);
 
@@ -84,10 +86,9 @@ function setProps(
   }
 }
 
-function onDrop(info: AntTreeNodeDropEvent) {
+function onDrop(info: TreeDropInfo) {
   const dropKey = info.node.key;
   const dragKey = info.dragNode.key;
-  // @ts-expect-error: pos is not declared on TreeNode
   const dropPos = info.node.pos.split('-');
   const dropPosition = info.dropPosition - Number(dropPos[dropPos.length - 1]);
   const loop = (

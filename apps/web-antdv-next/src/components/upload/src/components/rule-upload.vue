@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { UploadChangeParam } from 'antdv-next';
+import type { UploadChangeParam, UploadFile } from 'antdv-next';
 
 import type { FileInfo, FileUploadRuleVO } from '#/api';
 import type {
@@ -163,17 +163,13 @@ const handleChange = (info: UploadChangeParam) => {
     if (item.status === 'error') {
       message.error(item.response?.errorMessage);
     }
-    if (item.status === 'success' || item.status === 'done') {
+    if (item.status === 'done') {
       uploadedFileList.push(convertToFileInfo(item));
     } else {
       uploadingFileList.push(item);
     }
   });
-  if (
-    file.status === 'success' ||
-    file.status === 'done' ||
-    file.status === 'removed'
-  ) {
+  if (file.status === 'done' || file.status === 'removed') {
     handleValueChange();
   }
   refreshDisplayFileList();
@@ -218,7 +214,7 @@ function refreshDisplayFileList() {
         :action="url"
         :max-count="maxCount"
         :before-upload="beforeUpload"
-        :file-list="displayFileList"
+        :file-list="displayFileList as unknown as UploadFile[]"
         :headers="{ Authorization: accessStore.accessToken }"
         :list-type="props.listType"
         :multiple="multiple"

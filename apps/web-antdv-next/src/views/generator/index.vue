@@ -44,7 +44,7 @@ function handleStepChange(index: number) {
 
 <template>
   <Page content-class="generator">
-    <Card :bordered="false">
+    <Card variant="borderless">
       <Steps :current="current" :items="stepItems" @change="handleStepChange" />
       <div class="step-content mt-8">
         <BasicsConfig

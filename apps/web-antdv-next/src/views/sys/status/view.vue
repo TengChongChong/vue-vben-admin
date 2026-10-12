@@ -75,7 +75,7 @@ async function loadData() {
 
 <template>
   <Page>
-    <Card :bordered="false" class="mb-4!" title="内存">
+    <Card variant="borderless" class="mb-4!" title="内存">
       <Descriptions :column="4" :label-style="{ width: `160px` }" bordered>
         <DescriptionsItem label="Max Memory">
           {{ formatSize(runtimeInfo?.maxMemory, 1) }}
@@ -94,7 +94,7 @@ async function loadData() {
       </Descriptions>
     </Card>
 
-    <Card :bordered="false" class="mb-4!" title="JAVA">
+    <Card variant="borderless" class="mb-4!" title="JAVA">
       <Descriptions :column="2" :label-style="{ width: `290px` }" bordered>
         <DescriptionsItem label="Java Virtual Machine Specification">
           {{ jvmSpecInfo?.name }} {{ jvmSpecInfo?.version }}
@@ -126,7 +126,7 @@ async function loadData() {
         </DescriptionsItem>
       </Descriptions>
     </Card>
-    <Card :bordered="false" title="系统信息">
+    <Card variant="borderless" title="系统信息">
       <Descriptions :column="2" :label-style="{ width: `160px` }" bordered>
         <DescriptionsItem label="OS">
           {{ osInfo?.name }} {{ osInfo?.arch }} {{ osInfo?.version }}

@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type { TreeProps } from 'antdv-next';
-import type { AntTreeNodeDropEvent } from 'antdv-next/dist/tree/Tree';
 
 import type { CmsColumn } from '#/api';
 
@@ -24,6 +23,9 @@ interface OrderTreeNode {
 }
 
 const emit = defineEmits(['success']);
+
+/** Tree 拖拽事件类型（antdv-next 的 onDrop 事件参数） */
+type TreeDropInfo = Parameters<NonNullable<TreeProps['onDrop']>>[0];
 
 const saveBtnLoading = ref(false);
 const treeData = ref<TreeProps['treeData']>([]);
@@ -92,7 +94,7 @@ function setProps(
   });
 }
 
-function onDrop(info: AntTreeNodeDropEvent) {
+function onDrop(info: TreeDropInfo) {
   const dropKey = info.node.key;
   const dragKey = info.dragNode.key;
   const dropPos = String((info.node as any).pos || '').split('-');

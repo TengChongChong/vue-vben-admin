@@ -96,7 +96,7 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <Card :bordered="false" title="写消息">
+  <Card variant="borderless" title="写消息">
     <div class="form-wrapper">
       <BaseForm />
 

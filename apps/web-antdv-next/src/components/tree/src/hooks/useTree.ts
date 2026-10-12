@@ -2,12 +2,7 @@ import type { TreeDataNode as TreeDataItem } from 'antdv-next';
 
 import type { ComputedRef, Ref } from 'vue';
 
-import type {
-  FieldNames,
-  InsertNodeParams,
-  KeyType,
-  TreeItem,
-} from '../types/tree';
+import type { FieldNames, InsertNodeParams, KeyType, TreeItem } from '../types';
 
 import { unref } from 'vue';
 
@@ -100,7 +95,7 @@ export function useTree(
       const children = element[childrenField];
 
       if (element[keyField] === key) {
-        treeData[index] = { ...treeData[index], ...node };
+        treeData[index] = { ...treeData[index], ...node } as TreeDataItem;
         break;
       } else if (children && children.length > 0) {
         updateNodeByKey(key, node, element[childrenField]);

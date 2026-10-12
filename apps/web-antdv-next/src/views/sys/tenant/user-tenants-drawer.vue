@@ -6,7 +6,15 @@ import { computed, ref } from 'vue';
 import { useVbenDrawer } from '@vben/common-ui';
 import { useTenantStore } from '@vben/stores';
 
-import { Alert, Checkbox, message, Radio, Space, Table } from 'antdv-next';
+import {
+  Alert,
+  Checkbox,
+  message,
+  Radio,
+  RadioGroup,
+  Space,
+  Table,
+} from 'antdv-next';
 
 import {
   listSysTenantOptionsApi,
@@ -135,7 +143,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
 
     <div v-if="selectedTenantIds.length > 0" class="mb-4">
       <div class="mb-2 text-sm font-medium">默认租户</div>
-      <Radio.Group v-model:value="defaultTenantId">
+      <RadioGroup v-model:value="defaultTenantId">
         <Space direction="vertical">
           <Radio
             v-for="item in tenantRows.filter((row) => row.selected)"
@@ -144,7 +152,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
             {{ item.name }}（{{ item.tenantCode }}）
           </Radio>
         </Space>
-      </Radio.Group>
+      </RadioGroup>
     </div>
 
     <Table

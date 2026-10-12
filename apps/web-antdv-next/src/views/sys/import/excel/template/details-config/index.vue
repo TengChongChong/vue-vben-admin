@@ -54,7 +54,7 @@ const columns = [
     dataIndex: 'needImport',
     title: '导入',
     width: 50,
-    align: 'center',
+    align: 'center' as const,
   },
   {
     title: '字段',
@@ -100,13 +100,13 @@ const columns = [
     dataIndex: 'dataRequired',
     title: '必填',
     width: 50,
-    align: 'center',
+    align: 'center' as const,
   },
   {
     dataIndex: 'dataOnly',
     title: '唯一',
     width: 50,
-    align: 'center',
+    align: 'center' as const,
   },
 ];
 

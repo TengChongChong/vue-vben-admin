@@ -1,5 +1,7 @@
 import type { TreeDataNode as TreeDataItem } from 'antdv-next';
 
+import type { CSSProperties } from 'vue';
+
 export enum ToolbarEnum {
   SELECT_ALL,
   UN_SELECT_ALL,
@@ -86,7 +88,7 @@ export interface TreeActionType {
 
 export interface BasicTreeProps {
   class?: any;
-  headStyle?: object;
+  headStyle?: CSSProperties;
   value?: CheckKeys | KeyType[];
   helpMessage?: string | string[];
   title?: string;

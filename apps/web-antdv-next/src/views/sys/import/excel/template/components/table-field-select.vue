@@ -74,10 +74,10 @@ onMounted(() => {
     class="w-full"
     option-filter-prop="label"
     show-search>
-    <template #title="{ label }">
+    <template #optionRender="{ option }">
       <!-- 高亮关键字 -->
-      <template v-if="label">
-        <HighlightText :keyword="searchValue" :text="label" />
+      <template v-if="option.label">
+        <HighlightText :keyword="searchValue" :text="option.label as string" />
       </template>
     </template>
   </Select>

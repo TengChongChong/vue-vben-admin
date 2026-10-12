@@ -14,6 +14,7 @@ import {
   message,
   Pagination,
   Spin,
+  TabPane,
   Tabs,
   Tag,
 } from 'antdv-next';
@@ -238,12 +239,12 @@ onMounted(async () => {
       message="请先选择当前编辑站点"
       type="warning" />
 
-    <Card :bordered="false" class="mb-4!">
+    <Card variant="borderless" class="mb-4!">
       <FilterForm />
     </Card>
 
     <Tabs :active-key="activeType" class="mb-3" @change="handleTypeChange">
-      <Tabs.TabPane v-for="tab in typeTabs" :key="tab.key" :tab="tab.label" />
+      <TabPane v-for="tab in typeTabs" :key="tab.key" :tab="tab.label" />
     </Tabs>
 
     <Spin :spinning="loading">
@@ -254,7 +255,7 @@ onMounted(async () => {
           v-for="item in records"
           :key="item.id"
           class="overflow-hidden transition-shadow hover:shadow-md"
-          :body-style="{ padding: '12px' }">
+          :styles="{ body: { padding: '12px' } }">
           <div
             class="relative mb-2 flex aspect-[16/9] w-full items-center justify-center overflow-hidden rounded-lg bg-gray-50">
             <img
@@ -313,7 +314,7 @@ onMounted(async () => {
           </div>
         </Card>
       </div>
-      <Card v-else :bordered="false">
+      <Card v-else variant="borderless">
         <Empty class="py-14" description="暂无资源" />
       </Card>
     </Spin>

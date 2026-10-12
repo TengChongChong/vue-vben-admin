@@ -154,7 +154,7 @@ function handleChange() {
     show-search
     @change="handleChange"
     @tree-expand="treeExpand">
-    <template #title="{ label }">
+    <template #treeTitleRender="{ label }">
       <!-- 高亮关键字 -->
       <template v-if="label">
         <HighlightText :keyword="searchValue" :text="label" />

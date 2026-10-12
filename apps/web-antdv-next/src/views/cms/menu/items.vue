@@ -21,6 +21,7 @@ import {
   Pagination,
   Space,
   Spin,
+  TabPane,
   Tabs,
   Tag,
   Tree,
@@ -735,14 +736,14 @@ onBeforeUnmount(() => {
     <div class="flex gap-3">
       <!-- 左侧资源 -->
       <Card
-        :body-style="{ padding: 0 }"
+        :styles="{ body: { padding: 0 } }"
         class="flex w-[40%] min-w-0 flex-col overflow-hidden rounded-xl">
         <Tabs
           v-model:active-key="activeTab"
           class="menu-resource-tabs flex min-h-0 flex-1 flex-col"
           size="small"
           @change="handleTabChange">
-          <Tabs.TabPane key="column" tab="栏目">
+          <TabPane key="column" tab="栏目">
             <div class="flex h-full min-h-0 flex-col gap-2 p-2">
               <Input
                 v-model:value="searchForm.columnKeyword"
@@ -779,12 +780,9 @@ onBeforeUnmount(() => {
                 </Button>
               </AccessControl>
             </div>
-          </Tabs.TabPane>
+          </TabPane>
 
-          <Tabs.TabPane
-            v-for="tab in checklistTabs"
-            :key="tab.key"
-            :tab="tab.tab">
+          <TabPane v-for="tab in checklistTabs" :key="tab.key" :tab="tab.tab">
             <div class="flex h-full min-h-0 flex-col gap-2 p-2">
               <Input
                 :value="getKeywordByTab(tab.key)"
@@ -853,9 +851,9 @@ onBeforeUnmount(() => {
                 </Button>
               </AccessControl>
             </div>
-          </Tabs.TabPane>
+          </TabPane>
 
-          <Tabs.TabPane key="builtin" tab="内置">
+          <TabPane key="builtin" tab="内置">
             <div class="flex h-full min-h-0 flex-col gap-2 overflow-auto p-2">
               <div
                 v-for="item in BUILTIN_ADD_OPTIONS"
@@ -879,13 +877,13 @@ onBeforeUnmount(() => {
                 </AccessControl>
               </div>
             </div>
-          </Tabs.TabPane>
+          </TabPane>
         </Tabs>
       </Card>
 
       <!-- 右侧菜单树 -->
       <Card
-        :body-style="{ padding: 0 }"
+        :styles="{ body: { padding: 0 } }"
         class="flex min-w-0 flex-1 flex-col overflow-hidden rounded-xl">
         <div
           class="flex items-center justify-between gap-2 border-b border-gray-100 px-4 py-2.5 dark:border-gray-800">

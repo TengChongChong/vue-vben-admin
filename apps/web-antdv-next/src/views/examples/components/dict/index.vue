@@ -125,7 +125,7 @@ onMounted(() => {
   <Page description="字典数据来源于系统管理 > 字典管理功能" title="字典 - Dict">
     <Row :gutter="16">
       <Col :lg="24" :xl="12">
-        <Card :bordered="false" title="基础示例">
+        <Card variant="borderless" title="基础示例">
           <Descriptions
             :column="1"
             :label-style="{ width: '150px' }"
@@ -236,10 +236,10 @@ onMounted(() => {
         </Card>
       </Col>
       <Col :xl="24" :xxl="12">
-        <Card :bordered="false" class="mb-4" title="在表单中使用">
+        <Card variant="borderless" class="mb-4" title="在表单中使用">
           <BaseForm />
         </Card>
-        <Card :bordered="false" class="mb-4" title="在表格中使用">
+        <Card variant="borderless" class="mb-4" title="在表格中使用">
           todo: 待实现
         </Card>
       </Col>

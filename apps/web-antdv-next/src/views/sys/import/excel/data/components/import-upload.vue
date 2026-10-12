@@ -32,7 +32,7 @@ async function handleDownload() {
 
 async function handleStepNext() {
   if (!file.value) {
-    message.warn('请上传文件后重试');
+    message.warning('请上传文件后重试');
     return;
   }
   nextBtnLoading.value = true;

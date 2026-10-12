@@ -59,7 +59,7 @@ function convertDictCode() {
     <template v-for="(dict, index) in dictArray" :key="dict.code">
       <Tag
         v-if="dict.color && props.useTag"
-        :bordered="false"
+        variant="filled"
         :color="dict.color">
         {{ dict.name }}
       </Tag>

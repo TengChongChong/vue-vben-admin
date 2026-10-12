@@ -56,14 +56,14 @@ function handleChange() {
     v-model:search-value="searchValue"
     v-model:value="currentValue"
     :class="cn(props.class, 'w-full')"
-    :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
     :multiple="props.multiple"
+    :styles="{ popup: { root: { maxHeight: '400px', overflow: 'auto' } } }"
     :tree-data="options"
     allow-clear
     show-search
     tree-node-filter-prop="label"
     @change="handleChange">
-    <template #title="{ label }">
+    <template #treeTitleRender="{ label }">
       <!-- 高亮关键字 -->
       <template v-if="label">
         <HighlightText :keyword="searchValue" :text="label" />

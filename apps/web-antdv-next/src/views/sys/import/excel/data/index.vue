@@ -95,7 +95,7 @@ function handleStepNext() {
   <Page auto-content-height>
     <Card
       :title="`导入数据 - ${sysImportExcelTemplate?.name ? sysImportExcelTemplate?.name : '错误'}`"
-      :bordered="false">
+      variant="borderless">
       <Steps
         v-if="isHav"
         :current="current"

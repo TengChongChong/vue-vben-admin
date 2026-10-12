@@ -40,7 +40,7 @@ watch(selectedKeys, (key) => {
   <Page auto-content-height>
     <Layout class="h-full">
       <LayoutSider :width="256" class="rounded-lg" theme="light">
-        <Card :bordered="false" size="small" style="height: 100%">
+        <Card variant="borderless" size="small" style="height: 100%">
           <MessageNav
             ref="messageNavRef"
             v-model:selected-keys="selectedKeys" />

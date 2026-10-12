@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { MenuProps, TreeProps } from 'antdv-next';
-import type { FieldNamesType as FieldNames } from 'antdv-next/dist/cascader';
-
-import type { VNode } from 'vue';
 
 import type {
   BasicTreeProps,
+  CheckKeys,
+  FieldNames,
+  KeyType,
   TreeActionType,
   TreeItem,
   TreeState,
@@ -29,7 +29,18 @@ import { IconifyIcon } from '@vben/icons';
 import { cn, filter, treeToList } from '@vben/utils';
 
 import { useDebounceFn } from '@vueuse/shared';
-import { Button, Card, Dropdown, Empty, InputSearch, Menu, MenuDivider, MenuItem, Space, Tree } from 'antdv-next';
+import {
+  Button,
+  Card,
+  Dropdown,
+  Empty,
+  InputSearch,
+  Menu,
+  MenuDivider,
+  MenuItem,
+  Space,
+  Tree,
+} from 'antdv-next';
 import { difference, isArray, isString, omit } from 'lodash-es';
 
 import { HighlightText } from '#/components/highlight-text';
@@ -132,7 +143,7 @@ const getBindValues = computed(() => {
       );
     },
   };
-  return omit(propsData, 'treeData', 'class', 'useCard') as TreeProps;
+  return omit(propsData, 'treeData', 'class', 'useCard') as TreeProps<any>;
 });
 
 const getTreeSearchData = computed((): TreeItem[] =>
@@ -282,7 +293,8 @@ watch(
 );
 
 const handleTreeToolbarClick: MenuProps['onClick'] = ({ key }) => {
-  switch (key) {
+  // Menu 的 key 为字符串，而 ToolbarEnum 是数字枚举，这里统一转成数字比较
+  switch (Number(key)) {
     case ToolbarEnum.CHECK_STRICTLY: {
       onStrictlyChange(false);
       break;
@@ -382,7 +394,7 @@ const instance: TreeActionType = {
   },
 };
 
-const TreeIcon = ({ icon }: { icon: string | undefined | VNode }) => {
+const TreeIcon = ({ icon }: { icon: unknown }) => {
   if (!icon) return null;
   if (isString(icon)) {
     return h(IconifyIcon, { icon, class: 'mr-1' });
@@ -397,9 +409,9 @@ defineExpose(instance);
   <Card
     v-if="props.useCard"
     v-bind="$attrs"
-    :bordered="false"
+    variant="borderless"
     :class="cn(props.class)"
-    :head-style="props.headStyle"
+    :styles="{ header: props.headStyle }"
     :size="props.size"
     :title="props.title">
     <template #extra>
@@ -440,10 +452,12 @@ defineExpose(instance);
           v-bind="getBindValues"
           :show-icon="false"
           :tree-data="getTreeSearchData">
-          <template #title="{ title, icon }">
+          <template #titleRender="{ title, icon }">
             <TreeIcon :icon="icon" />
 
-            <HighlightText :keyword="searchState.searchText" :text="title" />
+            <HighlightText
+              :keyword="searchState.searchText"
+              :text="title as string" />
           </template>
         </Tree>
 
@@ -496,10 +510,12 @@ defineExpose(instance);
           v-bind="getBindValues"
           :show-icon="false"
           :tree-data="getTreeSearchData">
-          <template #title="{ title, icon }">
+          <template #titleRender="{ title, icon }">
             <TreeIcon :icon="icon" />
 
-            <HighlightText :keyword="searchState.searchText" :text="title" />
+            <HighlightText
+              :keyword="searchState.searchText"
+              :text="title as string" />
           </template>
         </Tree>
 

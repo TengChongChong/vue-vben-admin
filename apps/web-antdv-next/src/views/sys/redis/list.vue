@@ -65,7 +65,7 @@ async function handleInfo(key: string) {
   <Page>
     <div class="flex flex-wrap">
       <div class="w-[460px]">
-        <Card :bordered="false" title="Key前缀">
+        <Card variant="borderless" title="Key前缀">
           <Menu
             v-model:selected-keys="currentSelectedKeys"
             :border="false"
@@ -77,7 +77,7 @@ async function handleInfo(key: string) {
         </Card>
       </div>
       <div class="flex-1 pl-4" style="min-width: 500px">
-        <Card :bordered="false" title="Keys">
+        <Card variant="borderless" title="Keys">
           <Alert
             v-if="currentSelectedKeys.length === 0"
             banner

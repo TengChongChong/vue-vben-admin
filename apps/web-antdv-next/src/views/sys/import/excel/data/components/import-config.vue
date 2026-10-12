@@ -34,7 +34,7 @@ const nextBtnLoading = ref<boolean>(false);
 // 系统预设导入模版
 const columns = ref<Array<any>>([]);
 // 导入字段
-const dataSource = ref([]);
+const dataSource = ref<Array<Record<string, any>>>([]);
 // 用户导入Excel前10条数据
 const importExcelColumns = ref<Array<Array<string>>>([]);
 // 起始行
@@ -111,7 +111,7 @@ async function uploadExcelColumns() {
   importExcelColumns.value = await analysisExcelApi(props.importFile);
 
   if (startRow.value > importExcelColumns.value.length) {
-    message.warn('起始行大于Excel数据行数，请重新选择文件或更改起始行');
+    message.warning('起始行大于Excel数据行数，请重新选择文件或更改起始行');
     return;
   }
 
@@ -282,7 +282,10 @@ function checkImportExcelTemplate() {
       :pagination="false"
       :scroll="{ x: '100%', y: 100 }">
       <template #headerCell="{ column }">
-        <div :class="[column.require ? 'require-mark' : '']">
+        <div
+          :class="[
+            (column as { require?: boolean }).require ? 'require-mark' : '',
+          ]">
           {{ column.title }}
         </div>
       </template>
@@ -295,7 +298,7 @@ function checkImportExcelTemplate() {
             show-search
             option-filter-prop="label"
             :options="columnOptions"
-            v-model:value="record[column.dataIndex]"
+            v-model:value="record[column.dataIndex as string]"
             style="width: 100%" />
         </template>
       </template>

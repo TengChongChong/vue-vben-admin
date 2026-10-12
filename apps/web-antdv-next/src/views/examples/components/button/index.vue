@@ -35,7 +35,7 @@ function handleRemoveFail(id: string | string[]) {
   <Page>
     <Row :gutter="16">
       <Col :xl="24" :xxl="12">
-        <Card :bordered="false" class="mb-4" title="基础按钮">
+        <Card variant="borderless" class="mb-4" title="基础按钮">
           <div class="prose mb-6">
             <h3>主按钮</h3>
             <Space :wrap="true">
@@ -88,7 +88,7 @@ function handleRemoveFail(id: string | string[]) {
         </Card>
       </Col>
       <Col :xl="24" :xxl="12">
-        <Card :bordered="false" class="mb-4" title="常用按钮 - 默认尺寸">
+        <Card variant="borderless" class="mb-4" title="常用按钮 - 默认尺寸">
           <Space :wrap="true">
             <ButtonAdd />
             <ButtonCancel />
@@ -106,7 +106,7 @@ function handleRemoveFail(id: string | string[]) {
             <ButtonSubmit />
           </Space>
         </Card>
-        <Card :bordered="false" title="常用按钮 - 表格操作列">
+        <Card variant="borderless" title="常用按钮 - 表格操作列">
           <Space :wrap="true">
             <ButtonAdd size="small" type="link" />
             <Divider type="vertical" />
